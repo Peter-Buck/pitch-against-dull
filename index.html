@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Pitch Against Dull</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; background: #000; }
+body { font-family: 'Barlow', sans-serif; color: #fff; overflow-x: hidden; }
+
+/* SCREENS */
+.screen { display: none; min-height: 100vh; flex-direction: column; padding: 56px 28px 40px; background: #111; }
+.screen.active { display: flex; }
+.screen.yellow { background: #FFE600; color: #000; }
+
+/* LOGO */
+.logo { margin-bottom: 36px; }
+.logo-title { font-family: Impact, sans-serif; font-size: 26px; line-height: 1; color: #FFE600; text-transform: uppercase; letter-spacing: 0.02em; }
+.logo-title span { color: #fff; }
+.logo-title.dark { color: #000; }
+.logo-title.dark span { color: #fff; -webkit-text-stroke: 1px #000; }
+.logo-sub { font-size: 13px; font-weight: 300; color: #aaa; margin-top: 4px; }
+.logo-sub.dark { color: #333; }
+
+/* TYPOGRAPHY */
+.heading { font-size: 32px; font-weight: 300; color: #fff; line-height: 1.25; }
+.heading span, .heading em { color: #FFE600; font-style: normal; }
+.heading.dark { color: #000; }
+.heading.dark span { color: #000; }
+.subtext { font-size: 16px; font-weight: 300; color: #999; line-height: 1.7; }
+.subtext.dark { color: #333; }
+.label { font-size: 11px; font-weight: 500; color: #FFE600; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 8px; }
+.label.dark { color: #000; opacity: 0.5; }
+
+/* BUTTONS */
+.btn { display: block; width: 100%; background: #ffffff !important; color: #000000 !important; border: none !important; padding: 20px; font-family: Impact, sans-serif; font-size: 20px; letter-spacing: 0.02em; text-transform: uppercase; text-align: center; cursor: pointer; -webkit-appearance: none; appearance: none; border-radius: 0 !important; outline: none; transition: background 0.15s; box-sizing: border-box; user-select: none; -webkit-user-select: none; }
+.btn:active { background: #FFE600; }
+.btn.dark { background: #000; color: #FFE600; }
+.btn.dark:active { background: #fff; color: #000; }
+.btn.outline { background: transparent; color: #FFE600; border: 2px solid #FFE600; }
+.btn.outline:active { background: #FFE600; color: #000; }
+.btn:disabled, .btn.disabled { opacity: 0.3; pointer-events: none; }
+
+/* DIVIDER */
+.divider { width: 100%; height: 1px; background: #222; margin: 4px 0; }
+.divider.dark { background: #000; opacity: 0.15; }
+
+/* BORDER LEFT BLOCK */
+.bl { border-left: 2px solid #FFE600; padding-left: 16px; }
+.bl.dim { border-color: #333; }
+
+/* CHOICE CARDS */
+.choice { width: 100%; padding: 20px; border: 1.5px solid #333; margin-bottom: 14px; cursor: pointer; transition: border-color 0.1s; }
+.choice:active, .choice.active { border-color: #FFE600; }
+.choice-title { font-family: Impact, sans-serif; font-size: 22px; color: #fff; text-transform: uppercase; letter-spacing: 0.02em; }
+.choice.active .choice-title { color: #FFE600; }
+.choice-sub { font-size: 14px; font-weight: 300; color: #999; margin-top: 4px; line-height: 1.4; }
+
+/* PLAYER DOTS */
+.player-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.pdot { width: 8px; height: 8px; border-radius: 50%; background: #FFE600; flex-shrink: 0; }
+.pdot.empty { background: #333; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
+.pname { font-size: 16px; font-weight: 300; color: #ccc; }
+.pname.you { color: #FFE600; }
+.pname.empty { color: #555; font-style: italic; }
+
+/* CODE DISPLAY */
+.code-box { width: 100%; background: #FFE600; padding: 24px; text-align: center; margin-bottom: 20px; }
+.code-label-s { font-size: 11px; font-weight: 500; color: #000; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 8px; }
+.code-digits { font-family: Impact, sans-serif; font-size: 72px; color: #000; letter-spacing: 0.2em; line-height: 1; }
+
+/* INPUT */
+.field-label { font-size: 11px; font-weight: 500; color: #FFE600; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 6px; }
+.field-input { width: 100%; background: transparent; border: none; border-bottom: 2px solid #FFE600; padding: 10px 0; font-family: 'Barlow', sans-serif; font-size: 20px; font-weight: 300; color: #fff; outline: none; -webkit-appearance: none; appearance: none; border-radius: 0; }
+.field-input::placeholder { color: #555; }
+.field-hint { font-size: 13px; font-weight: 300; color: #888; margin-top: 6px; }
+
+/* WORD PILLS */
+.word-pill { display: inline-block; background: #1a1a1a; border: 1.5px solid #FFE600; padding: 10px 16px; margin: 0 8px 8px 0; }
+.word-pill-text { font-family: Impact, sans-serif; font-size: 22px; color: #fff; text-transform: uppercase; letter-spacing: 0.02em; }
+.word-pill.dim { border-color: #333; }
+.word-pill.dim .word-pill-text { color: #555; }
+
+/* TIMER */
+.timer-big { font-family: Impact, sans-serif; font-size: 80px; color: #FFE600; letter-spacing: 0.02em; line-height: 1; }
+.timer-big.warn { color: #ff3333; }
+.timer-bar-wrap { width: 100%; height: 4px; background: #222; margin-top: 8px; }
+.timer-bar { height: 4px; background: #FFE600; width: 100%; transition: width 1s linear; }
+.timer-bar.warn { background: #ff3333; }
+
+/* VOTE BTNS */
+.vote-item { width: 100%; padding: 16px 20px; border: 1.5px solid #333; margin-bottom: 10px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: border-color 0.1s; }
+.vote-item.selected { border-color: #FFE600; background: #1a1800; }
+.vote-item.self { opacity: 0.2; pointer-events: none; }
+.vote-name-big { font-family: Impact, sans-serif; font-size: 22px; color: #fff; text-transform: uppercase; letter-spacing: 0.02em; }
+.vote-item.selected .vote-name-big { color: #FFE600; }
+.vote-idea-small { font-size: 13px; font-weight: 300; color: #777; font-style: italic; margin-top: 2px; }
+.vote-check { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid #444; flex-shrink: 0; }
+.vote-item.selected .vote-check { background: #FFE600; border-color: #FFE600; }
+
+/* SCORES */
+.score-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.score-player { font-size: 16px; font-weight: 300; color: #ccc; }
+.score-player.leader { color: #FFE600; font-weight: 400; }
+.score-dots { display: flex; gap: 6px; }
+.sdot { width: 12px; height: 12px; border-radius: 50%; background: #FFE600; }
+.sdot.empty { background: transparent; border: 1.5px solid #333; }
+.score-num { font-family: Impact, sans-serif; font-size: 22px; color: #fff; width: 20px; text-align: right; }
+.score-row.leader .score-num { color: #FFE600; }
+
+/* WINNER BLOCK */
+.winner-block { width: 100%; background: #FFE600; padding: 24px 20px; margin-bottom: 20px; }
+.winner-block-label { font-size: 11px; font-weight: 500; color: #000; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 6px; }
+.winner-block-name { font-family: Impact, sans-serif; font-size: 48px; color: #000; text-transform: uppercase; letter-spacing: 0.02em; line-height: 1; }
+.winner-block-idea { font-size: 15px; font-weight: 300; color: #333; font-style: italic; margin-top: 6px; }
+
+/* CONFETTI CANVAS */
+#confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; display: none; }
+
+/* PITCH ORDER */
+.pitch-order { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.po-name { font-size: 13px; font-weight: 300; color: #555; }
+.po-name.active { color: #FFE600; font-weight: 500; }
+.po-name.done { color: #333; text-decoration: line-through; }
+.po-sep { font-size: 13px; color: #333; }
+
+/* LIVE DOT */
+.live-wrap { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.live-dot { width: 10px; height: 10px; border-radius: 50%; background: #FFE600; animation: blink 1s infinite; flex-shrink: 0; }
+@keyframes blink { 0%,100%{opacity:1}50%{opacity:0.2} }
+.live-text { font-size: 11px; font-weight: 500; color: #FFE600; letter-spacing: 0.22em; text-transform: uppercase; }
+
+/* COUNTDOWN */
+.countdown-big { font-family: Impact, sans-serif; font-size: 120px; color: #000; line-height: 1; }
+
+/* NOTE LINES */
+.note-line { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+.note-dash { color: #FFE600; font-size: 14px; flex-shrink: 0; margin-top: 2px; }
+.note-text { font-size: 16px; font-weight: 300; color: #aaa; line-height: 1.5; }
+
+.flex1 { flex: 1; }
+.mt8 { margin-top: 8px; }
+.mt12 { margin-top: 12px; }
+.mt16 { margin-top: 16px; }
+.mt20 { margin-top: 20px; }
+.mt24 { margin-top: 24px; }
+.mt32 { margin-top: 32px; }
+.mb8 { margin-bottom: 8px; }
+.mb12 { margin-bottom: 12px; }
+.mb16 { margin-bottom: 16px; }
+.mb20 { margin-bottom: 20px; }
+.mb24 { margin-bottom: 24px; }
+.gap { flex: 1; }
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<!-- SCREEN 1: INTRO -->
+<div class="screen active" id="s-intro">
+  <div class="logo">
+    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
+    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
+  </div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:24px;">
+    <div class="heading">A brainstorming game for people who think <em>the best idea hasn't been said yet.</em></div>
+    <div class="subtext">No slides. No safety net.<br>Just you and the room.</div>
+  </div>
+  <div>
+    <div role="button" class="btn" tabindex="0" onclick="go('s-rules')">THE RULES →</div>
+  </div>
+</div>
+
+<!-- SCREEN 2: RULES -->
+<div class="screen" id="s-rules">
+  <div class="logo">
+    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
+    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
+  </div>
+  <div style="font-family:Impact,sans-serif;font-size:32px;color:#fff;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:32px;">THE <span style="color:#FFE600">RULES.</span></div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:28px;">
+    <div class="bl"><div class="label">The Brief</div><div class="subtext" style="color:#ccc;">The host sets it. <strong style="color:#fff;font-weight:400;">One sentence.</strong> Everyone pitches against the same problem.</div></div>
+    <div class="bl"><div class="label">The Words</div><div class="subtext" style="color:#ccc;">You get <strong style="color:#fff;font-weight:400;">three random words.</strong><br>Non-negotiable. Use all of them in your<br><strong style="color:#fff;font-weight:400;">idea</strong> somehow.</div></div>
+    <div class="bl"><div class="label">The Pitch</div><div class="subtext" style="color:#ccc;"><strong style="color:#fff;font-weight:400;">90 seconds. Out loud.</strong><br>In the office, on a video call, or on the phone. No slides. No safety net. Just you and the idea.</div></div>
+    <div class="bl"><div class="label">The Vote</div><div class="subtext" style="color:#ccc;">No self-voting. No politics. Vote for<br>the <strong style="color:#fff;font-weight:400;">idea</strong> you'd most want to make.<br><strong style="color:#fff;font-weight:400;">Most votes wins the round.</strong></div></div>
+    <div class="bl"><div class="label">The Winner</div><div class="subtext" style="color:#ccc;">First to win <strong style="color:#fff;font-weight:400;">3 rounds</strong> wins.<br>Loser buys the drinks.</div></div>
+  </div>
+  <div class="mt24">
+    <div role="button" class="btn" tabindex="0" onclick="go('s-hostjoin')">LET'S PLAY →</div>
+  </div>
+</div>
+
+<!-- SCREEN 3: HOST OR JOIN -->
+<div class="screen" id="s-hostjoin">
+  <div class="logo">
+    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
+    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
+  </div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;">
+    <div class="heading mb24">Are you hosting<br>or <span>joining?</span></div>
+    <div class="choice active" onclick="go('s-hostbrief')">
+      <div class="choice-title" style="color:#FFE600;">HOST A GAME</div>
+      <div class="choice-sub">Set the brief. Get a room code. Share it.</div>
+    </div>
+    <div class="choice" onclick="go('s-join')">
+      <div class="choice-title">JOIN A GAME</div>
+      <div class="choice-sub">Enter the room code your host gave you.</div>
+    </div>
+  </div>
+  <div>
+    <div class="note-line"><span class="note-dash">—</span><span class="note-text">Minimum 3 players. Maximum 5.</span></div>
+    <div class="note-line"><span class="note-dash">—</span><span class="note-text">Host referees — they don't pitch.</span></div>
+  </div>
+</div>
+
+<!-- SCREEN 4A: HOST BRIEF -->
+<div class="screen" id="s-hostbrief">
+  <div class="logo">
+    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
+    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
+  </div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:28px;">
+    <div class="heading">Set the <span>brief.</span></div>
+    <div>
+      <div class="field-label">Your brief</div>
+      <textarea id="brief-input" class="field-input" rows="2" maxlength="140" placeholder="One sentence. A real problem. Something worth solving." oninput="updateBriefCount()" style="resize:none;line-height:1.5;font-size:18px;"></textarea>
+      <div style="display:flex;justify-content:space-between;margin-top:6px;">
+        <div class="field-hint">One sentence max.</div>
+        <div id="brief-count" style="font-size:13px;font-weight:300;color:#666;">0/140</div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div>
+      <div class="label mb12">Need inspiration?</div>
+      <div id="inspiration-text" class="bl" style="font-size:16px;font-weight:300;color:#aaa;line-height:1.6;cursor:pointer;padding:12px 16px;" onclick="nextInspiration()">"Launch a running shoe for people who hate running."</div>
+      <div style="font-size:13px;color:#666;margin-top:8px;cursor:pointer;" onclick="nextInspiration()">Tap for another →</div>
+    </div>
+  </div>
+  <div>
+    <div role="button" class="btn" tabindex="0" id="create-room-btn" onclick="createRoom()" disabled>CREATE ROOM →</div>
+  </div>
+</div>
+
+<!-- SCREEN 4B: ROOM CODE -->
+<div class="screen" id="s-roomcode">
+  <div class="logo">
+    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
+    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
+  </div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:24px;">
+    <div class="heading">Your room <span>code.</span></div>
+    <div class="code-box">
+      <div class="code-label-s">Share with your players</div>
+      <div class="code-digits" id="room-code-display">----</div>
+    </div>
+    <div role="button" class="btn outline" tabindex="0" onclick="shareGame()" style="margin-bottom:0;">SHARE WITH PLAYERS ↗</div>
+    <div class="bl dim">
+      <div class="label" style="color:#777;">The Brief</div>
+      <div style="font-size:15px;font-weight:300;color:#aaa;font-style:italic;" id="brief-recap-host"></div>
+    </div>
+    <div>
+      <div class="label mb12">Players joined — <span id="host-player-count">0</span> of 5</div>
+      <div id="host-player-list"></div>
+    </div>
+  </div>
+  <div>
+    <div style="font-size:18px;font-weight:400;color:#aaa;margin-bottom:14px;" id="start-hint">Need at least 1 player to start (3 for real game).</div>
+    <div role="button" class="btn disabled" tabindex="0" id="start-game-btn" onclick="hostStartGame()">START THE GAME →</div>
+    <div role="button" class="btn" tabindex="0" id="start-pitching-btn" onclick="hostStartPitching()" style="display:none;margin-top:12px;background:#FFE600;color:#000;">START PITCHING →</div>
+  </div>
+</div>
+
+<!-- SCREEN 4C: JOIN -->
+<div class="screen" id="s-join">
+  <div class="logo">
+    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
+    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
+  </div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:36px;">
+    <div class="heading">Join the <span>game.</span></div>
+    <div>
+      <div class="field-label">Your name</div>
+      <input class="field-input" id="player-name-input" type="text" placeholder="What do we call you?" maxlength="20" oninput="document.getElementById('name-hint').style.display='none'" />
+      <div class="field-hint mt8">This is how you'll appear to other players.</div>
+      <div id="name-hint" style="display:none;font-size:13px;font-weight:400;color:#ff4444;margin-top:6px;letter-spacing:0.05em;">← Enter your name first.</div>
+    </div>
+    <div>
+      <div class="field-label">Room code</div>
+      <input id="code-hidden" class="field-input" type="tel" maxlength="4" inputmode="numeric" pattern="[0-9]*" placeholder="0000" style="font-family:Impact,sans-serif;font-size:40px;letter-spacing:0.2em;color:#fff;-webkit-appearance:none;background:transparent;" />
+      <div class="field-hint mt8">Get this from your host.</div>
+    </div>
+  </div>
+  <div>
+    <div role="button" class="btn" tabindex="0" onclick="joinGame()">JOIN THE GAME →</div>
+  </div>
+</div>
+
+<!-- SCREEN 5: WAITING ROOM (PLAYER) -->
+<div class="screen" id="s-waiting">
+  <div class="logo">
+    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
+    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
+  </div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:28px;">
+    <div class="heading">Get ready.<br>The game starts <span>soon.</span></div>
+    <div style="background:#1a1a1a;border-left:3px solid #FFE600;padding:18px;">
+      <div class="label mb8">Your Brief</div>
+      <div style="font-size:17px;font-weight:300;color:#fff;font-style:italic;line-height:1.5;" id="brief-display-player"></div>
+    </div>
+    <div style="font-size:15px;font-weight:300;color:#aaa;">Start thinking. Your <span style="color:#FFE600;">3 words</span> are on their way.</div>
+    <div>
+      <div class="label mb12">In the room — <span id="waiting-player-count">0</span> of 5</div>
+      <div id="waiting-player-list"></div>
+    </div>
+  </div>
+  <div style="font-size:14px;font-weight:300;color:#888;">Waiting for the host to start the game.</div>
+</div>
+
+<!-- SCREEN 6: WORDS REVEALED -->
+<div class="screen" id="s-words">
+  <div class="logo">
+    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
+    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
+  </div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:24px;">
+    <div class="heading">Your <span>3 words.</span><br>You have 3 minutes.</div>
+    <div class="bl dim">
+      <div class="label" style="color:#777;">The Brief</div>
+      <div style="font-size:14px;font-weight:300;color:#888;font-style:italic;line-height:1.5;" id="brief-display-words"></div>
+    </div>
+    <div>
+      <div class="label mb12">Your words</div>
+      <div id="words-display" style="display:flex;flex-wrap:wrap;"></div>
+    </div>
+    <div>
+      <div class="label mb8">Thinking time</div>
+      <div class="timer-big" id="think-timer">3:00</div>
+      <div class="timer-bar-wrap"><div class="timer-bar" id="think-bar"></div></div>
+    </div>
+  </div>
+  <div style="font-size:14px;font-weight:300;color:#888;" id="think-hint">Use all 3 words in your idea. Any way you want.</div>
+
+</div>
+
+<!-- SCREEN 7: YOUR PITCH -->
+<div class="screen" id="s-pitch">
+  <div class="logo">
+    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
+    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
+  </div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:20px;">
+    <div>
+      <div class="live-wrap"><div class="live-dot"></div><div class="live-text">Now pitching</div></div>
+      <div class="heading">It's your<br><span id="pitch-player-name">turn.</span></div>
+    </div>
+    <div class="bl dim">
+      <div class="label" style="color:#777;">The Brief</div>
+      <div style="font-size:14px;font-weight:300;color:#888;font-style:italic;line-height:1.5;" id="brief-display-pitch"></div>
+    </div>
+    <div>
+      <div class="label mb10">Your words</div>
+      <div id="pitch-words-display" style="display:flex;flex-wrap:wrap;"></div>
+    </div>
+
+    <div>
+      <div class="timer-big" id="pitch-timer">1:30</div>
+      <div class="timer-bar-wrap"><div class="timer-bar" id="pitch-bar"></div></div>
+    </div>
+    <div>
+      <div class="label mb8" style="color:#555;">Pitch order</div>
+      <div class="pitch-order" id="pitch-order-display"></div>
+    </div>
+  </div>
+  <div>
+    <div role="button" class="btn" tabindex="0" onclick="donePitching()">DONE PITCHING →</div>
+  </div>
+</div>
+
+<!-- SCREEN 6B: PITCH ORDER -->
+<div class="screen" id="s-pitchorder">
+  <div class="logo">
+    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
+    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
+  </div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:28px;">
+    <div>
+      <div class="heading">The pitch <span>order.</span></div>
+      <div class="subtext mt12">This is who goes when. Remember your number.</div>
+    </div>
+    <div id="pitch-order-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+    <div id="pitch-order-you" style="font-size:18px;font-weight:400;color:#FFE600;margin-top:8px;"></div>
+  </div>
+  <div>
+    <div style="font-size:14px;font-weight:300;color:#888;margin-bottom:16px;">Starting in <span id="order-countdown" style="color:#FFE600;font-weight:500;">5</span> seconds...</div>
+  </div>
+</div>
+
+<!-- SCREEN 7B: NAME YOUR IDEA -->
+<div class="screen" id="s-nameidea">
+  <div class="logo">
+    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
+    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
+  </div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:28px;">
+    <div>
+      <div class="heading">Name your <span>idea.</span></div>
+      <div class="subtext mt12">Take your time. Give it a name that sticks.<br>Short. Memorable. Yours.</div>
+    </div>
+    <div>
+      <input class="field-input" id="idea-title-final" type="text" maxlength="40" placeholder="e.g. The Flamingo Bank" style="font-size:24px;" />
+      <div style="display:flex;justify-content:space-between;margin-top:8px;">
+        <div class="field-hint">Shows on the vote screen.</div>
+        <div id="idea-final-count" style="font-size:13px;color:#666;">0/40</div>
+      </div>
+    </div>
+
+  </div>
+  <div>
+    <button class="btn" id="lock-idea-btn" onclick="lockIdeaName()" ontouchstart="lockIdeaName()" style="background:#ffffff!important;color:#000000!important;-webkit-appearance:none;border-radius:0;border:none;width:100%;padding:20px;font-family:Impact,sans-serif;font-size:20px;letter-spacing:0.02em;text-transform:uppercase;cursor:pointer;">LOCK IT IN →</button>
+  </div>
+</div>
+
+<!-- SCREEN 8: WAITING WHILE OTHERS PITCH -->
+<div class="screen" id="s-watching">
+  <div class="logo">
+    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
+    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
+  </div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:20px;">
+    <div>
+      <div class="live-wrap"><div class="live-dot"></div><div class="live-text">Now pitching</div></div>
+      <div class="heading"><span id="watching-pitcher-name">Someone</span> is<br>pitching now.</div>
+    </div>
+    <div class="timer-big" id="watch-timer" style="color:#333;">1:30</div>
+    <div class="timer-bar-wrap"><div class="timer-bar" id="watch-bar" style="background:#333;"></div></div>
+    <div class="bl dim">
+      <div class="label" style="color:#777;">The Brief</div>
+      <div style="font-size:14px;font-weight:300;color:#888;font-style:italic;line-height:1.5;" id="brief-display-watch"></div>
+    </div>
+    <div>
+      <div class="label mb10" style="color:#555;">Your words — keep them to yourself</div>
+      <div id="watch-words-display" style="display:flex;flex-wrap:wrap;"></div>
+    </div>
+    <div>
+      <div class="label mb8" style="color:#555;">Pitch order</div>
+      <div class="pitch-order" id="watch-order-display"></div>
+    </div>
+  </div>
+  <div style="font-size:14px;font-weight:300;color:#888;" id="watch-hint"></div>
+</div>
+
+<!-- SCREEN 8B: YOU'RE UP NEXT -->
+<div class="screen yellow" id="s-upnext">
+  <div class="logo">
+    <div class="logo-title dark">PITCH AGAINST <span>DULL.</span></div>
+    <div class="logo-sub dark">1 brief. 3 words. 90 seconds to kill dull.</div>
+  </div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:20px;">
+    <div style="font-size:16px;font-weight:300;color:#333;" id="prev-pitcher-done"></div>
+    <div style="font-family:Impact,sans-serif;font-size:48px;color:#000;text-transform:uppercase;letter-spacing:0.02em;line-height:1.1;" id="upnext-name">YOU'RE UP NEXT.</div>
+    <div style="font-size:18px;font-weight:300;color:#333;">Take a breath.<br>You've got this.</div>
+    <div class="countdown-big" id="upnext-countdown">5</div>
+  </div>
+  <div style="font-size:14px;font-weight:300;color:#333;">Your timer starts automatically.</div>
+</div>
+
+<!-- SCREEN 9: VOTE -->
+<div class="screen" id="s-vote">
+  <div class="logo">
+    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
+    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
+  </div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:20px;">
+    <div>
+      <div class="heading">Who had the<br>best <span>idea?</span></div>
+      <div class="subtext mt12">No self-voting. No politics.<br>Vote for the idea you'd most want to make.</div>
+    </div>
+    <div id="vote-list"></div>
+  </div>
+  <div>
+    <div role="button" class="btn disabled" tabindex="0" id="lock-vote-btn" onclick="lockVote()">LOCK IN VOTE →</div>
+  </div>
+</div>
+
+<!-- SCREEN 10: ROUND RESULT -->
+<div class="screen" id="s-result">
+  <div class="logo">
+    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
+    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
+  </div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:20px;">
+    <div style="font-size:12px;font-weight:500;color:#777;letter-spacing:0.2em;text-transform:uppercase;" id="result-round-label">Round 1 — Result</div>
+    <div class="winner-block">
+      <div class="winner-block-label">Round winner</div>
+      <div class="winner-block-name" id="result-winner-name">—</div>
+      <div class="winner-block-idea" id="result-winner-idea"></div>
+    </div>
+    <div>
+      <div class="label mb16">Scores — first to 3 wins</div>
+      <div id="result-scores"></div>
+    </div>
+  </div>
+  <div>
+    <div role="button" class="btn" tabindex="0" id="next-round-btn" onclick="nextRound()">NEXT ROUND →</div>
+  </div>
+</div>
+
+<!-- SCREEN 11: WINNER -->
+<div class="screen yellow" id="s-winner" style="position:relative;overflow:hidden;">
+  <canvas id="confetti-local" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"></canvas>
+  <div class="logo" style="position:relative;z-index:1;">
+    <div class="logo-title dark">PITCH AGAINST <span>DULL.</span></div>
+    <div class="logo-sub dark">1 brief. 3 words. 90 seconds to kill dull.</div>
+  </div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:20px;position:relative;z-index:1;">
+    <div style="font-family:Impact,sans-serif;font-size:28px;color:#000;text-transform:uppercase;letter-spacing:0.02em;">DULL IS DEAD.</div>
+    <div>
+      <div style="font-size:16px;font-weight:300;color:#333;">And the winner is</div>
+      <div style="font-family:Impact,sans-serif;font-size:64px;color:#000;text-transform:uppercase;letter-spacing:0.02em;line-height:1;" id="final-winner-name">—</div>
+      <div style="font-size:15px;font-weight:300;color:#333;font-style:italic;margin-top:4px;" id="final-winner-idea"></div>
+    </div>
+    <div class="divider dark"></div>
+    <div>
+      <div style="font-size:11px;font-weight:500;color:#333;letter-spacing:0.2em;text-transform:uppercase;opacity:0.6;margin-bottom:12px;">Final scores</div>
+      <div id="final-scores"></div>
+    </div>
+    <div class="divider dark"></div>
+    <div style="font-size:16px;font-weight:300;color:#333;line-height:1.6;" id="loser-drinks"></div>
+    <div style="font-size:15px;font-weight:300;color:#000;line-height:1.6;border-left:3px solid #000;padding-left:14px;opacity:0.55;" id="productivity-line"></div>
+  </div>
+  <div style="position:relative;z-index:1;">
+    <div role="button" class="btn dark" tabindex="0" onclick="playAgain()">PLAY AGAIN →</div>
+  </div>
+</div>
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, onValue, update, push, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC5IuFzlJymFWoJd1gSyeXuRsbC5HwMgBU",
+  authDomain: "pitch-against-dull.firebaseapp.com",
+  databaseURL: "https://pitch-against-dull-default-rtdb.firebaseio.com",
+  projectId: "pitch-against-dull",
+  storageBucket: "pitch-against-dull.firebasestorage.app",
+  messagingSenderId: "90967669175",
+  appId: "1:90967669175:web:3c9217ff3d647ccb629032",
+  measurementId: "G-GK54QB8T85"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+window.db = db;
+window.ref = ref;
+window.set = set;
+window.get = get;
+window.onValue = onValue;
+window.update = update;
+window.push = push;
+window.remove = remove;
+window.firebaseReady = true;
+window.dispatchEvent(new Event('firebaseReady'));
+</script>
+
+<script>
+// ===================== WORDS POOL =====================
+const WORDS = [
+  'BUNNY','RAINBOW','UNDERWEAR','LLAMA','SPATULA','TUGBOAT','WAFFLE','FLAMINGO','UKULELE','SLIPPER',
+  'HAMMOCK','BOBSLED','CACTUS','DOUGHNUT','PENGUIN','TRAMPOLINE','KAZOO','PORCUPINE','BEEKEEPER','SANDCASTLE',
+  'GNOME','LOLLIPOP','SUBMARINE','TYPEWRITER','UMBRELLA','BISCUIT','CATERPILLAR','SNOWGLOBE','ACCORDION','HAMSTER',
+  'TOOTHBRUSH','ESCALATOR','PRETZEL','ASTRONAUT','BEEHIVE','PAPERCLIP','IGLOO','TANGERINE','COWBELL','PIGEON',
+  'CUSTARD','WHEELBARROW','STAPLER','NARWHAL','SUNFLOWER','PANCAKE','HEDGEHOG','LAWNMOWER','TAMBOURINE','TROPHY',
+  'TEAPOT','CANNONBALL','DOORBELL','FLOATIE','SOMBRERO','BLIMP','PLATYPUS','MAGNET','CONFETTI','YO-YO',
+  'BADGER','STILTS','MARMALADE','CATAPULT','BOBBLEHEAD','TOUPEE','FONDUE','MONOCLE','YODEL','BAGUETTE',
+  'PINWHEEL','WALRUS','CRAYON','TREBUCHET','SPRINKLES','JALAPEÑO','PERISCOPE','COWBOY','FERRET','MEGAPHONE',
+  'TIARA','TOBOGGAN','BAGPIPE','MONGOOSE','GLUESTICK','SNORKEL','FLAPJACK','ARMADILLO','CORGI','TOADSTOOL',
+  'LUNCHBOX','BERET','JELLYBEAN','TRENCHCOAT','PELICAN','GRAVY','BOOMERANG','WOMBAT','PICCOLO','SATCHEL',
+  'MOUSETRAP','DAFFODIL','SEQUIN','TROMBONE','BUMBLEBEE','SHERBET','CUCKOO','PARACHUTE','MACARON','PUFFIN',
+  'TANDEM','KNAPSACK','JALOPY','CATFLAP','TASSLE','LOINCLOTH','PERIWINKLE','DIRIGIBLE','COWPAT','DINGHY',
+  'BROOCH','CLOGS','DOLLOP','WIGWAM','NOODLE','TENTACLE','POTHOLE','TINFOIL','SPANNER','TURTLENECK',
+  'BUMBAG','SIDEBURNS','FOOTSTOOL','CANTEEN','POMPOM','EARMUFFS','LASSO','SUITCASE','TURNIP','DOORSTOP',
+  'FLANNEL','BOBBIN','WAISTCOAT','SNOUT','THIMBLE','COBBLESTONE','DUFFEL','NOZZLE','PONCHO','CUMMERBUND',
+  'DOILY','PLUNGER','BELLBOY','CATSUIT','MOUSTACHE','TUTU','KNICKERS','CLOAK','FLIPPER','SUSPENDERS',
+  'GALOSHES','ALGORITHM','PIXEL','CHATBOT','BANDWIDTH','GLITCH','DRONE','CURSOR','FIRMWARE','HASHTAG',
+  'SERVER','BLUETOOTH','SPREADSHEET','PODCAST','SCREENSAVER','FIREWALL','SELFIE','NOTIFICATION','REBOOT','BARCODE',
+  'TOUCHSCREEN','WIFI','PROTOTYPE','DASHBOARD','AVATAR','MICROCHIP','PLUGIN','DOWNLOAD','ROUTER','SMARTWATCH',
+  'HOLOGRAM','KEYBOARD','CHARGER','DONGLE','HELPDESK','BETA','POPUP','INBOX','EMOJI','MOTHERBOARD',
+  'JOYSTICK','SCREENGRAB','AUTOPLAY','SOFTLAUNCH','AIRDROP','PASSCODE','DARKMODE','DEEPFAKE','LIVESTREAM','VOICEMAIL',
+  'CHATROOM','HYPERLINK','AUTOCORRECT','CAPTCHA','DARKWEB','SANDBOX','GHOST','LADDER','MIRROR','FIRE',
+  'STRANGER','CLOCK','DOOR','SHADOW','KNIFE','HONEY','MUSCLE','FEVER','BRIDGE','CAGE',
+  'THREAD','SCAR','FLOOD','CROWN','SKIN','DEBT','VELVET','THORN','BUTTER','WOLF',
+  'GLITTER','ANCHOR','FEATHER','VOLCANO','WHISPER','BUBBLE','HAMMER','LEMON','FOG','PARADE',
+  'CATHEDRAL','NEON','FOSSIL','CARNIVAL','RUST','PETAL','THUNDER','CRADLE','VENOM','TELESCOPE',
+  'SUGAR','AVALANCHE','PUPPET','ECLIPSE','MARBLE','TOOTH','LANTERN','SMOKE','RIBBON','COMPASS','STORM',
+  'SYRINGE','CROWBAR','JELLYFISH','TRAPEZE','SPAGHETTI','BLOWFISH','CUFFLINK','HAGGIS','DUMBBELL','HARMONICA',
+  'HARPOON','CLAMBAKE','TUXEDO','PINECONE','CRUMPET','BARNACLE','ZEPPELIN','SNOWFLAKE','PITCHFORK','GARGOYLE','BINOCULARS'
+];
+
+const BRIEFS = [
+  "Make young people care about a 200-year-old bank.",
+  "Launch a running shoe for people who hate running.",
+  "Make a supermarket feel like a night out.",
+  "Convince Gen Z that life insurance is urgent.",
+  "Make a budget airline feel premium.",
+  "Turn a boring spreadsheet tool into something people love.",
+  "Make recycling feel rebellious.",
+  "Launch a dating app for people who hate dating apps.",
+  "Make people proud to take the bus.",
+  "Sell a luxury watch to someone who checks the time on their phone.",
+  "Make a funeral home feel warm and human.",
+  "Launch a cryptocurrency for people who don't trust crypto.",
+  "Make doing your taxes feel satisfying.",
+  "Turn a hospital waiting room into somewhere people don't dread.",
+  "Make a 300-year-old whisky brand relevant to a 25-year-old.",
+  "Launch a gym for people who are terrified of gyms.",
+  "Make people excited about eating vegetables.",
+  "Turn a toll road into something people actually enjoy.",
+  "Launch a life insurance brand that doesn't feel like a threat.",
+  "Make a law firm feel approachable.",
+  "Convince people to pay more for tap water.",
+  "Launch a political party that young people actually trust.",
+  "Make a 100-year-old department store feel urgent.",
+  "Turn rush hour into something commuters look forward to.",
+  "Make people care about their pension before they turn 30.",
+  "Launch a meat brand to an audience going plant-based.",
+  "Make a cleaning product feel like a lifestyle choice.",
+  "Turn a local library into the most exciting place in town.",
+  "Make cybersecurity feel human.",
+  "Launch a luxury brand in a cost of living crisis."
+];
+
+// ===================== STATE =====================
+let myRole = ''; // 'host' or 'player'
+let myName = '';
+let myPlayerId = '';
+let roomCode = '';
+let roomRef = null;
+let gameState = {};
+let pitchTimerInterval = null;
+let thinkTimerInterval = null;
+let selectedVote = null;
+let inspoIdx = 0;
+let upnextInterval = null;
+
+// ===================== UTILS =====================
+function go(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function randomWords() {
+  return shuffle(WORDS).slice(0, 3);
+}
+
+function generateCode() {
+  return String(Math.floor(1000 + Math.random() * 9000));
+}
+
+function pad(n) { return String(n).padStart(2, '0'); }
+
+function formatTime(s) { return Math.floor(s / 60) + ':' + pad(s % 60); }
+
+// ===================== BRIEF / INSPIRATION =====================
+function updateBriefCount() {
+  const v = document.getElementById('brief-input').value;
+  document.getElementById('brief-count').textContent = v.length + '/140';
+  document.getElementById('brief-count').style.color = v.length >= 120 ? '#FFE600' : '#666';
+  const btn = document.getElementById('create-room-btn');
+  if (v.trim().length > 5) { btn.disabled = false; btn.classList.remove('disabled'); }
+  else { btn.disabled = true; btn.classList.add('disabled'); }
+}
+
+let inspoLast = 1;
+function nextInspiration() {
+  let idx;
+  do { idx = Math.floor(Math.random() * BRIEFS.length); } while (idx === inspoLast);
+  inspoLast = idx;
+  document.getElementById('inspiration-text').textContent = '"' + BRIEFS[idx] + '"';
+}
+
+function updateCodeDisplay(val) {
+  for (let i = 0; i < 4; i++) {
+    const el = document.getElementById('cd' + i);
+    if (i < val.length) { el.textContent = val[i]; el.style.color = '#fff'; }
+    else { el.textContent = '0'; el.style.color = '#444'; }
+  }
+}
+
+function updateIdeaCount() {
+  const v = document.getElementById('idea-title-input').value;
+  document.getElementById('idea-count').textContent = v.length + '/40';
+  document.getElementById('idea-count').style.color = v.length >= 32 ? '#FFE600' : '#666';
+}
+
+// ===================== CREATE ROOM =====================
+function waitForFirebase(cb) {
+  let attempts = 0;
+  function check() {
+    if (window.firebaseReady && window.ref && window.set && window.db) {
+      cb();
+    } else if (attempts < 50) {
+      attempts++;
+      setTimeout(check, 100);
+    } else {
+      alert('Could not connect to Firebase. Please refresh and try again.');
+    }
+  }
+  check();
+}
+
+function createRoom() {
+  const brief = document.getElementById('brief-input').value.trim();
+  if (!brief) return;
+  waitForFirebase(() => {
+    roomCode = generateCode();
+    myRole = 'host';
+    myName = 'Host';
+    myPlayerId = 'host';
+    const words = randomWords();
+    const roomData = {
+      brief: brief,
+      words: words,
+      status: 'waiting',
+      round: 1,
+      players: {},
+      scores: {},
+      pitchOrder: [],
+      currentPitcher: 0,
+      votes: {},
+      ideaTitles: {},
+      createdAt: Date.now()
+    };
+    window.set(window.ref(window.db, 'rooms/' + roomCode), roomData).then(() => {
+      roomRef = window.ref(window.db, 'rooms/' + roomCode);
+      document.getElementById('room-code-display').textContent = roomCode;
+      document.getElementById('brief-recap-host').textContent = '"' + brief + '"';
+      listenToRoom();
+      go('s-roomcode');
+    });
+  });
+}
+
+// ===================== JOIN ROOM =====================
+function joinGame() {
+  const name = document.getElementById('player-name-input').value.trim();
+  const code = document.getElementById('code-hidden').value.trim();
+  if (!name && code.length !== 4) { 
+    document.getElementById('name-hint').style.display='block';
+    document.getElementById('player-name-input').focus();
+    return; 
+  }
+  if (!name) { 
+    document.getElementById('name-hint').style.display='block';
+    document.getElementById('player-name-input').focus();
+    return; 
+  }
+  if (code.length !== 4) { alert('Please enter the 4-digit room code.'); return; }
+  waitForFirebase(() => {
+    const rRef = window.ref(window.db, 'rooms/' + code);
+    window.get(rRef).then(snap => {
+      if (!snap.exists()) { alert('Room not found. Check the code and try again.'); return; }
+      const data = snap.val();
+      if (data.status !== 'waiting') { alert('This game has already started.'); return; }
+      const players = data.players || {};
+      if (Object.keys(players).length >= 5) { alert('This room is full.'); return; }
+      roomCode = code;
+      myRole = 'player';
+      myName = name;
+      myPlayerId = 'p_' + Date.now();
+      roomRef = window.ref(window.db, 'rooms/' + roomCode);
+      window.update(window.ref(window.db, 'rooms/' + roomCode + '/players/' + myPlayerId), { name: name, joinedAt: Date.now() }).then(() => {
+        document.getElementById('brief-display-player').textContent = '"' + data.brief + '"';
+        listenToRoom();
+        go('s-waiting');
+      });
+    });
+  });
+}
+
+// ===================== LISTEN TO ROOM =====================
+function listenToRoom() {
+  window.onValue(roomRef, snap => {
+    if (!snap.exists()) {
+      // Room was deleted - this shouldn't happen mid-game
+      // Only reset if we're not in an active game
+      if (gameState.status && gameState.status !== 'gameover') {
+        // Show error message rather than silently resetting
+        alert('Connection lost. The game room was closed. Please start a new game.');
+      }
+      return;
+    }
+    gameState = snap.val();
+    handleStateChange(gameState);
+  });
+  // Set up host-specific watchers
+  if (myRole === 'host') {
+    setupHostPitchWatcher();
+    setupHostVoteWatcher();
+    // Watch for player ready signals
+    window.onValue(window.ref(window.db, 'rooms/' + roomCode + '/playerReady'), snap => {
+      if (myRole !== 'host') return;
+      if (!snap.exists()) return;
+      const ready = snap.val();
+      const players = gameState.players || {};
+      const readyNames = Object.keys(ready).map(id => players[id] ? players[id].name : '?');
+      const hint = document.getElementById('start-hint');
+      const spBtn = document.getElementById('start-pitching-btn');
+      if (hint && spBtn && spBtn.style.display !== 'none') {
+        if (readyNames.length > 0) {
+          hint.textContent = readyNames.join(', ') + (readyNames.length === 1 ? ' is' : ' are') + ' ready. Hit START PITCHING to begin.';
+          hint.style.color = '#FFE600';
+          hint.style.fontSize = '18px';
+        }
+      }
+    });
+    // Watch for pitchStartedAt changes to start the host timer
+    window.onValue(window.ref(window.db, 'rooms/' + roomCode + '/pitchStartedAt'), snap => {
+      if (myRole !== 'host') return;
+      const startedAt = snap.exists() ? snap.val() : null;
+      const watchTimer = document.getElementById('watch-timer');
+      const watchBar = document.getElementById('watch-bar');
+      if (!startedAt) {
+        // No pitch started yet - show naming
+        if (watchTimer) { watchTimer.textContent = 'naming...'; watchTimer.style.color = '#555'; watchTimer.className = 'timer-big'; }
+        if (watchBar) { watchBar.style.width = '100%'; watchBar.style.background = '#333'; }
+      } else {
+        // Pitch started - run the timer
+        if (watchTimer) { watchTimer.style.color = '#333'; watchTimer.className = 'timer-big'; }
+        startWatchTimer(startedAt);
+      }
+    });
+  }
+  // Set up player-specific watchers
+  if (myRole === 'player') {
+    listenForUpNext();
+  }
+}
+
+function handleStateChange(state) {
+  updatePlayerLists(state);
+  if (myRole === 'host') {
+    const count = Object.keys(state.players || {}).length;
+    const btn = document.getElementById('start-game-btn');
+    const hint = document.getElementById('start-hint');
+    if (count >= 1) {
+      btn.classList.remove('disabled'); btn.disabled = false;
+      hint.textContent = count + (count === 1 ? ' PLAYER READY.' : ' PLAYERS READY.') + ' Start when everyone\'s in.'; hint.style.color = '#FFE600'; hint.style.fontSize = '18px'; hint.style.fontWeight = '500';
+    } else {
+      btn.classList.add('disabled'); btn.disabled = true;
+      hint.textContent = 'Need at least 1 player to start (3 for real game).';
+    }
+  }
+  if (state.status === 'thinking') {
+    if (myRole === 'host') {
+      go('s-roomcode');
+      const spBtn = document.getElementById('start-pitching-btn');
+      if (spBtn) { spBtn.style.display = 'block'; }
+      const sgBtn = document.getElementById('start-game-btn');
+      if (sgBtn) { sgBtn.style.display = 'none'; }
+      const hint = document.getElementById('start-hint');
+      if (hint) { hint.textContent = 'Players are thinking...'; hint.style.color = '#FFE600'; }
+      startHostThinkCountdown();
+    }
+    if (myRole === 'player') {
+      const words = state.words || [];
+      document.getElementById('brief-display-words').textContent = '"' + state.brief + '"';
+      const wd = document.getElementById('words-display');
+      wd.innerHTML = words.map(w => `<div class="word-pill"><div class="word-pill-text">${w}</div></div>`).join('');
+      // Reset timer for new round
+      if (thinkTimerInterval) { clearInterval(thinkTimerInterval); thinkTimerInterval = null; }
+      const hint = document.getElementById('think-hint');
+      hint.textContent = 'Use all 3 words in your idea. Any way you want.';
+      hint.style.color = '#888'; hint.style.fontSize = '14px';
+      startThinkTimer();
+      go('s-words');
+    }
+  }
+  if (state.status === 'pitching') {
+    // Show pitch order screen first if we haven't yet this round
+    const roundKey = 'round_' + (state.round || 1);
+    if (!window.shownOrderScreen) window.shownOrderScreen = {};
+    if (!window.shownOrderScreen[roundKey]) {
+      window.shownOrderScreen[roundKey] = true;
+      showPitchOrderScreen(state);
+    } else {
+      handlePitchingState(state);
+    }
+  }
+  if (state.status === 'voting') {
+    showVoteScreen(state);
+  }
+  if (state.status === 'result') {
+    showResultScreen(state);
+  }
+  if (state.status === 'gameover') {
+    showWinnerScreen(state);
+  }
+}
+
+function updatePlayerLists(state) {
+  const players = state.players || {};
+  const names = Object.entries(players).map(([id, p]) => ({ id, name: p.name }));
+  // Host waiting room
+  if (document.getElementById('host-player-list')) {
+    const count = names.length;
+    document.getElementById('host-player-count').textContent = count;
+    let html = names.map(p => `<div class="player-row"><div class="pdot"></div><div class="pname">${p.name}</div></div>`).join('');
+    for (let i = count; i < 5; i++) html += `<div class="player-row"><div class="pdot empty"></div><div class="pname empty">Waiting...</div></div>`;
+    document.getElementById('host-player-list').innerHTML = html;
+  }
+  // Player waiting room
+  if (document.getElementById('waiting-player-list')) {
+    const count = names.length;
+    document.getElementById('waiting-player-count').textContent = count;
+    let html = names.map(p => `<div class="player-row"><div class="pdot"></div><div class="pname ${p.id === myPlayerId ? 'you' : ''}">${p.name}${p.id === myPlayerId ? ' ✓' : ''}</div></div>`).join('');
+    for (let i = count; i < 5; i++) html += `<div class="player-row"><div class="pdot empty"></div><div class="pname empty">Waiting...</div></div>`;
+    document.getElementById('waiting-player-list').innerHTML = html;
+  }
+}
+
+// ===================== HOST START =====================
+function hostStartGame() {
+  if (!roomRef) { alert('Connection error. Please refresh.'); return; }
+  const players = gameState.players || {};
+  const playerIds = Object.keys(players);
+  if (playerIds.length < 1) { alert('Need at least 1 player.'); return; }
+  const shuffled = shuffle(playerIds);
+  const words = randomWords();
+  window.update(roomRef, { 
+    status: 'thinking', 
+    pitchOrder: shuffled, 
+    currentPitcher: 0,
+    words: words,
+    pitchDone: null,
+    upNextFor: null,
+    votes: null,
+    ideaTitles: null
+  }).then(() => {
+  }).catch(err => {
+    alert('Error starting game: ' + err.message);
+  });
+}
+
+// ===================== HOST THINK COUNTDOWN =====================
+let hostThinkInterval = null;
+function startHostThinkCountdown() {
+  if (hostThinkInterval) { clearInterval(hostThinkInterval); hostThinkInterval = null; }
+  let s = 180;
+  const hint = document.getElementById('start-hint');
+  hostThinkInterval = setInterval(() => {
+    s--;
+    const m = Math.floor(s/60);
+    const sec = s % 60;
+    const timeStr = m + ':' + String(sec).padStart(2,'0');
+    if (hint) hint.textContent = 'Players thinking — ' + timeStr + ' remaining';
+    if (s <= 0) {
+      clearInterval(hostThinkInterval); hostThinkInterval = null;
+      if (hint) { hint.textContent = 'Thinking time up. Players are ready. Hit START PITCHING.'; hint.style.color = '#FFE600'; hint.style.fontSize = '18px'; hint.style.fontWeight = '500'; }
+    }
+  }, 1000);
+}
+window.startHostThinkCountdown = startHostThinkCountdown;
+
+// ===================== PITCH ORDER SCREEN =====================
+let orderCountdownInterval = null;
+
+function showPitchOrderScreen(state) {
+  if (orderCountdownInterval) { clearInterval(orderCountdownInterval); orderCountdownInterval = null; }
+  const players = state.players || {};
+  const order = state.pitchOrder || [];
+  
+  // Build order list
+  const listEl = document.getElementById('pitch-order-list');
+  listEl.innerHTML = order.map((id, i) => {
+    const name = players[id] ? players[id].name : '?';
+    const isMe = id === myPlayerId;
+    const isFirst = i === 0;
+    return `<div style="display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid #222;">
+      <div style="font-family:Impact,sans-serif;font-size:28px;color:${isMe ? '#FFE600' : '#555'};width:32px;">${i+1}</div>
+      <div style="font-size:20px;font-weight:${isMe ? '400' : '300'};color:${isMe ? '#fff' : '#aaa'};">${name}${isMe ? ' — you' : ''}${isFirst ? ' <span style="font-size:12px;color:#FFE600;letter-spacing:0.1em;text-transform:uppercase;margin-left:8px;">goes first</span>' : ''}</div>
+    </div>`;
+  }).join('');
+
+  // Set personal message
+  const myIdx = order.indexOf(myPlayerId);
+  const youEl = document.getElementById('pitch-order-you');
+  if (myIdx === 0) {
+    youEl.textContent = "You're up first. Get ready.";
+  } else if (myIdx > 0) {
+    const before = players[order[myIdx-1]] ? players[order[myIdx-1]].name : '?';
+    youEl.textContent = "You pitch after " + before + ". Listen up.";
+  } else if (myRole === 'host') {
+    youEl.textContent = "You're the referee. Watch the clock.";
+  }
+  const orderScreen = document.getElementById('s-pitchorder');
+  if (!orderScreen) {
+    handlePitchingState(state);
+    return;
+  }
+  go('s-pitchorder');
+
+  // Countdown then move on
+  let count = 5;
+  document.getElementById('order-countdown').textContent = count;
+  orderCountdownInterval = setInterval(() => {
+    count--;
+    document.getElementById('order-countdown').textContent = count;
+    if (count <= 0) {
+      clearInterval(orderCountdownInterval); orderCountdownInterval = null;
+      // After order screen, set upNextFor for first pitcher
+      const firstId = (gameState.pitchOrder || [])[0];
+      if (myRole === 'host' && firstId) {
+        window.update(roomRef, { upNextFor: firstId });
+      } else if (myRole === 'player') {
+        go('s-watching');
+      }
+    }
+  }, 1000);
+}
+
+// ===================== NAME IDEA SCREEN =====================
+let nameTimerInterval = null; // kept for compatibility
+
+function showNameIdeaScreen() {
+  if (nameTimerInterval) { clearInterval(nameTimerInterval); nameTimerInterval = null; }
+  // Reset ready to pitch button
+
+  document.getElementById('idea-title-final').value = '';
+  document.getElementById('idea-final-count').textContent = '0/40';
+  go('s-nameidea');
+  setTimeout(() => { document.getElementById('idea-title-final').focus(); }, 300);
+}
+
+let lockIdeaFired = false;
+function lockIdeaName() {
+  if (lockIdeaFired) return;
+  lockIdeaFired = true;
+  setTimeout(() => { lockIdeaFired = false; }, 2000);
+  if (nameTimerInterval) { clearInterval(nameTimerInterval); nameTimerInterval = null; }
+  const title = document.getElementById('idea-title-final').value.trim();
+  // Save title only - do NOT set pitchStartedAt here
+  window.update(roomRef, { ['ideaTitles/' + myPlayerId]: title || '(no title)' }).then(() => {
+    // Go to pitch screen and start timer
+    const state = gameState;
+    const order = state.pitchOrder || [];
+    const idx = state.currentPitcher || 0;
+    const brief = state.brief || '';
+    const words = state.words || [];
+    document.getElementById('pitch-player-name').textContent = 'turn, ' + myName + '.';
+    document.getElementById('brief-display-pitch').textContent = '"' + brief + '"';
+    const pwd = document.getElementById('pitch-words-display');
+    pwd.innerHTML = words.map(w => `<div class="word-pill"><div class="word-pill-text">${w}</div></div>`).join('');
+    startPitchTimer();
+    go('s-pitch');
+  }).catch(err => {
+    lockIdeaFired = false;
+  });
+}
+
+window.lockIdeaName = lockIdeaName;
+
+// Oninput for idea title final
+document.addEventListener('DOMContentLoaded', () => {
+  const el = document.getElementById('idea-title-final');
+  if (el) el.addEventListener('input', () => {
+    document.getElementById('idea-final-count').textContent = el.value.length + '/40';
+  });
+});
+
+// ===================== PLAYER READY TO PITCH =====================
+
+
+// ===================== HOST START PITCHING =====================
+function hostStartPitching() {
+  if (!roomRef) { alert('No room connection. Please refresh.'); return; }
+  window.update(roomRef, { 
+    status: 'pitching',
+    currentPitcher: 0,
+    pitchStartedAt: null,
+    playerReady: null,
+    upNextFor: null
+  }).catch(e => {
+    alert('Error starting game: ' + e.message);
+  });
+}
+window.hostStartPitching = hostStartPitching;
+
+// ===================== THINK TIMER =====================
+function startThinkTimer() {
+  if (thinkTimerInterval) return;
+  let s = 180;
+  const el = document.getElementById('think-timer');
+  const bar = document.getElementById('think-bar');
+  thinkTimerInterval = setInterval(() => {
+    s--;
+    el.textContent = formatTime(s);
+    bar.style.width = (s / 180 * 100) + '%';
+    if (s <= 30) { el.classList.add('warn'); bar.classList.add('warn'); }
+    if (s <= 0) { 
+      clearInterval(thinkTimerInterval); thinkTimerInterval = null;
+      const hint = document.getElementById('think-hint');
+      hint.textContent = "Thinking time is up. The host will start the pitch soon.";
+      hint.style.color = '#FFE600';
+      hint.style.fontSize = '18px';
+      hint.style.fontWeight = '400';
+    }
+  }, 1000);
+}
+
+// ===================== PITCHING =====================
+function handlePitchingState(state) {
+  if (pitchTimerInterval) { clearInterval(pitchTimerInterval); pitchTimerInterval = null; }
+  const order = state.pitchOrder || [];
+  const idx = state.currentPitcher || 0;
+  if (idx >= order.length) return;
+  const currentId = order[idx];
+  const players = state.players || {};
+  const currentName = players[currentId] ? players[currentId].name : '?';
+  const brief = state.brief;
+  const words = state.words || [];
+  // Update pitch order display
+  const orderHTML = order.map((id, i) => {
+    const n = players[id] ? players[id].name : '?';
+    let cls = i < idx ? 'done' : i === idx ? 'active' : '';
+    return `<span class="po-name ${cls}">${n}</span>${i < order.length - 1 ? '<span class="po-sep">—</span>' : ''}`;
+  }).join('');
+  if (myRole === 'player' && currentId === myPlayerId) {
+    // It's my turn
+    document.getElementById('pitch-player-name').textContent = 'turn, ' + myName + '.';
+    document.getElementById('brief-display-pitch').textContent = '"' + brief + '"';
+    const pwd = document.getElementById('pitch-words-display');
+    pwd.innerHTML = words.map(w => `<div class="word-pill"><div class="word-pill-text">${w}</div></div>`).join('');
+    document.getElementById('pitch-order-display').innerHTML = orderHTML;
+    // Go to name screen first - pitch timer starts after naming
+    showNameIdeaScreen();
+  } else if (myRole === 'player') {
+    // Watching someone else
+    document.getElementById('watching-pitcher-name').textContent = currentName;
+    document.getElementById('brief-display-watch').textContent = '"' + brief + '"';
+    const wwd = document.getElementById('watch-words-display');
+    wwd.innerHTML = words.map(w => `<div class="word-pill dim"><div class="word-pill-text">${w}</div></div>`).join('');
+    document.getElementById('watch-order-display').innerHTML = orderHTML;
+    // Smart hint based on role and position
+    const myIdx = order.indexOf(myPlayerId);
+    const hint = document.getElementById('watch-hint');
+    if (hint) {
+      if (myRole === 'host') {
+        hint.textContent = "Watch the clock. You control the game.";
+      } else if (myIdx === idx + 1) {
+        hint.textContent = "You're up next. Start thinking.";
+      } else if (myIdx > idx + 1) {
+        hint.textContent = "Listen up. Your turn is coming.";
+      } else {
+        hint.textContent = "You've pitched. Now listen.";
+      }
+    }
+    // Don't start watch timer - just show watching screen
+    // Timer is cosmetic on watch screen - host has the real one
+    document.getElementById('watch-timer').textContent = '—';
+    document.getElementById('watch-timer').style.color = '#555';
+    go('s-watching');
+  } else if (myRole === 'host') {
+    // Host sees who is pitching - show "naming..." until pitch starts
+    document.getElementById('watching-pitcher-name').textContent = currentName;
+    document.getElementById('brief-display-watch').textContent = '"' + brief + '"';
+    const wwd = document.getElementById('watch-words-display');
+    wwd.innerHTML = words.map(w => `<div class="word-pill dim"><div class="word-pill-text">${w}</div></div>`).join('');
+    document.getElementById('watch-order-display').innerHTML = orderHTML;
+    const timerEl = document.getElementById('watch-timer');
+    const barEl = document.getElementById('watch-bar');
+    timerEl.textContent = 'naming...';
+    timerEl.style.color = '#555';
+    timerEl.className = 'timer-big';
+    barEl.style.width = '100%';
+    barEl.style.background = '#333';
+    go('s-watching');
+    // Only start timer once pitchStartedAt is set (player hit LOCK IT IN)
+    if (state.pitchStartedAt) {
+      timerEl.style.color = '#333';
+      startWatchTimer(state.pitchStartedAt);
+    }
+  }
+}
+
+function startPitchTimer() {
+  let s = 90;
+  const el = document.getElementById('pitch-timer');
+  const bar = document.getElementById('pitch-bar');
+  el.textContent = formatTime(s);
+  bar.style.width = '100%';
+  el.className = 'timer-big';
+  // Set pitchStartedAt - this is when the clock officially starts
+  // Host timer listener will pick this up and start the watch timer
+  window.update(roomRef, { pitchStartedAt: Date.now() });
+  pitchTimerInterval = setInterval(() => {
+    s--;
+    el.textContent = formatTime(s);
+    bar.style.width = (s / 90 * 100) + '%';
+    if (s <= 20) { el.classList.add('warn'); bar.classList.add('warn'); }
+    if (s <= 0) { clearInterval(pitchTimerInterval); pitchTimerInterval = null; donePitching(); }
+  }, 1000);
+}
+
+function startWatchTimer(startedAt) {
+  const el = document.getElementById('watch-timer');
+  const bar = document.getElementById('watch-bar');
+  function tick() {
+    const elapsed = Math.floor((Date.now() - (startedAt || Date.now())) / 1000);
+    const s = Math.max(0, 90 - elapsed);
+    el.textContent = formatTime(s);
+    bar.style.width = (s / 90 * 100) + '%';
+    if (s > 0) setTimeout(tick, 1000);
+  }
+  tick();
+}
+
+function donePitching() {
+  if (pitchTimerInterval) { clearInterval(pitchTimerInterval); pitchTimerInterval = null; }
+  // Signal host that this player is done pitching
+  window.update(window.ref(window.db, 'rooms/' + roomCode + '/pitchDone/' + myPlayerId), { done: true, at: Date.now() });
+  go('s-watching');
+}
+
+// ===================== HOST PITCH MANAGEMENT =====================
+// Host watches pitchDone and advances
+function setupHostPitchWatcher() {
+  const pitchDoneRef = window.ref(window.db, 'rooms/' + roomCode + '/pitchDone');
+  window.onValue(pitchDoneRef, snap => {
+    if (!snap.exists() || myRole !== 'host') return;
+    const done = snap.val();
+    const order = gameState.pitchOrder || [];
+    const idx = gameState.currentPitcher || 0;
+    if (idx >= order.length) return;
+    const currentId = order[idx];
+    if (done[currentId]) {
+      advancePitcher();
+    }
+  });
+}
+
+function advancePitcher() {
+  const order = gameState.pitchOrder || [];
+  const idx = (gameState.currentPitcher || 0) + 1;
+  if (idx >= order.length) {
+    // All done — go to vote
+    window.update(roomRef, { status: 'voting', currentPitcher: idx });
+  } else {
+    // Next pitcher — show "you're up next" to that player
+    const nextId = order[idx];
+    const prevId = order[idx - 1];
+    const players = gameState.players || {};
+    window.update(roomRef, {
+      currentPitcher: idx,
+      pitchStartedAt: null,
+      upNextFor: nextId,
+      prevPitcher: prevId
+    });
+  }
+}
+
+// ===================== YOU'RE UP NEXT =====================
+// Listen for upNextFor
+function listenForUpNext() {
+  window.onValue(window.ref(window.db, 'rooms/' + roomCode + '/upNextFor'), snap => {
+    if (!snap.exists()) return;
+    const targetId = snap.val();
+    if (targetId === myPlayerId) {
+      showUpNext();
+    }
+  });
+}
+
+function showUpNext() {
+  const players = gameState.players || {};
+  const order = gameState.pitchOrder || [];
+  const idx = gameState.currentPitcher || 0;
+  const prevId = gameState.prevPitcher;
+  const prevName = prevId && players[prevId] ? players[prevId].name : null;
+  document.getElementById('prev-pitcher-done').textContent = prevName ? prevName + ' just finished.' : '';
+  document.getElementById('upnext-name').textContent = 'YOU\'RE UP NEXT, ' + myName.toUpperCase() + '.';
+  let count = 5;
+  document.getElementById('upnext-countdown').textContent = count;
+  go('s-upnext');
+  if (upnextInterval) clearInterval(upnextInterval);
+  upnextInterval = setInterval(() => {
+    count--;
+    document.getElementById('upnext-countdown').textContent = count > 0 ? count : 'GO.';
+    if (count <= 0) {
+      clearInterval(upnextInterval);
+      upnextInterval = null;
+      showNameIdeaScreen();
+    }
+  }, 1000);
+}
+
+// ===================== VOTE =====================
+function showVoteScreen(state) {
+  const players = state.players || {};
+  const ideaTitles = state.ideaTitles || {};
+  selectedVote = null;
+  const lockBtn = document.getElementById('lock-vote-btn');
+  lockBtn.classList.add('disabled'); lockBtn.disabled = true;
+  let html = '';
+  Object.entries(players).forEach(([id, p]) => {
+    const isSelf = id === myPlayerId;
+    const idea = ideaTitles[id] || '';
+    html += `<div class="vote-item ${isSelf ? 'self' : ''}" id="vi-${id}" onclick="selectVote('${id}')">
+      <div>
+        <div class="vote-name-big">${p.name}</div>
+        ${idea ? `<div class="vote-idea-small">"${idea}"</div>` : ''}
+      </div>
+      <div class="vote-check"></div>
+    </div>`;
+  });
+  document.getElementById('vote-list').innerHTML = html;
+  go('s-vote');
+}
+
+function selectVote(id) {
+  if (id === myPlayerId) return;
+  selectedVote = id;
+  document.querySelectorAll('.vote-item').forEach(el => el.classList.remove('selected'));
+  document.getElementById('vi-' + id).classList.add('selected');
+  const btn = document.getElementById('lock-vote-btn');
+  btn.classList.remove('disabled'); btn.disabled = false;
+}
+
+function lockVote() {
+  if (!selectedVote) return;
+  window.update(window.ref(window.db, 'rooms/' + roomCode + '/votes/' + myPlayerId), { votedFor: selectedVote });
+  // Show waiting message
+  if (myRole === 'host') {
+    // Host waits for votes to be tallied - showResultScreen will handle it
+    go('s-watching');
+    document.getElementById('watching-pitcher-name').textContent = 'votes';
+    const wt = document.getElementById('watch-timer');
+    if (wt) { wt.textContent = 'tallying...'; wt.style.color = '#FFE600'; }
+  } else {
+    go('s-watching');
+    document.getElementById('watching-pitcher-name').textContent = 'everyone';
+    document.getElementById('watch-timer').textContent = '...';
+  }
+}
+
+// ===================== HOST TALLIES VOTES =====================
+function setupHostVoteWatcher() {
+  window.onValue(window.ref(window.db, 'rooms/' + roomCode + '/votes'), snap => {
+    if (myRole !== 'host') return;
+    const votes = snap.exists() ? snap.val() : {};
+    const players = gameState.players || {};
+    const playerCount = Object.keys(players).length;
+    const voteCount = Object.keys(votes).length;
+    if (voteCount >= playerCount) {
+      tallyVotes(votes, players);
+    }
+  });
+}
+
+function tallyVotes(votes, players) {
+  const tally = {};
+  Object.values(votes).forEach(v => {
+    tally[v.votedFor] = (tally[v.votedFor] || 0) + 1;
+  });
+  const maxVotes = Math.max(...Object.values(tally));
+  const winners = Object.keys(tally).filter(id => tally[id] === maxVotes);
+  const winnerId = winners[0]; // Host could break tie — simplified to first for now
+  const scores = gameState.scores || {};
+  scores[winnerId] = (scores[winnerId] || 0) + 1;
+  const round = gameState.round || 1;
+  const ideaTitles = gameState.ideaTitles || {};
+  window.update(roomRef, {
+    status: 'result',
+    roundWinner: winnerId,
+    scores: scores,
+    votes: {},
+    pitchDone: {}
+  });
+}
+
+// ===================== RESULT =====================
+function showResultScreen(state) {
+  const players = state.players || {};
+  const scores = state.scores || {};
+  const winnerId = state.roundWinner;
+  const winnerName = players[winnerId] ? players[winnerId].name : '?';
+  const ideaTitle = (state.ideaTitles || {})[winnerId] || '';
+  document.getElementById('result-round-label').textContent = 'Round ' + (state.round || 1) + ' — Result';
+  document.getElementById('result-winner-name').textContent = winnerName.toUpperCase();
+  document.getElementById('result-winner-idea').textContent = ideaTitle ? '"' + ideaTitle + '"' : '';
+  const maxScore = Math.max(...Object.values(scores).concat([0]));
+  let scoresHTML = '';
+  Object.entries(players).forEach(([id, p]) => {
+    const s = scores[id] || 0;
+    const isLeader = s === maxScore && maxScore > 0;
+    let dots = '';
+    for (let i = 0; i < 3; i++) dots += `<div class="sdot ${i < s ? '' : 'empty'}"></div>`;
+    scoresHTML += `<div class="score-row ${isLeader ? 'leader' : ''}">
+      <div class="score-player ${isLeader ? 'leader' : ''}">${p.name}</div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div class="score-dots">${dots}</div>
+        <div class="score-num">${s}</div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('result-scores').innerHTML = scoresHTML;
+  // Check for game winner
+  const gameWinner = Object.entries(scores).find(([id, s]) => s >= 3);
+  const nextBtn = document.getElementById('next-round-btn');
+  if (gameWinner && myRole === 'host') {
+    nextBtn.textContent = 'SEE WINNER →';
+    nextBtn.onclick = () => window.update(roomRef, { status: 'gameover' });
+  } else if (myRole === 'host') {
+    nextBtn.textContent = 'NEXT ROUND →';
+    nextBtn.onclick = nextRound;
+  } else {
+    nextBtn.style.display = 'none';
+  }
+  go('s-result');
+}
+
+// ===================== NEXT ROUND =====================
+function nextRound() {
+  if (myRole !== 'host') return;
+  window.shownOrderScreen = {};
+  const round = (gameState.round || 1) + 1;
+  const winnerId = gameState.roundWinner;
+  const players = gameState.players || {};
+  let order = shuffle(Object.keys(players).filter(id => id !== winnerId));
+  if (winnerId) order.push(winnerId);
+  const words = randomWords();
+  // Keep same brief - just update round, words and reset game state
+  window.update(roomRef, {
+    status: 'thinking',
+    round: round,
+    pitchOrder: order,
+    currentPitcher: 0,
+    words: words,
+    ideaTitles: null,
+    roundWinner: null,
+    upNextFor: null,
+    prevPitcher: null,
+    pitchDone: null,
+    votes: null,
+    pitchStartedAt: null,
+    playerReady: null
+  });
+}
+
+// ===================== WINNER SCREEN =====================
+function showWinnerScreen(state) {
+  const players = state.players || {};
+  const scores = state.scores || {};
+  const maxScore = Math.max(...Object.values(scores).concat([0]));
+  const winnerId = Object.keys(scores).find(id => scores[id] === maxScore);
+  const winnerName = players[winnerId] ? players[winnerId].name : '?';
+  const ideaTitle = (state.ideaTitles || {})[winnerId] || '';
+  document.getElementById('final-winner-name').textContent = winnerName.toUpperCase() + '.';
+  document.getElementById('final-winner-idea').textContent = ideaTitle ? 'Best idea: "' + ideaTitle + '"' : '';
+  let scoresHTML = '';
+  const sorted = Object.entries(players).sort((a, b) => (scores[b[0]] || 0) - (scores[a[0]] || 0));
+  sorted.forEach(([id, p]) => {
+    const s = scores[id] || 0;
+    scoresHTML += `<div class="score-row ${id === winnerId ? 'leader' : ''}">
+      <div class="score-player ${id === winnerId ? 'winner' : ''}" style="${id===winnerId?'color:#000;font-weight:500':'color:#333'}">${p.name}</div>
+      <div style="font-family:Impact,sans-serif;font-size:22px;color:${id===winnerId?'#000':'#555'}">${s}</div>
+    </div>`;
+  });
+  document.getElementById('final-scores').innerHTML = scoresHTML;
+  // Losers
+  const losers = sorted.filter(([id]) => id !== winnerId).map(([id, p]) => p.name);
+  document.getElementById('loser-drinks').innerHTML = '<strong>' + losers.join(' and ') + '</strong> — loser buys the drinks.';
+  // Productivity
+  const playerCount = Object.keys(players).length;
+  const roundCount = state.round || 1;
+  const ideaCount = playerCount * roundCount;
+  document.getElementById('productivity-line').textContent = 'You just generated ' + ideaCount + ' ideas against a real brief. Not bad.';
+  startConfetti();
+  go('s-winner');
+}
+
+// ===================== CONFETTI =====================
+function startConfetti() {
+  const canvas = document.getElementById('confetti-local');
+  const ctx = canvas.getContext('2d');
+  const screen = document.getElementById('s-winner');
+  canvas.width = screen.offsetWidth;
+  canvas.height = screen.offsetHeight;
+  const pieces = [];
+  const colors = ['#000', '#fff', '#111', '#333'];
+  for (let i = 0; i < 120; i++) {
+    pieces.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      w: Math.random() * 8 + 4, h: Math.random() * 4 + 2,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      rot: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.15,
+      speed: Math.random() * 3 + 1.5,
+      drift: (Math.random() - 0.5) * 1.5,
+      opacity: Math.random() * 0.6 + 0.4
+    });
+  }
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach(p => {
+      ctx.save(); ctx.globalAlpha = p.opacity;
+      ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+      ctx.restore();
+      p.y += p.speed; p.x += p.drift; p.rot += p.rotSpeed;
+      if (p.y > canvas.height) { p.y = -10; p.x = Math.random() * canvas.width; }
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ===================== SHARE =====================
+function shareGame() {
+  const text = 'Join my Pitch Against Dull game. Go to peter-buck.com/pitch and enter code ' + roomCode;
+  if (navigator.share) {
+    navigator.share({ title: 'Pitch Against Dull', text: text, url: 'https://peter-buck.com/pitch' });
+  } else {
+    navigator.clipboard.writeText(text).then(() => alert('Copied to clipboard!')).catch(() => alert('Room code: ' + roomCode));
+  }
+}
+
+// ===================== PLAY AGAIN =====================
+function playAgain() {
+  window.shownOrderScreen = {};
+  if (roomRef) window.remove(roomRef);
+  roomCode = ''; myRole = ''; myName = ''; myPlayerId = '';
+  roomRef = null; gameState = {};
+  go('s-intro');
+}
+
+// Expose functions to global scope
+window.go = go;
+window.updateBriefCount = updateBriefCount;
+window.nextInspiration = nextInspiration;
+window.updateCodeDisplay = updateCodeDisplay;
+window.updateIdeaCount = updateIdeaCount;
+window.createRoom = createRoom;
+window.joinGame = joinGame;
+window.hostStartGame = hostStartGame;
+window.donePitching = donePitching;
+window.selectVote = selectVote;
+window.lockVote = lockVote;
+window.nextRound = nextRound;
+window.playAgain = playAgain;
+window.shareGame = shareGame;
+</script>
+</body>
+</html>
