@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,6 +43,7 @@ body { font-family: 'Barlow', sans-serif; color: #fff; overflow-x: hidden; }
 .btn.outline { background: transparent; color: #FFE600; border: 2px solid #FFE600; }
 .btn.outline:active { background: #FFE600; color: #000; }
 .btn:disabled, .btn.disabled { opacity: 0.3; pointer-events: none; }
+#lock-vote-btn:not(.disabled) { background: #FFE600 !important; color: #000 !important; }
 
 /* DIVIDER */
 .divider { width: 100%; height: 1px; background: #222; margin: 4px 0; }
@@ -857,12 +859,12 @@ function handleStateChange(state) {
     const count = Object.keys(state.players || {}).length;
     const btn = document.getElementById('start-game-btn');
     const hint = document.getElementById('start-hint');
-    if (count >= 1) {
+    if (count >= 3) {
       btn.classList.remove('disabled'); btn.disabled = false;
       hint.textContent = count + (count === 1 ? ' PLAYER READY.' : ' PLAYERS READY.') + ' Start when everyone\'s in.'; hint.style.color = '#FFE600'; hint.style.fontSize = '18px'; hint.style.fontWeight = '500';
     } else {
       btn.classList.add('disabled'); btn.disabled = true;
-      hint.textContent = 'Need at least 1 player to start (3 for real game).';
+      hint.textContent = count === 0 ? 'Need at least 3 players to start.' : count + ' of 3 players joined. Waiting for more...';
     }
   }
   if (state.status === 'thinking') {
@@ -938,7 +940,7 @@ function hostStartGame() {
   if (!roomRef) { alert('Connection error. Please refresh.'); return; }
   const players = gameState.players || {};
   const playerIds = Object.keys(players);
-  if (playerIds.length < 1) { alert('Need at least 1 player.'); return; }
+  if (playerIds.length < 3) { alert('Need at least 3 players to start.'); return; }
   const shuffled = shuffle(playerIds);
   const words = randomWords();
   window.update(roomRef, { 
@@ -1533,11 +1535,12 @@ function startConfetti() {
 
 // ===================== SHARE =====================
 function shareGame() {
-  const text = 'Join my Pitch Against Dull game. Go to peter-buck.com/pitch and enter code ' + roomCode;
+  const gameUrl = window.location.origin + window.location.pathname;
+  const text = 'Join my Pitch Against Dull game! Enter room code ' + roomCode + ' at: ' + gameUrl;
   if (navigator.share) {
-    navigator.share({ title: 'Pitch Against Dull', text: text, url: 'https://peter-buck.com/pitch' });
+    navigator.share({ title: 'Pitch Against Dull', text: text, url: gameUrl });
   } else {
-    navigator.clipboard.writeText(text).then(() => alert('Copied to clipboard!')).catch(() => alert('Room code: ' + roomCode));
+    navigator.clipboard.writeText(text).then(() => alert('Link copied!')).catch(() => alert('Room code: ' + roomCode));
   }
 }
 
