@@ -904,7 +904,15 @@ function handleStateChange(state) {
     }
   }
   if (state.status === 'voting') {
-    showVoteScreen(state);
+    if (myRole === 'host') {
+      // Host just waits - show watching screen with tallying message
+      document.getElementById('watching-pitcher-name').textContent = 'the votes';
+      const wt = document.getElementById('watch-timer');
+      if (wt) { wt.textContent = 'tallying...'; wt.style.color = '#FFE600'; }
+      go('s-watching');
+    } else {
+      showVoteScreen(state);
+    }
   }
   if (state.status === 'result') {
     showResultScreen(state);
