@@ -823,6 +823,7 @@ function listenToRoom() {
         // Clean reset for players
         window.shownOrderScreen = {};
         window.handledPitcher = {};
+        window.thinkPlayerStarted = {};
         roomCode = ''; myRole = ''; myName = ''; myPlayerId = '';
         roomRef = null; gameState = {};
         go('s-intro');
@@ -919,6 +920,11 @@ function handleStateChange(state) {
       }
     }
     if (myRole === 'player') {
+      // Only process thinking state once per round
+      const thinkPlayerKey = 'think_player_round_' + (state.round || 1);
+      if (!window.thinkPlayerStarted) window.thinkPlayerStarted = {};
+      if (window.thinkPlayerStarted[thinkPlayerKey]) return;
+      window.thinkPlayerStarted[thinkPlayerKey] = true;
       const words = state.words || [];
       document.getElementById('brief-display-words').textContent = '"' + state.brief + '"';
       const wd = document.getElementById('words-display');
@@ -1586,6 +1592,7 @@ function nextRound() {
   window.shownOrderScreen = {};
   window.handledPitcher = {};
   window.thinkCountdownStarted = {};
+  window.thinkPlayerStarted = {};
   const round = (gameState.round || 1) + 1;
   const winnerId = gameState.roundWinner;
   const players = gameState.players || {};
@@ -1630,6 +1637,7 @@ function suddenDeath() {
   window.shownOrderScreen = {};
   window.handledPitcher = {};
   window.thinkCountdownStarted = {};
+  window.thinkPlayerStarted = {};
   const round = (gameState.round || 1) + 1;
   const players = gameState.players || {};
   const order = shuffle(Object.keys(players));
@@ -1774,6 +1782,7 @@ function playAgain() {
   window.shownOrderScreen = {};
   window.handledPitcher = {};
   window.thinkCountdownStarted = {};
+  window.thinkPlayerStarted = {};
   if (roomRef) window.remove(roomRef);
   roomCode = ''; myRole = ''; myName = ''; myPlayerId = '';
   roomRef = null; gameState = {};
