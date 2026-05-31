@@ -859,12 +859,12 @@ function handleStateChange(state) {
     const count = Object.keys(state.players || {}).length;
     const btn = document.getElementById('start-game-btn');
     const hint = document.getElementById('start-hint');
-    if (count >= 1) {
+    if (count >= 3) {
       btn.classList.remove('disabled'); btn.disabled = false;
       hint.textContent = count + (count === 1 ? ' PLAYER READY.' : ' PLAYERS READY.') + ' Start when everyone\'s in.'; hint.style.color = '#FFE600'; hint.style.fontSize = '18px'; hint.style.fontWeight = '500';
     } else {
       btn.classList.add('disabled'); btn.disabled = true;
-      hint.textContent = count + ' player(s) joined. Ready to test!';
+      hint.textContent = count === 0 ? 'Need at least 3 players to start.' : count + ' of 3 players joined. Waiting for more...';
     }
   }
   if (state.status === 'thinking') {
@@ -936,11 +936,15 @@ function updatePlayerLists(state) {
 }
 
 // ===================== HOST START =====================
+let hostStartGameFired = false;
 function hostStartGame() {
+  if (hostStartGameFired) return;
+  hostStartGameFired = true;
+  setTimeout(() => { hostStartGameFired = false; }, 3000);
   if (!roomRef) { alert('Connection error. Please refresh.'); return; }
   const players = gameState.players || {};
   const playerIds = Object.keys(players);
-  if (playerIds.length < 1) { alert('Need at least 1 player to start.'); return; }
+  if (playerIds.length < 3) { alert('Need at least 3 players to start.'); return; }
   const shuffled = shuffle(playerIds);
   const words = randomWords();
   window.update(roomRef, { 
@@ -964,6 +968,9 @@ function startHostThinkCountdown() {
   if (hostThinkInterval) { clearInterval(hostThinkInterval); hostThinkInterval = null; }
   let s = 180;
   const hint = document.getElementById('start-hint');
+  const spBtn = document.getElementById('start-pitching-btn');
+  // Hide START PITCHING until timer is up
+  if (spBtn) spBtn.style.display = 'none';
   hostThinkInterval = setInterval(() => {
     s--;
     const m = Math.floor(s/60);
@@ -972,7 +979,9 @@ function startHostThinkCountdown() {
     if (hint) hint.textContent = 'Players thinking — ' + timeStr + ' remaining';
     if (s <= 0) {
       clearInterval(hostThinkInterval); hostThinkInterval = null;
-      if (hint) { hint.textContent = 'Thinking time up. Players are ready. Hit START PITCHING.'; hint.style.color = '#FFE600'; hint.style.fontSize = '18px'; hint.style.fontWeight = '500'; }
+      if (hint) { hint.textContent = 'Thinking time up! Hit START PITCHING when ready.'; hint.style.color = '#FFE600'; hint.style.fontSize = '18px'; hint.style.fontWeight = '500'; }
+      // Now show START PITCHING
+      if (spBtn) spBtn.style.display = 'block';
     }
   }, 1000);
 }
@@ -1088,8 +1097,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // ===================== HOST START PITCHING =====================
+let hostStartPitchingFired = false;
 function hostStartPitching() {
+  if (hostStartPitchingFired) return;
+  hostStartPitchingFired = true;
   if (!roomRef) { alert('No room connection. Please refresh.'); return; }
+  // Hide button immediately to prevent double press
+  const spBtn = document.getElementById('start-pitching-btn');
+  if (spBtn) spBtn.style.display = 'none';
   window.update(roomRef, { 
     status: 'pitching',
     currentPitcher: 0,
@@ -1097,6 +1112,8 @@ function hostStartPitching() {
     playerReady: null,
     upNextFor: null
   }).catch(e => {
+    hostStartPitchingFired = false;
+    if (spBtn) spBtn.style.display = 'block';
     alert('Error starting game: ' + e.message);
   });
 }
@@ -1218,20 +1235,31 @@ function startPitchTimer() {
   }, 1000);
 }
 
+let watchTimerActive = false;
 function startWatchTimer(startedAt) {
+  if (watchTimerActive) return;
+  watchTimerActive = true;
   const el = document.getElementById('watch-timer');
   const bar = document.getElementById('watch-bar');
   function tick() {
     const elapsed = Math.floor((Date.now() - (startedAt || Date.now())) / 1000);
     const s = Math.max(0, 90 - elapsed);
-    el.textContent = formatTime(s);
-    bar.style.width = (s / 90 * 100) + '%';
-    if (s > 0) setTimeout(tick, 1000);
+    if (el) { el.textContent = formatTime(s); el.style.color = '#333'; }
+    if (bar) bar.style.width = (s / 90 * 100) + '%';
+    if (s > 0) {
+      setTimeout(tick, 1000);
+    } else {
+      watchTimerActive = false;
+    }
   }
   tick();
 }
 
+let donePitchingFired = false;
 function donePitching() {
+  if (donePitchingFired) return;
+  donePitchingFired = true;
+  setTimeout(() => { donePitchingFired = false; }, 3000);
   if (pitchTimerInterval) { clearInterval(pitchTimerInterval); pitchTimerInterval = null; }
   // Signal host that this player is done pitching
   window.update(window.ref(window.db, 'rooms/' + roomCode + '/pitchDone/' + myPlayerId), { done: true, at: Date.now() });
@@ -1256,6 +1284,7 @@ function setupHostPitchWatcher() {
 }
 
 function advancePitcher() {
+  watchTimerActive = false;
   const order = gameState.pitchOrder || [];
   const idx = (gameState.currentPitcher || 0) + 1;
   if (idx >= order.length) {
@@ -1342,24 +1371,20 @@ function selectVote(id) {
   btn.classList.remove('disabled'); btn.disabled = false;
 }
 
+let lockVoteFired = false;
 function lockVote() {
+  if (lockVoteFired) return;
+  lockVoteFired = true;
   if (!selectedVote) return;
   window.update(window.ref(window.db, 'rooms/' + roomCode + '/votes/' + myPlayerId), { votedFor: selectedVote });
-  // Show waiting message
-  if (myRole === 'host') {
-    // Host waits for votes to be tallied - showResultScreen will handle it
-    go('s-watching');
-    document.getElementById('watching-pitcher-name').textContent = 'votes';
-    const wt = document.getElementById('watch-timer');
-    if (wt) { wt.textContent = 'tallying...'; wt.style.color = '#FFE600'; }
-  } else {
-    go('s-watching');
-    document.getElementById('watching-pitcher-name').textContent = 'everyone';
-    document.getElementById('watch-timer').textContent = '...';
-  }
+  // Lock the button and show waiting state - stay on vote screen
+  const lockBtn = document.getElementById('lock-vote-btn');
+  lockBtn.classList.add('disabled'); lockBtn.disabled = true;
+  lockBtn.textContent = 'VOTE LOCKED ✓';
 }
 
 // ===================== HOST TALLIES VOTES =====================
+let tallyFired = false;
 function setupHostVoteWatcher() {
   window.onValue(window.ref(window.db, 'rooms/' + roomCode + '/votes'), snap => {
     if (myRole !== 'host') return;
@@ -1367,7 +1392,8 @@ function setupHostVoteWatcher() {
     const players = gameState.players || {};
     const playerCount = Object.keys(players).length;
     const voteCount = Object.keys(votes).length;
-    if (voteCount >= playerCount) {
+    if (voteCount >= playerCount && !tallyFired) {
+      tallyFired = true;
       tallyVotes(votes, players);
     }
   });
@@ -1438,6 +1464,8 @@ function showResultScreen(state) {
 // ===================== NEXT ROUND =====================
 function nextRound() {
   if (myRole !== 'host') return;
+  tallyFired = false;
+  watchTimerActive = false;
   window.shownOrderScreen = {};
   const round = (gameState.round || 1) + 1;
   const winnerId = gameState.roundWinner;
@@ -1491,19 +1519,25 @@ function showWinnerScreen(state) {
   const roundCount = state.round || 1;
   const ideaCount = playerCount * roundCount;
   document.getElementById('productivity-line').textContent = 'You just generated ' + ideaCount + ' ideas against a real brief. Not bad.';
-  startConfetti();
   go('s-winner');
+  setTimeout(startConfetti, 100);
 }
 
 // ===================== CONFETTI =====================
 function startConfetti() {
   const canvas = document.getElementById('confetti-local');
-  const ctx = canvas.getContext('2d');
+  if (!canvas) return;
   const screen = document.getElementById('s-winner');
-  canvas.width = screen.offsetWidth;
-  canvas.height = screen.offsetHeight;
+  if (!screen) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = screen.offsetWidth || window.innerWidth;
+  canvas.height = screen.offsetHeight || window.innerHeight;
+  if (canvas.width === 0) canvas.width = window.innerWidth;
+  if (canvas.height === 0) canvas.height = window.innerHeight;
   const pieces = [];
-  const colors = ['#000', '#fff', '#111', '#333'];
+  const colors = ['#000', '#000', '#fff', '#333', '#111'];
+  // Small delay to ensure canvas is sized correctly after screen transition
+  
   for (let i = 0; i < 120; i++) {
     pieces.push({
       x: Math.random() * canvas.width,
