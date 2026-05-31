@@ -534,8 +534,8 @@ body { font-family: 'Barlow', sans-serif; color: #fff; overflow-x: hidden; }
     <div style="font-size:16px;font-weight:300;color:#333;line-height:1.6;" id="loser-drinks"></div>
     <div style="font-size:15px;font-weight:300;color:#000;line-height:1.6;border-left:3px solid #000;padding-left:14px;opacity:0.55;" id="productivity-line"></div>
   </div>
-  <div style="position:relative;z-index:1;">
-    <div role="button" class="btn dark" tabindex="0" onclick="playAgain()">PLAY AGAIN →</div>
+  <div style="position:relative;z-index:1;" id="winner-action-area">
+    <div role="button" class="btn dark" tabindex="0" onclick="playAgain()" id="play-again-btn">PLAY AGAIN →</div>
   </div>
 </div>
 
@@ -798,11 +798,17 @@ function joinGame() {
 function listenToRoom() {
   window.onValue(roomRef, snap => {
     if (!snap.exists()) {
-      // Room was deleted - this shouldn't happen mid-game
-      // Only reset if we're not in an active game
-      if (gameState.status && gameState.status !== 'gameover') {
-        // Show error message rather than silently resetting
-        alert('Connection lost. The game room was closed. Please start a new game.');
+      // Room was deleted - host pressed PLAY AGAIN
+      if (gameState.status === 'gameover') {
+        // Clean reset for players
+        window.shownOrderScreen = {};
+        window.handledPitcher = {};
+        roomCode = ''; myRole = ''; myName = ''; myPlayerId = '';
+        roomRef = null; gameState = {};
+        go('s-intro');
+      } else if (gameState.status) {
+        alert('The host ended the game. Please start a new game.');
+        go('s-intro');
       }
       return;
     }
@@ -1586,6 +1592,16 @@ function showWinnerScreen(state) {
   const ideaCount = playerCount * roundCount;
   document.getElementById('productivity-line').textContent = 'You just generated ' + ideaCount + ' ideas against a real brief. Not bad.';
   go('s-winner');
+  // Only host sees PLAY AGAIN - players wait
+  const playBtn = document.getElementById('play-again-btn');
+  if (playBtn) {
+    if (myRole === 'host') {
+      playBtn.style.display = 'block';
+    } else {
+      playBtn.style.display = 'none';
+      playBtn.insertAdjacentHTML('afterend', '<div id="waiting-play-again" style="font-size:16px;font-weight:300;color:#333;text-align:center;padding:20px;">Waiting for host to start a new game...</div>');
+    }
+  }
   setTimeout(startConfetti, 500);
 }
 
