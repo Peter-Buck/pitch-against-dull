@@ -886,13 +886,17 @@ function handleStateChange(state) {
   if (state.status === 'thinking') {
     if (myRole === 'host') {
       go('s-roomcode');
-      const spBtn = document.getElementById('start-pitching-btn');
-      if (spBtn) { spBtn.style.display = 'block'; }
       const sgBtn = document.getElementById('start-game-btn');
       if (sgBtn) { sgBtn.style.display = 'none'; }
-      const hint = document.getElementById('start-hint');
-      if (hint) { hint.textContent = 'Players are thinking...'; hint.style.color = '#FFE600'; }
-      startHostThinkCountdown();
+      // Only start countdown once per round
+      const thinkRoundKey = 'think_round_' + (state.round || 1);
+      if (!window.thinkCountdownStarted) window.thinkCountdownStarted = {};
+      if (!window.thinkCountdownStarted[thinkRoundKey]) {
+        window.thinkCountdownStarted[thinkRoundKey] = true;
+        const hint = document.getElementById('start-hint');
+        if (hint) { hint.textContent = 'Players are thinking...'; hint.style.color = '#FFE600'; }
+        startHostThinkCountdown();
+      }
     }
     if (myRole === 'player') {
       const words = state.words || [];
@@ -1356,9 +1360,12 @@ function advancePitcher() {
 // ===================== YOU'RE UP NEXT =====================
 // Listen for upNextFor
 function listenForUpNext() {
+  let lastUpNextFor = null;
   window.onValue(window.ref(window.db, 'rooms/' + roomCode + '/upNextFor'), snap => {
-    if (!snap.exists()) return;
+    if (!snap.exists()) { lastUpNextFor = null; return; }
     const targetId = snap.val();
+    if (targetId === lastUpNextFor) return; // already handled
+    lastUpNextFor = targetId;
     if (targetId === myPlayerId) {
       showUpNext();
     }
@@ -1539,6 +1546,7 @@ function nextRound() {
   if (watchTimerInterval) { clearInterval(watchTimerInterval); watchTimerInterval = null; }
   window.shownOrderScreen = {};
   window.handledPitcher = {};
+  window.thinkCountdownStarted = {};
   const round = (gameState.round || 1) + 1;
   const winnerId = gameState.roundWinner;
   const players = gameState.players || {};
@@ -1661,6 +1669,7 @@ function shareGame() {
 function playAgain() {
   window.shownOrderScreen = {};
   window.handledPitcher = {};
+  window.thinkCountdownStarted = {};
   if (roomRef) window.remove(roomRef);
   roomCode = ''; myRole = ''; myName = ''; myPlayerId = '';
   roomRef = null; gameState = {};
