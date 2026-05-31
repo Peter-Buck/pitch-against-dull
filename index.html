@@ -859,12 +859,12 @@ function handleStateChange(state) {
     const count = Object.keys(state.players || {}).length;
     const btn = document.getElementById('start-game-btn');
     const hint = document.getElementById('start-hint');
-    if (count >= 3) {
+    if (count >= 1) {
       btn.classList.remove('disabled'); btn.disabled = false;
       hint.textContent = count + (count === 1 ? ' PLAYER READY.' : ' PLAYERS READY.') + ' Start when everyone\'s in.'; hint.style.color = '#FFE600'; hint.style.fontSize = '18px'; hint.style.fontWeight = '500';
     } else {
       btn.classList.add('disabled'); btn.disabled = true;
-      hint.textContent = count === 0 ? 'Need at least 3 players to start.' : count + ' of 3 players joined. Waiting for more...';
+      hint.textContent = count + ' player(s) joined. Ready to test!';
     }
   }
   if (state.status === 'thinking') {
@@ -940,7 +940,7 @@ function hostStartGame() {
   if (!roomRef) { alert('Connection error. Please refresh.'); return; }
   const players = gameState.players || {};
   const playerIds = Object.keys(players);
-  if (playerIds.length < 3) { alert('Need at least 3 players to start.'); return; }
+  if (playerIds.length < 1) { alert('Need at least 1 player to start.'); return; }
   const shuffled = shuffle(playerIds);
   const words = randomWords();
   window.update(roomRef, { 
