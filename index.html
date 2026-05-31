@@ -898,6 +898,7 @@ function handleStateChange(state) {
       if (pitchTimerInterval) { clearInterval(pitchTimerInterval); pitchTimerInterval = null; }
       donePitchingFired = false;
       lockIdeaFired = false;
+      ideaLocked = false;
       const hint = document.getElementById('think-hint');
       hint.textContent = 'Use all 3 words in your idea. Any way you want.';
       hint.style.color = '#888'; hint.style.fontSize = '14px';
@@ -1025,7 +1026,6 @@ function startHostThinkCountdown() {
     }
   }, 1000);
 }
-window.startHostThinkCountdown = startHostThinkCountdown;
 
 // ===================== PITCH ORDER SCREEN =====================
 let orderCountdownInterval = null;
@@ -1085,10 +1085,8 @@ function showPitchOrderScreen(state) {
 }
 
 // ===================== NAME IDEA SCREEN =====================
-let nameTimerInterval = null; // kept for compatibility
 
 function showNameIdeaScreen() {
-  if (nameTimerInterval) { clearInterval(nameTimerInterval); nameTimerInterval = null; }
   // Only reset if screen is not already active (don't clear while player is typing)
   const currentScreen = document.querySelector('.screen.active');
   if (currentScreen && currentScreen.id === 's-nameidea') return;
@@ -1100,14 +1098,12 @@ function showNameIdeaScreen() {
 }
 
 let lockIdeaFired = false;
+let ideaLocked = false;
 function lockIdeaName() {
   if (lockIdeaFired) return;
   lockIdeaFired = true;
-  // lockIdeaFired reset happens in showNameIdeaScreen for next round
-  if (nameTimerInterval) { clearInterval(nameTimerInterval); nameTimerInterval = null; }
   const title = document.getElementById('idea-title-final').value.trim();
-  // Save title only - do NOT set pitchStartedAt here
-  // Navigate immediately - don't wait for Firebase
+  // Navigate to pitch screen and start timer
   const state = gameState;
   const brief = state.brief || '';
   const words = state.words || [];
@@ -1117,10 +1113,10 @@ function lockIdeaName() {
   pwd.innerHTML = words.map(w => `<div class="word-pill"><div class="word-pill-text">${w}</div></div>`).join('');
   startPitchTimer();
   go('s-pitch');
+  lockIdeaFired = false;
+  ideaLocked = true; // Prevent going back to name screen
   // Save title to Firebase in background
-  window.update(roomRef, { ['ideaTitles/' + myPlayerId]: title || '(no title)' }).catch(err => {
-    console.error('Failed to save idea title:', err);
-  });
+  window.update(roomRef, { ['ideaTitles/' + myPlayerId]: title || '(no title)' });
 }
 
 window.lockIdeaName = lockIdeaName;
@@ -1205,10 +1201,12 @@ function handlePitchingState(state) {
     const pwd = document.getElementById('pitch-words-display');
     pwd.innerHTML = words.map(w => `<div class="word-pill"><div class="word-pill-text">${w}</div></div>`).join('');
     document.getElementById('pitch-order-display').innerHTML = orderHTML;
-    // Only go to name screen if we're not already there
-    const currentScreen = document.querySelector('.screen.active');
-    if (!currentScreen || currentScreen.id !== 's-nameidea') {
-      showNameIdeaScreen();
+    // Only go to name screen if not already there and idea not yet locked
+    if (!ideaLocked) {
+      const currentScreen = document.querySelector('.screen.active');
+      if (!currentScreen || currentScreen.id !== 's-nameidea') {
+        showNameIdeaScreen();
+      }
     }
   } else if (myRole === 'player') {
     // Watching someone else
@@ -1527,6 +1525,7 @@ function nextRound() {
   donePitchingFired = false;
   lockVoteFired = false;
   lockIdeaFired = false;
+  ideaLocked = false;
   if (pitchTimerInterval) { clearInterval(pitchTimerInterval); pitchTimerInterval = null; }
   if (hostThinkInterval) { clearInterval(hostThinkInterval); hostThinkInterval = null; }
   if (orderCountdownInterval) { clearInterval(orderCountdownInterval); orderCountdownInterval = null; }
