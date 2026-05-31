@@ -835,23 +835,26 @@ function listenToRoom() {
     window.onValue(window.ref(window.db, 'rooms/' + roomCode + '/pitchStartedAt'), snap => {
       if (myRole !== 'host') return;
       const startedAt = snap.exists() ? snap.val() : null;
-      const watchTimer = document.getElementById('watch-timer');
-      const watchBar = document.getElementById('watch-bar');
       if (!startedAt) {
-        // No pitch started yet - show naming
+        // Reset - new pitcher naming
+        if (startedAt === lastPitchStartedAt) return; // no change
         lastPitchStartedAt = null;
+        if (watchTimerInterval) { clearInterval(watchTimerInterval); watchTimerInterval = null; }
         watchTimerActive = false;
         watchTimerStartedAt = null;
+        const watchTimer = document.getElementById('watch-timer');
+        const watchBar = document.getElementById('watch-bar');
         if (watchTimer) { watchTimer.textContent = 'naming...'; watchTimer.style.color = '#555'; watchTimer.className = 'timer-big'; }
         if (watchBar) { watchBar.style.width = '100%'; watchBar.style.background = '#333'; }
       } else if (startedAt !== lastPitchStartedAt) {
-        // New pitch started - run the timer only if startedAt actually changed
+        // Brand new pitch started
         lastPitchStartedAt = startedAt;
+        if (watchTimerInterval) { clearInterval(watchTimerInterval); watchTimerInterval = null; }
         watchTimerActive = false;
         watchTimerStartedAt = null;
-        if (watchTimer) { watchTimer.style.color = '#333'; watchTimer.className = 'timer-big'; }
         startWatchTimer(startedAt);
       }
+      // If startedAt === lastPitchStartedAt, do nothing - timer already running
     });
   }
   // Set up player-specific watchers
@@ -910,7 +913,13 @@ function handleStateChange(state) {
       window.shownOrderScreen[roundKey] = true;
       showPitchOrderScreen(state);
     } else {
-      handlePitchingState(state);
+      // Only call handlePitchingState if pitcher index changed or we haven't handled this pitcher yet
+      const pitcherKey = roundKey + '_pitcher_' + (state.currentPitcher || 0);
+      if (!window.handledPitcher) window.handledPitcher = {};
+      if (!window.handledPitcher[pitcherKey]) {
+        window.handledPitcher[pitcherKey] = true;
+        handlePitchingState(state);
+      }
     }
   }
   if (state.status === 'voting') {
@@ -1080,6 +1089,9 @@ let nameTimerInterval = null; // kept for compatibility
 
 function showNameIdeaScreen() {
   if (nameTimerInterval) { clearInterval(nameTimerInterval); nameTimerInterval = null; }
+  // Only reset if screen is not already active (don't clear while player is typing)
+  const currentScreen = document.querySelector('.screen.active');
+  if (currentScreen && currentScreen.id === 's-nameidea') return;
   lockIdeaFired = false;
   document.getElementById('idea-title-final').value = '';
   document.getElementById('idea-final-count').textContent = '0/40';
@@ -1521,6 +1533,7 @@ function nextRound() {
   if (upnextInterval) { clearInterval(upnextInterval); upnextInterval = null; }
   if (watchTimerInterval) { clearInterval(watchTimerInterval); watchTimerInterval = null; }
   window.shownOrderScreen = {};
+  window.handledPitcher = {};
   const round = (gameState.round || 1) + 1;
   const winnerId = gameState.roundWinner;
   const players = gameState.players || {};
@@ -1632,6 +1645,7 @@ function shareGame() {
 // ===================== PLAY AGAIN =====================
 function playAgain() {
   window.shownOrderScreen = {};
+  window.handledPitcher = {};
   if (roomRef) window.remove(roomRef);
   roomCode = ''; myRole = ''; myName = ''; myPlayerId = '';
   roomRef = null; gameState = {};
