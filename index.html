@@ -916,7 +916,9 @@ function handleStateChange(state) {
   if (state.status === 'voting') {
     if (myRole === 'host') {
       // Host sees a clean waiting screen during voting
+      if (watchTimerInterval) { clearInterval(watchTimerInterval); watchTimerInterval = null; }
       watchTimerActive = false;
+      watchTimerStartedAt = null;
       const wt = document.getElementById('watch-timer');
       const wb = document.getElementById('watch-bar');
       const wpn = document.getElementById('watching-pitcher-name');
@@ -1191,8 +1193,11 @@ function handlePitchingState(state) {
     const pwd = document.getElementById('pitch-words-display');
     pwd.innerHTML = words.map(w => `<div class="word-pill"><div class="word-pill-text">${w}</div></div>`).join('');
     document.getElementById('pitch-order-display').innerHTML = orderHTML;
-    // Go to name screen first - pitch timer starts after naming
-    showNameIdeaScreen();
+    // Only go to name screen if we're not already there
+    const currentScreen = document.querySelector('.screen.active');
+    if (!currentScreen || currentScreen.id !== 's-nameidea') {
+      showNameIdeaScreen();
+    }
   } else if (myRole === 'player') {
     // Watching someone else
     document.getElementById('watching-pitcher-name').textContent = currentName;
@@ -1259,24 +1264,26 @@ function startPitchTimer() {
 
 let watchTimerActive = false;
 let watchTimerStartedAt = null;
+let watchTimerInterval = null;
 function startWatchTimer(startedAt) {
-  if (watchTimerActive && watchTimerStartedAt === startedAt) return;
+  if (watchTimerStartedAt === startedAt) return; // already running for this pitch
+  // Cancel any existing timer
+  if (watchTimerInterval) { clearInterval(watchTimerInterval); watchTimerInterval = null; }
   watchTimerActive = true;
   watchTimerStartedAt = startedAt;
   const el = document.getElementById('watch-timer');
   const bar = document.getElementById('watch-bar');
-  function tick() {
-    const elapsed = Math.floor((Date.now() - (startedAt || Date.now())) / 1000);
+  watchTimerInterval = setInterval(() => {
+    const elapsed = Math.floor((Date.now() - startedAt) / 1000);
     const s = Math.max(0, 90 - elapsed);
     if (el) { el.textContent = formatTime(s); el.style.color = '#333'; }
     if (bar) bar.style.width = (s / 90 * 100) + '%';
-    if (s > 0) {
-      setTimeout(tick, 1000);
-    } else {
+    if (s <= 0) {
+      clearInterval(watchTimerInterval);
+      watchTimerInterval = null;
       watchTimerActive = false;
     }
-  }
-  tick();
+  }, 1000);
 }
 
 let donePitchingFired = false;
@@ -1308,6 +1315,7 @@ function setupHostPitchWatcher() {
 }
 
 function advancePitcher() {
+  if (watchTimerInterval) { clearInterval(watchTimerInterval); watchTimerInterval = null; }
   watchTimerActive = false;
   watchTimerStartedAt = null;
   const order = gameState.pitchOrder || [];
@@ -1511,6 +1519,7 @@ function nextRound() {
   if (hostThinkInterval) { clearInterval(hostThinkInterval); hostThinkInterval = null; }
   if (orderCountdownInterval) { clearInterval(orderCountdownInterval); orderCountdownInterval = null; }
   if (upnextInterval) { clearInterval(upnextInterval); upnextInterval = null; }
+  if (watchTimerInterval) { clearInterval(watchTimerInterval); watchTimerInterval = null; }
   window.shownOrderScreen = {};
   const round = (gameState.round || 1) + 1;
   const winnerId = gameState.roundWinner;
