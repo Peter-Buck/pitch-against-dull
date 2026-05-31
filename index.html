@@ -905,16 +905,27 @@ function handleStateChange(state) {
   }
   if (state.status === 'voting') {
     if (myRole === 'host') {
-      // Host just waits - show watching screen with tallying message
-      document.getElementById('watching-pitcher-name').textContent = 'the votes';
+      // Host sees a clean waiting screen during voting
+      watchTimerActive = false;
       const wt = document.getElementById('watch-timer');
-      if (wt) { wt.textContent = 'tallying...'; wt.style.color = '#FFE600'; }
+      const wb = document.getElementById('watch-bar');
+      const lw = document.querySelector('#s-watching .live-wrap');
+      const hw = document.querySelector('#s-watching .heading');
+      if (lw) lw.style.display = 'none';
+      if (hw) hw.innerHTML = 'Waiting for<br><span>votes...</span>';
+      if (wt) { wt.textContent = ''; wt.style.color = '#FFE600'; }
+      if (wb) wb.style.width = '0%';
       go('s-watching');
     } else {
       showVoteScreen(state);
     }
   }
   if (state.status === 'result') {
+    // Reset watching screen to normal
+    const lw = document.querySelector('#s-watching .live-wrap');
+    const hw = document.querySelector('#s-watching .heading');
+    if (lw) lw.style.display = 'flex';
+    if (hw) hw.innerHTML = '<span id="watching-pitcher-name">Someone</span> is<br>pitching now.';
     showResultScreen(state);
   }
   if (state.status === 'gameover') {
@@ -1216,11 +1227,7 @@ function handlePitchingState(state) {
     barEl.style.width = '100%';
     barEl.style.background = '#333';
     go('s-watching');
-    // Only start timer once pitchStartedAt is set (player hit LOCK IT IN)
-    if (state.pitchStartedAt) {
-      timerEl.style.color = '#333';
-      startWatchTimer(state.pitchStartedAt);
-    }
+    // Timer is started by the pitchStartedAt watcher - don't start it here
   }
 }
 
