@@ -1080,7 +1080,7 @@ let lockIdeaFired = false;
 function lockIdeaName() {
   if (lockIdeaFired) return;
   lockIdeaFired = true;
-  setTimeout(() => { lockIdeaFired = false; }, 2000);
+  setTimeout(() => { lockIdeaFired = false; }, 5000);
   if (nameTimerInterval) { clearInterval(nameTimerInterval); nameTimerInterval = null; }
   const title = document.getElementById('idea-title-final').value.trim();
   // Save title only - do NOT set pitchStartedAt here
@@ -1251,9 +1251,11 @@ function startPitchTimer() {
 }
 
 let watchTimerActive = false;
+let watchTimerStartedAt = null;
 function startWatchTimer(startedAt) {
-  if (watchTimerActive) return;
+  if (watchTimerActive && watchTimerStartedAt === startedAt) return;
   watchTimerActive = true;
+  watchTimerStartedAt = startedAt;
   const el = document.getElementById('watch-timer');
   const bar = document.getElementById('watch-bar');
   function tick() {
@@ -1407,7 +1409,7 @@ function setupHostVoteWatcher() {
     const players = gameState.players || {};
     const playerCount = Object.keys(players).length;
     const voteCount = Object.keys(votes).length;
-    if (voteCount >= playerCount && !tallyFired) {
+    if (playerCount > 0 && voteCount >= playerCount && !tallyFired) {
       tallyFired = true;
       tallyVotes(votes, players);
     }
@@ -1620,3 +1622,4 @@ window.shareGame = shareGame;
 </script>
 </body>
 </html>
+
