@@ -259,7 +259,10 @@ body { font-family: 'Barlow', sans-serif; color: #fff; overflow-x: hidden; }
       <div class="code-label-s">Share with your players</div>
       <div class="code-digits" id="room-code-display">----</div>
     </div>
-    <div role="button" class="btn outline" tabindex="0" onclick="shareGame()" style="margin-bottom:0;">SHARE WITH PLAYERS ↗</div>
+    <div style="display:flex;gap:12px;margin-bottom:0;">
+      <div role="button" class="btn outline" tabindex="0" onclick="shareGame()" style="flex:1;">SHARE ↗</div>
+      <div role="button" class="btn outline" tabindex="0" onclick="copyLink()" style="flex:1;" id="copy-link-btn">COPY LINK</div>
+    </div>
     <div class="bl dim">
       <div class="label" style="color:#777;">The Brief</div>
       <div style="font-size:15px;font-weight:300;color:#aaa;font-style:italic;" id="brief-recap-host"></div>
@@ -1661,8 +1664,26 @@ function shareGame() {
   if (navigator.share) {
     navigator.share({ title: 'Pitch Against Dull', text: text, url: gameUrl });
   } else {
-    navigator.clipboard.writeText(text).then(() => alert('Link copied!')).catch(() => alert('Room code: ' + roomCode));
+    copyLink();
   }
+}
+
+function copyLink() {
+  const gameUrl = window.location.origin + window.location.pathname;
+  const text = 'Join my Pitch Against Dull game! Enter room code ' + roomCode + ' at: ' + gameUrl;
+  const btn = document.getElementById('copy-link-btn');
+  navigator.clipboard.writeText(text).then(() => {
+    if (btn) { btn.textContent = 'COPIED ✓'; setTimeout(() => { btn.textContent = 'COPY LINK'; }, 2000); }
+  }).catch(() => {
+    // Fallback for older browsers
+    const el = document.createElement('textarea');
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    if (btn) { btn.textContent = 'COPIED ✓'; setTimeout(() => { btn.textContent = 'COPY LINK'; }, 2000); }
+  });
 }
 
 // ===================== PLAY AGAIN =====================
