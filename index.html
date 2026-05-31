@@ -831,6 +831,7 @@ function listenToRoom() {
       }
     });
     // Watch for pitchStartedAt changes to start the host timer
+    let lastPitchStartedAt = null;
     window.onValue(window.ref(window.db, 'rooms/' + roomCode + '/pitchStartedAt'), snap => {
       if (myRole !== 'host') return;
       const startedAt = snap.exists() ? snap.val() : null;
@@ -838,10 +839,16 @@ function listenToRoom() {
       const watchBar = document.getElementById('watch-bar');
       if (!startedAt) {
         // No pitch started yet - show naming
+        lastPitchStartedAt = null;
+        watchTimerActive = false;
+        watchTimerStartedAt = null;
         if (watchTimer) { watchTimer.textContent = 'naming...'; watchTimer.style.color = '#555'; watchTimer.className = 'timer-big'; }
         if (watchBar) { watchBar.style.width = '100%'; watchBar.style.background = '#333'; }
-      } else {
-        // Pitch started - run the timer
+      } else if (startedAt !== lastPitchStartedAt) {
+        // New pitch started - run the timer only if startedAt actually changed
+        lastPitchStartedAt = startedAt;
+        watchTimerActive = false;
+        watchTimerStartedAt = null;
         if (watchTimer) { watchTimer.style.color = '#333'; watchTimer.className = 'timer-big'; }
         startWatchTimer(startedAt);
       }
@@ -883,8 +890,11 @@ function handleStateChange(state) {
       document.getElementById('brief-display-words').textContent = '"' + state.brief + '"';
       const wd = document.getElementById('words-display');
       wd.innerHTML = words.map(w => `<div class="word-pill"><div class="word-pill-text">${w}</div></div>`).join('');
-      // Reset timer for new round
+      // Reset all timers for new round
       if (thinkTimerInterval) { clearInterval(thinkTimerInterval); thinkTimerInterval = null; }
+      if (pitchTimerInterval) { clearInterval(pitchTimerInterval); pitchTimerInterval = null; }
+      donePitchingFired = false;
+      lockIdeaFired = false;
       const hint = document.getElementById('think-hint');
       hint.textContent = 'Use all 3 words in your idea. Any way you want.';
       hint.style.color = '#888'; hint.style.fontSize = '14px';
@@ -1068,8 +1078,7 @@ let nameTimerInterval = null; // kept for compatibility
 
 function showNameIdeaScreen() {
   if (nameTimerInterval) { clearInterval(nameTimerInterval); nameTimerInterval = null; }
-  // Reset ready to pitch button
-
+  lockIdeaFired = false;
   document.getElementById('idea-title-final').value = '';
   document.getElementById('idea-final-count').textContent = '0/40';
   go('s-nameidea');
@@ -1080,7 +1089,7 @@ let lockIdeaFired = false;
 function lockIdeaName() {
   if (lockIdeaFired) return;
   lockIdeaFired = true;
-  setTimeout(() => { lockIdeaFired = false; }, 5000);
+  // lockIdeaFired reset happens in showNameIdeaScreen for next round
   if (nameTimerInterval) { clearInterval(nameTimerInterval); nameTimerInterval = null; }
   const title = document.getElementById('idea-title-final').value.trim();
   // Save title only - do NOT set pitchStartedAt here
@@ -1302,6 +1311,7 @@ function setupHostPitchWatcher() {
 
 function advancePitcher() {
   watchTimerActive = false;
+  watchTimerStartedAt = null;
   const order = gameState.pitchOrder || [];
   const idx = (gameState.currentPitcher || 0) + 1;
   if (idx >= order.length) {
@@ -1361,8 +1371,10 @@ function showVoteScreen(state) {
   const players = state.players || {};
   const ideaTitles = state.ideaTitles || {};
   selectedVote = null;
+  lockVoteFired = false;
   const lockBtn = document.getElementById('lock-vote-btn');
   lockBtn.classList.add('disabled'); lockBtn.disabled = true;
+  lockBtn.textContent = 'LOCK IN VOTE →';
   let html = '';
   Object.entries(players).forEach(([id, p]) => {
     const isSelf = id === myPlayerId;
@@ -1423,14 +1435,20 @@ function tallyVotes(votes, players) {
   });
   const maxVotes = Math.max(...Object.values(tally));
   const winners = Object.keys(tally).filter(id => tally[id] === maxVotes);
-  const winnerId = winners[0]; // Host could break tie — simplified to first for now
   const scores = gameState.scores || {};
-  scores[winnerId] = (scores[winnerId] || 0) + 1;
-  const round = gameState.round || 1;
-  const ideaTitles = gameState.ideaTitles || {};
+  let winnerId;
+  if (winners.length > 1) {
+    // Tie - give point to all tied players, mark as tie
+    winners.forEach(id => { scores[id] = (scores[id] || 0) + 1; });
+    winnerId = winners[0]; // show first for result screen, but isTie flag set
+  } else {
+    winnerId = winners[0];
+    scores[winnerId] = (scores[winnerId] || 0) + 1;
+  }
   window.update(roomRef, {
     status: 'result',
     roundWinner: winnerId,
+    roundTie: winners.length > 1 ? winners : null,
     scores: scores,
     votes: {},
     pitchDone: {}
@@ -1444,8 +1462,10 @@ function showResultScreen(state) {
   const winnerId = state.roundWinner;
   const winnerName = players[winnerId] ? players[winnerId].name : '?';
   const ideaTitle = (state.ideaTitles || {})[winnerId] || '';
-  document.getElementById('result-round-label').textContent = 'Round ' + (state.round || 1) + ' — Result';
-  document.getElementById('result-winner-name').textContent = winnerName.toUpperCase();
+  const isTie = state.roundTie && state.roundTie.length > 1;
+  const tieNames = isTie ? state.roundTie.map(id => players[id] ? players[id].name : '?').join(' & ') : null;
+  document.getElementById('result-round-label').textContent = 'Round ' + (state.round || 1) + (isTie ? ' — It's a tie!' : ' — Result');
+  document.getElementById('result-winner-name').textContent = isTie ? tieNames.toUpperCase() : winnerName.toUpperCase();
   document.getElementById('result-winner-idea').textContent = ideaTitle ? '"' + ideaTitle + '"' : '';
   const maxScore = Math.max(...Object.values(scores).concat([0]));
   let scoresHTML = '';
@@ -1483,6 +1503,16 @@ function nextRound() {
   if (myRole !== 'host') return;
   tallyFired = false;
   watchTimerActive = false;
+  watchTimerStartedAt = null;
+  hostStartPitchingFired = false;
+  hostStartGameFired = false;
+  donePitchingFired = false;
+  lockVoteFired = false;
+  lockIdeaFired = false;
+  if (pitchTimerInterval) { clearInterval(pitchTimerInterval); pitchTimerInterval = null; }
+  if (hostThinkInterval) { clearInterval(hostThinkInterval); hostThinkInterval = null; }
+  if (orderCountdownInterval) { clearInterval(orderCountdownInterval); orderCountdownInterval = null; }
+  if (upnextInterval) { clearInterval(upnextInterval); upnextInterval = null; }
   window.shownOrderScreen = {};
   const round = (gameState.round || 1) + 1;
   const winnerId = gameState.roundWinner;
@@ -1552,8 +1582,7 @@ function startConfetti() {
   if (canvas.width === 0) canvas.width = window.innerWidth;
   if (canvas.height === 0) canvas.height = window.innerHeight;
   const pieces = [];
-  const colors = ['#000', '#000', '#fff', '#333', '#111'];
-  // Small delay to ensure canvas is sized correctly after screen transition
+  const colors = ['#000', '#000', '#000', '#ff3333', '#0055ff', '#ff6600'];
   
   for (let i = 0; i < 120; i++) {
     pieces.push({
@@ -1622,4 +1651,3 @@ window.shareGame = shareGame;
 </script>
 </body>
 </html>
-
