@@ -1160,10 +1160,10 @@ function lockIdeaName() {
   document.getElementById('brief-display-pitch').textContent = '"' + brief + '"';
   const pwd = document.getElementById('pitch-words-display');
   pwd.innerHTML = words.map(w => `<div class="word-pill"><div class="word-pill-text">${w}</div></div>`).join('');
-  startPitchTimer();
-  go('s-pitch');
+  ideaLocked = true; // Set BEFORE startPitchTimer to prevent Firebase race condition
   lockIdeaFired = false;
-  ideaLocked = true; // Prevent going back to name screen
+  go('s-pitch');
+  startPitchTimer();
   // Save title to Firebase in background
   window.update(roomRef, { ['ideaTitles/' + myPlayerId]: title || '(no title)' });
 }
