@@ -1245,19 +1245,17 @@ function handlePitchingState(state) {
     return `<span class="po-name ${cls}">${n}</span>${i < order.length - 1 ? '<span class="po-sep">—</span>' : ''}`;
   }).join('');
   if (myRole === 'player' && currentId === myPlayerId) {
-    // It's my turn
+    // It's my turn - but don't interrupt if already pitching or naming
+    const activeScreen = document.querySelector('.screen.active');
+    const activeId = activeScreen ? activeScreen.id : '';
+    if (activeId === 's-pitch' || activeId === 's-nameidea' || ideaLocked) return;
+    // It's my turn - set up pitch screen
     document.getElementById('pitch-player-name').textContent = 'turn, ' + myName + '.';
     document.getElementById('brief-display-pitch').textContent = '"' + brief + '"';
     const pwd = document.getElementById('pitch-words-display');
     pwd.innerHTML = words.map(w => `<div class="word-pill"><div class="word-pill-text">${w}</div></div>`).join('');
     document.getElementById('pitch-order-display').innerHTML = orderHTML;
-    // Only go to name screen if not already there and idea not yet locked
-    if (!ideaLocked) {
-      const currentScreen = document.querySelector('.screen.active');
-      if (!currentScreen || currentScreen.id !== 's-nameidea') {
-        showNameIdeaScreen();
-      }
-    }
+    showNameIdeaScreen();
   } else if (myRole === 'player') {
     // Watching someone else
     document.getElementById('watching-pitcher-name').textContent = currentName;
