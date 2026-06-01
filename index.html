@@ -10,13 +10,9 @@
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; background: #000; }
 body { font-family: 'Barlow', sans-serif; color: #fff; overflow-x: hidden; }
-
-/* SCREENS */
 .screen { display: none; min-height: 100vh; flex-direction: column; padding: 56px 28px 40px; background: #111; }
 .screen.active { display: flex; }
 .screen.yellow { background: #FFE600; color: #000; }
-
-/* LOGO */
 .logo { margin-bottom: 36px; }
 .logo-title { font-family: Impact, sans-serif; font-size: 26px; line-height: 1; color: #FFE600; text-transform: uppercase; letter-spacing: 0.02em; }
 .logo-title span { color: #fff; }
@@ -24,8 +20,6 @@ body { font-family: 'Barlow', sans-serif; color: #fff; overflow-x: hidden; }
 .logo-title.dark span { color: #fff; -webkit-text-stroke: 1px #000; }
 .logo-sub { font-size: 13px; font-weight: 300; color: #aaa; margin-top: 4px; }
 .logo-sub.dark { color: #333; }
-
-/* TYPOGRAPHY */
 .heading { font-size: 32px; font-weight: 300; color: #fff; line-height: 1.25; }
 .heading span, .heading em { color: #FFE600; font-style: normal; }
 .heading.dark { color: #000; }
@@ -34,8 +28,6 @@ body { font-family: 'Barlow', sans-serif; color: #fff; overflow-x: hidden; }
 .subtext.dark { color: #333; }
 .label { font-size: 11px; font-weight: 500; color: #FFE600; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 8px; }
 .label.dark { color: #000; opacity: 0.5; }
-
-/* BUTTONS */
 .btn { display: block; width: 100%; background: #ffffff !important; color: #000000 !important; border: none !important; padding: 20px; font-family: Impact, sans-serif; font-size: 20px; letter-spacing: 0.02em; text-transform: uppercase; text-align: center; cursor: pointer; -webkit-appearance: none; appearance: none; border-radius: 0 !important; outline: none; transition: background 0.15s; box-sizing: border-box; user-select: none; -webkit-user-select: none; }
 .btn:active { background: #FFE600; }
 .btn.dark { background: #000; color: #FFE600; }
@@ -44,23 +36,15 @@ body { font-family: 'Barlow', sans-serif; color: #fff; overflow-x: hidden; }
 .btn.outline:active { background: #FFE600; color: #000; }
 .btn:disabled, .btn.disabled { opacity: 0.3; pointer-events: none; }
 #lock-vote-btn:not(.disabled) { background: #FFE600 !important; color: #000 !important; }
-
-/* DIVIDER */
 .divider { width: 100%; height: 1px; background: #222; margin: 4px 0; }
 .divider.dark { background: #000; opacity: 0.15; }
-
-/* BORDER LEFT BLOCK */
 .bl { border-left: 2px solid #FFE600; padding-left: 16px; }
 .bl.dim { border-color: #333; }
-
-/* CHOICE CARDS */
 .choice { width: 100%; padding: 20px; border: 1.5px solid #333; margin-bottom: 14px; cursor: pointer; transition: border-color 0.1s; }
 .choice:active, .choice.active { border-color: #FFE600; }
 .choice-title { font-family: Impact, sans-serif; font-size: 22px; color: #fff; text-transform: uppercase; letter-spacing: 0.02em; }
 .choice.active .choice-title { color: #FFE600; }
 .choice-sub { font-size: 14px; font-weight: 300; color: #999; margin-top: 4px; line-height: 1.4; }
-
-/* PLAYER DOTS */
 .player-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
 .pdot { width: 8px; height: 8px; border-radius: 50%; background: #FFE600; flex-shrink: 0; }
 .pdot.empty { background: #333; animation: pulse 1.5s infinite; }
@@ -68,32 +52,22 @@ body { font-family: 'Barlow', sans-serif; color: #fff; overflow-x: hidden; }
 .pname { font-size: 16px; font-weight: 300; color: #ccc; }
 .pname.you { color: #FFE600; }
 .pname.empty { color: #555; font-style: italic; }
-
-/* CODE DISPLAY */
 .code-box { width: 100%; background: #FFE600; padding: 24px; text-align: center; margin-bottom: 20px; }
 .code-label-s { font-size: 11px; font-weight: 500; color: #000; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 8px; }
 .code-digits { font-family: Impact, sans-serif; font-size: 72px; color: #000; letter-spacing: 0.2em; line-height: 1; }
-
-/* INPUT */
 .field-label { font-size: 11px; font-weight: 500; color: #FFE600; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 6px; }
 .field-input { width: 100%; background: transparent; border: none; border-bottom: 2px solid #FFE600; padding: 10px 0; font-family: 'Barlow', sans-serif; font-size: 20px; font-weight: 300; color: #fff; outline: none; -webkit-appearance: none; appearance: none; border-radius: 0; }
 .field-input::placeholder { color: #555; }
 .field-hint { font-size: 13px; font-weight: 300; color: #888; margin-top: 6px; }
-
-/* WORD PILLS */
 .word-pill { display: inline-block; background: #1a1a1a; border: 1.5px solid #FFE600; padding: 10px 16px; margin: 0 8px 8px 0; }
 .word-pill-text { font-family: Impact, sans-serif; font-size: 22px; color: #fff; text-transform: uppercase; letter-spacing: 0.02em; }
 .word-pill.dim { border-color: #333; }
 .word-pill.dim .word-pill-text { color: #555; }
-
-/* TIMER */
 .timer-big { font-family: Impact, sans-serif; font-size: 80px; color: #FFE600; letter-spacing: 0.02em; line-height: 1; }
 .timer-big.warn { color: #ff3333; }
 .timer-bar-wrap { width: 100%; height: 4px; background: #222; margin-top: 8px; }
 .timer-bar { height: 4px; background: #FFE600; width: 100%; transition: width 1s linear; }
 .timer-bar.warn { background: #ff3333; }
-
-/* VOTE BTNS */
 .vote-item { width: 100%; padding: 16px 20px; border: 1.5px solid #333; margin-bottom: 10px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: border-color 0.1s; }
 .vote-item.selected { border-color: #FFE600; background: #1a1800; }
 .vote-item.self { opacity: 0.2; pointer-events: none; }
@@ -102,8 +76,6 @@ body { font-family: 'Barlow', sans-serif; color: #fff; overflow-x: hidden; }
 .vote-idea-small { font-size: 13px; font-weight: 300; color: #777; font-style: italic; margin-top: 2px; }
 .vote-check { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid #444; flex-shrink: 0; }
 .vote-item.selected .vote-check { background: #FFE600; border-color: #FFE600; }
-
-/* SCORES */
 .score-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
 .score-player { font-size: 16px; font-weight: 300; color: #ccc; }
 .score-player.leader { color: #FFE600; font-weight: 400; }
@@ -112,106 +84,64 @@ body { font-family: 'Barlow', sans-serif; color: #fff; overflow-x: hidden; }
 .sdot.empty { background: transparent; border: 1.5px solid #333; }
 .score-num { font-family: Impact, sans-serif; font-size: 22px; color: #fff; width: 20px; text-align: right; }
 .score-row.leader .score-num { color: #FFE600; }
-
-/* WINNER BLOCK */
 .winner-block { width: 100%; background: #FFE600; padding: 24px 20px; margin-bottom: 20px; }
 .winner-block-label { font-size: 11px; font-weight: 500; color: #000; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 6px; }
 .winner-block-name { font-family: Impact, sans-serif; font-size: 48px; color: #000; text-transform: uppercase; letter-spacing: 0.02em; line-height: 1; }
 .winner-block-idea { font-size: 15px; font-weight: 300; color: #333; font-style: italic; margin-top: 6px; }
-
-/* CONFETTI CANVAS */
 #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; display: none; }
-
-/* PITCH ORDER */
 .pitch-order { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 .po-name { font-size: 13px; font-weight: 300; color: #555; }
 .po-name.active { color: #FFE600; font-weight: 500; }
 .po-name.done { color: #333; text-decoration: line-through; }
 .po-sep { font-size: 13px; color: #333; }
-
-/* LIVE DOT */
 .live-wrap { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
 .live-dot { width: 10px; height: 10px; border-radius: 50%; background: #FFE600; animation: blink 1s infinite; flex-shrink: 0; }
 @keyframes blink { 0%,100%{opacity:1}50%{opacity:0.2} }
 .live-text { font-size: 11px; font-weight: 500; color: #FFE600; letter-spacing: 0.22em; text-transform: uppercase; }
-
-/* COUNTDOWN */
 .countdown-big { font-family: Impact, sans-serif; font-size: 120px; color: #000; line-height: 1; }
-
-/* NOTE LINES */
 .note-line { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
 .note-dash { color: #FFE600; font-size: 14px; flex-shrink: 0; margin-top: 2px; }
 .note-text { font-size: 16px; font-weight: 300; color: #aaa; line-height: 1.5; }
-
 .flex1 { flex: 1; }
-.mt8 { margin-top: 8px; }
-.mt12 { margin-top: 12px; }
-.mt16 { margin-top: 16px; }
-.mt20 { margin-top: 20px; }
-.mt24 { margin-top: 24px; }
-.mt32 { margin-top: 32px; }
-.mb8 { margin-bottom: 8px; }
-.mb12 { margin-bottom: 12px; }
-.mb16 { margin-bottom: 16px; }
-.mb20 { margin-bottom: 20px; }
-.mb24 { margin-bottom: 24px; }
+.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt20{margin-top:20px}.mt24{margin-top:24px}.mt32{margin-top:32px}
+.mb8{margin-bottom:8px}.mb10{margin-bottom:10px}.mb12{margin-bottom:12px}.mb16{margin-bottom:16px}.mb20{margin-bottom:20px}.mb24{margin-bottom:24px}
 .gap { flex: 1; }
 </style>
 </head>
 <body>
-
 <canvas id="confetti-canvas"></canvas>
 
-<!-- SCREEN 1: INTRO -->
+<!-- S1: INTRO -->
 <div class="screen active" id="s-intro">
-  <div class="logo">
-    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
-    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
-  </div>
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div></div>
   <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:24px;">
     <div class="heading">A brainstorming game for people who think <em>the best idea hasn't been said yet.</em></div>
     <div class="subtext">No slides. No safety net.<br>Just you and the room.</div>
   </div>
-  <div>
-    <div role="button" class="btn" tabindex="0" onclick="go('s-rules')">THE RULES →</div>
-  </div>
+  <div><div role="button" class="btn" tabindex="0" onclick="go('s-rules')">THE RULES →</div></div>
 </div>
 
-<!-- SCREEN 2: RULES -->
+<!-- S2: RULES -->
 <div class="screen" id="s-rules">
-  <div class="logo">
-    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
-    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
-  </div>
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div></div>
   <div style="font-family:Impact,sans-serif;font-size:32px;color:#fff;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:32px;">THE <span style="color:#FFE600">RULES.</span></div>
   <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:28px;">
     <div class="bl"><div class="label">The Brief</div><div class="subtext" style="color:#ccc;">The host sets it. <strong style="color:#fff;font-weight:400;">One sentence.</strong> Everyone pitches against the same problem.</div></div>
-    <div class="bl"><div class="label">The Words</div><div class="subtext" style="color:#ccc;">You get <strong style="color:#fff;font-weight:400;">three random words.</strong><br>Non-negotiable. Use all of them in your<br><strong style="color:#fff;font-weight:400;">idea</strong> somehow.</div></div>
+    <div class="bl"><div class="label">The Words</div><div class="subtext" style="color:#ccc;">You get <strong style="color:#fff;font-weight:400;">three random words.</strong><br>Non-negotiable. Use all of them in your <strong style="color:#fff;font-weight:400;">idea</strong> somehow.</div></div>
     <div class="bl"><div class="label">The Pitch</div><div class="subtext" style="color:#ccc;"><strong style="color:#fff;font-weight:400;">90 seconds. Out loud.</strong><br>In the office, on a video call, or on the phone. No slides. No safety net. Just you and the idea.</div></div>
-    <div class="bl"><div class="label">The Vote</div><div class="subtext" style="color:#ccc;">No self-voting. No politics. Vote for<br>the <strong style="color:#fff;font-weight:400;">idea</strong> you'd most want to make.<br><strong style="color:#fff;font-weight:400;">Most votes wins the round.</strong></div></div>
+    <div class="bl"><div class="label">The Vote</div><div class="subtext" style="color:#ccc;">No self-voting. No politics. Vote for the <strong style="color:#fff;font-weight:400;">idea</strong> you'd most want to make.<br><strong style="color:#fff;font-weight:400;">Most votes wins the round.</strong></div></div>
     <div class="bl"><div class="label">The Winner</div><div class="subtext" style="color:#ccc;">First to win <strong style="color:#fff;font-weight:400;">3 rounds</strong> wins.<br>Loser buys the drinks.</div></div>
   </div>
-  <div class="mt24">
-    <div role="button" class="btn" tabindex="0" onclick="go('s-hostjoin')">LET'S PLAY →</div>
-  </div>
+  <div class="mt24"><div role="button" class="btn" tabindex="0" onclick="go('s-hostjoin')">LET'S PLAY →</div></div>
 </div>
 
-<!-- SCREEN 3: HOST OR JOIN -->
+<!-- S3: HOST OR JOIN -->
 <div class="screen" id="s-hostjoin">
-  <div class="logo">
-    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
-    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
-  </div>
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div></div>
   <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;">
     <div class="heading mb24">Are you hosting<br>or <span>joining?</span></div>
-    <div class="choice active" onclick="go('s-hostbrief')">
-      <div class="choice-title" style="color:#FFE600;">HOST A GAME</div>
-      <div class="choice-sub">Set the brief. Get a room code. Share it.</div>
-    </div>
-    <div class="choice" onclick="go('s-join')">
-      <div class="choice-title">JOIN A GAME</div>
-      <div class="choice-sub">Enter the room code your host gave you.</div>
-    </div>
+    <div class="choice active" onclick="go('s-hostbrief')"><div class="choice-title" style="color:#FFE600;">HOST A GAME</div><div class="choice-sub">Set the brief. Get a room code. Share it.</div></div>
+    <div class="choice" onclick="go('s-join')"><div class="choice-title">JOIN A GAME</div><div class="choice-sub">Enter the room code your host gave you.</div></div>
   </div>
   <div>
     <div class="note-line"><span class="note-dash">—</span><span class="note-text">Minimum 3 players. Maximum 5.</span></div>
@@ -219,12 +149,9 @@ body { font-family: 'Barlow', sans-serif; color: #fff; overflow-x: hidden; }
   </div>
 </div>
 
-<!-- SCREEN 4A: HOST BRIEF -->
+<!-- S4A: HOST BRIEF -->
 <div class="screen" id="s-hostbrief">
-  <div class="logo">
-    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
-    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
-  </div>
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div></div>
   <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:28px;">
     <div class="heading">Set the <span>brief.</span></div>
     <div>
@@ -247,57 +174,43 @@ body { font-family: 'Barlow', sans-serif; color: #fff; overflow-x: hidden; }
       <div style="font-size:13px;color:#666;margin-top:8px;cursor:pointer;" onclick="nextInspiration()">Tap for another →</div>
     </div>
   </div>
-  <div>
-    <div role="button" class="btn" tabindex="0" id="create-room-btn" onclick="createRoom()" disabled>CREATE ROOM →</div>
-  </div>
+  <div><div role="button" class="btn" tabindex="0" id="create-room-btn" onclick="createRoom()" disabled>CREATE ROOM →</div></div>
 </div>
 
-<!-- SCREEN 4B: ROOM CODE -->
+<!-- S4B: ROOM CODE -->
 <div class="screen" id="s-roomcode">
-  <div class="logo">
-    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
-    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
-  </div>
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div></div>
   <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:24px;">
     <div class="heading">Your room <span>code.</span></div>
-    <div class="code-box">
-      <div class="code-label-s">Share with your players</div>
-      <div class="code-digits" id="room-code-display">----</div>
+    <div class="code-box"><div class="code-label-s">Share with your players</div><div class="code-digits" id="room-code-display">----</div></div>
+    <div style="display:flex;gap:12px;">
+      <div role="button" class="btn outline" tabindex="0" onclick="shareGame()" style="flex:1;">SHARE VIA APP ↗</div>
+      <div role="button" class="btn outline" tabindex="0" onclick="copyLink()" style="flex:1;" id="copy-link-btn">COPY LINK</div>
     </div>
-    <div style="display:flex;gap:12px;margin-bottom:0;">
-      <div role="button" class="btn outline" tabindex="0" onclick="shareGame()" style="flex:1;text-align:center;">SHARE VIA APP ↗</div>
-      <div role="button" class="btn outline" tabindex="0" onclick="copyLink()" style="flex:1;text-align:center;" id="copy-link-btn">COPY LINK</div>
-    </div>
-    <div style="font-size:13px;font-weight:300;color:#666;margin-top:8px;text-align:center;">Share via WhatsApp, Slack, email — or copy the link to paste anywhere.</div>
-    <div class="bl dim">
-      <div class="label" style="color:#777;">The Brief</div>
-      <div style="font-size:15px;font-weight:300;color:#aaa;font-style:italic;" id="brief-recap-host"></div>
-    </div>
+    <div style="font-size:13px;font-weight:300;color:#666;text-align:center;">Share via WhatsApp, Slack, email — or copy the link to paste anywhere.</div>
+    <div class="bl dim"><div class="label" style="color:#777;">The Brief</div><div style="font-size:15px;font-weight:300;color:#aaa;font-style:italic;" id="brief-recap-host"></div></div>
     <div>
       <div class="label mb12">Players joined — <span id="host-player-count">0</span> of 5</div>
       <div id="host-player-list"></div>
     </div>
   </div>
   <div>
-    <div style="font-size:18px;font-weight:400;color:#aaa;margin-bottom:14px;" id="start-hint">Need at least 1 player to start (3 for real game).</div>
+    <div style="font-size:18px;font-weight:400;color:#aaa;margin-bottom:14px;" id="start-hint">Need at least 3 players to start.</div>
     <div role="button" class="btn disabled" tabindex="0" id="start-game-btn" onclick="hostStartGame()">START THE GAME →</div>
     <div role="button" class="btn" tabindex="0" id="start-pitching-btn" onclick="hostStartPitching()" style="display:none;margin-top:12px;background:#FFE600;color:#000;">START PITCHING →</div>
   </div>
 </div>
 
-<!-- SCREEN 4C: JOIN -->
+<!-- S4C: JOIN -->
 <div class="screen" id="s-join">
-  <div class="logo">
-    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
-    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
-  </div>
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div></div>
   <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:36px;">
     <div class="heading">Join the <span>game.</span></div>
     <div>
       <div class="field-label">Your name</div>
       <input class="field-input" id="player-name-input" type="text" placeholder="What do we call you?" maxlength="20" oninput="document.getElementById('name-hint').style.display='none'" />
       <div class="field-hint mt8">This is how you'll appear to other players.</div>
-      <div id="name-hint" style="display:none;font-size:13px;font-weight:400;color:#ff4444;margin-top:6px;letter-spacing:0.05em;">← Enter your name first.</div>
+      <div id="name-hint" style="display:none;font-size:13px;font-weight:400;color:#ff4444;margin-top:6px;">← Enter your name first.</div>
     </div>
     <div>
       <div class="field-label">Room code</div>
@@ -305,17 +218,12 @@ body { font-family: 'Barlow', sans-serif; color: #fff; overflow-x: hidden; }
       <div class="field-hint mt8">Get this from your host.</div>
     </div>
   </div>
-  <div>
-    <div role="button" class="btn" tabindex="0" onclick="joinGame()">JOIN THE GAME →</div>
-  </div>
+  <div><div role="button" class="btn" tabindex="0" onclick="joinGame()">JOIN THE GAME →</div></div>
 </div>
 
-<!-- SCREEN 5: WAITING ROOM (PLAYER) -->
+<!-- S5: WAITING (PLAYER) -->
 <div class="screen" id="s-waiting">
-  <div class="logo">
-    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
-    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
-  </div>
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div></div>
   <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:28px;">
     <div class="heading">Get ready.<br>The game starts <span>soon.</span></div>
     <div style="background:#1a1a1a;border-left:3px solid #FFE600;padding:18px;">
@@ -331,22 +239,13 @@ body { font-family: 'Barlow', sans-serif; color: #fff; overflow-x: hidden; }
   <div style="font-size:14px;font-weight:300;color:#888;">Waiting for the host to start the game.</div>
 </div>
 
-<!-- SCREEN 6: WORDS REVEALED -->
+<!-- S6: WORDS -->
 <div class="screen" id="s-words">
-  <div class="logo">
-    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
-    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
-  </div>
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div></div>
   <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:24px;">
     <div class="heading">Your <span>3 words.</span><br>You have 3 minutes.</div>
-    <div class="bl dim">
-      <div class="label" style="color:#777;">The Brief</div>
-      <div style="font-size:14px;font-weight:300;color:#888;font-style:italic;line-height:1.5;" id="brief-display-words"></div>
-    </div>
-    <div>
-      <div class="label mb12">Your words</div>
-      <div id="words-display" style="display:flex;flex-wrap:wrap;"></div>
-    </div>
+    <div class="bl dim"><div class="label" style="color:#777;">The Brief</div><div style="font-size:14px;font-weight:300;color:#888;font-style:italic;line-height:1.5;" id="brief-display-words"></div></div>
+    <div><div class="label mb12">Your words</div><div id="words-display" style="display:flex;flex-wrap:wrap;"></div></div>
     <div>
       <div class="label mb8">Thinking time</div>
       <div class="timer-big" id="think-timer">3:00</div>
@@ -354,73 +253,43 @@ body { font-family: 'Barlow', sans-serif; color: #fff; overflow-x: hidden; }
     </div>
   </div>
   <div style="font-size:14px;font-weight:300;color:#888;" id="think-hint">Use all 3 words in your idea. Any way you want.</div>
-
 </div>
 
-<!-- SCREEN 7: YOUR PITCH -->
-<div class="screen" id="s-pitch">
-  <div class="logo">
-    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
-    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
+<!-- S6B: PITCH ORDER -->
+<div class="screen" id="s-pitchorder">
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div></div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:28px;">
+    <div><div class="heading">The pitch <span>order.</span></div><div class="subtext mt12">This is who goes when. Remember your number.</div></div>
+    <div id="pitch-order-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+    <div id="pitch-order-you" style="font-size:18px;font-weight:400;color:#FFE600;margin-top:8px;"></div>
   </div>
+  <div><div style="font-size:14px;font-weight:300;color:#888;margin-bottom:16px;">Starting in <span id="order-countdown" style="color:#FFE600;font-weight:500;">5</span> seconds...</div></div>
+</div>
+
+<!-- S7: YOUR PITCH -->
+<div class="screen" id="s-pitch">
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div></div>
   <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:20px;">
     <div>
       <div class="live-wrap"><div class="live-dot"></div><div class="live-text">Now pitching</div></div>
       <div class="heading">It's your<br><span id="pitch-player-name">turn.</span></div>
     </div>
-    <div class="bl dim">
-      <div class="label" style="color:#777;">The Brief</div>
-      <div style="font-size:14px;font-weight:300;color:#888;font-style:italic;line-height:1.5;" id="brief-display-pitch"></div>
-    </div>
-    <div>
-      <div class="label mb10">Your words</div>
-      <div id="pitch-words-display" style="display:flex;flex-wrap:wrap;"></div>
-    </div>
-
+    <div class="bl dim"><div class="label" style="color:#777;">The Brief</div><div style="font-size:14px;font-weight:300;color:#888;font-style:italic;line-height:1.5;" id="brief-display-pitch"></div></div>
+    <div><div class="label mb10">Your words</div><div id="pitch-words-display" style="display:flex;flex-wrap:wrap;"></div></div>
     <div>
       <div class="timer-big" id="pitch-timer">1:30</div>
       <div class="timer-bar-wrap"><div class="timer-bar" id="pitch-bar"></div></div>
     </div>
-    <div>
-      <div class="label mb8" style="color:#555;">Pitch order</div>
-      <div class="pitch-order" id="pitch-order-display"></div>
-    </div>
+    <div><div class="label mb8" style="color:#555;">Pitch order</div><div class="pitch-order" id="pitch-order-display"></div></div>
   </div>
-  <div>
-    <div role="button" class="btn" tabindex="0" onclick="donePitching()">DONE PITCHING →</div>
-  </div>
+  <div><div role="button" class="btn" tabindex="0" onclick="donePitching()">DONE PITCHING →</div></div>
 </div>
 
-<!-- SCREEN 6B: PITCH ORDER -->
-<div class="screen" id="s-pitchorder">
-  <div class="logo">
-    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
-    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
-  </div>
-  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:28px;">
-    <div>
-      <div class="heading">The pitch <span>order.</span></div>
-      <div class="subtext mt12">This is who goes when. Remember your number.</div>
-    </div>
-    <div id="pitch-order-list" style="display:flex;flex-direction:column;gap:12px;"></div>
-    <div id="pitch-order-you" style="font-size:18px;font-weight:400;color:#FFE600;margin-top:8px;"></div>
-  </div>
-  <div>
-    <div style="font-size:14px;font-weight:300;color:#888;margin-bottom:16px;">Starting in <span id="order-countdown" style="color:#FFE600;font-weight:500;">5</span> seconds...</div>
-  </div>
-</div>
-
-<!-- SCREEN 7B: NAME YOUR IDEA -->
+<!-- S7B: NAME YOUR IDEA -->
 <div class="screen" id="s-nameidea">
-  <div class="logo">
-    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
-    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
-  </div>
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div></div>
   <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:28px;">
-    <div>
-      <div class="heading">Name your <span>idea.</span></div>
-      <div class="subtext mt12">Take your time. Give it a name that sticks.<br>Short. Memorable. Yours.</div>
-    </div>
+    <div><div class="heading">Name your <span>idea.</span></div><div class="subtext mt12">Take your time. Give it a name that sticks.<br>Short. Memorable. Yours.</div></div>
     <div>
       <input class="field-input" id="idea-title-final" type="text" maxlength="40" placeholder="e.g. The Flamingo Bank" style="font-size:24px;" />
       <div style="display:flex;justify-content:space-between;margin-top:8px;">
@@ -428,19 +297,13 @@ body { font-family: 'Barlow', sans-serif; color: #fff; overflow-x: hidden; }
         <div id="idea-final-count" style="font-size:13px;color:#666;">0/40</div>
       </div>
     </div>
-
   </div>
-  <div>
-    <button class="btn" id="lock-idea-btn" onclick="lockIdeaName()" ontouchstart="lockIdeaName()" style="background:#ffffff!important;color:#000000!important;-webkit-appearance:none;border-radius:0;border:none;width:100%;padding:20px;font-family:Impact,sans-serif;font-size:20px;letter-spacing:0.02em;text-transform:uppercase;cursor:pointer;">LOCK IT IN →</button>
-  </div>
+  <div><button class="btn" id="lock-idea-btn" onclick="lockIdeaName()" ontouchstart="lockIdeaName()" style="background:#ffffff!important;color:#000000!important;-webkit-appearance:none;border-radius:0;border:none;width:100%;padding:20px;font-family:Impact,sans-serif;font-size:20px;letter-spacing:0.02em;text-transform:uppercase;cursor:pointer;">LOCK IT IN →</button></div>
 </div>
 
-<!-- SCREEN 8: WAITING WHILE OTHERS PITCH -->
+<!-- S8: WATCHING -->
 <div class="screen" id="s-watching">
-  <div class="logo">
-    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
-    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
-  </div>
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div></div>
   <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:20px;">
     <div>
       <div class="live-wrap"><div class="live-dot"></div><div class="live-text">Now pitching</div></div>
@@ -448,28 +311,16 @@ body { font-family: 'Barlow', sans-serif; color: #fff; overflow-x: hidden; }
     </div>
     <div class="timer-big" id="watch-timer" style="color:#333;">1:30</div>
     <div class="timer-bar-wrap"><div class="timer-bar" id="watch-bar" style="background:#333;"></div></div>
-    <div class="bl dim">
-      <div class="label" style="color:#777;">The Brief</div>
-      <div style="font-size:14px;font-weight:300;color:#888;font-style:italic;line-height:1.5;" id="brief-display-watch"></div>
-    </div>
-    <div>
-      <div class="label mb10" style="color:#555;">Your words — keep them to yourself</div>
-      <div id="watch-words-display" style="display:flex;flex-wrap:wrap;"></div>
-    </div>
-    <div>
-      <div class="label mb8" style="color:#555;">Pitch order</div>
-      <div class="pitch-order" id="watch-order-display"></div>
-    </div>
+    <div class="bl dim"><div class="label" style="color:#777;">The Brief</div><div style="font-size:14px;font-weight:300;color:#888;font-style:italic;line-height:1.5;" id="brief-display-watch"></div></div>
+    <div><div class="label mb10" style="color:#555;">Your words — keep them to yourself</div><div id="watch-words-display" style="display:flex;flex-wrap:wrap;"></div></div>
+    <div><div class="label mb8" style="color:#555;">Pitch order</div><div class="pitch-order" id="watch-order-display"></div></div>
   </div>
   <div style="font-size:14px;font-weight:300;color:#888;" id="watch-hint"></div>
 </div>
 
-<!-- SCREEN 8B: YOU'RE UP NEXT -->
+<!-- S8B: UP NEXT -->
 <div class="screen yellow" id="s-upnext">
-  <div class="logo">
-    <div class="logo-title dark">PITCH AGAINST <span>DULL.</span></div>
-    <div class="logo-sub dark">1 brief. 3 words. 90 seconds to kill dull.</div>
-  </div>
+  <div class="logo"><div class="logo-title dark">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub dark">1 brief. 3 words. 90 seconds to kill dull.</div></div>
   <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:20px;">
     <div style="font-size:16px;font-weight:300;color:#333;" id="prev-pitcher-done"></div>
     <div style="font-family:Impact,sans-serif;font-size:48px;color:#000;text-transform:uppercase;letter-spacing:0.02em;line-height:1.1;" id="upnext-name">YOU'RE UP NEXT.</div>
@@ -479,30 +330,19 @@ body { font-family: 'Barlow', sans-serif; color: #fff; overflow-x: hidden; }
   <div style="font-size:14px;font-weight:300;color:#333;">Your timer starts automatically.</div>
 </div>
 
-<!-- SCREEN 9: VOTE -->
+<!-- S9: VOTE -->
 <div class="screen" id="s-vote">
-  <div class="logo">
-    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
-    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
-  </div>
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div></div>
   <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:20px;">
-    <div>
-      <div class="heading">Who had the<br>best <span>idea?</span></div>
-      <div class="subtext mt12">No self-voting. No politics.<br>Vote for the idea you'd most want to make.</div>
-    </div>
+    <div><div class="heading">Who had the<br>best <span>idea?</span></div><div class="subtext mt12">No self-voting. No politics.<br>Vote for the idea you'd most want to make.</div></div>
     <div id="vote-list"></div>
   </div>
-  <div>
-    <div role="button" class="btn disabled" tabindex="0" id="lock-vote-btn" onclick="lockVote()">LOCK IN VOTE →</div>
-  </div>
+  <div><div role="button" class="btn disabled" tabindex="0" id="lock-vote-btn" onclick="lockVote()">LOCK IN VOTE →</div></div>
 </div>
 
-<!-- SCREEN 10: ROUND RESULT -->
+<!-- S10: RESULT -->
 <div class="screen" id="s-result">
-  <div class="logo">
-    <div class="logo-title">PITCH AGAINST <span>DULL.</span></div>
-    <div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div>
-  </div>
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">1 brief. 3 words. 90 seconds to kill dull.</div></div>
   <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:20px;">
     <div style="font-size:12px;font-weight:500;color:#777;letter-spacing:0.2em;text-transform:uppercase;" id="result-round-label">Round 1 — Result</div>
     <div class="winner-block">
@@ -510,23 +350,15 @@ body { font-family: 'Barlow', sans-serif; color: #fff; overflow-x: hidden; }
       <div class="winner-block-name" id="result-winner-name">—</div>
       <div class="winner-block-idea" id="result-winner-idea"></div>
     </div>
-    <div>
-      <div class="label mb16">Scores — first to 3 wins</div>
-      <div id="result-scores"></div>
-    </div>
+    <div><div class="label mb16">Scores — first to 3 wins</div><div id="result-scores"></div></div>
   </div>
-  <div>
-    <div role="button" class="btn" tabindex="0" id="next-round-btn" onclick="nextRound()">NEXT ROUND →</div>
-  </div>
+  <div><div role="button" class="btn" tabindex="0" id="next-round-btn" onclick="nextRound()">NEXT ROUND →</div></div>
 </div>
 
-<!-- SCREEN 11: WINNER -->
+<!-- S11: WINNER -->
 <div class="screen yellow" id="s-winner" style="position:relative;overflow:hidden;">
   <canvas id="confetti-local" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"></canvas>
-  <div class="logo" style="position:relative;z-index:1;">
-    <div class="logo-title dark">PITCH AGAINST <span>DULL.</span></div>
-    <div class="logo-sub dark">1 brief. 3 words. 90 seconds to kill dull.</div>
-  </div>
+  <div class="logo" style="position:relative;z-index:1;"><div class="logo-title dark">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub dark">1 brief. 3 words. 90 seconds to kill dull.</div></div>
   <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:20px;position:relative;z-index:1;">
     <div style="font-family:Impact,sans-serif;font-size:28px;color:#000;text-transform:uppercase;letter-spacing:0.02em;">DULL IS DEAD.</div>
     <div>
@@ -535,16 +367,13 @@ body { font-family: 'Barlow', sans-serif; color: #fff; overflow-x: hidden; }
       <div style="font-size:15px;font-weight:300;color:#333;font-style:italic;margin-top:4px;" id="final-winner-idea"></div>
     </div>
     <div class="divider dark"></div>
-    <div>
-      <div style="font-size:11px;font-weight:500;color:#333;letter-spacing:0.2em;text-transform:uppercase;opacity:0.6;margin-bottom:12px;">Final scores</div>
-      <div id="final-scores"></div>
-    </div>
+    <div><div style="font-size:11px;font-weight:500;color:#333;letter-spacing:0.2em;text-transform:uppercase;opacity:0.6;margin-bottom:12px;">Final scores</div><div id="final-scores"></div></div>
     <div class="divider dark"></div>
     <div style="font-size:16px;font-weight:300;color:#333;line-height:1.6;" id="loser-drinks"></div>
     <div style="font-size:15px;font-weight:300;color:#000;line-height:1.6;border-left:3px solid #000;padding-left:14px;opacity:0.55;" id="productivity-line"></div>
     <div style="margin-top:24px;padding-top:24px;border-top:1.5px solid rgba(0,0,0,0.15);">
       <div style="font-size:13px;font-weight:500;color:#000;letter-spacing:0.15em;text-transform:uppercase;opacity:0.5;margin-bottom:12px;">Want to take the best idea further?</div>
-      <img src="data:image/png;base64,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" alt="Creative Ally" style="width:180px;height:auto;margin-bottom:10px;display:block;" />
+      <div style="font-family:Impact,sans-serif;font-size:22px;color:#000;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:10px;">Creative Ally.</div>
       <div style="display:flex;flex-direction:column;gap:6px;">
         <a href="mailto:peterbuckworks@gmail.com" style="font-size:16px;font-weight:400;color:#000;text-decoration:none;border-bottom:1.5px solid #000;padding-bottom:2px;width:fit-content;">peterbuckworks@gmail.com</a>
         <a href="https://peter-buck.com" target="_blank" style="font-size:15px;font-weight:300;color:#000;opacity:0.7;text-decoration:none;">peter-buck.com</a>
@@ -561,7 +390,6 @@ body { font-family: 'Barlow', sans-serif; color: #fff; overflow-x: hidden; }
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, set, get, onValue, update, push, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
 const firebaseConfig = {
   apiKey: "AIzaSyC5IuFzlJymFWoJd1gSyeXuRsbC5HwMgBU",
   authDomain: "pitch-against-dull.firebaseapp.com",
@@ -572,23 +400,15 @@ const firebaseConfig = {
   appId: "1:90967669175:web:3c9217ff3d647ccb629032",
   measurementId: "G-GK54QB8T85"
 };
-
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-window.db = db;
-window.ref = ref;
-window.set = set;
-window.get = get;
-window.onValue = onValue;
-window.update = update;
-window.push = push;
-window.remove = remove;
+window.db = db; window.ref = ref; window.set = set; window.get = get;
+window.onValue = onValue; window.update = update; window.push = push; window.remove = remove;
 window.firebaseReady = true;
 window.dispatchEvent(new Event('firebaseReady'));
 </script>
 
 <script>
-// ===================== WORDS POOL =====================
 const WORDS = [
   'BUNNY','RAINBOW','UNDERWEAR','LLAMA','SPATULA','TUGBOAT','WAFFLE','FLAMINGO','UKULELE','SLIPPER',
   'HAMMOCK','BOBSLED','CACTUS','DOUGHNUT','PENGUIN','TRAMPOLINE','KAZOO','PORCUPINE','BEEKEEPER','SANDCASTLE',
@@ -597,7 +417,7 @@ const WORDS = [
   'CUSTARD','WHEELBARROW','STAPLER','NARWHAL','SUNFLOWER','PANCAKE','HEDGEHOG','LAWNMOWER','TAMBOURINE','TROPHY',
   'TEAPOT','CANNONBALL','DOORBELL','FLOATIE','SOMBRERO','BLIMP','PLATYPUS','MAGNET','CONFETTI','YO-YO',
   'BADGER','STILTS','MARMALADE','CATAPULT','BOBBLEHEAD','TOUPEE','FONDUE','MONOCLE','YODEL','BAGUETTE',
-  'PINWHEEL','WALRUS','CRAYON','TREBUCHET','SPRINKLES','JALAPEÑO','PERISCOPE','COWBOY','FERRET','MEGAPHONE',
+  'PINWHEEL','WALRUS','CRAYON','TREBUCHET','SPRINKLES','JALAPEN\u00d1O','PERISCOPE','COWBOY','FERRET','MEGAPHONE',
   'TIARA','TOBOGGAN','BAGPIPE','MONGOOSE','GLUESTICK','SNORKEL','FLAPJACK','ARMADILLO','CORGI','TOADSTOOL',
   'LUNCHBOX','BERET','JELLYBEAN','TRENCHCOAT','PELICAN','GRAVY','BOOMERANG','WOMBAT','PICCOLO','SATCHEL',
   'MOUSETRAP','DAFFODIL','SEQUIN','TROMBONE','BUMBLEBEE','SHERBET','CUCKOO','PARACHUTE','MACARON','PUFFIN',
@@ -654,1168 +474,661 @@ const BRIEFS = [
   "Launch a luxury brand in a cost of living crisis."
 ];
 
-// ===================== STATE =====================
-let myRole = ''; // 'host' or 'player'
-let myName = '';
-let myPlayerId = '';
-let roomCode = '';
-let roomRef = null;
-let gameState = {};
-let pitchTimerInterval = null;
-let thinkTimerInterval = null;
-let selectedVote = null;
-let inspoIdx = 0;
-let upnextInterval = null;
+// STATE
+let myRole='', myName='', myPlayerId='', roomCode='', roomRef=null, gameState={};
+let pitchTimerInterval=null, thinkTimerInterval=null, selectedVote=null, inspoLast=1, upnextInterval=null;
 
-// ===================== UTILS =====================
-function go(screenId) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(screenId).classList.add('active');
-  window.scrollTo(0, 0);
+// UTILS
+function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function randomWords(){return shuffle(WORDS).slice(0,3);}
+function generateCode(){return String(Math.floor(1000+Math.random()*9000));}
+function pad(n){return String(n).padStart(2,'0');}
+function formatTime(s){return Math.floor(s/60)+':'+pad(s%60);}
+
+function updateBriefCount(){
+  const v=document.getElementById('brief-input').value;
+  document.getElementById('brief-count').textContent=v.length+'/140';
+  document.getElementById('brief-count').style.color=v.length>=120?'#FFE600':'#666';
+  const btn=document.getElementById('create-room-btn');
+  if(v.trim().length>5){btn.disabled=false;btn.classList.remove('disabled');}
+  else{btn.disabled=true;btn.classList.add('disabled');}
 }
 
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+function nextInspiration(){
+  let idx;do{idx=Math.floor(Math.random()*BRIEFS.length);}while(idx===inspoLast);
+  inspoLast=idx;
+  document.getElementById('inspiration-text').textContent='"'+BRIEFS[idx]+'"';
 }
 
-function randomWords() {
-  return shuffle(WORDS).slice(0, 3);
-}
-
-function generateCode() {
-  return String(Math.floor(1000 + Math.random() * 9000));
-}
-
-function pad(n) { return String(n).padStart(2, '0'); }
-
-function formatTime(s) { return Math.floor(s / 60) + ':' + pad(s % 60); }
-
-// ===================== BRIEF / INSPIRATION =====================
-function updateBriefCount() {
-  const v = document.getElementById('brief-input').value;
-  document.getElementById('brief-count').textContent = v.length + '/140';
-  document.getElementById('brief-count').style.color = v.length >= 120 ? '#FFE600' : '#666';
-  const btn = document.getElementById('create-room-btn');
-  if (v.trim().length > 5) { btn.disabled = false; btn.classList.remove('disabled'); }
-  else { btn.disabled = true; btn.classList.add('disabled'); }
-}
-
-let inspoLast = 1;
-function nextInspiration() {
-  let idx;
-  do { idx = Math.floor(Math.random() * BRIEFS.length); } while (idx === inspoLast);
-  inspoLast = idx;
-  document.getElementById('inspiration-text').textContent = '"' + BRIEFS[idx] + '"';
-}
-
-function updateCodeDisplay(val) {
-  for (let i = 0; i < 4; i++) {
-    const el = document.getElementById('cd' + i);
-    if (i < val.length) { el.textContent = val[i]; el.style.color = '#fff'; }
-    else { el.textContent = '0'; el.style.color = '#444'; }
-  }
-}
-
-function updateIdeaCount() {
-  const v = document.getElementById('idea-title-input').value;
-  document.getElementById('idea-count').textContent = v.length + '/40';
-  document.getElementById('idea-count').style.color = v.length >= 32 ? '#FFE600' : '#666';
-}
-
-// ===================== CREATE ROOM =====================
-function waitForFirebase(cb) {
-  let attempts = 0;
-  function check() {
-    if (window.firebaseReady && window.ref && window.set && window.db) {
-      cb();
-    } else if (attempts < 50) {
-      attempts++;
-      setTimeout(check, 100);
-    } else {
-      alert('Could not connect to Firebase. Please refresh and try again.');
-    }
+function waitForFirebase(cb){
+  let n=0;
+  function check(){
+    if(window.firebaseReady&&window.ref&&window.set&&window.db){cb();}
+    else if(n<50){n++;setTimeout(check,100);}
+    else{alert('Could not connect. Please refresh.');}
   }
   check();
 }
 
-function createRoom() {
-  const brief = document.getElementById('brief-input').value.trim();
-  if (!brief) return;
-  const company = document.getElementById('company-input') ? document.getElementById('company-input').value.trim() : '';
-  waitForFirebase(() => {
-    roomCode = generateCode();
-    myRole = 'host';
-    myName = 'Host';
-    myPlayerId = 'host';
-    const words = randomWords();
-    const roomData = {
-      brief: brief,
-      company: company || '',
-      words: words,
-      status: 'waiting',
-      round: 1,
-      players: {},
-      scores: {},
-      pitchOrder: [],
-      currentPitcher: 0,
-      votes: {},
-      ideaTitles: {},
-      createdAt: Date.now()
-    };
-    window.set(window.ref(window.db, 'rooms/' + roomCode), roomData).then(() => {
-      roomRef = window.ref(window.db, 'rooms/' + roomCode);
-      document.getElementById('room-code-display').textContent = roomCode;
-      document.getElementById('brief-recap-host').textContent = '"' + brief + '"';
-      listenToRoom();
-      go('s-roomcode');
+// CREATE ROOM
+function createRoom(){
+  const brief=document.getElementById('brief-input').value.trim();
+  if(!brief)return;
+  const company=(document.getElementById('company-input')||{}).value||'';
+  waitForFirebase(()=>{
+    roomCode=generateCode();myRole='host';myName='Host';myPlayerId='host';
+    const data={brief,company:company.trim(),words:randomWords(),status:'waiting',round:1,players:{},scores:{},pitchOrder:[],currentPitcher:0,votes:{},ideaTitles:{},createdAt:Date.now()};
+    window.set(window.ref(window.db,'rooms/'+roomCode),data).then(()=>{
+      roomRef=window.ref(window.db,'rooms/'+roomCode);
+      document.getElementById('room-code-display').textContent=roomCode;
+      document.getElementById('brief-recap-host').textContent='"'+brief+'"';
+      listenToRoom();go('s-roomcode');
     });
   });
 }
 
-// ===================== JOIN ROOM =====================
-function joinGame() {
-  const name = document.getElementById('player-name-input').value.trim();
-  const code = document.getElementById('code-hidden').value.trim();
-  if (!name && code.length !== 4) { 
-    document.getElementById('name-hint').style.display='block';
-    document.getElementById('player-name-input').focus();
-    return; 
-  }
-  if (!name) { 
-    document.getElementById('name-hint').style.display='block';
-    document.getElementById('player-name-input').focus();
-    return; 
-  }
-  if (code.length !== 4) { alert('Please enter the 4-digit room code.'); return; }
-  waitForFirebase(() => {
-    const rRef = window.ref(window.db, 'rooms/' + code);
-    window.get(rRef).then(snap => {
-      if (!snap.exists()) { alert('Room not found. Check the code and try again.'); return; }
-      const data = snap.val();
-      if (data.status !== 'waiting') { alert('This game has already started.'); return; }
-      const players = data.players || {};
-      if (Object.keys(players).length >= 5) { alert('This room is full.'); return; }
-      roomCode = code;
-      myRole = 'player';
-      myName = name;
-      myPlayerId = 'p_' + Date.now();
-      roomRef = window.ref(window.db, 'rooms/' + roomCode);
-      window.update(window.ref(window.db, 'rooms/' + roomCode + '/players/' + myPlayerId), { name: name, joinedAt: Date.now() }).then(() => {
-        document.getElementById('brief-display-player').textContent = '"' + data.brief + '"';
-        listenToRoom();
-        go('s-waiting');
+// JOIN
+function joinGame(){
+  const name=document.getElementById('player-name-input').value.trim();
+  const code=document.getElementById('code-hidden').value.trim();
+  if(!name){document.getElementById('name-hint').style.display='block';document.getElementById('player-name-input').focus();return;}
+  if(code.length!==4){alert('Please enter the 4-digit room code.');return;}
+  waitForFirebase(()=>{
+    window.get(window.ref(window.db,'rooms/'+code)).then(snap=>{
+      if(!snap.exists()){alert('Room not found. Check the code and try again.');return;}
+      const d=snap.val();
+      if(d.status!=='waiting'){alert('This game has already started.');return;}
+      if(Object.keys(d.players||{}).length>=5){alert('This room is full.');return;}
+      roomCode=code;myRole='player';myName=name;myPlayerId='p_'+Date.now();
+      roomRef=window.ref(window.db,'rooms/'+roomCode);
+      window.update(window.ref(window.db,'rooms/'+roomCode+'/players/'+myPlayerId),{name,joinedAt:Date.now()}).then(()=>{
+        document.getElementById('brief-display-player').textContent='"'+d.brief+'"';
+        listenToRoom();go('s-waiting');
       });
     });
   });
 }
 
-// ===================== LISTEN TO ROOM =====================
-function listenToRoom() {
-  window.onValue(roomRef, snap => {
-    if (!snap.exists()) {
-      // Room was deleted - host pressed PLAY AGAIN
-      if (gameState.status === 'gameover') {
-        // Clean reset for players
-        window.shownOrderScreen = {};
-        window.handledPitcher = {};
-        window.thinkPlayerStarted = {};
-        roomCode = ''; myRole = ''; myName = ''; myPlayerId = '';
-        roomRef = null; gameState = {};
-        go('s-intro');
-      } else if (gameState.status) {
-        alert('The host ended the game. Please start a new game.');
-        go('s-intro');
-      }
+// LISTEN
+function listenToRoom(){
+  window.onValue(roomRef,snap=>{
+    if(!snap.exists()){
+      if(gameState.status==='gameover'){resetAllState();go('s-intro');}
+      else if(gameState.status){alert('The host ended the game.');go('s-intro');}
       return;
     }
-    gameState = snap.val();
+    gameState=snap.val();
     handleStateChange(gameState);
   });
-  // Set up host-specific watchers
-  if (myRole === 'host') {
+  if(myRole==='host'){
     setupHostPitchWatcher();
     setupHostVoteWatcher();
-    // Watch for player ready signals
-    window.onValue(window.ref(window.db, 'rooms/' + roomCode + '/playerReady'), snap => {
-      if (myRole !== 'host') return;
-      if (!snap.exists()) return;
-      const ready = snap.val();
-      const players = gameState.players || {};
-      const readyNames = Object.keys(ready).map(id => players[id] ? players[id].name : '?');
-      const hint = document.getElementById('start-hint');
-      const spBtn = document.getElementById('start-pitching-btn');
-      if (hint && spBtn && spBtn.style.display !== 'none') {
-        if (readyNames.length > 0) {
-          hint.textContent = readyNames.join(', ') + (readyNames.length === 1 ? ' is' : ' are') + ' ready. Hit START PITCHING to begin.';
-          hint.style.color = '#FFE600';
-          hint.style.fontSize = '18px';
-        }
+    let lastPSA=null;
+    window.onValue(window.ref(window.db,'rooms/'+roomCode+'/pitchStartedAt'),snap=>{
+      if(myRole!=='host')return;
+      const v=snap.exists()?snap.val():null;
+      if(!v){
+        if(v===lastPSA)return;lastPSA=null;
+        if(watchTimerInterval){clearInterval(watchTimerInterval);watchTimerInterval=null;}
+        watchTimerStartedAt=null;
+        const wt=document.getElementById('watch-timer'),wb=document.getElementById('watch-bar');
+        if(wt){wt.textContent='naming...';wt.style.color='#555';wt.className='timer-big';}
+        if(wb){wb.style.width='100%';wb.style.background='#333';}
+      }else if(v!==lastPSA){
+        lastPSA=v;
+        if(watchTimerInterval){clearInterval(watchTimerInterval);watchTimerInterval=null;}
+        watchTimerStartedAt=null;startWatchTimer(v);
       }
     });
-    // Watch for pitchStartedAt changes to start the host timer
-    let lastPitchStartedAt = null;
-    window.onValue(window.ref(window.db, 'rooms/' + roomCode + '/pitchStartedAt'), snap => {
-      if (myRole !== 'host') return;
-      const startedAt = snap.exists() ? snap.val() : null;
-      if (!startedAt) {
-        // Reset - new pitcher naming
-        if (startedAt === lastPitchStartedAt) return; // no change
-        lastPitchStartedAt = null;
-        if (watchTimerInterval) { clearInterval(watchTimerInterval); watchTimerInterval = null; }
-        watchTimerActive = false;
-        watchTimerStartedAt = null;
-        const watchTimer = document.getElementById('watch-timer');
-        const watchBar = document.getElementById('watch-bar');
-        if (watchTimer) { watchTimer.textContent = 'naming...'; watchTimer.style.color = '#555'; watchTimer.className = 'timer-big'; }
-        if (watchBar) { watchBar.style.width = '100%'; watchBar.style.background = '#333'; }
-      } else if (startedAt !== lastPitchStartedAt) {
-        // Brand new pitch started
-        lastPitchStartedAt = startedAt;
-        if (watchTimerInterval) { clearInterval(watchTimerInterval); watchTimerInterval = null; }
-        watchTimerActive = false;
-        watchTimerStartedAt = null;
-        startWatchTimer(startedAt);
-      }
-      // If startedAt === lastPitchStartedAt, do nothing - timer already running
-    });
   }
-  // Set up player-specific watchers
-  if (myRole === 'player') {
-    listenForUpNext();
-  }
+  if(myRole==='player'){listenForUpNext();}
 }
 
-function handleStateChange(state) {
+// HANDLE STATE
+function handleStateChange(state){
   updatePlayerLists(state);
-  if (myRole === 'host') {
-    const count = Object.keys(state.players || {}).length;
-    const btn = document.getElementById('start-game-btn');
-    const hint = document.getElementById('start-hint');
-    if (count >= 3) {
-      btn.classList.remove('disabled'); btn.disabled = false;
-      hint.textContent = count + (count === 1 ? ' PLAYER READY.' : ' PLAYERS READY.') + ' Start when everyone\'s in.'; hint.style.color = '#FFE600'; hint.style.fontSize = '18px'; hint.style.fontWeight = '500';
-    } else {
-      btn.classList.add('disabled'); btn.disabled = true;
-      hint.textContent = count === 0 ? 'Need at least 3 players to start.' : count + ' of 3 players joined. Waiting for more...';
+  if(myRole==='host'){
+    const count=Object.keys(state.players||{}).length;
+    const btn=document.getElementById('start-game-btn'),hint=document.getElementById('start-hint');
+    if(count>=3){
+      btn.classList.remove('disabled');btn.disabled=false;
+      hint.textContent=count+' PLAYERS READY. Start when everyone\'s in.';
+      hint.style.color='#FFE600';hint.style.fontSize='18px';hint.style.fontWeight='500';
+    }else{
+      btn.classList.add('disabled');btn.disabled=true;
+      hint.textContent=count===0?'Need at least 3 players to start.':count+' of 3 players joined. Waiting for more...';
     }
   }
-  if (state.status === 'thinking') {
-    if (myRole === 'host') {
+
+  // THINKING
+  if(state.status==='thinking'){
+    if(myRole==='host'){
       go('s-roomcode');
-      const sgBtn = document.getElementById('start-game-btn');
-      if (sgBtn) { sgBtn.style.display = 'none'; }
-      // Only start countdown once per round
-      const thinkRoundKey = 'think_round_' + (state.round || 1);
-      if (!window.thinkCountdownStarted) window.thinkCountdownStarted = {};
-      if (!window.thinkCountdownStarted[thinkRoundKey]) {
-        window.thinkCountdownStarted[thinkRoundKey] = true;
-        const hint = document.getElementById('start-hint');
-        if (hint) { hint.textContent = 'Players are thinking...'; hint.style.color = '#FFE600'; }
+      const sgBtn=document.getElementById('start-game-btn');if(sgBtn)sgBtn.style.display='none';
+      const key='think_round_'+(state.round||1);
+      if(!window.thinkCountdownStarted)window.thinkCountdownStarted={};
+      if(!window.thinkCountdownStarted[key]){
+        window.thinkCountdownStarted[key]=true;
+        const hint=document.getElementById('start-hint');
+        if(hint){hint.textContent='Players are thinking...';hint.style.color='#FFE600';}
         startHostThinkCountdown();
       }
     }
-    if (myRole === 'player') {
-      // Only process thinking state once per round
-      const thinkPlayerKey = 'think_player_round_' + (state.round || 1);
-      if (!window.thinkPlayerStarted) window.thinkPlayerStarted = {};
-      if (!window.thinkPlayerStarted[thinkPlayerKey]) {
-        window.thinkPlayerStarted[thinkPlayerKey] = true;
-      const words = state.words || [];
-      document.getElementById('brief-display-words').textContent = '"' + state.brief + '"';
-      const wd = document.getElementById('words-display');
-      wd.innerHTML = words.map(w => `<div class="word-pill"><div class="word-pill-text">${w}</div></div>`).join('');
-      // Reset all timers for new round
-      if (thinkTimerInterval) { clearInterval(thinkTimerInterval); thinkTimerInterval = null; }
-      if (pitchTimerInterval) { clearInterval(pitchTimerInterval); pitchTimerInterval = null; }
-      donePitchingFired = false;
-      lockIdeaFired = false;
-      ideaLocked = false;
-      const hint = document.getElementById('think-hint');
-      if (state.suddenDeath) {
-        hint.textContent = 'SUDDEN DEATH. One round. Winner takes all.';
-        hint.style.color = '#ff3333';
-        hint.style.fontSize = '16px';
-        hint.style.fontWeight = '500';
-      } else {
-        hint.textContent = 'Use all 3 words in your idea. Any way you want.';
-        hint.style.color = '#888';
-        hint.style.fontSize = '14px';
+    if(myRole==='player'){
+      const key='think_player_round_'+(state.round||1);
+      if(!window.thinkPlayerStarted)window.thinkPlayerStarted={};
+      if(!window.thinkPlayerStarted[key]){
+        window.thinkPlayerStarted[key]=true;
+        const words=state.words||[];
+        document.getElementById('brief-display-words').textContent='"'+state.brief+'"';
+        document.getElementById('words-display').innerHTML=words.map(w=>`<div class="word-pill"><div class="word-pill-text">${w}</div></div>`).join('');
+        if(thinkTimerInterval){clearInterval(thinkTimerInterval);thinkTimerInterval=null;}
+        if(pitchTimerInterval){clearInterval(pitchTimerInterval);pitchTimerInterval=null;}
+        donePitchingFired=false;lockIdeaFired=false;ideaLocked=false;
+        const hint=document.getElementById('think-hint');
+        if(state.suddenDeath){hint.textContent='SUDDEN DEATH. One round. Winner takes all.';hint.style.color='#ff3333';hint.style.fontSize='16px';hint.style.fontWeight='500';}
+        else{hint.textContent='Use all 3 words in your idea. Any way you want.';hint.style.color='#888';hint.style.fontSize='14px';hint.style.fontWeight='';}
+        startThinkTimer();go('s-words');
       }
-      startThinkTimer();
-      go('s-words');
-      } // end if !thinkPlayerStarted
     }
   }
-  if (state.status === 'pitching') {
-    // Show pitch order screen first if we haven't yet this round
-    const roundKey = 'round_' + (state.round || 1);
-    if (!window.shownOrderScreen) window.shownOrderScreen = {};
-    if (!window.shownOrderScreen[roundKey]) {
-      window.shownOrderScreen[roundKey] = true;
+
+  // PITCHING — FIXED
+  // Removed handledPitcher gate. After order screen shown once per round,
+  // always call handlePitchingState. Its own guards (s-pitch / s-nameidea /
+  // ideaLocked) prevent interrupting active pitchers.
+  if(state.status==='pitching'){
+    const activeId=(document.querySelector('.screen.active')||{}).id;
+    if(activeId==='s-pitch')return; // never interrupt live pitch
+    const roundKey='round_'+(state.round||1);
+    if(!window.shownOrderScreen)window.shownOrderScreen={};
+    if(!window.shownOrderScreen[roundKey]){
+      window.shownOrderScreen[roundKey]=true;
       showPitchOrderScreen(state);
-    } else {
-      // Only call handlePitchingState if pitcher index changed or we haven't handled this pitcher yet
-      const pitcherKey = roundKey + '_pitcher_' + (state.currentPitcher || 0);
-      if (!window.handledPitcher) window.handledPitcher = {};
-      if (!window.handledPitcher[pitcherKey]) {
-        window.handledPitcher[pitcherKey] = true;
-        handlePitchingState(state);
-      }
+    }else{
+      // Order screen already shown — route everyone to correct screen.
+      // handlePitchingState guards prevent interrupting s-nameidea / ideaLocked.
+      handlePitchingState(state);
     }
   }
-  if (state.status === 'voting') {
-    if (myRole === 'host') {
-      // Host sees a clean waiting screen during voting
-      if (watchTimerInterval) { clearInterval(watchTimerInterval); watchTimerInterval = null; }
-      watchTimerActive = false;
-      watchTimerStartedAt = null;
-      const wt = document.getElementById('watch-timer');
-      const wb = document.getElementById('watch-bar');
-      const wpn = document.getElementById('watching-pitcher-name');
-      const lw = document.querySelector('#s-watching .live-wrap');
-      if (lw) lw.style.display = 'none';
-      if (wpn) wpn.textContent = 'everyone';
-      if (wt) { wt.textContent = 'Waiting for votes...'; wt.style.color = '#FFE600'; wt.style.fontSize = '32px'; }
-      if (wb) wb.style.width = '0%';
+
+  // VOTING
+  if(state.status==='voting'){
+    if(myRole==='host'){
+      if(watchTimerInterval){clearInterval(watchTimerInterval);watchTimerInterval=null;}
+      watchTimerStartedAt=null;
+      const wt=document.getElementById('watch-timer'),wb=document.getElementById('watch-bar');
+      const wpn=document.getElementById('watching-pitcher-name');
+      const lw=document.querySelector('#s-watching .live-wrap');
+      if(lw)lw.style.display='none';if(wpn)wpn.textContent='everyone';
+      if(wt){wt.textContent='Waiting for votes...';wt.style.color='#FFE600';wt.style.fontSize='32px';}
+      if(wb)wb.style.width='0%';
       go('s-watching');
-    } else {
-      showVoteScreen(state);
-    }
+    }else{showVoteScreen(state);}
   }
-  if (state.status === 'result') {
-    // Reset watching screen to normal
-    const lw = document.querySelector('#s-watching .live-wrap');
-    const wt = document.getElementById('watch-timer');
-    if (lw) lw.style.display = 'flex';
-    if (wt) { wt.style.fontSize = ''; }
+
+  // RESULT
+  if(state.status==='result'){
+    const lw=document.querySelector('#s-watching .live-wrap'),wt=document.getElementById('watch-timer');
+    if(lw)lw.style.display='flex';if(wt)wt.style.fontSize='';
     showResultScreen(state);
   }
-  if (state.status === 'gameover') {
-    showWinnerScreen(state);
+
+  // GAMEOVER
+  if(state.status==='gameover'){showWinnerScreen(state);}
+}
+
+function updatePlayerLists(state){
+  const players=state.players||{};
+  const names=Object.entries(players).map(([id,p])=>({id,name:p.name}));
+  if(document.getElementById('host-player-list')){
+    const c=names.length;document.getElementById('host-player-count').textContent=c;
+    let h=names.map(p=>`<div class="player-row"><div class="pdot"></div><div class="pname">${p.name}</div></div>`).join('');
+    for(let i=c;i<5;i++)h+=`<div class="player-row"><div class="pdot empty"></div><div class="pname empty">Waiting...</div></div>`;
+    document.getElementById('host-player-list').innerHTML=h;
+  }
+  if(document.getElementById('waiting-player-list')){
+    const c=names.length;document.getElementById('waiting-player-count').textContent=c;
+    let h=names.map(p=>`<div class="player-row"><div class="pdot"></div><div class="pname ${p.id===myPlayerId?'you':''}">${p.name}${p.id===myPlayerId?' ✓':''}</div></div>`).join('');
+    for(let i=c;i<5;i++)h+=`<div class="player-row"><div class="pdot empty"></div><div class="pname empty">Waiting...</div></div>`;
+    document.getElementById('waiting-player-list').innerHTML=h;
   }
 }
 
-function updatePlayerLists(state) {
-  const players = state.players || {};
-  const names = Object.entries(players).map(([id, p]) => ({ id, name: p.name }));
-  // Host waiting room
-  if (document.getElementById('host-player-list')) {
-    const count = names.length;
-    document.getElementById('host-player-count').textContent = count;
-    let html = names.map(p => `<div class="player-row"><div class="pdot"></div><div class="pname">${p.name}</div></div>`).join('');
-    for (let i = count; i < 5; i++) html += `<div class="player-row"><div class="pdot empty"></div><div class="pname empty">Waiting...</div></div>`;
-    document.getElementById('host-player-list').innerHTML = html;
-  }
-  // Player waiting room
-  if (document.getElementById('waiting-player-list')) {
-    const count = names.length;
-    document.getElementById('waiting-player-count').textContent = count;
-    let html = names.map(p => `<div class="player-row"><div class="pdot"></div><div class="pname ${p.id === myPlayerId ? 'you' : ''}">${p.name}${p.id === myPlayerId ? ' ✓' : ''}</div></div>`).join('');
-    for (let i = count; i < 5; i++) html += `<div class="player-row"><div class="pdot empty"></div><div class="pname empty">Waiting...</div></div>`;
-    document.getElementById('waiting-player-list').innerHTML = html;
-  }
+// HOST START
+let hostStartGameFired=false;
+function hostStartGame(){
+  if(hostStartGameFired)return;hostStartGameFired=true;setTimeout(()=>{hostStartGameFired=false;},3000);
+  if(!roomRef){alert('Connection error. Please refresh.');return;}
+  const playerIds=Object.keys(gameState.players||{});
+  if(playerIds.length<3){alert('Need at least 3 players to start.');return;}
+  window.update(roomRef,{status:'thinking',pitchOrder:shuffle(playerIds),currentPitcher:0,words:randomWords(),pitchDone:null,upNextFor:null,votes:null,ideaTitles:null})
+    .catch(e=>{alert('Error: '+e.message);});
 }
 
-// ===================== HOST START =====================
-let hostStartGameFired = false;
-function hostStartGame() {
-  if (hostStartGameFired) return;
-  hostStartGameFired = true;
-  setTimeout(() => { hostStartGameFired = false; }, 3000);
-  if (!roomRef) { alert('Connection error. Please refresh.'); return; }
-  const players = gameState.players || {};
-  const playerIds = Object.keys(players);
-  if (playerIds.length < 3) { alert('Need at least 3 players to start.'); return; }
-  const shuffled = shuffle(playerIds);
-  const words = randomWords();
-  window.update(roomRef, { 
-    status: 'thinking', 
-    pitchOrder: shuffled, 
-    currentPitcher: 0,
-    words: words,
-    pitchDone: null,
-    upNextFor: null,
-    votes: null,
-    ideaTitles: null
-  }).then(() => {
-  }).catch(err => {
-    alert('Error starting game: ' + err.message);
-  });
-}
-
-// ===================== HOST THINK COUNTDOWN =====================
-let hostThinkInterval = null;
-function startHostThinkCountdown() {
-  if (hostThinkInterval) { clearInterval(hostThinkInterval); hostThinkInterval = null; }
-  let s = 180;
-  const hint = document.getElementById('start-hint');
-  const spBtn = document.getElementById('start-pitching-btn');
-  // Hide START PITCHING until timer is up
-  if (spBtn) spBtn.style.display = 'none';
-  hostThinkInterval = setInterval(() => {
+// HOST THINK COUNTDOWN
+let hostThinkInterval=null;
+function startHostThinkCountdown(){
+  if(hostThinkInterval){clearInterval(hostThinkInterval);hostThinkInterval=null;}
+  let s=180;
+  const hint=document.getElementById('start-hint'),spBtn=document.getElementById('start-pitching-btn');
+  if(spBtn)spBtn.style.display='none';
+  hostThinkInterval=setInterval(()=>{
     s--;
-    const m = Math.floor(s/60);
-    const sec = s % 60;
-    const timeStr = m + ':' + String(sec).padStart(2,'0');
-    if (hint) hint.textContent = 'Players thinking — ' + timeStr + ' remaining';
-    if (s <= 0) {
-      clearInterval(hostThinkInterval); hostThinkInterval = null;
-      if (hint) { hint.textContent = 'Thinking time up! Hit START PITCHING when ready.'; hint.style.color = '#FFE600'; hint.style.fontSize = '18px'; hint.style.fontWeight = '500'; }
-      // Now show START PITCHING
-      if (spBtn) spBtn.style.display = 'block';
+    const ts=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+    if(hint)hint.textContent='Players thinking — '+ts+' remaining';
+    if(s<=0){
+      clearInterval(hostThinkInterval);hostThinkInterval=null;
+      if(hint){hint.textContent='Thinking time up! Hit START PITCHING when ready.';hint.style.color='#FFE600';hint.style.fontSize='18px';hint.style.fontWeight='500';}
+      if(spBtn)spBtn.style.display='block';
     }
-  }, 1000);
+  },1000);
 }
 
-// ===================== PITCH ORDER SCREEN =====================
-let orderCountdownInterval = null;
+// HOST START PITCHING
+let hostStartPitchingFired=false;
+function hostStartPitching(){
+  if(hostStartPitchingFired)return;hostStartPitchingFired=true;
+  if(!roomRef){alert('No room connection. Please refresh.');return;}
+  const spBtn=document.getElementById('start-pitching-btn');if(spBtn)spBtn.style.display='none';
+  window.update(roomRef,{status:'pitching',currentPitcher:0,pitchStartedAt:null,playerReady:null,upNextFor:null})
+    .catch(e=>{hostStartPitchingFired=false;if(spBtn)spBtn.style.display='block';alert('Error: '+e.message);});
+}
+window.hostStartPitching=hostStartPitching;
 
-function showPitchOrderScreen(state) {
-  if (orderCountdownInterval) { clearInterval(orderCountdownInterval); orderCountdownInterval = null; }
-  const players = state.players || {};
-  const order = state.pitchOrder || [];
-  
-  // Build order list
-  const listEl = document.getElementById('pitch-order-list');
-  listEl.innerHTML = order.map((id, i) => {
-    const name = players[id] ? players[id].name : '?';
-    const isMe = id === myPlayerId;
-    const isFirst = i === 0;
+// PITCH ORDER SCREEN
+let orderCountdownInterval=null;
+function showPitchOrderScreen(state){
+  if(orderCountdownInterval){clearInterval(orderCountdownInterval);orderCountdownInterval=null;}
+  const players=state.players||{},order=state.pitchOrder||[];
+  document.getElementById('pitch-order-list').innerHTML=order.map((id,i)=>{
+    const name=players[id]?players[id].name:'?',isMe=id===myPlayerId,isFirst=i===0;
     return `<div style="display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid #222;">
-      <div style="font-family:Impact,sans-serif;font-size:28px;color:${isMe ? '#FFE600' : '#555'};width:32px;">${i+1}</div>
-      <div style="font-size:20px;font-weight:${isMe ? '400' : '300'};color:${isMe ? '#fff' : '#aaa'};">${name}${isMe ? ' — you' : ''}${isFirst ? ' <span style="font-size:12px;color:#FFE600;letter-spacing:0.1em;text-transform:uppercase;margin-left:8px;">goes first</span>' : ''}</div>
+      <div style="font-family:Impact,sans-serif;font-size:28px;color:${isMe?'#FFE600':'#555'};width:32px;">${i+1}</div>
+      <div style="font-size:20px;font-weight:${isMe?'400':'300'};color:${isMe?'#fff':'#aaa'};">${name}${isMe?' — you':''}${isFirst?' <span style="font-size:12px;color:#FFE600;letter-spacing:0.1em;text-transform:uppercase;margin-left:8px;">goes first</span>':''}</div>
     </div>`;
   }).join('');
-
-  // Set personal message
-  const myIdx = order.indexOf(myPlayerId);
-  const youEl = document.getElementById('pitch-order-you');
-  if (myIdx === 0) {
-    youEl.textContent = "You're up first. Get ready.";
-  } else if (myIdx > 0) {
-    const before = players[order[myIdx-1]] ? players[order[myIdx-1]].name : '?';
-    youEl.textContent = "You pitch after " + before + ". Listen up.";
-  } else if (myRole === 'host') {
-    youEl.textContent = "You're the referee. Watch the clock.";
-  }
-  const orderScreen = document.getElementById('s-pitchorder');
-  if (!orderScreen) {
-    handlePitchingState(state);
-    return;
-  }
+  const myIdx=order.indexOf(myPlayerId),youEl=document.getElementById('pitch-order-you');
+  if(myIdx===0)youEl.textContent="You're up first. Get ready.";
+  else if(myIdx>0)youEl.textContent="You pitch after "+(players[order[myIdx-1]]?players[order[myIdx-1]].name:'?')+". Listen up.";
+  else if(myRole==='host')youEl.textContent="You're the referee. Watch the clock.";
   go('s-pitchorder');
-
-  // Countdown then move on
-  let count = 5;
-  document.getElementById('order-countdown').textContent = count;
-  orderCountdownInterval = setInterval(() => {
+  let count=5;
+  document.getElementById('order-countdown').textContent=count;
+  orderCountdownInterval=setInterval(()=>{
     count--;
-    document.getElementById('order-countdown').textContent = count;
-    if (count <= 0) {
-      clearInterval(orderCountdownInterval); orderCountdownInterval = null;
-      // After order screen, set upNextFor for first pitcher
-      const firstId = (gameState.pitchOrder || [])[0];
-      if (myRole === 'host' && firstId) {
-        window.update(roomRef, { upNextFor: firstId });
-      } else if (myRole === 'player') {
-        // Set correct pitcher name before navigating
-        const players = gameState.players || {};
-        const firstPitcherId = (gameState.pitchOrder || [])[0];
-        const firstPitcherName = players[firstPitcherId] ? players[firstPitcherId].name : '?';
-        document.getElementById('watching-pitcher-name').textContent = firstPitcherName;
-        go('s-watching');
-      }
+    document.getElementById('order-countdown').textContent=count;
+    if(count<=0){
+      clearInterval(orderCountdownInterval);orderCountdownInterval=null;
+      // FIX: Use live gameState. Host sets upNextFor; players call handlePitchingState
+      // so first pitcher routes to showNameIdeaScreen, not hardcoded s-watching.
+      const firstId=(gameState.pitchOrder||[])[0];
+      if(myRole==='host'&&firstId){window.update(roomRef,{upNextFor:firstId});}
+      else if(myRole==='player'){handlePitchingState(gameState);}
     }
-  }, 1000);
+  },1000);
 }
 
-// ===================== NAME IDEA SCREEN =====================
+// THINK TIMER
+function startThinkTimer(){
+  if(thinkTimerInterval)return;
+  let s=180;
+  const el=document.getElementById('think-timer'),bar=document.getElementById('think-bar');
+  thinkTimerInterval=setInterval(()=>{
+    s--;el.textContent=formatTime(s);bar.style.width=(s/180*100)+'%';
+    if(s<=30){el.classList.add('warn');bar.classList.add('warn');}
+    if(s<=0){
+      clearInterval(thinkTimerInterval);thinkTimerInterval=null;
+      const hint=document.getElementById('think-hint');
+      hint.textContent="Thinking time is up. The host will start the pitch soon.";
+      hint.style.color='#FFE600';hint.style.fontSize='18px';hint.style.fontWeight='400';
+    }
+  },1000);
+}
 
-function showNameIdeaScreen() {
-  // Only reset if screen is not already active (don't clear while player is typing)
-  const currentScreen = document.querySelector('.screen.active');
-  if (currentScreen && currentScreen.id === 's-nameidea') return;
-  lockIdeaFired = false;
-  document.getElementById('idea-title-final').value = '';
-  document.getElementById('idea-final-count').textContent = '0/40';
+// HANDLE PITCHING STATE
+function handlePitchingState(state){
+  if(pitchTimerInterval){clearInterval(pitchTimerInterval);pitchTimerInterval=null;}
+  const order=state.pitchOrder||[],idx=state.currentPitcher||0;
+  if(idx>=order.length)return;
+  const currentId=order[idx],players=state.players||{};
+  const currentName=players[currentId]?players[currentId].name:'?';
+  const brief=state.brief,words=state.words||[];
+  const orderHTML=order.map((id,i)=>{
+    const n=players[id]?players[id].name:'?',cls=i<idx?'done':i===idx?'active':'';
+    return `<span class="po-name ${cls}">${n}</span>${i<order.length-1?'<span class="po-sep">—</span>':''}`;
+  }).join('');
+
+  if(myRole==='player'&&currentId===myPlayerId){
+    // My turn — guard against interrupting active naming/pitching
+    const activeId=(document.querySelector('.screen.active')||{}).id;
+    if(activeId==='s-pitch'||activeId==='s-nameidea'||ideaLocked)return;
+    document.getElementById('pitch-player-name').textContent='turn, '+myName+'.';
+    document.getElementById('brief-display-pitch').textContent='"'+brief+'"';
+    document.getElementById('pitch-words-display').innerHTML=words.map(w=>`<div class="word-pill"><div class="word-pill-text">${w}</div></div>`).join('');
+    document.getElementById('pitch-order-display').innerHTML=orderHTML;
+    showNameIdeaScreen();
+  }else if(myRole==='player'){
+    document.getElementById('watching-pitcher-name').textContent=currentName;
+    document.getElementById('brief-display-watch').textContent='"'+brief+'"';
+    document.getElementById('watch-words-display').innerHTML=words.map(w=>`<div class="word-pill dim"><div class="word-pill-text">${w}</div></div>`).join('');
+    document.getElementById('watch-order-display').innerHTML=orderHTML;
+    const myIdx=order.indexOf(myPlayerId),hint=document.getElementById('watch-hint');
+    if(hint){
+      if(myIdx===idx+1)hint.textContent="You're up next. Start thinking.";
+      else if(myIdx>idx+1)hint.textContent="Listen up. Your turn is coming.";
+      else hint.textContent="You've pitched. Now listen.";
+    }
+    document.getElementById('watch-timer').textContent='—';
+    document.getElementById('watch-timer').style.color='#555';
+    go('s-watching');
+  }else if(myRole==='host'){
+    document.getElementById('watching-pitcher-name').textContent=currentName;
+    document.getElementById('brief-display-watch').textContent='"'+brief+'"';
+    document.getElementById('watch-words-display').innerHTML=words.map(w=>`<div class="word-pill dim"><div class="word-pill-text">${w}</div></div>`).join('');
+    document.getElementById('watch-order-display').innerHTML=orderHTML;
+    const timerEl=document.getElementById('watch-timer'),barEl=document.getElementById('watch-bar');
+    timerEl.textContent='naming...';timerEl.style.color='#555';timerEl.className='timer-big';
+    barEl.style.width='100%';barEl.style.background='#333';
+    go('s-watching');
+  }
+}
+
+// NAME IDEA
+function showNameIdeaScreen(){
+  const curr=(document.querySelector('.screen.active')||{}).id;
+  if(curr==='s-nameidea')return;
+  lockIdeaFired=false;
+  document.getElementById('idea-title-final').value='';
+  document.getElementById('idea-final-count').textContent='0/40';
   go('s-nameidea');
-  setTimeout(() => { document.getElementById('idea-title-final').focus(); }, 300);
+  setTimeout(()=>{document.getElementById('idea-title-final').focus();},300);
 }
 
-let lockIdeaFired = false;
-let ideaLocked = false;
-function lockIdeaName() {
-  if (lockIdeaFired) return;
-  lockIdeaFired = true;
-  const title = document.getElementById('idea-title-final').value.trim();
-  // Navigate to pitch screen and start timer
-  const state = gameState;
-  const brief = state.brief || '';
-  const words = state.words || [];
-  document.getElementById('pitch-player-name').textContent = 'turn, ' + myName + '.';
-  document.getElementById('brief-display-pitch').textContent = '"' + brief + '"';
-  const pwd = document.getElementById('pitch-words-display');
-  pwd.innerHTML = words.map(w => `<div class="word-pill"><div class="word-pill-text">${w}</div></div>`).join('');
-  ideaLocked = true; // Set BEFORE startPitchTimer to prevent Firebase race condition
-  lockIdeaFired = false;
-  go('s-pitch');
-  startPitchTimer();
-  // Save title to Firebase in background
-  window.update(roomRef, { ['ideaTitles/' + myPlayerId]: title || '(no title)' });
+let lockIdeaFired=false,ideaLocked=false;
+function lockIdeaName(){
+  if(lockIdeaFired)return;lockIdeaFired=true;
+  const title=document.getElementById('idea-title-final').value.trim();
+  const s=gameState;
+  document.getElementById('pitch-player-name').textContent='turn, '+myName+'.';
+  document.getElementById('brief-display-pitch').textContent='"'+(s.brief||'')+'"';
+  document.getElementById('pitch-words-display').innerHTML=(s.words||[]).map(w=>`<div class="word-pill"><div class="word-pill-text">${w}</div></div>`).join('');
+  ideaLocked=true;lockIdeaFired=false;
+  go('s-pitch');startPitchTimer();
+  window.update(roomRef,{['ideaTitles/'+myPlayerId]:title||'(no title)'});
 }
+window.lockIdeaName=lockIdeaName;
 
-window.lockIdeaName = lockIdeaName;
-
-// Oninput for idea title final
-document.addEventListener('DOMContentLoaded', () => {
-  const el = document.getElementById('idea-title-final');
-  if (el) el.addEventListener('input', () => {
-    document.getElementById('idea-final-count').textContent = el.value.length + '/40';
-  });
+document.addEventListener('DOMContentLoaded',()=>{
+  const el=document.getElementById('idea-title-final');
+  if(el)el.addEventListener('input',()=>{document.getElementById('idea-final-count').textContent=el.value.length+'/40';});
 });
 
-// ===================== PLAYER READY TO PITCH =====================
-
-
-// ===================== HOST START PITCHING =====================
-let hostStartPitchingFired = false;
-function hostStartPitching() {
-  if (hostStartPitchingFired) return;
-  hostStartPitchingFired = true;
-  if (!roomRef) { alert('No room connection. Please refresh.'); return; }
-  // Hide button immediately to prevent double press
-  const spBtn = document.getElementById('start-pitching-btn');
-  if (spBtn) spBtn.style.display = 'none';
-  window.update(roomRef, { 
-    status: 'pitching',
-    currentPitcher: 0,
-    pitchStartedAt: null,
-    playerReady: null,
-    upNextFor: null
-  }).catch(e => {
-    hostStartPitchingFired = false;
-    if (spBtn) spBtn.style.display = 'block';
-    alert('Error starting game: ' + e.message);
-  });
-}
-window.hostStartPitching = hostStartPitching;
-
-// ===================== THINK TIMER =====================
-function startThinkTimer() {
-  if (thinkTimerInterval) return;
-  let s = 180;
-  const el = document.getElementById('think-timer');
-  const bar = document.getElementById('think-bar');
-  thinkTimerInterval = setInterval(() => {
-    s--;
-    el.textContent = formatTime(s);
-    bar.style.width = (s / 180 * 100) + '%';
-    if (s <= 30) { el.classList.add('warn'); bar.classList.add('warn'); }
-    if (s <= 0) { 
-      clearInterval(thinkTimerInterval); thinkTimerInterval = null;
-      const hint = document.getElementById('think-hint');
-      hint.textContent = "Thinking time is up. The host will start the pitch soon.";
-      hint.style.color = '#FFE600';
-      hint.style.fontSize = '18px';
-      hint.style.fontWeight = '400';
-    }
-  }, 1000);
+// PITCH TIMER
+function startPitchTimer(){
+  let s=90;
+  const el=document.getElementById('pitch-timer'),bar=document.getElementById('pitch-bar');
+  el.textContent=formatTime(s);bar.style.width='100%';el.className='timer-big';
+  window.update(roomRef,{pitchStartedAt:Date.now()});
+  pitchTimerInterval=setInterval(()=>{
+    s--;el.textContent=formatTime(s);bar.style.width=(s/90*100)+'%';
+    if(s<=20){el.classList.add('warn');bar.classList.add('warn');}
+    if(s<=0){clearInterval(pitchTimerInterval);pitchTimerInterval=null;donePitching();}
+  },1000);
 }
 
-// ===================== PITCHING =====================
-function handlePitchingState(state) {
-  if (pitchTimerInterval) { clearInterval(pitchTimerInterval); pitchTimerInterval = null; }
-  const order = state.pitchOrder || [];
-  const idx = state.currentPitcher || 0;
-  if (idx >= order.length) return;
-  const currentId = order[idx];
-  const players = state.players || {};
-  const currentName = players[currentId] ? players[currentId].name : '?';
-  const brief = state.brief;
-  const words = state.words || [];
-  // Update pitch order display
-  const orderHTML = order.map((id, i) => {
-    const n = players[id] ? players[id].name : '?';
-    let cls = i < idx ? 'done' : i === idx ? 'active' : '';
-    return `<span class="po-name ${cls}">${n}</span>${i < order.length - 1 ? '<span class="po-sep">—</span>' : ''}`;
-  }).join('');
-  if (myRole === 'player' && currentId === myPlayerId) {
-    // It's my turn - but don't interrupt if already pitching or naming
-    const activeScreen = document.querySelector('.screen.active');
-    const activeId = activeScreen ? activeScreen.id : '';
-    if (activeId === 's-pitch' || activeId === 's-nameidea' || ideaLocked) return;
-    // It's my turn - set up pitch screen
-    document.getElementById('pitch-player-name').textContent = 'turn, ' + myName + '.';
-    document.getElementById('brief-display-pitch').textContent = '"' + brief + '"';
-    const pwd = document.getElementById('pitch-words-display');
-    pwd.innerHTML = words.map(w => `<div class="word-pill"><div class="word-pill-text">${w}</div></div>`).join('');
-    document.getElementById('pitch-order-display').innerHTML = orderHTML;
-    showNameIdeaScreen();
-  } else if (myRole === 'player') {
-    // Watching someone else
-    document.getElementById('watching-pitcher-name').textContent = currentName;
-    document.getElementById('brief-display-watch').textContent = '"' + brief + '"';
-    const wwd = document.getElementById('watch-words-display');
-    wwd.innerHTML = words.map(w => `<div class="word-pill dim"><div class="word-pill-text">${w}</div></div>`).join('');
-    document.getElementById('watch-order-display').innerHTML = orderHTML;
-    // Smart hint based on role and position
-    const myIdx = order.indexOf(myPlayerId);
-    const hint = document.getElementById('watch-hint');
-    if (hint) {
-      if (myRole === 'host') {
-        hint.textContent = "Watch the clock. You control the game.";
-      } else if (myIdx === idx + 1) {
-        hint.textContent = "You're up next. Start thinking.";
-      } else if (myIdx > idx + 1) {
-        hint.textContent = "Listen up. Your turn is coming.";
-      } else {
-        hint.textContent = "You've pitched. Now listen.";
-      }
-    }
-    // Don't start watch timer - just show watching screen
-    // Timer is cosmetic on watch screen - host has the real one
-    document.getElementById('watch-timer').textContent = '—';
-    document.getElementById('watch-timer').style.color = '#555';
-    go('s-watching');
-  } else if (myRole === 'host') {
-    // Host sees who is pitching - show "naming..." until pitch starts
-    document.getElementById('watching-pitcher-name').textContent = currentName;
-    document.getElementById('brief-display-watch').textContent = '"' + brief + '"';
-    const wwd = document.getElementById('watch-words-display');
-    wwd.innerHTML = words.map(w => `<div class="word-pill dim"><div class="word-pill-text">${w}</div></div>`).join('');
-    document.getElementById('watch-order-display').innerHTML = orderHTML;
-    const timerEl = document.getElementById('watch-timer');
-    const barEl = document.getElementById('watch-bar');
-    timerEl.textContent = 'naming...';
-    timerEl.style.color = '#555';
-    timerEl.className = 'timer-big';
-    barEl.style.width = '100%';
-    barEl.style.background = '#333';
-    go('s-watching');
-    // Timer is started by the pitchStartedAt watcher - don't start it here
-  }
+let watchTimerStartedAt=null,watchTimerInterval=null;
+function startWatchTimer(startedAt){
+  if(watchTimerStartedAt===startedAt)return;
+  if(watchTimerInterval){clearInterval(watchTimerInterval);watchTimerInterval=null;}
+  watchTimerStartedAt=startedAt;
+  const el=document.getElementById('watch-timer'),bar=document.getElementById('watch-bar');
+  watchTimerInterval=setInterval(()=>{
+    const elapsed=Math.floor((Date.now()-startedAt)/1000),s=Math.max(0,90-elapsed);
+    if(el){el.textContent=formatTime(s);el.style.color='#333';}
+    if(bar)bar.style.width=(s/90*100)+'%';
+    if(s<=0){clearInterval(watchTimerInterval);watchTimerInterval=null;}
+  },1000);
 }
 
-function startPitchTimer() {
-  let s = 90;
-  const el = document.getElementById('pitch-timer');
-  const bar = document.getElementById('pitch-bar');
-  el.textContent = formatTime(s);
-  bar.style.width = '100%';
-  el.className = 'timer-big';
-  // Set pitchStartedAt - this is when the clock officially starts
-  // Host timer listener will pick this up and start the watch timer
-  window.update(roomRef, { pitchStartedAt: Date.now() });
-  pitchTimerInterval = setInterval(() => {
-    s--;
-    el.textContent = formatTime(s);
-    bar.style.width = (s / 90 * 100) + '%';
-    if (s <= 20) { el.classList.add('warn'); bar.classList.add('warn'); }
-    if (s <= 0) { clearInterval(pitchTimerInterval); pitchTimerInterval = null; donePitching(); }
-  }, 1000);
-}
-
-let watchTimerActive = false;
-let watchTimerStartedAt = null;
-let watchTimerInterval = null;
-function startWatchTimer(startedAt) {
-  if (watchTimerStartedAt === startedAt) return; // already running for this pitch
-  // Cancel any existing timer
-  if (watchTimerInterval) { clearInterval(watchTimerInterval); watchTimerInterval = null; }
-  watchTimerActive = true;
-  watchTimerStartedAt = startedAt;
-  const el = document.getElementById('watch-timer');
-  const bar = document.getElementById('watch-bar');
-  watchTimerInterval = setInterval(() => {
-    const elapsed = Math.floor((Date.now() - startedAt) / 1000);
-    const s = Math.max(0, 90 - elapsed);
-    if (el) { el.textContent = formatTime(s); el.style.color = '#333'; }
-    if (bar) bar.style.width = (s / 90 * 100) + '%';
-    if (s <= 0) {
-      clearInterval(watchTimerInterval);
-      watchTimerInterval = null;
-      watchTimerActive = false;
-    }
-  }, 1000);
-}
-
-let donePitchingFired = false;
-function donePitching() {
-  if (donePitchingFired) return;
-  donePitchingFired = true;
-  setTimeout(() => { donePitchingFired = false; }, 3000);
-  if (pitchTimerInterval) { clearInterval(pitchTimerInterval); pitchTimerInterval = null; }
-  // Signal host that this player is done pitching
-  window.update(window.ref(window.db, 'rooms/' + roomCode + '/pitchDone/' + myPlayerId), { done: true, at: Date.now() });
+let donePitchingFired=false;
+function donePitching(){
+  if(donePitchingFired)return;donePitchingFired=true;
+  setTimeout(()=>{donePitchingFired=false;},3000);
+  if(pitchTimerInterval){clearInterval(pitchTimerInterval);pitchTimerInterval=null;}
+  window.update(window.ref(window.db,'rooms/'+roomCode+'/pitchDone/'+myPlayerId),{done:true,at:Date.now()});
   go('s-watching');
 }
 
-// ===================== HOST PITCH MANAGEMENT =====================
-// Host watches pitchDone and advances
-function setupHostPitchWatcher() {
-  const pitchDoneRef = window.ref(window.db, 'rooms/' + roomCode + '/pitchDone');
-  window.onValue(pitchDoneRef, snap => {
-    if (!snap.exists() || myRole !== 'host') return;
-    const done = snap.val();
-    const order = gameState.pitchOrder || [];
-    const idx = gameState.currentPitcher || 0;
-    if (idx >= order.length) return;
-    const currentId = order[idx];
-    if (done[currentId]) {
-      advancePitcher();
-    }
+// HOST PITCH WATCHER
+function setupHostPitchWatcher(){
+  window.onValue(window.ref(window.db,'rooms/'+roomCode+'/pitchDone'),snap=>{
+    if(!snap.exists()||myRole!=='host')return;
+    const done=snap.val(),order=gameState.pitchOrder||[],idx=gameState.currentPitcher||0;
+    if(idx>=order.length)return;
+    if(done[order[idx]])advancePitcher();
   });
 }
 
-function advancePitcher() {
-  if (watchTimerInterval) { clearInterval(watchTimerInterval); watchTimerInterval = null; }
-  watchTimerActive = false;
-  watchTimerStartedAt = null;
-  const order = gameState.pitchOrder || [];
-  const idx = (gameState.currentPitcher || 0) + 1;
-  if (idx >= order.length) {
-    // All done — go to vote
-    window.update(roomRef, { status: 'voting', currentPitcher: idx });
-  } else {
-    // Next pitcher — show "you're up next" to that player
-    const nextId = order[idx];
-    const prevId = order[idx - 1];
-    const players = gameState.players || {};
-    window.update(roomRef, {
-      currentPitcher: idx,
-      pitchStartedAt: null,
-      upNextFor: nextId,
-      prevPitcher: prevId
-    });
-  }
+function advancePitcher(){
+  if(watchTimerInterval){clearInterval(watchTimerInterval);watchTimerInterval=null;}
+  watchTimerStartedAt=null;
+  const order=gameState.pitchOrder||[],idx=(gameState.currentPitcher||0)+1;
+  if(idx>=order.length){window.update(roomRef,{status:'voting',currentPitcher:idx});}
+  else{window.update(roomRef,{currentPitcher:idx,pitchStartedAt:null,upNextFor:order[idx],prevPitcher:order[idx-1]});}
 }
 
-// ===================== YOU'RE UP NEXT =====================
-// Listen for upNextFor
-function listenForUpNext() {
-  let lastUpNextFor = null;
-  window.onValue(window.ref(window.db, 'rooms/' + roomCode + '/upNextFor'), snap => {
-    if (!snap.exists()) { lastUpNextFor = null; return; }
-    const targetId = snap.val();
-    if (targetId === lastUpNextFor) return; // already handled
-    lastUpNextFor = targetId;
-    if (targetId === myPlayerId) {
-      showUpNext();
-    }
+// UP NEXT
+function listenForUpNext(){
+  let last=null;
+  window.onValue(window.ref(window.db,'rooms/'+roomCode+'/upNextFor'),snap=>{
+    if(!snap.exists()){last=null;return;}
+    const v=snap.val();if(v===last)return;last=v;
+    if(v===myPlayerId)showUpNext();
   });
 }
 
-function showUpNext() {
-  const players = gameState.players || {};
-  const order = gameState.pitchOrder || [];
-  const idx = gameState.currentPitcher || 0;
-  const prevId = gameState.prevPitcher;
-  const prevName = prevId && players[prevId] ? players[prevId].name : null;
-  document.getElementById('prev-pitcher-done').textContent = prevName ? prevName + ' just finished.' : '';
-  document.getElementById('upnext-name').textContent = 'YOU\'RE UP NEXT, ' + myName.toUpperCase() + '.';
-  let count = 5;
-  document.getElementById('upnext-countdown').textContent = count;
+function showUpNext(){
+  const players=gameState.players||{},prevId=gameState.prevPitcher;
+  const prevName=prevId&&players[prevId]?players[prevId].name:null;
+  document.getElementById('prev-pitcher-done').textContent=prevName?prevName+' just finished.':'';
+  document.getElementById('upnext-name').textContent='YOU\'RE UP NEXT, '+myName.toUpperCase()+'.';
+  let count=5;document.getElementById('upnext-countdown').textContent=count;
   go('s-upnext');
-  if (upnextInterval) clearInterval(upnextInterval);
-  upnextInterval = setInterval(() => {
+  if(upnextInterval)clearInterval(upnextInterval);
+  upnextInterval=setInterval(()=>{
     count--;
-    document.getElementById('upnext-countdown').textContent = count > 0 ? count : 'GO.';
-    if (count <= 0) {
-      clearInterval(upnextInterval);
-      upnextInterval = null;
-      showNameIdeaScreen();
-    }
-  }, 1000);
+    document.getElementById('upnext-countdown').textContent=count>0?count:'GO.';
+    if(count<=0){clearInterval(upnextInterval);upnextInterval=null;showNameIdeaScreen();}
+  },1000);
 }
 
-// ===================== VOTE =====================
-function showVoteScreen(state) {
-  const players = state.players || {};
-  const ideaTitles = state.ideaTitles || {};
-  selectedVote = null;
-  lockVoteFired = false;
-  const lockBtn = document.getElementById('lock-vote-btn');
-  lockBtn.classList.add('disabled'); lockBtn.disabled = true;
-  lockBtn.textContent = 'LOCK IN VOTE →';
-  let html = '';
-  Object.entries(players).forEach(([id, p]) => {
-    const isSelf = id === myPlayerId;
-    const idea = ideaTitles[id] || '';
-    html += `<div class="vote-item ${isSelf ? 'self' : ''}" id="vi-${id}" onclick="selectVote('${id}')">
-      <div>
-        <div class="vote-name-big">${p.name}</div>
-        ${idea ? `<div class="vote-idea-small">"${idea}"</div>` : ''}
-      </div>
-      <div class="vote-check"></div>
-    </div>`;
-  });
-  document.getElementById('vote-list').innerHTML = html;
+// VOTE
+function showVoteScreen(state){
+  const players=state.players||{},ideaTitles=state.ideaTitles||{};
+  selectedVote=null;lockVoteFired=false;
+  const lockBtn=document.getElementById('lock-vote-btn');
+  lockBtn.classList.add('disabled');lockBtn.disabled=true;lockBtn.textContent='LOCK IN VOTE →';
+  document.getElementById('vote-list').innerHTML=Object.entries(players).map(([id,p])=>{
+    const isSelf=id===myPlayerId,idea=ideaTitles[id]||'';
+    return `<div class="vote-item ${isSelf?'self':''}" id="vi-${id}" onclick="selectVote('${id}')">
+      <div><div class="vote-name-big">${p.name}</div>${idea?`<div class="vote-idea-small">"${idea}"</div>`:''}</div>
+      <div class="vote-check"></div></div>`;
+  }).join('');
   go('s-vote');
 }
 
-function selectVote(id) {
-  if (id === myPlayerId) return;
-  selectedVote = id;
-  document.querySelectorAll('.vote-item').forEach(el => el.classList.remove('selected'));
-  document.getElementById('vi-' + id).classList.add('selected');
-  const btn = document.getElementById('lock-vote-btn');
-  btn.classList.remove('disabled'); btn.disabled = false;
+function selectVote(id){
+  if(id===myPlayerId)return;selectedVote=id;
+  document.querySelectorAll('.vote-item').forEach(el=>el.classList.remove('selected'));
+  document.getElementById('vi-'+id).classList.add('selected');
+  const btn=document.getElementById('lock-vote-btn');btn.classList.remove('disabled');btn.disabled=false;
 }
 
-let lockVoteFired = false;
-function lockVote() {
-  if (lockVoteFired) return;
-  lockVoteFired = true;
-  if (!selectedVote) return;
-  window.update(window.ref(window.db, 'rooms/' + roomCode + '/votes/' + myPlayerId), { votedFor: selectedVote });
-  // Lock the button and show waiting state - stay on vote screen
-  const lockBtn = document.getElementById('lock-vote-btn');
-  lockBtn.classList.add('disabled'); lockBtn.disabled = true;
-  lockBtn.textContent = 'VOTE LOCKED ✓';
+let lockVoteFired=false;
+function lockVote(){
+  if(lockVoteFired)return;lockVoteFired=true;if(!selectedVote)return;
+  window.update(window.ref(window.db,'rooms/'+roomCode+'/votes/'+myPlayerId),{votedFor:selectedVote});
+  const btn=document.getElementById('lock-vote-btn');btn.classList.add('disabled');btn.disabled=true;btn.textContent='VOTE LOCKED ✓';
 }
 
-// ===================== HOST TALLIES VOTES =====================
-let tallyFired = false;
-function setupHostVoteWatcher() {
-  window.onValue(window.ref(window.db, 'rooms/' + roomCode + '/votes'), snap => {
-    if (myRole !== 'host') return;
-    const votes = snap.exists() ? snap.val() : {};
-    const players = gameState.players || {};
-    const playerCount = Object.keys(players).length;
-    const voteCount = Object.keys(votes).length;
-    if (playerCount > 0 && voteCount >= playerCount && !tallyFired) {
-      tallyFired = true;
-      tallyVotes(votes, players);
-    }
+// HOST VOTE TALLY
+let tallyFired=false;
+function setupHostVoteWatcher(){
+  window.onValue(window.ref(window.db,'rooms/'+roomCode+'/votes'),snap=>{
+    if(myRole!=='host')return;
+    const votes=snap.exists()?snap.val():{},players=gameState.players||{};
+    const pc=Object.keys(players).length,vc=Object.keys(votes).length;
+    if(pc>0&&vc>=pc&&!tallyFired){tallyFired=true;tallyVotes(votes,players);}
   });
 }
 
-function tallyVotes(votes, players) {
-  const tally = {};
-  Object.values(votes).forEach(v => {
-    tally[v.votedFor] = (tally[v.votedFor] || 0) + 1;
-  });
-  const maxVotes = Math.max(...Object.values(tally));
-  const winners = Object.keys(tally).filter(id => tally[id] === maxVotes);
-  const scores = gameState.scores || {};
-  let winnerId;
-  if (winners.length > 1) {
-    // Tie - give point to all tied players, mark as tie
-    winners.forEach(id => { scores[id] = (scores[id] || 0) + 1; });
-    winnerId = winners[0]; // show first for result screen, but isTie flag set
-  } else {
-    winnerId = winners[0];
-    scores[winnerId] = (scores[winnerId] || 0) + 1;
-  }
-  window.update(roomRef, {
-    status: 'result',
-    roundWinner: winnerId,
-    roundTie: winners.length > 1 ? winners : null,
-    scores: scores,
-    votes: {},
-    pitchDone: {}
-  });
+function tallyVotes(votes,players){
+  const tally={};
+  Object.values(votes).forEach(v=>{tally[v.votedFor]=(tally[v.votedFor]||0)+1;});
+  const maxV=Math.max(...Object.values(tally));
+  const winners=Object.keys(tally).filter(id=>tally[id]===maxV);
+  const scores={...gameState.scores||{}};
+  const winnerId=winners[0];
+  if(winners.length>1){winners.forEach(id=>{scores[id]=(scores[id]||0)+1;});}
+  else{scores[winnerId]=(scores[winnerId]||0)+1;}
+  window.update(roomRef,{status:'result',roundWinner:winnerId,roundTie:winners.length>1?winners:null,scores,votes:{},pitchDone:{}});
 }
 
-// ===================== RESULT =====================
-function showResultScreen(state) {
-  const players = state.players || {};
-  const scores = state.scores || {};
-  const winnerId = state.roundWinner;
-  const winnerName = players[winnerId] ? players[winnerId].name : '?';
-  const ideaTitle = (state.ideaTitles || {})[winnerId] || '';
-  const isTie = state.roundTie && state.roundTie.length > 1;
-  const tieNames = isTie ? state.roundTie.map(id => players[id] ? players[id].name : '?').join(' & ') : null;
-  const isSuddenDeath = state.suddenDeath === true;
-  document.getElementById('result-round-label').textContent = isSuddenDeath ? 'SUDDEN DEATH — Result' : 'Round ' + (state.round || 1) + (isTie ? ' — Tie!' : ' — Result');
-  document.getElementById('result-winner-name').textContent = isTie ? tieNames.toUpperCase() : winnerName.toUpperCase();
-  document.getElementById('result-winner-idea').textContent = ideaTitle ? '"' + ideaTitle + '"' : '';
-  const maxScore = Math.max(...Object.values(scores).concat([0]));
-  let scoresHTML = '';
-  Object.entries(players).forEach(([id, p]) => {
-    const s = scores[id] || 0;
-    const isLeader = s === maxScore && maxScore > 0;
-    let dots = '';
-    for (let i = 0; i < 3; i++) dots += `<div class="sdot ${i < s ? '' : 'empty'}"></div>`;
-    scoresHTML += `<div class="score-row ${isLeader ? 'leader' : ''}">
-      <div class="score-player ${isLeader ? 'leader' : ''}">${p.name}</div>
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div class="score-dots">${dots}</div>
-        <div class="score-num">${s}</div>
-      </div>
+// RESULT
+function showResultScreen(state){
+  const players=state.players||{},scores=state.scores||{},winnerId=state.roundWinner;
+  const winnerName=players[winnerId]?players[winnerId].name:'?';
+  const ideaTitle=(state.ideaTitles||{})[winnerId]||'';
+  const isTie=state.roundTie&&state.roundTie.length>1;
+  const tieNames=isTie?state.roundTie.map(id=>players[id]?players[id].name:'?').join(' & '):null;
+  const rl=document.getElementById('result-round-label');
+  rl.textContent=(state.suddenDeath?'SUDDEN DEATH':'Round '+(state.round||1))+(isTie?' — Tie!':' — Result');
+  rl.style.cssText='';
+  document.getElementById('result-winner-name').textContent=isTie?tieNames.toUpperCase():winnerName.toUpperCase();
+  document.getElementById('result-winner-idea').textContent=ideaTitle?'"'+ideaTitle+'"':'';
+  const maxScore=Math.max(...Object.values(scores).concat([0]));
+  document.getElementById('result-scores').innerHTML=Object.entries(players).map(([id,p])=>{
+    const s=scores[id]||0,isLeader=s===maxScore&&maxScore>0;
+    let dots='';for(let i=0;i<3;i++)dots+=`<div class="sdot ${i<s?'':'empty'}"></div>`;
+    return `<div class="score-row ${isLeader?'leader':''}">
+      <div class="score-player ${isLeader?'leader':''}">${p.name}</div>
+      <div style="display:flex;align-items:center;gap:12px;"><div class="score-dots">${dots}</div><div class="score-num">${s}</div></div>
     </div>`;
-  });
-  document.getElementById('result-scores').innerHTML = scoresHTML;
-  // Check for game winner
-  const gameWinners = Object.entries(scores).filter(([id, s]) => s >= 3);
-  const nextBtn = document.getElementById('next-round-btn');
-  if (gameWinners.length > 1) {
-    // Sudden death announcement - show for everyone
-    document.getElementById('result-round-label').textContent = "That's a tie. Death round. The better idea kills all others.";
-    document.getElementById('result-round-label').style.color = '#ff3333';
-    document.getElementById('result-round-label').style.fontSize = '18px';
-    document.getElementById('result-round-label').style.fontWeight = '500';
-    document.getElementById('result-round-label').style.letterSpacing = '0';
-    document.getElementById('result-round-label').style.textTransform = 'none';
+  }).join('');
+  const gameWinners=Object.entries(scores).filter(([,s])=>s>=3);
+  const nextBtn=document.getElementById('next-round-btn');
+  if(gameWinners.length>1){
+    rl.textContent="That's a tie. Death round. The better idea kills all others.";
+    rl.style.color='#ff3333';rl.style.fontSize='18px';rl.style.fontWeight='500';rl.style.letterSpacing='0';rl.style.textTransform='none';
   }
-  if (gameWinners.length > 1 && myRole === 'host') {
-    nextBtn.textContent = 'SUDDEN DEATH →';
-    nextBtn.style.background = '#ff3333';
-    nextBtn.style.color = '#fff';
-    nextBtn.onclick = suddenDeath;
-  } else if (gameWinners.length === 1 && myRole === 'host') {
-    nextBtn.textContent = 'SEE WINNER →';
-    nextBtn.style.background = '';
-    nextBtn.style.color = '';
-    nextBtn.onclick = () => window.update(roomRef, { status: 'gameover' });
-  } else if (myRole === 'host') {
-    nextBtn.textContent = 'NEXT ROUND →';
-    nextBtn.style.background = '';
-    nextBtn.style.color = '';
-    nextBtn.onclick = nextRound;
-  } else {
-    nextBtn.style.display = 'none';
-  }
+  if(gameWinners.length>1&&myRole==='host'){nextBtn.textContent='SUDDEN DEATH →';nextBtn.style.background='#ff3333';nextBtn.style.color='#fff';nextBtn.onclick=suddenDeath;}
+  else if(gameWinners.length===1&&myRole==='host'){nextBtn.textContent='SEE WINNER →';nextBtn.style.background='';nextBtn.style.color='';nextBtn.onclick=()=>window.update(roomRef,{status:'gameover'});}
+  else if(myRole==='host'){nextBtn.textContent='NEXT ROUND →';nextBtn.style.background='';nextBtn.style.color='';nextBtn.onclick=nextRound;}
+  else{nextBtn.style.display='none';}
   go('s-result');
 }
 
-// ===================== NEXT ROUND =====================
-function nextRound() {
-  if (myRole !== 'host') return;
-  tallyFired = false;
-  watchTimerActive = false;
-  watchTimerStartedAt = null;
-  hostStartPitchingFired = false;
-  hostStartGameFired = false;
-  donePitchingFired = false;
-  lockVoteFired = false;
-  lockIdeaFired = false;
-  ideaLocked = false;
-  if (pitchTimerInterval) { clearInterval(pitchTimerInterval); pitchTimerInterval = null; }
-  if (hostThinkInterval) { clearInterval(hostThinkInterval); hostThinkInterval = null; }
-  if (orderCountdownInterval) { clearInterval(orderCountdownInterval); orderCountdownInterval = null; }
-  if (upnextInterval) { clearInterval(upnextInterval); upnextInterval = null; }
-  if (watchTimerInterval) { clearInterval(watchTimerInterval); watchTimerInterval = null; }
-  window.shownOrderScreen = {};
-  window.handledPitcher = {};
-  window.thinkCountdownStarted = {};
-  window.thinkPlayerStarted = {};
-  const round = (gameState.round || 1) + 1;
-  const winnerId = gameState.roundWinner;
-  const players = gameState.players || {};
-  let order = shuffle(Object.keys(players).filter(id => id !== winnerId));
-  if (winnerId) order.push(winnerId);
-  const words = randomWords();
-  // Keep same brief - just update round, words and reset game state
-  window.update(roomRef, {
-    status: 'thinking',
-    round: round,
-    pitchOrder: order,
-    currentPitcher: 0,
-    words: words,
-    ideaTitles: null,
-    roundWinner: null,
-    upNextFor: null,
-    prevPitcher: null,
-    pitchDone: null,
-    votes: null,
-    pitchStartedAt: null,
-    playerReady: null
-  });
+// RESET
+function resetRoundState(){
+  tallyFired=false;watchTimerStartedAt=null;hostStartPitchingFired=false;
+  hostStartGameFired=false;donePitchingFired=false;lockVoteFired=false;lockIdeaFired=false;ideaLocked=false;
+  if(pitchTimerInterval){clearInterval(pitchTimerInterval);pitchTimerInterval=null;}
+  if(hostThinkInterval){clearInterval(hostThinkInterval);hostThinkInterval=null;}
+  if(orderCountdownInterval){clearInterval(orderCountdownInterval);orderCountdownInterval=null;}
+  if(upnextInterval){clearInterval(upnextInterval);upnextInterval=null;}
+  if(watchTimerInterval){clearInterval(watchTimerInterval);watchTimerInterval=null;}
+  window.shownOrderScreen={};window.thinkCountdownStarted={};window.thinkPlayerStarted={};
+}
+function resetAllState(){resetRoundState();roomCode='';myRole='';myName='';myPlayerId='';roomRef=null;gameState={};}
+
+// NEXT ROUND
+function nextRound(){
+  if(myRole!=='host')return;resetRoundState();
+  const round=(gameState.round||1)+1,winnerId=gameState.roundWinner,players=gameState.players||{};
+  let order=shuffle(Object.keys(players).filter(id=>id!==winnerId));if(winnerId)order.push(winnerId);
+  window.update(roomRef,{status:'thinking',round,pitchOrder:order,currentPitcher:0,words:randomWords(),ideaTitles:null,roundWinner:null,roundTie:null,upNextFor:null,prevPitcher:null,pitchDone:null,votes:null,pitchStartedAt:null,playerReady:null,suddenDeath:null});
 }
 
-// ===================== SUDDEN DEATH =====================
-function suddenDeath() {
-  if (myRole !== 'host') return;
-  tallyFired = false;
-  watchTimerActive = false;
-  watchTimerStartedAt = null;
-  hostStartPitchingFired = false;
-  hostStartGameFired = false;
-  donePitchingFired = false;
-  lockVoteFired = false;
-  lockIdeaFired = false;
-  ideaLocked = false;
-  if (pitchTimerInterval) { clearInterval(pitchTimerInterval); pitchTimerInterval = null; }
-  if (hostThinkInterval) { clearInterval(hostThinkInterval); hostThinkInterval = null; }
-  if (orderCountdownInterval) { clearInterval(orderCountdownInterval); orderCountdownInterval = null; }
-  if (upnextInterval) { clearInterval(upnextInterval); upnextInterval = null; }
-  if (watchTimerInterval) { clearInterval(watchTimerInterval); watchTimerInterval = null; }
-  window.shownOrderScreen = {};
-  window.handledPitcher = {};
-  window.thinkCountdownStarted = {};
-  window.thinkPlayerStarted = {};
-  const round = (gameState.round || 1) + 1;
-  const players = gameState.players || {};
-  const order = shuffle(Object.keys(players));
-  const words = randomWords();
-  window.update(roomRef, {
-    status: 'thinking',
-    round: round,
-    pitchOrder: order,
-    currentPitcher: 0,
-    words: words,
-    ideaTitles: null,
-    roundWinner: null,
-    roundTie: null,
-    upNextFor: null,
-    prevPitcher: null,
-    pitchDone: null,
-    votes: null,
-    pitchStartedAt: null,
-    playerReady: null,
-    suddenDeath: true
-  });
+// SUDDEN DEATH
+function suddenDeath(){
+  if(myRole!=='host')return;resetRoundState();
+  const round=(gameState.round||1)+1,players=gameState.players||{};
+  window.update(roomRef,{status:'thinking',round,pitchOrder:shuffle(Object.keys(players)),currentPitcher:0,words:randomWords(),ideaTitles:null,roundWinner:null,roundTie:null,upNextFor:null,prevPitcher:null,pitchDone:null,votes:null,pitchStartedAt:null,playerReady:null,suddenDeath:true});
 }
-window.suddenDeath = suddenDeath;
+window.suddenDeath=suddenDeath;
 
-// ===================== WINNER SCREEN =====================
-function showWinnerScreen(state) {
-  const players = state.players || {};
-  const scores = state.scores || {};
-  const maxScore = Math.max(...Object.values(scores).concat([0]));
-  // In sudden death, the round winner IS the game winner
-  const suddenDeathWinnerId = state.suddenDeath ? state.roundWinner : null;
-  const winnerIds = suddenDeathWinnerId ? [suddenDeathWinnerId] : Object.keys(scores).filter(id => scores[id] === maxScore);
-  const winnerId = winnerIds[0];
-  const winnerName = winnerIds.map(id => players[id] ? players[id].name : '?').join(' & ');
-  const ideaTitle = (state.ideaTitles || {})[winnerId] || '';
-  document.getElementById('final-winner-name').textContent = winnerName.toUpperCase() + '.';
-  document.getElementById('final-winner-idea').textContent = ideaTitle ? 'Best idea: "' + ideaTitle + '"' : '';
-  let scoresHTML = '';
-  const sorted = Object.entries(players).sort((a, b) => (scores[b[0]] || 0) - (scores[a[0]] || 0));
-  sorted.forEach(([id, p]) => {
-    const s = scores[id] || 0;
-    scoresHTML += `<div class="score-row ${id === winnerId ? 'leader' : ''}">
-      <div class="score-player ${id === winnerId ? 'winner' : ''}" style="${id===winnerId?'color:#000;font-weight:500':'color:#333'}">${p.name}</div>
-      <div style="font-family:Impact,sans-serif;font-size:22px;color:${id===winnerId?'#000':'#555'}">${s}</div>
-    </div>`;
-  });
-  document.getElementById('final-scores').innerHTML = scoresHTML;
-  // Losers
-  const losers = sorted.filter(([id]) => id !== winnerId).map(([id, p]) => p.name);
-  document.getElementById('loser-drinks').innerHTML = '<strong>' + losers.join(' and ') + '</strong> — loser buys the drinks.';
-  // Productivity
-  const playerCount = Object.keys(players).length;
-  const roundCount = state.round || 1;
-  const ideaCount = playerCount * roundCount;
-  document.getElementById('productivity-line').textContent = 'You just generated ' + ideaCount + ' ideas against a real brief. Not bad.';
+// WINNER SCREEN
+function showWinnerScreen(state){
+  const players=state.players||{},scores=state.scores||{};
+  const maxScore=Math.max(...Object.values(scores).concat([0]));
+  const winnerIds=state.suddenDeath&&state.roundWinner?[state.roundWinner]:Object.keys(scores).filter(id=>scores[id]===maxScore);
+  const winnerId=winnerIds[0];
+  const winnerName=winnerIds.map(id=>players[id]?players[id].name:'?').join(' & ');
+  const ideaTitle=(state.ideaTitles||{})[winnerId]||'';
+  document.getElementById('final-winner-name').textContent=winnerName.toUpperCase()+'.';
+  document.getElementById('final-winner-idea').textContent=ideaTitle?'Best idea: "'+ideaTitle+'"':'';
+  const sorted=Object.entries(players).sort((a,b)=>(scores[b[0]]||0)-(scores[a[0]]||0));
+  document.getElementById('final-scores').innerHTML=sorted.map(([id,p])=>{
+    const s=scores[id]||0;
+    return `<div class="score-row ${id===winnerId?'leader':''}">
+      <div class="score-player" style="${id===winnerId?'color:#000;font-weight:500':'color:#333'}">${p.name}</div>
+      <div style="font-family:Impact,sans-serif;font-size:22px;color:${id===winnerId?'#000':'#555'}">${s}</div></div>`;
+  }).join('');
+  const losers=sorted.filter(([id])=>id!==winnerId).map(([,p])=>p.name);
+  document.getElementById('loser-drinks').innerHTML='<strong>'+losers.join(' and ')+'</strong> — loser buys the drinks.';
+  document.getElementById('productivity-line').textContent='You just generated '+(Object.keys(players).length*(state.round||1))+' ideas against a real brief. Not bad.';
   go('s-winner');
-  // Only host sees PLAY AGAIN - players wait
-  const playBtn = document.getElementById('play-again-btn');
-  if (playBtn) {
-    if (myRole === 'host') {
-      playBtn.style.display = 'block';
-    } else {
-      playBtn.style.display = 'none';
-      playBtn.insertAdjacentHTML('afterend', '<div id="waiting-play-again" style="font-size:16px;font-weight:300;color:#333;text-align:center;padding:20px;">Waiting for host to start a new game...</div>');
+  const playBtn=document.getElementById('play-again-btn');
+  if(playBtn){
+    if(myRole==='host'){playBtn.style.display='block';}
+    else{
+      playBtn.style.display='none';
+      if(!document.getElementById('waiting-play-again'))playBtn.insertAdjacentHTML('afterend','<div id="waiting-play-again" style="font-size:16px;font-weight:300;color:#333;text-align:center;padding:20px;">Waiting for host to start a new game...</div>');
     }
   }
-  setTimeout(startConfetti, 500);
+  setTimeout(startConfetti,500);
 }
 
-// ===================== CONFETTI =====================
-function startConfetti() {
-  const canvas = document.getElementById('confetti-local');
-  if (!canvas) return;
-  const screen = document.getElementById('s-winner');
-  if (!screen) return;
-  const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  const pieces = [];
-  const colors = ['#000', '#000', '#000', '#ff3333', '#0055ff', '#ff6600'];
-  
-  for (let i = 0; i < 120; i++) {
-    pieces.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height - canvas.height,
-      w: Math.random() * 8 + 4, h: Math.random() * 4 + 2,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      rot: Math.random() * Math.PI * 2,
-      rotSpeed: (Math.random() - 0.5) * 0.15,
-      speed: Math.random() * 3 + 1.5,
-      drift: (Math.random() - 0.5) * 1.5,
-      opacity: Math.random() * 0.6 + 0.4
-    });
-  }
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    pieces.forEach(p => {
-      ctx.save(); ctx.globalAlpha = p.opacity;
-      ctx.translate(p.x, p.y); ctx.rotate(p.rot);
-      ctx.fillStyle = p.color;
-      ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
-      ctx.restore();
-      p.y += p.speed; p.x += p.drift; p.rot += p.rotSpeed;
-      if (p.y > canvas.height) { p.y = -10; p.x = Math.random() * canvas.width; }
-    });
+// CONFETTI
+function startConfetti(){
+  const canvas=document.getElementById('confetti-local');if(!canvas)return;
+  const ctx=canvas.getContext('2d');canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  const pieces=[],colors=['#000','#000','#000','#ff3333','#0055ff','#ff6600'];
+  for(let i=0;i<120;i++)pieces.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height-canvas.height,w:Math.random()*8+4,h:Math.random()*4+2,color:colors[Math.floor(Math.random()*colors.length)],rot:Math.random()*Math.PI*2,rotSpeed:(Math.random()-0.5)*0.15,speed:Math.random()*3+1.5,drift:(Math.random()-0.5)*1.5,opacity:Math.random()*0.6+0.4});
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{ctx.save();ctx.globalAlpha=p.opacity;ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.fillStyle=p.color;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();p.y+=p.speed;p.x+=p.drift;p.rot+=p.rotSpeed;if(p.y>canvas.height){p.y=-10;p.x=Math.random()*canvas.width;}});
     requestAnimationFrame(draw);
   }
   draw();
 }
 
-// ===================== SHARE =====================
-function shareGame() {
-  const gameUrl = window.location.origin + window.location.pathname;
-  const text = 'Join my Pitch Against Dull game! Enter room code ' + roomCode + ' at: ' + gameUrl;
-  if (navigator.share) {
-    navigator.share({ title: 'Pitch Against Dull', text: text, url: gameUrl });
-  } else {
-    copyLink();
-  }
+// SHARE
+function shareGame(){
+  const url=window.location.origin+window.location.pathname;
+  const text='Join my Pitch Against Dull game! Enter room code '+roomCode+' at: '+url;
+  if(navigator.share){navigator.share({title:'Pitch Against Dull',text,url});}else{copyLink();}
+}
+function copyLink(){
+  const url=window.location.origin+window.location.pathname;
+  const text='Join my Pitch Against Dull game! Enter room code '+roomCode+' at: '+url;
+  const btn=document.getElementById('copy-link-btn');
+  navigator.clipboard.writeText(text).then(()=>{if(btn){btn.textContent='COPIED ✓';setTimeout(()=>{btn.textContent='COPY LINK';},2000);}})
+    .catch(()=>{const el=document.createElement('textarea');el.value=text;document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);if(btn){btn.textContent='COPIED ✓';setTimeout(()=>{btn.textContent='COPY LINK';},2000);}});
 }
 
-function copyLink() {
-  const gameUrl = window.location.origin + window.location.pathname;
-  const text = 'Join my Pitch Against Dull game! Enter room code ' + roomCode + ' at: ' + gameUrl;
-  const btn = document.getElementById('copy-link-btn');
-  navigator.clipboard.writeText(text).then(() => {
-    if (btn) { btn.textContent = 'COPIED ✓'; setTimeout(() => { btn.textContent = 'COPY LINK'; }, 2000); }
-  }).catch(() => {
-    // Fallback for older browsers
-    const el = document.createElement('textarea');
-    el.value = text;
-    document.body.appendChild(el);
-    el.select();
-    document.execCommand('copy');
-    document.body.removeChild(el);
-    if (btn) { btn.textContent = 'COPIED ✓'; setTimeout(() => { btn.textContent = 'COPY LINK'; }, 2000); }
-  });
+// PLAY AGAIN
+function playAgain(){
+  if(roomRef)window.remove(roomRef);
+  resetAllState();go('s-intro');
 }
 
-// ===================== PLAY AGAIN =====================
-function playAgain() {
-  window.shownOrderScreen = {};
-  window.handledPitcher = {};
-  window.thinkCountdownStarted = {};
-  window.thinkPlayerStarted = {};
-  if (roomRef) window.remove(roomRef);
-  roomCode = ''; myRole = ''; myName = ''; myPlayerId = '';
-  roomRef = null; gameState = {};
-  go('s-intro');
-}
-
-// Expose functions to global scope
-window.go = go;
-window.updateBriefCount = updateBriefCount;
-window.nextInspiration = nextInspiration;
-window.updateCodeDisplay = updateCodeDisplay;
-window.updateIdeaCount = updateIdeaCount;
-window.createRoom = createRoom;
-window.joinGame = joinGame;
-window.hostStartGame = hostStartGame;
-window.donePitching = donePitching;
-window.selectVote = selectVote;
-window.lockVote = lockVote;
-window.nextRound = nextRound;
-window.playAgain = playAgain;
-window.shareGame = shareGame;
+window.go=go;window.updateBriefCount=updateBriefCount;window.nextInspiration=nextInspiration;
+window.createRoom=createRoom;window.joinGame=joinGame;window.hostStartGame=hostStartGame;
+window.donePitching=donePitching;window.selectVote=selectVote;window.lockVote=lockVote;
+window.nextRound=nextRound;window.playAgain=playAgain;window.shareGame=shareGame;window.copyLink=copyLink;
 </script>
 </body>
 </html>
