@@ -1122,6 +1122,11 @@ function showPitchOrderScreen(state) {
       if (myRole === 'host' && firstId) {
         window.update(roomRef, { upNextFor: firstId });
       } else if (myRole === 'player') {
+        // Set correct pitcher name before navigating
+        const players = gameState.players || {};
+        const firstPitcherId = (gameState.pitchOrder || [])[0];
+        const firstPitcherName = players[firstPitcherId] ? players[firstPitcherId].name : '?';
+        document.getElementById('watching-pitcher-name').textContent = firstPitcherName;
         go('s-watching');
       }
     }
@@ -1550,8 +1555,16 @@ function showResultScreen(state) {
   // Check for game winner
   const gameWinners = Object.entries(scores).filter(([id, s]) => s >= 3);
   const nextBtn = document.getElementById('next-round-btn');
+  if (gameWinners.length > 1) {
+    // Sudden death announcement - show for everyone
+    document.getElementById('result-round-label').textContent = "That's a tie. Death round. The better idea kills all others.";
+    document.getElementById('result-round-label').style.color = '#ff3333';
+    document.getElementById('result-round-label').style.fontSize = '18px';
+    document.getElementById('result-round-label').style.fontWeight = '500';
+    document.getElementById('result-round-label').style.letterSpacing = '0';
+    document.getElementById('result-round-label').style.textTransform = 'none';
+  }
   if (gameWinners.length > 1 && myRole === 'host') {
-    // Sudden death - multiple players at 3 points
     nextBtn.textContent = 'SUDDEN DEATH →';
     nextBtn.style.background = '#ff3333';
     nextBtn.style.color = '#fff';
