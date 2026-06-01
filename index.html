@@ -923,8 +923,8 @@ function handleStateChange(state) {
       // Only process thinking state once per round
       const thinkPlayerKey = 'think_player_round_' + (state.round || 1);
       if (!window.thinkPlayerStarted) window.thinkPlayerStarted = {};
-      if (window.thinkPlayerStarted[thinkPlayerKey]) return;
-      window.thinkPlayerStarted[thinkPlayerKey] = true;
+      if (!window.thinkPlayerStarted[thinkPlayerKey]) {
+        window.thinkPlayerStarted[thinkPlayerKey] = true;
       const words = state.words || [];
       document.getElementById('brief-display-words').textContent = '"' + state.brief + '"';
       const wd = document.getElementById('words-display');
@@ -948,6 +948,7 @@ function handleStateChange(state) {
       }
       startThinkTimer();
       go('s-words');
+      } // end if !thinkPlayerStarted
     }
   }
   if (state.status === 'pitching') {
