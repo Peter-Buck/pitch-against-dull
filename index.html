@@ -582,7 +582,15 @@ function listenToRoom(){
       }
     });
   }
-  if(myRole==='player'){listenForUpNext();}
+  if(myRole==='player'){
+    listenForUpNext();
+    // Re-render vote list whenever ideaTitles update (fixes timing issue
+    // where titles arrive after voting screen is already shown)
+    window.onValue(window.ref(window.db,'rooms/'+roomCode+'/ideaTitles'),snap=>{
+      if(gameState)gameState.ideaTitles=snap.exists()?snap.val():{};
+      renderVoteList();
+    });
+  }
 }
 
 // HANDLE STATE
@@ -711,7 +719,7 @@ function hostStartGame(){
 let hostThinkInterval=null;
 function startHostThinkCountdown(){
   if(hostThinkInterval){clearInterval(hostThinkInterval);hostThinkInterval=null;}
-  let s=180;
+  let s=10;
   const hint=document.getElementById('start-hint'),spBtn=document.getElementById('start-pitching-btn');
   if(spBtn)spBtn.style.display='none';
   hostThinkInterval=setInterval(()=>{
@@ -773,10 +781,10 @@ function showPitchOrderScreen(state){
 // THINK TIMER
 function startThinkTimer(){
   if(thinkTimerInterval)return;
-  let s=180;
+  let s=10;
   const el=document.getElementById('think-timer'),bar=document.getElementById('think-bar');
   thinkTimerInterval=setInterval(()=>{
-    s--;el.textContent=formatTime(s);bar.style.width=(s/180*100)+'%';
+    s--;el.textContent=formatTime(s);bar.style.width=(s/10*100)+'%';
     if(s<=30){el.classList.add('warn');bar.classList.add('warn');}
     if(s<=0){
       clearInterval(thinkTimerInterval);thinkTimerInterval=null;
@@ -945,18 +953,27 @@ function showUpNext(){
 }
 
 // VOTE
-function showVoteScreen(state){
-  const players=state.players||{},ideaTitles=state.ideaTitles||{};
-  selectedVote=null;lockVoteFired=false;
-  const lockBtn=document.getElementById('lock-vote-btn');
-  lockBtn.classList.add('disabled');lockBtn.disabled=true;lockBtn.textContent='LOCK IN VOTE →';
+// renderVoteList reads from live gameState so ideaTitles that arrive after
+// the voting status fires (timing issue) still appear on the vote screen.
+function renderVoteList(){
+  const currentScreen=(document.querySelector('.screen.active')||{}).id;
+  if(currentScreen!=='s-vote')return;
+  const players=gameState.players||{},ideaTitles=gameState.ideaTitles||{};
   document.getElementById('vote-list').innerHTML=Object.entries(players).map(([id,p])=>{
     const isSelf=id===myPlayerId,idea=ideaTitles[id]||'';
-    return `<div class="vote-item ${isSelf?'self':''}" id="vi-${id}" onclick="selectVote('${id}')">
+    const wasSelected=selectedVote===id;
+    return `<div class="vote-item ${isSelf?'self':''} ${wasSelected?'selected':''}" id="vi-${id}" onclick="selectVote('${id}')">
       <div><div class="vote-name-big">${p.name}</div>${idea?`<div class="vote-idea-small">"${idea}"</div>`:''}</div>
       <div class="vote-check"></div></div>`;
   }).join('');
+}
+
+function showVoteScreen(state){
+  selectedVote=null;lockVoteFired=false;
+  const lockBtn=document.getElementById('lock-vote-btn');
+  lockBtn.classList.add('disabled');lockBtn.disabled=true;lockBtn.textContent='LOCK IN VOTE →';
   go('s-vote');
+  renderVoteList();
 }
 
 function selectVote(id){
@@ -1017,6 +1034,25 @@ function showResultScreen(state){
       <div style="display:flex;align-items:center;gap:12px;"><div class="score-dots">${dots}</div><div class="score-num">${s}</div></div>
     </div>`;
   }).join('');
+  // Ideas list — winner first, then others
+  const ideaTitles=state.ideaTitles||{};
+  const order=state.pitchOrder||[];
+  const sortedByWinner=[winnerId,...order.filter(id=>id!==winnerId)];
+  const ideasHTML=sortedByWinner.filter(id=>players[id]).map(id=>{
+    const idea=ideaTitles[id]||'';
+    const isWinner=id===winnerId;
+    return `<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:8px;">
+      <div style="font-size:13px;font-weight:400;color:${isWinner?'#FFE600':'#555'};min-width:80px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;">${players[id].name}</div>
+      <div style="font-size:15px;font-weight:300;color:${isWinner?'#fff':'#888'};font-style:italic;">${idea||'—'}</div>
+    </div>`;
+  }).join('');
+  const existingIdeas=document.getElementById('result-ideas');
+  if(existingIdeas)existingIdeas.remove();
+  document.getElementById('result-scores').insertAdjacentHTML('afterend',
+    `<div id="result-ideas" style="margin-top:20px;">
+      <div class="label mb8" style="color:#777;">The ideas</div>
+      ${ideasHTML}
+    </div>`);
   const gameWinners=Object.entries(scores).filter(([,s])=>s>=3);
   const nextBtn=document.getElementById('next-round-btn');
   if(gameWinners.length>1){
@@ -1079,6 +1115,25 @@ function showWinnerScreen(state){
   const losers=sorted.filter(([id])=>id!==winnerId).map(([,p])=>p.name);
   document.getElementById('loser-drinks').innerHTML='<strong>'+losers.join(' and ')+'</strong> — loser buys the drinks.';
   document.getElementById('productivity-line').textContent='You just generated '+(Object.keys(players).length*(state.round||1))+' ideas against a real brief. Not bad.';
+  // All ideas — winner first
+  const allIdeas=state.ideaTitles||{};
+  const pitchOrder=state.pitchOrder||[];
+  const ideasByWinnerFirst=[winnerId,...pitchOrder.filter(id=>id!==winnerId&&players[id])];
+  const winnerIdeasHTML=ideasByWinnerFirst.filter(id=>players[id]).map(id=>{
+    const isWin=id===winnerId;
+    const idea=allIdeas[id]||'—';
+    return `<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:10px;">
+      <div style="font-size:13px;font-weight:${isWin?'500':'300'};color:#000;opacity:${isWin?'1':'0.5'};min-width:90px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;">${players[id].name}</div>
+      <div style="font-size:16px;font-weight:${isWin?'400':'300'};color:#000;opacity:${isWin?'1':'0.5'};font-style:italic;">${idea}</div>
+    </div>`;
+  }).join('');
+  const existingWinnerIdeas=document.getElementById('winner-ideas');
+  if(existingWinnerIdeas)existingWinnerIdeas.remove();
+  document.getElementById('productivity-line').insertAdjacentHTML('afterend',
+    `<div id="winner-ideas" style="margin-top:20px;padding-top:20px;border-top:1.5px solid rgba(0,0,0,0.15);">
+      <div style="font-size:11px;font-weight:500;color:#000;letter-spacing:0.2em;text-transform:uppercase;opacity:0.5;margin-bottom:14px;">All ideas this round</div>
+      ${winnerIdeasHTML}
+    </div>`);
   go('s-winner');
   const playBtn=document.getElementById('play-again-btn');
   if(playBtn){
