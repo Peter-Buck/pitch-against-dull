@@ -153,7 +153,7 @@ body { font-family: Georgia, 'Times New Roman', serif; color: #fff; overflow-x: 
     </div>
     <div>
       <div class="field-label">The brief</div>
-      <textarea id="brief-input" class="field-input" rows="2" maxlength="140" placeholder="One sentence. A real problem. Something worth solving." oninput="updateBriefCount()" style="resize:none;line-height:1.5;font-size:18px;"></textarea>
+      <textarea id="brief-input" class="field-input" rows="2" maxlength="140" placeholder="One sentence. A real problem. Something worth solving." oninput="updateBriefCount()" onkeyup="updateBriefCount()" onpaste="setTimeout(updateBriefCount,0)" style="resize:none;line-height:1.5;font-size:18px;"></textarea>
       <div style="display:flex;justify-content:space-between;margin-top:6px;">
         <div class="field-hint">One sentence max.</div>
         <div id="brief-count" style="font-size:13px;font-weight:300;color:#666;">0/140</div>
@@ -612,7 +612,7 @@ function updateBriefCount(){
   const v=document.getElementById('brief-input').value;
   document.getElementById('brief-count').textContent=v.length+'/140';
   const btn=document.getElementById('create-room-btn');
-  if(v.trim().length>5){btn.disabled=false;btn.classList.remove('disabled');}
+  if(v.trim().length>0){btn.disabled=false;btn.classList.remove('disabled');btn.style.opacity='1';btn.style.pointerEvents='auto';}
   else{btn.disabled=true;btn.classList.add('disabled');}
 }
 
