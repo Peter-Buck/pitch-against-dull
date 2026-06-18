@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Pitch Against Dull — Pro</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; background: #000; }
+body { font-family: Georgia, 'Times New Roman', serif; color: #fff; overflow-x: hidden; }
+.screen { display: none; min-height: 100vh; flex-direction: column; padding: 56px 28px 40px; background: #111; }
+.screen.active { display: flex; }
+.screen.yellow { background: #FFE600; color: #000; }
+.screen.dark { background: #0a0a0a; }
+.logo { margin-bottom: 36px; }
+.logo-title { font-family: Impact, sans-serif; font-size: 26px; line-height: 1; color: #FFE600; text-transform: uppercase; letter-spacing: 0.02em; }
+.logo-title span { color: #fff; }
+.logo-title.dark { color: #000; }
+.logo-title.dark span { color: #fff; -webkit-text-stroke: 1px #000; }
+.logo-sub { font-size: 13px; font-weight: 300; color: #aaa; margin-top: 4px; }
+.logo-sub.dark { color: #333; }
+.heading { font-size: 32px; font-weight: 300; color: #fff; line-height: 1.25; }
+.heading span, .heading em { color: #FFE600; font-style: normal; }
+.heading.dark { color: #000; }
+.heading.dark span { color: #000; }
+.subtext { font-size: 16px; font-weight: 300; color: #999; line-height: 1.7; }
+.subtext.dark { color: #333; }
+.label { font-size: 11px; font-weight: 500; color: #FFE600; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 8px; }
+.label.dark { color: #000; opacity: 0.5; }
+.btn { display: block; width: 100%; background: #ffffff !important; color: #000000 !important; border: none !important; padding: 20px; font-family: Impact, sans-serif; font-size: 20px; letter-spacing: 0.02em; text-transform: uppercase; text-align: center; cursor: pointer; -webkit-appearance: none; appearance: none; border-radius: 0 !important; outline: none; transition: background 0.15s; box-sizing: border-box; user-select: none; -webkit-user-select: none; }
+.btn:active { background: #FFE600 !important; }
+.btn.dark { background: #000 !important; color: #FFE600 !important; }
+.btn.dark:active { background: #fff !important; color: #000 !important; }
+.btn.yellow { background: #FFE600 !important; color: #000 !important; }
+.btn.outline { background: transparent !important; color: #FFE600 !important; border: 2px solid #FFE600 !important; }
+.btn.outline:active { background: #FFE600 !important; color: #000 !important; }
+.btn:disabled, .btn.disabled { opacity: 0.3; pointer-events: none; }
+.divider { width: 100%; height: 1px; background: #222; margin: 4px 0; }
+.divider.dark { background: #000; opacity: 0.15; }
+.bl { border-left: 2px solid #FFE600; padding-left: 16px; }
+.bl.dim { border-color: #333; }
+.field-label { font-size: 11px; font-weight: 500; color: #FFE600; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 6px; }
+.field-input { width: 100%; background: transparent; border: none; border-bottom: 2px solid #FFE600; padding: 10px 0; font-family: Georgia, 'Times New Roman', serif; font-size: 20px; font-weight: 300; color: #fff; outline: none; -webkit-appearance: none; appearance: none; border-radius: 0; }
+.field-input::placeholder { color: #555; }
+.field-hint { font-size: 13px; font-weight: 300; color: #888; margin-top: 6px; }
+.player-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.pdot { width: 8px; height: 8px; border-radius: 50%; background: #FFE600; flex-shrink: 0; }
+.pdot.empty { background: #333; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
+.pname { font-size: 16px; font-weight: 300; color: #ccc; }
+.pname.you { color: #FFE600; }
+.pname.empty { color: #555; font-style: italic; }
+.code-box { width: 100%; background: #FFE600; padding: 24px; text-align: center; margin-bottom: 20px; }
+.code-label-s { font-size: 11px; font-weight: 500; color: #000; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 8px; }
+.code-digits { font-family: Impact, sans-serif; font-size: 72px; color: #000; letter-spacing: 0.2em; line-height: 1; }
+.timer-big { font-family: Impact, sans-serif; font-size: 80px; color: #FFE600; letter-spacing: 0.02em; line-height: 1; }
+.timer-big.warn { color: #ff3333; }
+.timer-bar-wrap { width: 100%; height: 4px; background: #222; margin-top: 8px; }
+.timer-bar { height: 4px; background: #FFE600; width: 100%; transition: width 1s linear; }
+.timer-bar.warn { background: #ff3333; }
+.vote-item { width: 100%; padding: 16px 20px; border: 1.5px solid #333; margin-bottom: 10px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: border-color 0.1s; }
+.vote-item.selected { border-color: #FFE600; background: #1a1800; }
+.vote-item.self { opacity: 0.2; pointer-events: none; }
+.vote-name-big { font-family: Impact, sans-serif; font-size: 22px; color: #fff; text-transform: uppercase; letter-spacing: 0.02em; }
+.vote-item.selected .vote-name-big { color: #FFE600; }
+.vote-idea-small { font-size: 13px; font-weight: 300; color: #777; font-style: italic; margin-top: 2px; }
+.vote-check { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid #444; flex-shrink: 0; }
+.vote-item.selected .vote-check { background: #FFE600; border-color: #FFE600; }
+.winner-block { width: 100%; background: #FFE600; padding: 24px 20px; margin-bottom: 20px; }
+.winner-block-label { font-size: 11px; font-weight: 500; color: #000; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 6px; }
+.winner-block-name { font-family: Impact, sans-serif; font-size: 48px; color: #000; text-transform: uppercase; letter-spacing: 0.02em; line-height: 1; }
+.winner-block-idea { font-size: 15px; font-weight: 300; color: #333; font-style: italic; margin-top: 6px; }
+.live-wrap { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.live-dot { width: 10px; height: 10px; border-radius: 50%; background: #FFE600; animation: blink 1s infinite; flex-shrink: 0; }
+@keyframes blink { 0%,100%{opacity:1}50%{opacity:0.2} }
+.live-text { font-size: 11px; font-weight: 500; color: #FFE600; letter-spacing: 0.22em; text-transform: uppercase; }
+.note-line { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+.note-dash { color: #FFE600; font-size: 14px; flex-shrink: 0; margin-top: 2px; }
+.note-text { font-size: 16px; font-weight: 300; color: #aaa; line-height: 1.5; }
+.flex1 { flex: 1; }
+.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt20{margin-top:20px}.mt24{margin-top:24px}.mt32{margin-top:32px}
+.mb8{margin-bottom:8px}.mb10{margin-bottom:10px}.mb12{margin-bottom:12px}.mb16{margin-bottom:16px}.mb20{margin-bottom:20px}.mb24{margin-bottom:24px}
+.gap { flex: 1; }
+/* CAMPAIGN CARD */
+.card-container { width: 100%; background: #1a1a1a; border: 1.5px solid #FFE600; padding: 24px 20px; position: relative; }
+.card-layer { margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid #2a2a2a; }
+.card-layer:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.card-layer-label { font-size: 10px; font-weight: 500; color: #FFE600; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 8px; opacity: 0.7; }
+.card-layer-text { font-size: 17px; font-weight: 300; color: #fff; line-height: 1.6; }
+.card-tagline { font-family: Impact, sans-serif; font-size: 22px; color: #FFE600; letter-spacing: 0.05em; text-transform: uppercase; margin-top: 4px; }
+.card-yt-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 400; color: #FFE600; text-decoration: none; border-bottom: 1px solid rgba(255,230,0,0.4); padding-bottom: 2px; margin-top: 12px; }
+.card-locked { filter: blur(6px); pointer-events: none; user-select: none; }
+.phase-badge { display: inline-block; background: #FFE600; color: #000; font-family: Impact, sans-serif; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; margin-bottom: 16px; }
+.phase-timer-label { font-size: 11px; font-weight: 500; color: #777; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 4px; }
+.pitch-order { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.po-name { font-size: 13px; font-weight: 300; color: #555; }
+.po-name.active { color: #FFE600; font-weight: 500; }
+.po-name.done { color: #333; text-decoration: line-through; }
+.po-sep { font-size: 13px; color: #333; }
+.score-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.score-player { font-size: 16px; font-weight: 300; color: #ccc; }
+.score-player.leader { color: #FFE600; font-weight: 400; }
+.score-num { font-family: Impact, sans-serif; font-size: 22px; color: #fff; width: 20px; text-align: right; }
+.countdown-big { font-family: Impact, sans-serif; font-size: 120px; color: #000; line-height: 1; }
+.steal-opener { font-size: 18px; font-weight: 300; color: #aaa; line-height: 1.6; font-style: italic; }
+</style>
+</head>
+<body>
+
+<!-- S-INTRO -->
+<div class="screen active" id="s-intro">
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">1 brief. 3 games. The work your brand deserves.</div></div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:24px;">
+    <div class="heading">Game 2.<br><span>Steal &amp; Reinterpret.</span></div>
+    <div class="subtext">Find the proof. Steal the mechanic.<br>Make it work for this brief.</div>
+    <div style="display:flex;flex-direction:column;gap:14px;margin-top:8px;">
+      <div class="note-line"><span class="note-dash">—</span><span class="note-text">Every player gets a different campaign card. Private.</span></div>
+      <div class="note-line"><span class="note-dash">—</span><span class="note-text">3 phases. Host-controlled timing.</span></div>
+      <div class="note-line"><span class="note-dash">—</span><span class="note-text">Pitch opens: "I stole from X because..."</span></div>
+      <div class="note-line"><span class="note-dash">—</span><span class="note-text">Vote: Which idea has the strongest human truth?</span></div>
+    </div>
+  </div>
+  <div><div role="button" class="btn" tabindex="0" onclick="go('s-hostjoin')">LET'S PLAY →</div></div>
+</div>
+
+<!-- S-HOSTJOIN -->
+<div class="screen" id="s-hostjoin">
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">1 brief. 3 games. The work your brand deserves.</div></div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:20px;">
+    <div class="heading mb24">Are you hosting<br>or <span>joining?</span></div>
+    <div style="width:100%;padding:20px;border:1.5px solid #FFE600;cursor:pointer;margin-bottom:14px;" onclick="go('s-hostbrief')">
+      <div style="font-family:Impact,sans-serif;font-size:22px;color:#FFE600;text-transform:uppercase;letter-spacing:0.02em;">HOST A GAME</div>
+      <div style="font-size:14px;font-weight:300;color:#999;margin-top:4px;">Set the brief. Assign cards. Control the pace.</div>
+    </div>
+    <div style="width:100%;padding:20px;border:1.5px solid #333;cursor:pointer;" onclick="go('s-join')">
+      <div style="font-family:Impact,sans-serif;font-size:22px;color:#fff;text-transform:uppercase;letter-spacing:0.02em;">JOIN A GAME</div>
+      <div style="font-size:14px;font-weight:300;color:#999;margin-top:4px;">Enter the room code your host gave you.</div>
+    </div>
+  </div>
+  <div>
+    <div class="note-line"><span class="note-dash">—</span><span class="note-text">2–5 players. Host facilitates, doesn't pitch.</span></div>
+  </div>
+</div>
+
+<!-- S-HOSTBRIEF -->
+<div class="screen" id="s-hostbrief">
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">1 brief. 3 games. The work your brand deserves.</div></div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:28px;">
+    <div class="heading">Set the <span>brief.</span></div>
+    <div>
+      <div class="field-label">The brand</div>
+      <input id="company-input" class="field-input" type="text" maxlength="60" placeholder="e.g. Barclays" style="font-size:18px;" />
+    </div>
+    <div>
+      <div class="field-label">The brief</div>
+      <textarea id="brief-input" class="field-input" rows="2" maxlength="140" placeholder="One sentence. A real problem. Something worth solving." oninput="updateBriefCount()" onkeyup="updateBriefCount()" onpaste="setTimeout(updateBriefCount,0)" style="resize:none;line-height:1.5;font-size:18px;"></textarea>
+      <div style="display:flex;justify-content:space-between;margin-top:6px;">
+        <div class="field-hint">One sentence max.</div>
+        <div id="brief-count" style="font-size:13px;font-weight:300;color:#666;">0/140</div>
+      </div>
+    </div>
+    <div>
+      <div class="field-label">Rounds</div>
+      <div style="display:flex;gap:12px;margin-top:4px;">
+        <div id="rounds-1" style="flex:1;padding:14px;border:1.5px solid #FFE600;text-align:center;cursor:pointer;" onclick="setRounds(1)"><div style="font-family:Impact,sans-serif;font-size:22px;color:#FFE600;">1</div></div>
+        <div id="rounds-2" style="flex:1;padding:14px;border:1.5px solid #333;text-align:center;cursor:pointer;" onclick="setRounds(2)"><div style="font-family:Impact,sans-serif;font-size:22px;color:#777;">2</div></div>
+        <div id="rounds-3" style="flex:1;padding:14px;border:1.5px solid #333;text-align:center;cursor:pointer;" onclick="setRounds(3)"><div style="font-family:Impact,sans-serif;font-size:22px;color:#777;">3</div></div>
+      </div>
+      <div class="field-hint" style="margin-top:8px;">Default: 2 rounds. Each round = everyone pitches once.</div>
+    </div>
+  </div>
+  <div><div role="button" class="btn disabled" tabindex="0" id="create-room-btn" onclick="createRoom()">CREATE ROOM →</div></div>
+</div>
+
+<!-- S-ROOMCODE -->
+<div class="screen" id="s-roomcode">
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">1 brief. 3 games. The work your brand deserves.</div></div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:24px;">
+    <div class="heading">Your room <span>code.</span></div>
+    <div class="code-box"><div class="code-label-s">Share with your players</div><div class="code-digits" id="room-code-display">----</div></div>
+    <div style="display:flex;gap:12px;">
+      <div role="button" class="btn outline" tabindex="0" onclick="shareGame()" style="flex:1;">SHARE ↗</div>
+      <div role="button" class="btn outline" tabindex="0" onclick="copyLink()" style="flex:1;" id="copy-link-btn">COPY LINK</div>
+    </div>
+    <div class="bl dim"><div class="label" style="color:#777;">The Brief</div><div style="font-size:15px;font-weight:300;color:#aaa;font-style:italic;" id="brief-recap-host"></div></div>
+    <div>
+      <div class="label mb12">Players joined — <span id="host-player-count">0</span></div>
+      <div id="host-player-list"></div>
+    </div>
+  </div>
+  <div>
+    <div style="font-size:16px;font-weight:400;color:#aaa;margin-bottom:14px;" id="start-hint">Waiting for players...</div>
+    <div role="button" class="btn disabled" tabindex="0" id="start-game-btn" onclick="hostStartGame()">START GAME 2 →</div>
+  </div>
+</div>
+
+<!-- S-JOIN -->
+<div class="screen" id="s-join">
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">1 brief. 3 games. The work your brand deserves.</div></div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:36px;">
+    <div class="heading">Join the <span>game.</span></div>
+    <div>
+      <div class="field-label">Your name</div>
+      <input class="field-input" id="player-name-input" type="text" placeholder="What do we call you?" maxlength="20" />
+      <div id="name-hint" style="display:none;font-size:13px;font-weight:400;color:#ff4444;margin-top:6px;">← Enter your name first.</div>
+    </div>
+    <div>
+      <div class="field-label">Room code</div>
+      <input id="code-input" class="field-input" type="tel" maxlength="4" inputmode="numeric" pattern="[0-9]*" placeholder="0000" style="font-family:Impact,sans-serif;font-size:40px;letter-spacing:0.2em;color:#fff;-webkit-appearance:none;background:transparent;" />
+    </div>
+  </div>
+  <div><div role="button" class="btn" tabindex="0" onclick="joinGame()">JOIN THE GAME →</div></div>
+</div>
+
+<!-- S-WAITING (PLAYER) -->
+<div class="screen" id="s-waiting">
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">1 brief. 3 games. The work your brand deserves.</div></div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:28px;">
+    <div class="heading">Waiting for the<br>host to <span>begin.</span></div>
+    <div style="background:#1a1a1a;border-left:3px solid #FFE600;padding:18px;">
+      <div class="label mb8">Your Brief</div>
+      <div style="font-size:17px;font-weight:300;color:#fff;font-style:italic;line-height:1.5;" id="brief-display-player"></div>
+    </div>
+    <div>
+      <div class="label mb12">In the room — <span id="waiting-player-count">0</span></div>
+      <div id="waiting-player-list"></div>
+    </div>
+  </div>
+  <div style="font-size:14px;font-weight:300;color:#888;">Your campaign card is on its way.</div>
+</div>
+
+<!-- S-PHASE1 (PLAYER — Discovery) -->
+<div class="screen dark" id="s-phase1">
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">Game 2 — Steal &amp; Reinterpret</div></div>
+  <div class="flex1" style="display:flex;flex-direction:column;gap:20px;">
+    <div>
+      <div class="phase-badge">Phase 1 — Discovery</div>
+      <div class="heading">Study your <span>card.</span></div>
+      <div class="subtext mt12">Your card only. No brief yet.<br>Watch the work. Understand what it did.</div>
+    </div>
+    <div id="card-display-p1" class="card-container"></div>
+    <div style="background:#111;border:1px solid #222;padding:16px;">
+      <div class="phase-timer-label">Thinking time — host controlled</div>
+      <div style="font-size:15px;font-weight:300;color:#aaa;margin-top:4px;">Peter is walking the room. Take your time.</div>
+    </div>
+  </div>
+  <div style="font-size:14px;font-weight:300;color:#888;">Keep your card to yourself. Don't show anyone.</div>
+</div>
+
+<!-- S-PHASE2 (PLAYER — Connection) -->
+<div class="screen dark" id="s-phase2">
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">Game 2 — Steal &amp; Reinterpret</div></div>
+  <div class="flex1" style="display:flex;flex-direction:column;gap:20px;">
+    <div>
+      <div class="phase-badge">Phase 2 — Connection</div>
+      <div class="heading">The brief <span>arrives.</span></div>
+      <div class="subtext mt12">Now you have the brief. The question is:</div>
+      <div style="font-size:20px;font-weight:300;color:#FFE600;font-style:italic;line-height:1.5;margin-top:12px;border-left:3px solid #FFE600;padding-left:16px;">"What did you steal — and why does it work for this brief?"</div>
+    </div>
+    <div class="bl dim">
+      <div class="label" style="color:#777;">The Brief</div>
+      <div style="font-size:16px;font-weight:300;color:#fff;font-style:italic;line-height:1.5;" id="brief-display-p2"></div>
+    </div>
+    <div id="card-display-p2" class="card-container" style="opacity:0.7;"></div>
+  </div>
+  <div style="font-size:14px;font-weight:300;color:#888;">Start connecting the mechanic to the brief.</div>
+</div>
+
+<!-- S-PHASE3 (PLAYER — Build) -->
+<div class="screen dark" id="s-phase3">
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">Game 2 — Steal &amp; Reinterpret</div></div>
+  <div class="flex1" style="display:flex;flex-direction:column;gap:20px;">
+    <div>
+      <div class="phase-badge">Phase 3 — Build</div>
+      <div class="heading">Build the <span>idea.</span></div>
+      <div class="subtext mt12">Card + brief. Construct it now.<br>Open your pitch with: "I stole from X because..."</div>
+    </div>
+    <div class="bl dim">
+      <div class="label" style="color:#777;">The Brief</div>
+      <div style="font-size:15px;font-weight:300;color:#fff;font-style:italic;line-height:1.5;" id="brief-display-p3"></div>
+    </div>
+    <div id="card-display-p3" class="card-container"></div>
+    <div style="background:#111;border:1px solid #222;padding:16px;">
+      <div class="phase-timer-label">Build time — host controlled</div>
+      <div style="font-size:15px;font-weight:300;color:#aaa;margin-top:4px;">~3 minutes. Peter will call time.</div>
+    </div>
+  </div>
+  <div style="font-size:14px;font-weight:300;color:#888;padding-bottom:4px;">Remember: only you can see your card during the pitch.</div>
+</div>
+
+<!-- S-PHASE1-HOST -->
+<div class="screen" id="s-phase1-host">
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">Game 2 — Host View</div></div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:28px;">
+    <div>
+      <div class="phase-badge" style="background:#111;color:#FFE600;border:1px solid #FFE600;">PHASE 1 — DISCOVERY</div>
+      <div class="heading" style="margin-top:16px;">Players are studying<br>their <span>cards.</span></div>
+    </div>
+    <div style="background:#1a1a1a;padding:20px;border-left:3px solid #FFE600;">
+      <div class="label mb12">Your facilitation prompts</div>
+      <div class="note-line"><span class="note-dash">—</span><span class="note-text">Walk the room. Don't rush them.</span></div>
+      <div class="note-line"><span class="note-dash">—</span><span class="note-text">If someone doesn't know the work, point them to the YouTube link on their card.</span></div>
+      <div class="note-line"><span class="note-dash">—</span><span class="note-text">Cards are private. Don't let people compare.</span></div>
+      <div class="note-line"><span class="note-dash">—</span><span class="note-text">~3 minutes. You decide when the room is ready.</span></div>
+    </div>
+    <div>
+      <div class="label mb8" style="color:#777;">Players in</div>
+      <div id="host-phase1-players"></div>
+    </div>
+  </div>
+  <div><div role="button" class="btn yellow" tabindex="0" onclick="hostAdvancePhase(2)">MOVE TO PHASE 2 — CONNECTION →</div></div>
+</div>
+
+<!-- S-PHASE2-HOST -->
+<div class="screen" id="s-phase2-host">
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">Game 2 — Host View</div></div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:28px;">
+    <div>
+      <div class="phase-badge" style="background:#111;color:#FFE600;border:1px solid #FFE600;">PHASE 2 — CONNECTION</div>
+      <div class="heading" style="margin-top:16px;">Brief is live.<br>They're <span>connecting.</span></div>
+    </div>
+    <div style="background:#1a1a1a;padding:20px;border-left:3px solid #FFE600;">
+      <div class="label mb12">Your facilitation prompts</div>
+      <div class="note-line"><span class="note-dash">—</span><span class="note-text">The brief just appeared on their screens.</span></div>
+      <div class="note-line"><span class="note-dash">—</span><span class="note-text">The question on their screen: "What did you steal and why does it work for this brief?"</span></div>
+      <div class="note-line"><span class="note-dash">—</span><span class="note-text">~1 minute. Just let them sit with it.</span></div>
+      <div class="note-line"><span class="note-dash">—</span><span class="note-text">Don't discuss. Let the connection happen privately.</span></div>
+    </div>
+    <div class="bl dim">
+      <div class="label" style="color:#777;">The Brief</div>
+      <div style="font-size:15px;font-weight:300;color:#aaa;font-style:italic;" id="host-p2-brief"></div>
+    </div>
+  </div>
+  <div><div role="button" class="btn yellow" tabindex="0" onclick="hostAdvancePhase(3)">MOVE TO PHASE 3 — BUILD →</div></div>
+</div>
+
+<!-- S-PHASE3-HOST -->
+<div class="screen" id="s-phase3-host">
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">Game 2 — Host View</div></div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:28px;">
+    <div>
+      <div class="phase-badge" style="background:#111;color:#FFE600;border:1px solid #FFE600;">PHASE 3 — BUILD</div>
+      <div class="heading" style="margin-top:16px;">They're building.<br><span>~3 minutes.</span></div>
+    </div>
+    <div style="background:#1a1a1a;padding:20px;border-left:3px solid #FFE600;">
+      <div class="label mb12">Your facilitation prompts</div>
+      <div class="note-line"><span class="note-dash">—</span><span class="note-text">Card + brief are both visible on their screens now.</span></div>
+      <div class="note-line"><span class="note-dash">—</span><span class="note-text">Remind them: pitch opens with "I stole from X because..."</span></div>
+      <div class="note-line"><span class="note-dash">—</span><span class="note-text">Their card stays private — audience doesn't see it during the pitch.</span></div>
+      <div class="note-line"><span class="note-dash">—</span><span class="note-text">You decide when to start pitching. ~3 minutes is the guide.</span></div>
+    </div>
+  </div>
+  <div><div role="button" class="btn yellow" tabindex="0" onclick="hostStartPitching()">START PITCHING →</div></div>
+</div>
+
+<!-- S-PITCH-ORDER -->
+<div class="screen" id="s-pitchorder">
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">Game 2 — Steal &amp; Reinterpret</div></div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:28px;">
+    <div><div class="heading">The pitch <span>order.</span></div><div class="subtext mt12">Remember your number.</div></div>
+    <div id="pitch-order-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+    <div id="pitch-order-you" style="font-size:18px;font-weight:400;color:#FFE600;margin-top:8px;"></div>
+  </div>
+  <div><div style="font-size:14px;font-weight:300;color:#888;margin-bottom:16px;">Starting in <span id="order-countdown" style="color:#FFE600;font-weight:500;">5</span> seconds...</div></div>
+</div>
+
+<!-- S-PITCH (ACTIVE PITCHER) -->
+<div class="screen dark" id="s-pitch">
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">Game 2 — Steal &amp; Reinterpret</div></div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:20px;">
+    <div>
+      <div class="live-wrap"><div class="live-dot"></div><div class="live-text">Now pitching</div></div>
+      <div class="heading">It's your<br><span id="pitch-player-name">turn.</span></div>
+    </div>
+    <div style="background:#1a1a00;border:1.5px solid #FFE600;padding:16px;">
+      <div class="label mb8">Open with this</div>
+      <div id="pitch-opener" class="steal-opener">"I stole from [campaign] because..."</div>
+    </div>
+    <div class="bl dim">
+      <div class="label" style="color:#777;">Your card — only you can see this</div>
+      <div id="pitch-card-mini" style="font-size:14px;font-weight:300;color:#888;font-style:italic;line-height:1.5;"></div>
+    </div>
+    <div>
+      <div class="timer-big" id="pitch-timer">1:30</div>
+      <div class="timer-bar-wrap"><div class="timer-bar" id="pitch-bar"></div></div>
+    </div>
+    <div><div class="label mb8" style="color:#555;">Pitch order</div><div class="pitch-order" id="pitch-order-display"></div></div>
+  </div>
+  <div><div role="button" class="btn" tabindex="0" onclick="donePitching()">DONE PITCHING →</div></div>
+</div>
+
+<!-- S-NAMEIDEA -->
+<div class="screen" id="s-nameidea">
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">Game 2 — Steal &amp; Reinterpret</div></div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:28px;">
+    <div><div class="heading">Name your <span>idea.</span></div><div class="subtext mt12">Short. Memorable. Yours.</div></div>
+    <div>
+      <input class="field-input" id="idea-title-final" type="text" maxlength="40" placeholder="e.g. The Honesty Bank" style="font-size:24px;" oninput="document.getElementById('idea-final-count').textContent=this.value.length+'/40'" />
+      <div style="display:flex;justify-content:space-between;margin-top:8px;">
+        <div class="field-hint">Shows on the vote screen.</div>
+        <div id="idea-final-count" style="font-size:13px;color:#666;">0/40</div>
+      </div>
+    </div>
+  </div>
+  <div><div role="button" class="btn" tabindex="0" onclick="lockIdeaName()">LOCK IT IN →</div></div>
+</div>
+
+<!-- S-WATCHING -->
+<div class="screen" id="s-watching">
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">Game 2 — Steal &amp; Reinterpret</div></div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:20px;">
+    <div>
+      <div class="live-wrap"><div class="live-dot"></div><div class="live-text">Now pitching</div></div>
+      <div class="heading"><span id="watching-pitcher-name">Someone</span> is<br>pitching now.</div>
+    </div>
+    <div class="timer-big" id="watch-timer" style="color:#333;">1:30</div>
+    <div class="timer-bar-wrap"><div class="timer-bar" id="watch-bar" style="background:#333;"></div></div>
+    <div class="bl dim">
+      <div class="label" style="color:#777;">The Brief</div>
+      <div style="font-size:14px;font-weight:300;color:#888;font-style:italic;line-height:1.5;" id="brief-display-watch"></div>
+    </div>
+    <div><div class="label mb8" style="color:#555;">Pitch order</div><div class="pitch-order" id="watch-order-display"></div></div>
+  </div>
+  <div style="font-size:14px;font-weight:300;color:#888;" id="watch-hint"></div>
+</div>
+
+<!-- S-UPNEXT -->
+<div class="screen yellow" id="s-upnext">
+  <div class="logo"><div class="logo-title dark">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub dark">Game 2 — Steal &amp; Reinterpret</div></div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:20px;">
+    <div style="font-size:16px;font-weight:300;color:#333;" id="prev-pitcher-done"></div>
+    <div style="font-family:Impact,sans-serif;font-size:48px;color:#000;text-transform:uppercase;letter-spacing:0.02em;line-height:1.1;" id="upnext-name">YOU'RE UP NEXT.</div>
+    <div style="font-size:18px;font-weight:300;color:#333;">Remember:<br>Open with "I stole from X because..."</div>
+    <div class="countdown-big" id="upnext-countdown">5</div>
+  </div>
+  <div style="font-size:14px;font-weight:300;color:#333;">Your timer starts automatically.</div>
+</div>
+
+<!-- S-VOTE -->
+<div class="screen" id="s-vote">
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">Game 2 — Steal &amp; Reinterpret</div></div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:20px;">
+    <div>
+      <div class="heading">Which idea has the<br>strongest <span>human truth?</span></div>
+      <div class="subtext mt12">No self-voting. Vote for the steal that worked hardest.</div>
+    </div>
+    <div id="vote-list"></div>
+  </div>
+  <div><div role="button" class="btn disabled" tabindex="0" id="lock-vote-btn" onclick="lockVote()">LOCK IN VOTE →</div></div>
+</div>
+
+<!-- S-RESULT -->
+<div class="screen" id="s-result">
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">Game 2 — Steal &amp; Reinterpret</div></div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:20px;">
+    <div style="font-size:12px;font-weight:500;color:#777;letter-spacing:0.2em;text-transform:uppercase;" id="result-round-label">Round 1 — Result</div>
+    <div class="winner-block">
+      <div class="winner-block-label">Round winner — strongest human truth</div>
+      <div class="winner-block-name" id="result-winner-name">—</div>
+      <div class="winner-block-idea" id="result-winner-idea"></div>
+    </div>
+    <div><div class="label mb16">Ideas this round — added to the long list</div><div id="result-ideas"></div></div>
+  </div>
+  <div><div role="button" class="btn" tabindex="0" id="next-round-btn" onclick="nextRound()">NEXT ROUND →</div></div>
+</div>
+
+<!-- S-LONGLIST -->
+<div class="screen" id="s-longlist">
+  <div class="logo"><div class="logo-title">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub">Game 2 — Complete</div></div>
+  <div class="flex1" style="display:flex;flex-direction:column;gap:20px;">
+    <div class="heading">All ideas. <span>Long list.</span></div>
+    <div class="subtext">Every idea from Game 2 is below.<br>Vote for your top 3 to take into Day 2.</div>
+    <div id="longlist-display" style="display:flex;flex-direction:column;gap:10px;"></div>
+    <div style="background:#1a1a1a;padding:16px;border-left:3px solid #FFE600;margin-top:8px;">
+      <div class="label mb8">Your votes — pick up to 3</div>
+      <div style="font-size:15px;font-weight:300;color:#aaa;">Tap the ideas you'd take into Day 2.<br><span id="longlist-vote-count" style="color:#FFE600;">0 / 3 selected</span></div>
+    </div>
+  </div>
+  <div style="margin-top:20px;"><div role="button" class="btn disabled" tabindex="0" id="longlist-vote-btn" onclick="lockLonglistVote()">LOCK IN MY VOTES →</div></div>
+</div>
+
+<!-- S-GAMEOVER -->
+<div class="screen yellow" id="s-gameover" style="position:relative;overflow:hidden;">
+  <canvas id="confetti-local" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"></canvas>
+  <div class="logo" style="position:relative;z-index:1;"><div class="logo-title dark">PITCH AGAINST <span>DULL.</span></div><div class="logo-sub dark">Game 2 — Complete</div></div>
+  <div class="flex1" style="display:flex;flex-direction:column;justify-content:center;gap:20px;position:relative;z-index:1;">
+    <div style="font-family:Impact,sans-serif;font-size:28px;color:#000;text-transform:uppercase;letter-spacing:0.02em;">GAME 2 DONE.</div>
+    <div>
+      <div style="font-size:16px;font-weight:300;color:#333;">The steal that hit hardest</div>
+      <div style="font-family:Impact,sans-serif;font-size:56px;color:#000;text-transform:uppercase;letter-spacing:0.02em;line-height:1;" id="final-winner-name">—</div>
+      <div style="font-size:15px;font-weight:300;color:#333;font-style:italic;margin-top:4px;" id="final-winner-idea"></div>
+    </div>
+    <div style="border-top:1.5px solid rgba(0,0,0,0.15);padding-top:20px;">
+      <div style="font-size:11px;font-weight:500;color:#000;letter-spacing:0.2em;text-transform:uppercase;opacity:0.5;margin-bottom:14px;">All ideas — long list</div>
+      <div id="final-longlist"></div>
+    </div>
+    <div style="border-top:1.5px solid rgba(0,0,0,0.15);padding-top:20px;">
+      <div style="font-size:13px;font-weight:500;color:#000;letter-spacing:0.15em;text-transform:uppercase;opacity:0.5;margin-bottom:12px;">Want to take the best idea further?</div>
+      <div style="font-family:Impact,sans-serif;font-size:22px;color:#000;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:10px;">Creative Ally.</div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <a href="mailto:peterbuckworks@gmail.com" style="font-size:16px;font-weight:400;color:#000;text-decoration:none;border-bottom:1.5px solid #000;padding-bottom:2px;width:fit-content;">peterbuckworks@gmail.com</a>
+        <a href="https://peter-buck.com" target="_blank" style="font-size:15px;font-weight:300;color:#000;opacity:0.7;text-decoration:none;">peter-buck.com ↗</a>
+      </div>
+    </div>
+  </div>
+  <div style="position:relative;z-index:1;margin-top:24px;">
+    <div role="button" class="btn dark" tabindex="0" onclick="playAgain()">PLAY AGAIN →</div>
+  </div>
+</div>
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, onValue, update, push, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyC5IuFzlJymFWoJd1gSyeXuRsbC5HwMgBU",
+  authDomain: "pitch-against-dull.firebaseapp.com",
+  databaseURL: "https://pitch-against-dull-default-rtdb.firebaseio.com",
+  projectId: "pitch-against-dull",
+  storageBucket: "pitch-against-dull.firebasestorage.app",
+  messagingSenderId: "90967669175",
+  appId: "1:90967669175:web:3c9217ff3d647ccb629032"
+};
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+window.db = db; window.ref = ref; window.set = set; window.get = get;
+window.onValue = onValue; window.update = update; window.push = push; window.remove = remove;
+window.firebaseReady = true;
+window.dispatchEvent(new Event('firebaseReady'));
+</script>
+
+<script>
+// ─── CAMPAIGN CARD LIBRARY (50 campaigns) ───────────────────────────────────
+const CAMPAIGNS = [
+  { id:1,  name:"Volkswagen Think Small", brand:"Volkswagen", year:"1959", tagline:"Think Small", mechanic:"Honesty as persuasion — admitting what you are beats pretending to be something you're not.", truth:"The gap between brand aspiration and reality is where trust is lost. Closing it is the campaign.", yt:"https://youtu.be/IFS4DdvKFpg" },
+  { id:2,  name:"Nike Just Do It", brand:"Nike", year:"1988", tagline:"Just Do It", mechanic:"Don't sell a product — sell an identity. People don't want to know what to buy. They want to know who they could become.", truth:"The barrier to action is almost never information. It's permission.", yt:"" },
+  { id:3,  name:"Dove Real Beauty", brand:"Dove", year:"2004", tagline:"Real Beauty", mechanic:"Expose the gap between how brands portray people and how people actually look. Closing it builds trust.", truth:"Women knew they were being lied to. The brand that stopped lying first won.", yt:"https://youtu.be/iYhCn0jf46U" },
+  { id:4,  name:"Old Spice The Man Your Man Could Smell Like", brand:"Old Spice", year:"2010", tagline:"Smell Like a Man, Man", mechanic:"Self-deprecating humour is more seductive than straight confidence. Make the audience feel smarter than the brand.", truth:"The absurd, self-aware brand is more trustworthy than the serious one.", yt:"https://youtu.be/owGykVbfgUE" },
+  { id:5,  name:"Apple 1984", brand:"Apple", year:"1984", tagline:"Why 1984 won't be like 1984", mechanic:"The most powerful positioning isn't what you are — it's what you're against.", truth:"Brands that name an enemy give people something to join, not just something to buy.", yt:"https://youtu.be/VtvjbmoDx-I" },
+  { id:6,  name:"Guinness Surfer", brand:"Guinness", year:"1999", tagline:"Good things come to those who wait", mechanic:"Making people wait for something makes them want it more. Patience is a brand value.", truth:"Delayed gratification is a premium signal in a world of instant everything.", yt:"https://youtu.be/E7b4plg8-FI" },
+  { id:7,  name:"Honda Cog", brand:"Honda", year:"2003", tagline:"The Power of Dreams", mechanic:"Showing obsessive craft in how you make something proves you're obsessive about what you make.", truth:"Proof of care in process is proof of care in product.", yt:"https://youtu.be/kBzJkx1gjAQ" },
+  { id:8,  name:"Cadbury Gorilla", brand:"Cadbury", year:"2007", tagline:"A glass and a half full of joy", mechanic:"Joy is a strategy. You don't have to talk about the product. You just need to make people feel something.", truth:"Emotion without reason is still persuasion.", yt:"https://youtu.be/TnzFRV1LwIo" },
+  { id:9,  name:"Always #LikeAGirl", brand:"Always", year:"2014", tagline:"#LikeAGirl", mechanic:"Turn an insult into a rallying cry. Reframe what the audience thought was their weakness as their power.", truth:"The brand that gives people language for something they already felt wins loyalty.", yt:"https://youtu.be/XjJQBjWYDTs" },
+  { id:10, name:"Coca-Cola Share a Coke", brand:"Coca-Cola", year:"2011", tagline:"Share a Coke", mechanic:"Make the product personal. The most powerful call to action is one that makes the audience the hero of the story.", truth:"When you put someone's name on something, you transfer ownership.", yt:"" },
+  { id:11, name:"Heineken Worlds Apart", brand:"Heineken", year:"2017", tagline:"Worlds Apart", mechanic:"Put two people with opposing views in a room. Let conversation happen. Let the product be the facilitator.", truth:"Common ground is more interesting than common opinion.", yt:"https://youtu.be/8wYXw4K0A3g" },
+  { id:12, name:"Burger King Moldy Whopper", brand:"Burger King", year:"2020", tagline:"The Moldy Whopper", mechanic:"Show the uncomfortable truth about your product as proof of a bigger truth about your values.", truth:"Transparency about what your product is made of is a premium signal when competitors hide it.", yt:"https://youtu.be/nkiYKKxAhEA" },
+  { id:13, name:"Nike Dream Crazy", brand:"Nike", year:"2018", tagline:"Dream Crazy", mechanic:"Take a divisive cultural moment and put the brand on the right side of history before the rest of the world catches up.", truth:"Brands that take positions before it's safe earn more trust than brands that wait.", yt:"https://youtu.be/Fq2CvmgoO7I" },
+  { id:14, name:"Patagonia Don't Buy This Jacket", brand:"Patagonia", year:"2011", tagline:"Don't Buy This Jacket", mechanic:"Tell your audience not to buy your product. Trust that the honesty earns more sales than the sales message would.", truth:"The counterintuitive call to action is the most believable one.", yt:"" },
+  { id:15, name:"John Lewis Christmas", brand:"John Lewis", year:"2011–present", tagline:"The Gift of Time", mechanic:"Tell a human story with no product visible until the final frame. Let emotion do the selling.", truth:"A brand that makes you cry at Christmas owns Christmas.", yt:"https://youtu.be/N2-EzRzCcBE" },
+  { id:16, name:"Avis We Try Harder", brand:"Avis", year:"1962", tagline:"We Try Harder", mechanic:"Own second place honestly. It's more believable than falsely claiming first.", truth:"Admitting a disadvantage and explaining why it makes you better is the most persuasive argument structure in advertising.", yt:"" },
+  { id:17, name:"Ikea The Lamp", brand:"IKEA", year:"2002", tagline:"The Lamp", mechanic:"Subvert the audience's emotional expectations. Make them feel bad for the thing they were designed to feel good about.", truth:"Surprise is the fastest route to re-evaluation.", yt:"https://youtu.be/PMDLSQ-t3pQ" },
+  { id:18, name:"Snickers You're Not You When You're Hungry", brand:"Snickers", year:"2010", tagline:"You're Not You When You're Hungry", mechanic:"A universal human state is more powerful than any product feature.", truth:"The most relatable brief is the one that describes everyone.", yt:"https://youtu.be/Iozo1UVKPXQ" },
+  { id:19, name:"Fearless Girl", brand:"State Street Global Advisors", year:"2017", tagline:"Fearless Girl", mechanic:"Recontextualise an existing symbol. Change the meaning of the scene without changing either object.", truth:"Sometimes the most powerful statement is silence — let context do the work.", yt:"" },
+  { id:20, name:"Spotify Wrapped", brand:"Spotify", year:"2016–present", tagline:"Wrapped", mechanic:"Turn personal data into personal identity. Make people feel seen. Seen people share.", truth:"The data your product holds about someone is the most personal gift you can give them back.", yt:"" },
+  { id:21, name:"Lego Imagine", brand:"LEGO", year:"1980s–90s", tagline:"Imagine", mechanic:"Show what the product unlocks in the human mind, not the product itself.", truth:"The most powerful thing you can sell is the person the customer becomes.", yt:"" },
+  { id:22, name:"Got Milk?", brand:"California Milk Processor Board", year:"1993", tagline:"Got Milk?", mechanic:"Show what life is like without the thing, not with it. Absence is more powerful than presence.", truth:"The best way to make someone want something is to take it away.", yt:"https://youtu.be/4qFQrE5Xf7g" },
+  { id:23, name:"Marlboro Man", brand:"Marlboro", year:"1954", tagline:"Come to Marlboro Country", mechanic:"Sell an identity, not a product. Who do I become if I use this?", truth:"Aspiration to a way of life is more persuasive than any product claim.", yt:"" },
+  { id:24, name:"Coca-Cola Hilltop", brand:"Coca-Cola", year:"1971", tagline:"I'd Like to Teach the World to Sing", mechanic:"A brand that stands for human unity taps into something bigger than the product.", truth:"The brand that makes you feel connected to other people earns a loyalty no feature can.", yt:"https://youtu.be/1VM2eLhvsSM" },
+  { id:25, name:"Volvo Epic Split", brand:"Volvo Trucks", year:"2013", tagline:"Epic Split", mechanic:"The most unexpected demonstration of a product truth is the most memorable one.", truth:"Proof, when it's beautiful, travels further than any claim.", yt:"https://youtu.be/M7FIvfx5J10" },
+  { id:26, name:"Airbnb Belong Anywhere", brand:"Airbnb", year:"2014", tagline:"Belong Anywhere", mechanic:"The most disruptive brands don't sell a product — they sell belonging.", truth:"Belonging is the deepest human need. The brand that facilitates it doesn't compete on price.", yt:"" },
+  { id:27, name:"Chipotle Back to the Start", brand:"Chipotle", year:"2011", tagline:"Back to the Start", mechanic:"Animation and music can make a complex ethical argument feel simple and human.", truth:"The brand that makes you feel something about its supply chain earns the premium.", yt:"https://youtu.be/aMfSGt6rHos" },
+  { id:28, name:"Google Year in Search", brand:"Google", year:"2012–present", tagline:"Year in Search", mechanic:"Reflect humanity back at itself. Create emotional resonance no product claim can match.", truth:"The brand that shows you yourself is more intimate than the brand that sells to you.", yt:"https://youtu.be/xY_MUB8rkFE" },
+  { id:29, name:"Johnnie Walker Keep Walking", brand:"Johnnie Walker", year:"1999", tagline:"Keep Walking", mechanic:"Progress as a human truth connects across every culture and context.", truth:"The universal idea is the most scalable one.", yt:"" },
+  { id:30, name:"The Economist Poster Campaign", brand:"The Economist", year:"1990s", tagline:"Would you like to sit next to you at dinner?", mechanic:"Wit is a premium signal. The smartest brands trust their audience to get the joke.", truth:"If you have to explain a joke, it's not for your audience. That's the point.", yt:"" },
+  { id:31, name:"Tesco Every Little Helps", brand:"Tesco", year:"1993", tagline:"Every Little Helps", mechanic:"Humility at scale is more trustworthy than confidence at scale.", truth:"The biggest brand saying the smallest thing is the unexpected signal.", yt:"" },
+  { id:32, name:"NBA Where Amazing Happens", brand:"NBA", year:"2008", tagline:"Where Amazing Happens", mechanic:"The most powerful sports marketing is about the feeling of witnessing something unforgettable.", truth:"Sell the audience's experience, not the athlete's performance.", yt:"" },
+  { id:33, name:"Lynx/Axe Effect", brand:"Lynx/Axe", year:"2002", tagline:"The Axe Effect", mechanic:"Exaggerating a product benefit to absurdity makes the real benefit more believable, not less.", truth:"Hyperbole, when everyone's in on the joke, builds more trust than a straight claim.", yt:"" },
+  { id:34, name:"MasterCard Priceless", brand:"MasterCard", year:"1997", tagline:"There are some things money can't buy", mechanic:"The things that matter most can't be bought. A brand that acknowledges this sells the things that can.", truth:"The most powerful brand positioning is the one that transcends the category.", yt:"" },
+  { id:35, name:"Jeep There's Only One", brand:"Jeep", year:"ongoing", tagline:"There's Only One", mechanic:"Heritage owned with pride is more powerful than heritage explained.", truth:"You don't have to justify your provenance to the people who already know.", yt:"" },
+  { id:36, name:"Budweiser Wassup", brand:"Budweiser", year:"1999", tagline:"Wassup?", mechanic:"Authentically reflecting how people actually talk to each other beats how brands think people talk.", truth:"The brand that speaks your language owns your loyalty.", yt:"https://youtu.be/Sts4-_JJM9I" },
+  { id:37, name:"BMW Films The Hire", brand:"BMW", year:"2001", tagline:"The Hire", mechanic:"Content so good people seek it out is worth more than any media buy.", truth:"If the brand becomes the entertainment, you never have to interrupt the entertainment.", yt:"" },
+  { id:38, name:"Thai Life Insurance Unsung Hero", brand:"Thai Life Insurance", year:"various", tagline:"Unsung Hero", mechanic:"The most emotionally devastating ads don't mention the product until the very end — and don't need to.", truth:"The brand that makes you cry at the right moment can say anything in the last five seconds.", yt:"https://youtu.be/uaWA2GAbYhI" },
+  { id:39, name:"Warby Parker Home Try-On", brand:"Warby Parker", year:"2010", tagline:"Home Try-On", mechanic:"Removing the biggest barrier to purchase — risk — is more powerful than any product claim.", truth:"Fear of being wrong is why people don't buy. Eliminate it and the decision becomes easy.", yt:"" },
+  { id:40, name:"Dumb Ways to Die", brand:"Metro Trains", year:"2012", tagline:"Dumb Ways to Die", mechanic:"Make something that should be serious into something delightfully absurd. Reach more people than earnest warning ever would.", truth:"The most effective safety message is the one people share because it's fun, not because it's important.", yt:"https://youtu.be/IJNR2EpS0jw" },
+  { id:41, name:"Apple Shot on iPhone", brand:"Apple", year:"2015", tagline:"Shot on iPhone", mechanic:"Your customers are your best creative department. Their truth is more believable than yours.", truth:"User-generated proof travels further than any brand-produced content.", yt:"" },
+  { id:42, name:"Harley Davidson", brand:"Harley Davidson", year:"various", tagline:"American by Birth. Rebel by Choice.", mechanic:"A brand that stands for a way of life never competes on product. It competes on identity.", truth:"The deepest loyalty is to the community, not the product.", yt:"" },
+  { id:43, name:"Heinz Slice of Summer", brand:"Heinz", year:"2022", tagline:"Slice of Summer", mechanic:"The most provocative briefs ask what your most devoted fans already believe about you.", truth:"The brand that listens to superfans finds briefs no agency would write.", yt:"" },
+  { id:44, name:"IKEA BookBook", brand:"IKEA", year:"2014", tagline:"Experience the power of a bookbook", mechanic:"Borrow the language of a dominant cultural format and turn it on its head.", truth:"Pastiche earns attention when it's smart enough that the audience feels in on the joke.", yt:"https://youtu.be/MOXQo7nURs0" },
+  { id:45, name:"Dove Evolution", brand:"Dove", year:"2006", tagline:"Evolution", mechanic:"A single piece of content that exposes an uncomfortable industry truth travels further than any paid media.", truth:"The brand that breaks ranks with its own industry earns the trust that industry lost.", yt:"https://youtu.be/iYhCn0jf46U" },
+  { id:46, name:"Liquid Death", brand:"Liquid Death", year:"2019", tagline:"Murder Your Thirst", mechanic:"The most disruptive positioning in a boring category comes from acting like you're in a completely different category.", truth:"Category rules are invisible cages. The brand that ignores them wins attention before it even says a word.", yt:"" },
+  { id:47, name:"Dollar Shave Club", brand:"Dollar Shave Club", year:"2012", tagline:"Our Blades Are F***ing Great", mechanic:"A founder who speaks directly, honestly, and with humour is more persuasive than any polished brand voice.", truth:"Authenticity is the one thing incumbents can't buy.", yt:"https://youtu.be/ZUG9qYTJMsI" },
+  { id:48, name:"Oatly", brand:"Oatly", year:"2014", tagline:"It's like milk but made for humans", mechanic:"Packaging is media. The most overlooked surface in marketing is the one that travels with the product.", truth:"The brand that makes you read the carton doesn't need a campaign.", yt:"" },
+  { id:49, name:"REI Opt Outside", brand:"REI", year:"2015", tagline:"#OptOutside", mechanic:"The most counterintuitive thing a retailer can do on Black Friday is tell people not to shop. Conviction over revenue builds trust.", truth:"The brand that demonstrates its values when it costs something earns the loyalty that demonstrations of values in low-stakes moments never can.", yt:"" },
+  { id:50, name:"Compare the Meerkat", brand:"Comparethemarket", year:"2009", tagline:"Simples", mechanic:"A completely invented character with a distinct personality can make the most boring category genuinely entertaining.", truth:"The brand that gives you a character to love doesn't need a reason to love the product.", yt:"" }
+];
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let myRole='', myName='', myPlayerId='', roomCode='', roomRef=null, gameState={};
+let pitchTimerInterval=null, watchTimerInterval=null, watchTimerStartedAt=null;
+let selectedVote=null, upnextInterval=null, orderCountdownInterval=null;
+let donePitchingFired=false, lockIdeaFired=false, ideaLocked=false, lockVoteFired=false;
+let hostStartGameFired=false, hostStartPitchingFired=false, tallyFired=false;
+let selectedRounds=2, longlistVotes=new Set();
+
+// ─── UTILS ───────────────────────────────────────────────────────────────────
+function go(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
+function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function generateCode(){ return String(Math.floor(1000+Math.random()*9000)); }
+function pad(n){ return String(n).padStart(2,'0'); }
+function formatTime(s){ return Math.floor(s/60)+':'+pad(s%60); }
+function waitForFirebase(cb){ let n=0; function check(){ if(window.firebaseReady&&window.ref&&window.db){cb();}else if(n<50){n++;setTimeout(check,100);}else{alert('Could not connect. Please refresh.');} } check(); }
+
+function setRounds(n){
+  selectedRounds=n;
+  [1,2,3].forEach(i=>{
+    const el=document.getElementById('rounds-'+i);
+    if(el){ el.style.borderColor=i===n?'#FFE600':'#333'; el.querySelector('div').style.color=i===n?'#FFE600':'#777'; }
+  });
+}
+
+function updateBriefCount(){
+  const v=document.getElementById('brief-input').value;
+  document.getElementById('brief-count').textContent=v.length+'/140';
+  const btn=document.getElementById('create-room-btn');
+  if(v.trim().length>0){btn.disabled=false;btn.classList.remove('disabled');btn.style.opacity='1';btn.style.pointerEvents='auto';}
+  else{btn.disabled=true;btn.classList.add('disabled');}
+}
+
+// ─── CARD ASSIGNMENT ─────────────────────────────────────────────────────────
+function assignCards(playerIds){
+  const shuffled=shuffle([...CAMPAIGNS]);
+  const assignment={};
+  playerIds.forEach((id,i)=>{ assignment[id]=shuffled[i%shuffled.length].id; });
+  return assignment;
+}
+
+function renderCard(cardId, showYT=true){
+  const c=CAMPAIGNS.find(x=>x.id===cardId);
+  if(!c)return '<div style="color:#555">Card not found</div>';
+  return `
+    <div class="card-layer">
+      <div class="card-layer-label">Campaign</div>
+      <div class="card-layer-text">${c.name} — ${c.year}</div>
+      <div class="card-tagline">"${c.tagline}"</div>
+      ${showYT&&c.yt?`<a class="card-yt-link" href="${c.yt}" target="_blank">▶ Watch it on YouTube</a>`:''}
+    </div>
+    <div class="card-layer">
+      <div class="card-layer-label">What it did strategically</div>
+      <div class="card-layer-text">${c.mechanic}</div>
+    </div>
+    <div class="card-layer">
+      <div class="card-layer-label">The human truth to steal</div>
+      <div class="card-layer-text" style="color:#FFE600;">${c.truth}</div>
+    </div>`;
+}
+
+function renderCardMini(cardId){
+  const c=CAMPAIGNS.find(x=>x.id===cardId);
+  if(!c)return '';
+  return `${c.name} — "${c.tagline}"`;
+}
+
+// ─── CREATE ROOM ─────────────────────────────────────────────────────────────
+function createRoom(){
+  const brief=document.getElementById('brief-input').value.trim();
+  if(!brief)return;
+  const company=document.getElementById('company-input').value.trim()||'';
+  waitForFirebase(()=>{
+    roomCode=generateCode(); myRole='host'; myName='Host'; myPlayerId='host';
+    const data={ brief, company, status:'waiting', round:1, totalRounds:selectedRounds, players:{}, cardAssignments:{}, ideaTitles:{}, votes:{}, pitchOrder:[], currentPitcher:0, allIdeas:[], createdAt:Date.now() };
+    window.set(window.ref(window.db,'g2rooms/'+roomCode),data).then(()=>{
+      roomRef=window.ref(window.db,'g2rooms/'+roomCode);
+      document.getElementById('room-code-display').textContent=roomCode;
+      document.getElementById('brief-recap-host').textContent='"'+brief+'"';
+      listenToRoom(); go('s-roomcode');
+    });
+  });
+}
+
+// ─── JOIN ─────────────────────────────────────────────────────────────────────
+function joinGame(){
+  const name=document.getElementById('player-name-input').value.trim();
+  const code=document.getElementById('code-input').value.trim();
+  if(!name){document.getElementById('name-hint').style.display='block';return;}
+  if(code.length!==4){alert('Please enter the 4-digit room code.');return;}
+  waitForFirebase(()=>{
+    window.get(window.ref(window.db,'g2rooms/'+code)).then(snap=>{
+      if(!snap.exists()){alert('Room not found. Check the code and try again.');return;}
+      const d=snap.val();
+      if(d.status!=='waiting'){alert('This game has already started.');return;}
+      if(Object.keys(d.players||{}).length>=5){alert('This room is full.');return;}
+      roomCode=code; myRole='player'; myName=name; myPlayerId='p_'+Date.now();
+      roomRef=window.ref(window.db,'g2rooms/'+roomCode);
+      window.update(window.ref(window.db,'g2rooms/'+roomCode+'/players/'+myPlayerId),{name,joinedAt:Date.now()}).then(()=>{
+        document.getElementById('brief-display-player').textContent='"'+d.brief+'"';
+        listenToRoom(); go('s-waiting');
+      });
+    });
+  });
+}
+
+// ─── LISTEN ───────────────────────────────────────────────────────────────────
+function listenToRoom(){
+  window.onValue(roomRef,snap=>{
+    if(!snap.exists()){go('s-intro');return;}
+    gameState=snap.val();
+    handleStateChange(gameState);
+  });
+  if(myRole==='host'){
+    setupHostPitchWatcher();
+    setupHostVoteWatcher();
+    window.onValue(window.ref(window.db,'g2rooms/'+roomCode+'/pitchStartedAt'),snap=>{
+      if(myRole!=='host')return;
+      const v=snap.exists()?snap.val():null;
+      if(!v){
+        if(watchTimerInterval){clearInterval(watchTimerInterval);watchTimerInterval=null;}
+        watchTimerStartedAt=null;
+        const wt=document.getElementById('watch-timer');
+        if(wt){wt.textContent='naming...';wt.style.color='#555';}
+      }else if(v!==watchTimerStartedAt){
+        startWatchTimer(v);
+      }
+    });
+  }
+  if(myRole==='player'){
+    listenForUpNext();
+    window.onValue(window.ref(window.db,'g2rooms/'+roomCode+'/ideaTitles'),snap=>{
+      if(gameState)gameState.ideaTitles=snap.exists()?snap.val():{};
+      renderVoteList();
+    });
+  }
+}
+
+// ─── HANDLE STATE ─────────────────────────────────────────────────────────────
+function handleStateChange(state){
+  updatePlayerLists(state);
+
+  if(myRole==='host'){
+    const count=Object.keys(state.players||{}).length;
+    const btn=document.getElementById('start-game-btn'),hint=document.getElementById('start-hint');
+    if(count>=2){
+      btn.classList.remove('disabled');btn.disabled=false;
+      hint.textContent=count+' PLAYERS READY. Start when everyone\'s in.';hint.style.color='#FFE600';
+    }else{
+      btn.classList.add('disabled');btn.disabled=true;
+      hint.textContent=count===0?'Waiting for players...':count+' player joined. Need at least 2.';hint.style.color='#aaa';
+    }
+  }
+
+  // PHASE 1
+  if(state.status==='phase1'){
+    if(myRole==='host'){
+      // update player list in host view
+      const pl=document.getElementById('host-phase1-players');
+      if(pl) pl.innerHTML=Object.values(state.players||{}).map(p=>`<div class="player-row"><div class="pdot"></div><div class="pname">${p.name}</div></div>`).join('');
+      const curr=(document.querySelector('.screen.active')||{}).id;
+      if(curr!=='s-phase1-host')go('s-phase1-host');
+    }else{
+      const cardId=(state.cardAssignments||{})[myPlayerId];
+      const el=document.getElementById('card-display-p1');
+      if(el)el.innerHTML=cardId?renderCard(cardId,true):'<div style="color:#555">Card loading...</div>';
+      const curr=(document.querySelector('.screen.active')||{}).id;
+      if(curr!=='s-phase1')go('s-phase1');
+    }
+  }
+
+  // PHASE 2
+  if(state.status==='phase2'){
+    if(myRole==='host'){
+      document.getElementById('host-p2-brief').textContent='"'+(state.brief||'')+'"';
+      const curr=(document.querySelector('.screen.active')||{}).id;
+      if(curr!=='s-phase2-host')go('s-phase2-host');
+    }else{
+      const cardId=(state.cardAssignments||{})[myPlayerId];
+      const el=document.getElementById('card-display-p2');
+      if(el)el.innerHTML=cardId?renderCard(cardId,false):'';
+      document.getElementById('brief-display-p2').textContent='"'+(state.brief||'')+'"';
+      const curr=(document.querySelector('.screen.active')||{}).id;
+      if(curr!=='s-phase2')go('s-phase2');
+    }
+  }
+
+  // PHASE 3
+  if(state.status==='phase3'){
+    if(myRole==='host'){
+      const curr=(document.querySelector('.screen.active')||{}).id;
+      if(curr!=='s-phase3-host')go('s-phase3-host');
+    }else{
+      const cardId=(state.cardAssignments||{})[myPlayerId];
+      const el=document.getElementById('card-display-p3');
+      if(el)el.innerHTML=cardId?renderCard(cardId,true):'';
+      document.getElementById('brief-display-p3').textContent='"'+(state.brief||'')+'"';
+      const curr=(document.querySelector('.screen.active')||{}).id;
+      if(curr!=='s-phase3')go('s-phase3');
+    }
+  }
+
+  // PITCHING
+  if(state.status==='pitching'){
+    const activeId=(document.querySelector('.screen.active')||{}).id;
+    if(activeId==='s-pitch')return;
+    const roundKey='round_'+(state.round||1);
+    if(!window.shownOrderScreen)window.shownOrderScreen={};
+    if(!window.shownOrderScreen[roundKey]){
+      window.shownOrderScreen[roundKey]=true;
+      showPitchOrderScreen(state);
+    }else{
+      handlePitchingState(state);
+    }
+  }
+
+  // VOTING
+  if(state.status==='voting'){
+    if(myRole==='host'){
+      const wt=document.getElementById('watch-timer');
+      if(wt){wt.textContent='Waiting for votes...';wt.style.color='#FFE600';wt.style.fontSize='28px';}
+      document.getElementById('watching-pitcher-name').textContent='everyone';
+      const lw=document.querySelector('#s-watching .live-wrap');
+      if(lw)lw.style.display='none';
+      go('s-watching');
+    }else{
+      showVoteScreen(state);
+    }
+  }
+
+  // RESULT
+  if(state.status==='result'){
+    const lw=document.querySelector('#s-watching .live-wrap');
+    if(lw)lw.style.display='flex';
+    const wt=document.getElementById('watch-timer');
+    if(wt)wt.style.fontSize='';
+    showResultScreen(state);
+  }
+
+  // LONGLIST / GAMEOVER
+  if(state.status==='longlist'){ showLonglistScreen(state); }
+  if(state.status==='gameover'){ showGameoverScreen(state); }
+}
+
+function updatePlayerLists(state){
+  const players=state.players||{};
+  const names=Object.entries(players).map(([id,p])=>({id,name:p.name}));
+  const hpl=document.getElementById('host-player-list');
+  if(hpl){
+    document.getElementById('host-player-count').textContent=names.length;
+    hpl.innerHTML=names.map(p=>`<div class="player-row"><div class="pdot"></div><div class="pname">${p.name}</div></div>`).join('');
+  }
+  const wpl=document.getElementById('waiting-player-list');
+  if(wpl){
+    document.getElementById('waiting-player-count').textContent=names.length;
+    wpl.innerHTML=names.map(p=>`<div class="player-row"><div class="pdot"></div><div class="pname ${p.id===myPlayerId?'you':''}">${p.name}${p.id===myPlayerId?' ✓':''}</div></div>`).join('');
+  }
+  const hp1=document.getElementById('host-phase1-players');
+  if(hp1) hp1.innerHTML=names.map(p=>`<div class="player-row"><div class="pdot"></div><div class="pname">${p.name}</div></div>`).join('');
+}
+
+// ─── HOST START GAME ──────────────────────────────────────────────────────────
+function hostStartGame(){
+  if(hostStartGameFired)return;hostStartGameFired=true;setTimeout(()=>{hostStartGameFired=false;},3000);
+  const playerIds=Object.keys(gameState.players||{});
+  if(playerIds.length<2){alert('Need at least 2 players to start.');return;}
+  const cardAssignments=assignCards(playerIds);
+  const pitchOrder=shuffle(playerIds);
+  window.update(roomRef,{status:'phase1',cardAssignments,pitchOrder,currentPitcher:0,ideaTitles:{},votes:{},pitchDone:{},allIdeas:gameState.allIdeas||[]});
+}
+window.hostStartGame=hostStartGame;
+
+// ─── HOST ADVANCE PHASE ───────────────────────────────────────────────────────
+function hostAdvancePhase(phase){
+  if(phase===2){ window.update(roomRef,{status:'phase2'}); }
+  if(phase===3){ window.update(roomRef,{status:'phase3'}); }
+}
+window.hostAdvancePhase=hostAdvancePhase;
+
+// ─── HOST START PITCHING ──────────────────────────────────────────────────────
+function hostStartPitching(){
+  if(hostStartPitchingFired)return;hostStartPitchingFired=true;
+  window.update(roomRef,{status:'pitching',pitchStartedAt:null,upNextFor:null,prevPitcher:null}).catch(e=>{hostStartPitchingFired=false;alert('Error: '+e.message);});
+}
+window.hostStartPitching=hostStartPitching;
+
+// ─── PITCH ORDER SCREEN ───────────────────────────────────────────────────────
+function showPitchOrderScreen(state){
+  if(orderCountdownInterval){clearInterval(orderCountdownInterval);orderCountdownInterval=null;}
+  const players=state.players||{},order=state.pitchOrder||[];
+  document.getElementById('pitch-order-list').innerHTML=order.map((id,i)=>{
+    const name=players[id]?players[id].name:'?',isMe=id===myPlayerId;
+    return `<div style="display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid #222;">
+      <div style="font-family:Impact,sans-serif;font-size:28px;color:${isMe?'#FFE600':'#555'};width:32px;">${i+1}</div>
+      <div style="font-size:20px;font-weight:${isMe?'400':'300'};color:${isMe?'#fff':'#aaa'};">${name}${isMe?' — you':''}</div>
+    </div>`;
+  }).join('');
+  const myIdx=order.indexOf(myPlayerId),youEl=document.getElementById('pitch-order-you');
+  if(myIdx===0&&myRole==='player')youEl.textContent="You're up first. Get ready.";
+  else if(myIdx>0)youEl.textContent="You pitch after "+(players[order[myIdx-1]]?players[order[myIdx-1]].name:'?')+".";
+  else if(myRole==='host')youEl.textContent="You're the host. Watch the room.";
+  go('s-pitchorder');
+  let count=5;document.getElementById('order-countdown').textContent=count;
+  orderCountdownInterval=setInterval(()=>{
+    count--;document.getElementById('order-countdown').textContent=count;
+    if(count<=0){
+      clearInterval(orderCountdownInterval);orderCountdownInterval=null;
+      const firstId=(gameState.pitchOrder||[])[0];
+      if(myRole==='host'&&firstId){window.update(roomRef,{upNextFor:firstId});}
+      else if(myRole==='player'){handlePitchingState(gameState);}
+    }
+  },1000);
+}
+
+// ─── HANDLE PITCHING STATE ────────────────────────────────────────────────────
+function handlePitchingState(state){
+  if(pitchTimerInterval){clearInterval(pitchTimerInterval);pitchTimerInterval=null;}
+  const order=state.pitchOrder||[],idx=state.currentPitcher||0;
+  if(idx>=order.length)return;
+  const currentId=order[idx],players=state.players||{};
+  const currentName=players[currentId]?players[currentId].name:'?';
+  const orderHTML=order.map((id,i)=>{
+    const n=players[id]?players[id].name:'?',cls=i<idx?'done':i===idx?'active':'';
+    return `<span class="po-name ${cls}">${n}</span>${i<order.length-1?'<span class="po-sep">—</span>':''}`;
+  }).join('');
+
+  if(myRole==='player'&&currentId===myPlayerId){
+    const activeId=(document.querySelector('.screen.active')||{}).id;
+    if(activeId==='s-pitch'||activeId==='s-nameidea'||ideaLocked)return;
+    document.getElementById('pitch-player-name').textContent='turn, '+myName+'.';
+    const cardId=(state.cardAssignments||{})[myPlayerId];
+    const c=CAMPAIGNS.find(x=>x.id===cardId);
+    document.getElementById('pitch-opener').textContent=c?'"I stole from '+c.name+' because..."':'"I stole from [campaign] because..."';
+    document.getElementById('pitch-card-mini').textContent=cardId?renderCardMini(cardId):'';
+    document.getElementById('pitch-order-display').innerHTML=orderHTML;
+    showNameIdeaScreen();
+  }else if(myRole==='player'){
+    document.getElementById('watching-pitcher-name').textContent=currentName;
+    document.getElementById('brief-display-watch').textContent='"'+(state.brief||'')+'"';
+    document.getElementById('watch-order-display').innerHTML=orderHTML;
+    const myIdx=order.indexOf(myPlayerId),hint=document.getElementById('watch-hint');
+    if(hint){
+      if(myIdx===idx+1)hint.textContent="You're up next.";
+      else if(myIdx>idx+1)hint.textContent="Listen up. Your turn is coming.";
+      else hint.textContent="You've pitched. Listen now.";
+    }
+    document.getElementById('watch-timer').textContent='—';
+    document.getElementById('watch-timer').style.color='#555';
+    go('s-watching');
+  }else if(myRole==='host'){
+    document.getElementById('watching-pitcher-name').textContent=currentName;
+    document.getElementById('brief-display-watch').textContent='"'+(state.brief||'')+'"';
+    document.getElementById('watch-order-display').innerHTML=orderHTML;
+    const wt=document.getElementById('watch-timer');if(wt){wt.textContent='naming...';wt.style.color='#555';wt.className='timer-big';}
+    go('s-watching');
+  }
+}
+
+// ─── NAME IDEA ────────────────────────────────────────────────────────────────
+function showNameIdeaScreen(){
+  const curr=(document.querySelector('.screen.active')||{}).id;
+  if(curr==='s-nameidea')return;
+  lockIdeaFired=false;
+  document.getElementById('idea-title-final').value='';
+  document.getElementById('idea-final-count').textContent='0/40';
+  go('s-nameidea');
+  setTimeout(()=>{document.getElementById('idea-title-final').focus();},300);
+}
+
+function lockIdeaName(){
+  if(lockIdeaFired)return;lockIdeaFired=true;
+  const title=document.getElementById('idea-title-final').value.trim();
+  const cardId=(gameState.cardAssignments||{})[myPlayerId];
+  const c=CAMPAIGNS.find(x=>x.id===cardId);
+  document.getElementById('pitch-player-name').textContent='turn, '+myName+'.';
+  document.getElementById('pitch-opener').textContent=c?'"I stole from '+c.name+' because..."':'"I stole from [campaign] because..."';
+  document.getElementById('pitch-card-mini').textContent=cardId?renderCardMini(cardId):'';
+  ideaLocked=true;lockIdeaFired=false;
+  go('s-pitch');startPitchTimer();
+  window.update(roomRef,{['ideaTitles/'+myPlayerId]:title||'(no title)'});
+}
+window.lockIdeaName=lockIdeaName;
+
+// ─── TIMERS ───────────────────────────────────────────────────────────────────
+function startPitchTimer(){
+  let s=90;
+  const el=document.getElementById('pitch-timer'),bar=document.getElementById('pitch-bar');
+  el.textContent=formatTime(s);bar.style.width='100%';el.className='timer-big';
+  window.update(roomRef,{pitchStartedAt:Date.now()});
+  pitchTimerInterval=setInterval(()=>{
+    s--;el.textContent=formatTime(s);bar.style.width=(s/90*100)+'%';
+    if(s<=20){el.classList.add('warn');bar.classList.add('warn');}
+    if(s<=0){clearInterval(pitchTimerInterval);pitchTimerInterval=null;donePitching();}
+  },1000);
+}
+
+function startWatchTimer(startedAt){
+  if(watchTimerStartedAt===startedAt)return;
+  if(watchTimerInterval){clearInterval(watchTimerInterval);watchTimerInterval=null;}
+  watchTimerStartedAt=startedAt;
+  const el=document.getElementById('watch-timer'),bar=document.getElementById('watch-bar');
+  watchTimerInterval=setInterval(()=>{
+    const elapsed=Math.floor((Date.now()-startedAt)/1000),s=Math.max(0,90-elapsed);
+    if(el){el.textContent=formatTime(s);el.style.color='#333';}
+    if(bar)bar.style.width=(s/90*100)+'%';
+    if(s<=0){clearInterval(watchTimerInterval);watchTimerInterval=null;}
+  },1000);
+}
+
+// ─── DONE PITCHING ────────────────────────────────────────────────────────────
+function donePitching(){
+  if(donePitchingFired)return;donePitchingFired=true;setTimeout(()=>{donePitchingFired=false;},3000);
+  if(pitchTimerInterval){clearInterval(pitchTimerInterval);pitchTimerInterval=null;}
+  window.update(window.ref(window.db,'g2rooms/'+roomCode+'/pitchDone/'+myPlayerId),{done:true,at:Date.now()});
+  go('s-watching');
+}
+window.donePitching=donePitching;
+
+// ─── HOST PITCH WATCHER ───────────────────────────────────────────────────────
+function setupHostPitchWatcher(){
+  window.onValue(window.ref(window.db,'g2rooms/'+roomCode+'/pitchDone'),snap=>{
+    if(!snap.exists()||myRole!=='host')return;
+    const done=snap.val(),order=gameState.pitchOrder||[],idx=gameState.currentPitcher||0;
+    if(idx>=order.length)return;
+    if(done[order[idx]])advancePitcher();
+  });
+}
+
+function advancePitcher(){
+  if(watchTimerInterval){clearInterval(watchTimerInterval);watchTimerInterval=null;}
+  watchTimerStartedAt=null;
+  const order=gameState.pitchOrder||[],idx=(gameState.currentPitcher||0)+1;
+  if(idx>=order.length){window.update(roomRef,{status:'voting',currentPitcher:idx});}
+  else{window.update(roomRef,{currentPitcher:idx,pitchStartedAt:null,upNextFor:order[idx],prevPitcher:order[idx-1]});}
+}
+
+// ─── UP NEXT ──────────────────────────────────────────────────────────────────
+function listenForUpNext(){
+  let last=null;
+  window.onValue(window.ref(window.db,'g2rooms/'+roomCode+'/upNextFor'),snap=>{
+    if(!snap.exists()){last=null;return;}
+    const v=snap.val();if(v===last)return;last=v;
+    if(v===myPlayerId)showUpNext();
+  });
+}
+
+function showUpNext(){
+  const players=gameState.players||{},prevId=gameState.prevPitcher;
+  const prevName=prevId&&players[prevId]?players[prevId].name:null;
+  document.getElementById('prev-pitcher-done').textContent=prevName?prevName+' just finished.':'';
+  document.getElementById('upnext-name').textContent='YOU\'RE UP NEXT, '+myName.toUpperCase()+'.';
+  let count=5;document.getElementById('upnext-countdown').textContent=count;
+  go('s-upnext');
+  if(upnextInterval)clearInterval(upnextInterval);
+  upnextInterval=setInterval(()=>{
+    count--;
+    document.getElementById('upnext-countdown').textContent=count>0?count:'GO.';
+    if(count<=0){clearInterval(upnextInterval);upnextInterval=null;showNameIdeaScreen();}
+  },1000);
+}
+
+// ─── VOTE ─────────────────────────────────────────────────────────────────────
+function renderVoteList(){
+  const curr=(document.querySelector('.screen.active')||{}).id;
+  if(curr!=='s-vote')return;
+  const players=gameState.players||{},ideaTitles=gameState.ideaTitles||{};
+  document.getElementById('vote-list').innerHTML=Object.entries(players).map(([id,p])=>{
+    const isSelf=id===myPlayerId,idea=ideaTitles[id]||'';
+    return `<div class="vote-item ${isSelf?'self':''} ${selectedVote===id?'selected':''}" id="vi-${id}" onclick="selectVote('${id}')">
+      <div><div class="vote-name-big">${p.name}</div>${idea?`<div class="vote-idea-small">"${idea}"</div>`:''}</div>
+      <div class="vote-check"></div></div>`;
+  }).join('');
+}
+
+function showVoteScreen(state){
+  selectedVote=null;lockVoteFired=false;
+  const btn=document.getElementById('lock-vote-btn');
+  btn.classList.add('disabled');btn.disabled=true;btn.textContent='LOCK IN VOTE →';
+  go('s-vote');renderVoteList();
+}
+
+function selectVote(id){
+  if(id===myPlayerId)return;selectedVote=id;
+  document.querySelectorAll('.vote-item').forEach(el=>el.classList.remove('selected'));
+  document.getElementById('vi-'+id).classList.add('selected');
+  const btn=document.getElementById('lock-vote-btn');btn.classList.remove('disabled');btn.disabled=false;
+}
+window.selectVote=selectVote;
+
+function lockVote(){
+  if(lockVoteFired)return;lockVoteFired=true;if(!selectedVote)return;
+  window.update(window.ref(window.db,'g2rooms/'+roomCode+'/votes/'+myPlayerId),{votedFor:selectedVote});
+  const btn=document.getElementById('lock-vote-btn');btn.classList.add('disabled');btn.disabled=true;btn.textContent='VOTE LOCKED ✓';
+}
+window.lockVote=lockVote;
+
+// ─── HOST VOTE TALLY ──────────────────────────────────────────────────────────
+function setupHostVoteWatcher(){
+  window.onValue(window.ref(window.db,'g2rooms/'+roomCode+'/votes'),snap=>{
+    if(myRole!=='host')return;
+    const votes=snap.exists()?snap.val():{},players=gameState.players||{};
+    const pc=Object.keys(players).length,vc=Object.keys(votes).length;
+    if(pc>0&&vc>=pc&&!tallyFired){tallyFired=true;tallyVotes(votes,players);}
+  });
+}
+
+function tallyVotes(votes,players){
+  const tally={};
+  Object.values(votes).forEach(v=>{tally[v.votedFor]=(tally[v.votedFor]||0)+1;});
+  const maxV=Math.max(...Object.values(tally));
+  const winners=Object.keys(tally).filter(id=>tally[id]===maxV);
+  const winnerId=winners[0];
+  // Accumulate all ideas into allIdeas
+  const ideaTitles=gameState.ideaTitles||{};
+  const cardAssignments=gameState.cardAssignments||{};
+  const newIdeas=Object.entries(players).map(([id,p])=>{
+    const c=CAMPAIGNS.find(x=>x.id===cardAssignments[id]);
+    return {playerId:id,playerName:p.name,idea:ideaTitles[id]||'(no title)',campaign:c?c.name:'',round:gameState.round||1,votes:tally[id]||0,won:id===winnerId};
+  });
+  const allIdeas=[...(gameState.allIdeas||[]),...newIdeas];
+  window.update(roomRef,{status:'result',roundWinner:winnerId,roundTie:winners.length>1?winners:null,votes:{},pitchDone:{},allIdeas});
+}
+
+// ─── RESULT ───────────────────────────────────────────────────────────────────
+function showResultScreen(state){
+  const players=state.players||{},winnerId=state.roundWinner;
+  const winnerName=players[winnerId]?players[winnerId].name:'?';
+  const ideaTitle=(state.ideaTitles||{})[winnerId]||'';
+  document.getElementById('result-round-label').textContent='Round '+(state.round||1)+' — Result';
+  document.getElementById('result-winner-name').textContent=winnerName.toUpperCase();
+  document.getElementById('result-winner-idea').textContent=ideaTitle?'"'+ideaTitle+'"':'';
+  // Ideas list with campaign credits
+  const cardAssignments=state.cardAssignments||{},ideaTitles=state.ideaTitles||{};
+  const order=state.pitchOrder||[];
+  document.getElementById('result-ideas').innerHTML=order.filter(id=>players[id]).map(id=>{
+    const c=CAMPAIGNS.find(x=>x.id===cardAssignments[id]);
+    const isWin=id===winnerId;
+    return `<div style="padding:12px 0;border-bottom:1px solid #1a1a1a;">
+      <div style="display:flex;align-items:baseline;gap:10px;">
+        <div style="font-size:13px;color:${isWin?'#FFE600':'#555'};min-width:80px;">${players[id].name}</div>
+        <div style="font-size:16px;font-weight:300;color:${isWin?'#fff':'#888'};font-style:italic;">${ideaTitles[id]||'—'}</div>
+      </div>
+      ${c?`<div style="font-size:12px;color:#444;margin-top:4px;margin-left:90px;">stole from: ${c.name}</div>`:''}
+    </div>`;
+  }).join('');
+  const nextBtn=document.getElementById('next-round-btn');
+  const round=state.round||1, total=state.totalRounds||2;
+  if(myRole==='host'){
+    nextBtn.style.display='block';
+    if(round>=total){nextBtn.textContent='VIEW LONG LIST →';nextBtn.onclick=()=>window.update(roomRef,{status:'longlist'});}
+    else{nextBtn.textContent='NEXT ROUND →';nextBtn.onclick=nextRound;}
+  }else{
+    nextBtn.style.display='none';
+  }
+  go('s-result');
+}
+
+// ─── NEXT ROUND ───────────────────────────────────────────────────────────────
+function nextRound(){
+  if(myRole!=='host')return;
+  resetRoundState();
+  const round=(gameState.round||1)+1;
+  const playerIds=Object.keys(gameState.players||{});
+  const cardAssignments=assignCards(playerIds);
+  const pitchOrder=shuffle(playerIds);
+  window.update(roomRef,{status:'phase1',round,cardAssignments,pitchOrder,currentPitcher:0,ideaTitles:{},votes:{},pitchDone:{},pitchStartedAt:null,upNextFor:null,prevPitcher:null});
+}
+window.nextRound=nextRound;
+
+// ─── LONG LIST ────────────────────────────────────────────────────────────────
+function showLonglistScreen(state){
+  const allIdeas=state.allIdeas||[];
+  longlistVotes=new Set();
+  document.getElementById('longlist-display').innerHTML=allIdeas.map((idea,i)=>`
+    <div id="ll-${i}" style="padding:16px;border:1.5px solid #333;cursor:pointer;transition:border-color 0.1s;" onclick="toggleLonglistVote(${i})">
+      <div style="display:flex;align-items:baseline;gap:10px;justify-content:space-between;">
+        <div>
+          <div style="font-family:Impact,sans-serif;font-size:20px;color:#fff;text-transform:uppercase;">${idea.idea}</div>
+          <div style="font-size:13px;color:#555;margin-top:4px;">${idea.playerName} — stole from: ${idea.campaign}</div>
+          <div style="font-size:11px;color:#333;margin-top:2px;letter-spacing:0.1em;text-transform:uppercase;">Round ${idea.round}</div>
+        </div>
+        <div id="ll-check-${i}" style="width:20px;height:20px;border-radius:50%;border:1.5px solid #444;flex-shrink:0;"></div>
+      </div>
+    </div>`).join('');
+  if(myRole==='host'){
+    document.getElementById('longlist-vote-btn').style.display='none';
+    document.querySelector('#s-longlist .subtext').textContent='Every idea from Game 2. Ready for Day 2.';
+  }
+  go('s-longlist');
+}
+
+function toggleLonglistVote(i){
+  if(myRole==='host')return;
+  if(longlistVotes.has(i)){
+    longlistVotes.delete(i);
+    document.getElementById('ll-'+i).style.borderColor='#333';
+    document.getElementById('ll-check-'+i).style.background='transparent';
+    document.getElementById('ll-check-'+i).style.borderColor='#444';
+  }else{
+    if(longlistVotes.size>=3){alert('You can only pick 3 ideas.');return;}
+    longlistVotes.add(i);
+    document.getElementById('ll-'+i).style.borderColor='#FFE600';
+    document.getElementById('ll-check-'+i).style.background='#FFE600';
+    document.getElementById('ll-check-'+i).style.borderColor='#FFE600';
+  }
+  document.getElementById('longlist-vote-count').textContent=longlistVotes.size+' / 3 selected';
+  const btn=document.getElementById('longlist-vote-btn');
+  if(longlistVotes.size>0){btn.classList.remove('disabled');btn.disabled=false;}
+  else{btn.classList.add('disabled');btn.disabled=true;}
+}
+window.toggleLonglistVote=toggleLonglistVote;
+
+function lockLonglistVote(){
+  window.update(window.ref(window.db,'g2rooms/'+roomCode+'/longlistVotes/'+myPlayerId),{votes:[...longlistVotes],at:Date.now()});
+  document.getElementById('longlist-vote-btn').textContent='VOTES LOCKED ✓';
+  document.getElementById('longlist-vote-btn').classList.add('disabled');
+  document.getElementById('longlist-vote-btn').disabled=true;
+}
+window.lockLonglistVote=lockLonglistVote;
+
+// ─── GAMEOVER ─────────────────────────────────────────────────────────────────
+function showGameoverScreen(state){
+  // Find overall winner — most round wins
+  const allIdeas=state.allIdeas||[];
+  const winCounts={};
+  allIdeas.filter(i=>i.won).forEach(i=>{winCounts[i.playerId]=(winCounts[i.playerId]||0)+1;});
+  const maxWins=Math.max(...Object.values(winCounts).concat([0]));
+  const winnerEntry=allIdeas.filter(i=>i.won&&winCounts[i.playerId]===maxWins)[0];
+  document.getElementById('final-winner-name').textContent=winnerEntry?winnerEntry.playerName.toUpperCase():'—';
+  document.getElementById('final-winner-idea').textContent=winnerEntry?'"'+winnerEntry.idea+'"':'';
+  document.getElementById('final-longlist').innerHTML=allIdeas.map(idea=>`
+    <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:10px;">
+      <div style="font-size:13px;font-weight:${idea.won?'500':'300'};color:#000;opacity:${idea.won?'1':'0.5'};min-width:80px;">${idea.playerName}</div>
+      <div style="font-size:15px;font-weight:${idea.won?'400':'300'};color:#000;opacity:${idea.won?'1':'0.5'};font-style:italic;">${idea.idea}</div>
+    </div>`).join('');
+  go('s-gameover');
+  setTimeout(startConfetti,500);
+}
+
+// ─── CONFETTI ─────────────────────────────────────────────────────────────────
+function startConfetti(){
+  const canvas=document.getElementById('confetti-local');if(!canvas)return;
+  const ctx=canvas.getContext('2d');canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  const pieces=[],colors=['#000','#000','#000','#ff3333','#0055ff','#ff6600'];
+  for(let i=0;i<120;i++)pieces.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height-canvas.height,w:Math.random()*8+4,h:Math.random()*4+2,color:colors[Math.floor(Math.random()*colors.length)],rot:Math.random()*Math.PI*2,rotSpeed:(Math.random()-0.5)*0.15,speed:Math.random()*3+1.5,drift:(Math.random()-0.5)*1.5,opacity:Math.random()*0.6+0.4});
+  function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);pieces.forEach(p=>{ctx.save();ctx.globalAlpha=p.opacity;ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.fillStyle=p.color;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();p.y+=p.speed;p.x+=p.drift;p.rot+=p.rotSpeed;if(p.y>canvas.height){p.y=-10;p.x=Math.random()*canvas.width;}});requestAnimationFrame(draw);}
+  draw();
+}
+
+// ─── RESET ────────────────────────────────────────────────────────────────────
+function resetRoundState(){
+  tallyFired=false;watchTimerStartedAt=null;hostStartPitchingFired=false;
+  donePitchingFired=false;lockVoteFired=false;lockIdeaFired=false;ideaLocked=false;
+  if(pitchTimerInterval){clearInterval(pitchTimerInterval);pitchTimerInterval=null;}
+  if(orderCountdownInterval){clearInterval(orderCountdownInterval);orderCountdownInterval=null;}
+  if(upnextInterval){clearInterval(upnextInterval);upnextInterval=null;}
+  if(watchTimerInterval){clearInterval(watchTimerInterval);watchTimerInterval=null;}
+  window.shownOrderScreen={};
+}
+
+// ─── SHARE / COPY ─────────────────────────────────────────────────────────────
+function shareGame(){
+  const url=window.location.origin+window.location.pathname;
+  const text='Join my Pitch Against Dull — Game 2 session! Room code: '+roomCode+' at: '+url;
+  if(navigator.share){navigator.share({title:'Pitch Against Dull',text,url});}else{copyLink();}
+}
+function copyLink(){
+  const url=window.location.origin+window.location.pathname;
+  const text='Join my Pitch Against Dull — Game 2 session! Room code: '+roomCode+' at: '+url;
+  const btn=document.getElementById('copy-link-btn');
+  navigator.clipboard.writeText(text).then(()=>{if(btn){btn.textContent='COPIED ✓';setTimeout(()=>{btn.textContent='COPY LINK';},2000);}}).catch(()=>{
+    const el=document.createElement('textarea');el.value=text;document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);
+    if(btn){btn.textContent='COPIED ✓';setTimeout(()=>{btn.textContent='COPY LINK';},2000);}
+  });
+}
+
+function playAgain(){
+  if(roomRef)window.remove(roomRef);
+  roomCode='';myRole='';myName='';myPlayerId='';roomRef=null;gameState={};
+  longlistVotes=new Set();
+  go('s-intro');
+}
+
+window.go=go;window.createRoom=createRoom;window.joinGame=joinGame;
+window.shareGame=shareGame;window.copyLink=copyLink;window.playAgain=playAgain;
+window.setRounds=setRounds;window.updateBriefCount=updateBriefCount;
+</script>
+</body>
+</html>

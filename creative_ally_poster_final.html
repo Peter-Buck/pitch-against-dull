@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Creative Ally &mdash; 12 Principles</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#b8b4ad; display:flex; justify-content:center; padding:40px 20px; }
+  @media print {
+    body { background:#fff; padding:0; }
+    @page { margin:0; }
+  }
+  #poster {
+    width:480px;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    position:relative;
+    background-color:#f5f0e4;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.008) 2px, rgba(0,0,0,0.008) 3px);
+    border:1.5px solid #999;
+    box-shadow: 3px 3px 0px rgba(0,0,0,0.15), 5px 6px 8px rgba(0,0,0,0.2);
+    transform:rotate(-0.4deg);
+  }
+  .top-strip {
+    border-bottom:1.5px solid #000; padding:5px 16px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .top-strip div { font-size:7px; font-weight:700; letter-spacing:0.18em; color:#000; }
+  .headline-zone {
+    padding:20px 16px 16px; border-bottom:3px solid #000;
+    background-color:rgba(255,252,0,0.88);
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.012) 2px, rgba(0,0,0,0.012) 3px),
+      repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0,0,0,0.006) 3px, rgba(0,0,0,0.006) 4px);
+  }
+  .h-rest {
+    font-family:Impact,'Arial Narrow',sans-serif; font-size:76px; font-weight:900;
+    line-height:0.87; letter-spacing:-0.02em; color:#000;
+  }
+  .h-sub {
+    font-size:7px; font-weight:700; letter-spacing:0.12em; color:#000;
+    border-top:1px solid #000; padding-top:8px; margin-top:14px;
+  }
+  .ai-label {
+    padding:10px 16px 6px; display:flex; align-items:center; justify-content:space-between;
+  }
+  .ai-label .left { font-size:7px; font-weight:700; letter-spacing:0.2em; color:#000; }
+  .ai-badge {
+    background:#FFFF00; border:1px solid #000; padding:2px 8px;
+    font-size:7px; font-weight:700; letter-spacing:0.1em; color:#000;
+  }
+  .grid-wrap { padding:0 16px 12px; }
+  .grid {
+    display:grid; grid-template-columns:1fr 1fr;
+    border-top:1px solid #000; border-left:1px solid #000;
+  }
+  .cell { border-right:1px solid #000; border-bottom:1px solid #000; padding:9px 12px; }
+  .cell-num { font-size:7px; color:#999; letter-spacing:0.1em; margin-bottom:3px; }
+  .cell-text { font-size:12px; font-weight:700; color:#000; }
+  .warning-box { margin:0 16px 12px; border:1.5px solid #000; padding:8px 12px; }
+  .warning-label { font-size:7px; font-weight:700; letter-spacing:0.2em; color:#000; margin-bottom:3px; }
+  .warning-text { font-size:8px; color:#444; line-height:1.6; }
+  .evidence-row { margin:0 16px; border:1px solid #000; display:flex; margin-bottom:12px; }
+  .ev-cell { padding:8px 12px; }
+  .ev-cell + .ev-cell { border-left:1px solid #000; }
+  .ev-label { font-size:7px; font-weight:700; letter-spacing:0.15em; color:#000; margin-bottom:3px; }
+  .ev-text { font-size:8px; color:#555; line-height:1.5; }
+  .bottom-bar {
+    background:#000; border-top:2px solid #000; padding:7px 16px;
+    display:flex; align-items:center;
+  }
+  .bottom-bar div { flex:1; font-size:8px; color:#FFFF00; letter-spacing:0.12em; font-weight:700; }
+  .bottom-bar .center { text-align:center; }
+  .bottom-bar .right { text-align:right; }
+</style>
+</head>
+<body>
+<div id="poster">
+
+  <div class="top-strip">
+    <div>BATCH NO. CA-2026-12</div>
+    <div>NET QTY: 12 PRINCIPLES</div>
+    <div>DAILY CREATIVE DOSE</div>
+  </div>
+
+  <div class="headline-zone">
+
+    <!-- HUMANIZING as SVG with paper grain pattern fill -->
+    <svg width="448" height="72" viewBox="0 0 448 72" xmlns="http://www.w3.org/2000/svg" style="display:block;margin-bottom:2px;overflow:visible;">
+      <defs>
+        <pattern id="paperGrain" x="0" y="0" width="4" height="3" patternUnits="userSpaceOnUse">
+          <rect width="4" height="3" fill="#f5f0e4"/>
+          <rect y="2" width="4" height="0.5" fill="rgba(0,0,0,0.06)"/>
+          <rect x="3" width="0.5" height="3" fill="rgba(0,0,0,0.03)"/>
+        </pattern>
+      </defs>
+      <text
+        x="0" y="68"
+        font-family="Impact, Arial Narrow, sans-serif"
+        font-size="80"
+        font-weight="900"
+        letter-spacing="-1"
+        fill="url(#paperGrain)"
+        stroke="#000"
+        stroke-width="1"
+      >HUMANIZING</text>
+    </svg>
+
+    <div class="h-rest">AN AI-DRIVEN</div>
+    <div class="h-rest">WORLD.</div>
+    <div class="h-sub">INNOVATION &middot; TRANSFORMATION &middot; COMMUNICATION</div>
+  </div>
+
+  <div class="ai-label">
+    <div class="left">ACTIVE INGREDIENTS</div>
+    <div class="ai-badge">12 PRINCIPLES</div>
+  </div>
+
+  <div class="grid-wrap">
+    <div class="grid">
+      <div class="cell"><div class="cell-num">01</div><div class="cell-text">Product is king.</div></div>
+      <div class="cell"><div class="cell-num">02</div><div class="cell-text">Invisible is enemy.</div></div>
+      <div class="cell"><div class="cell-num">03</div><div class="cell-text">Truth triumphs, always.</div></div>
+      <div class="cell"><div class="cell-num">04</div><div class="cell-text">Simple isn&rsquo;t.</div></div>
+      <div class="cell"><div class="cell-num">05</div><div class="cell-text">Craft shows love.</div></div>
+      <div class="cell"><div class="cell-num">06</div><div class="cell-text">Laughter is contagious.</div></div>
+      <div class="cell"><div class="cell-num">07</div><div class="cell-text">Wrong could be right.</div></div>
+      <div class="cell"><div class="cell-num">08</div><div class="cell-text">Daring is caring.</div></div>
+      <div class="cell"><div class="cell-num">09</div><div class="cell-text">Fame is invaluable.</div></div>
+      <div class="cell"><div class="cell-num">10</div><div class="cell-text">Risk creates rewards.</div></div>
+      <div class="cell"><div class="cell-num">11</div><div class="cell-text">Dull is expensive.</div></div>
+      <div class="cell"><div class="cell-num">12</div><div class="cell-text">Feelings refine facts.</div></div>
+    </div>
+  </div>
+
+  <div class="warning-box">
+    <div class="warning-label">&#9888; WARNING</div>
+    <div class="warning-text">May cause brand fame, cultural relevance, and excessive profitability. Side effects include interesting work, loyal audiences, and the inability to settle for ordinary. Keep out of reach of mediocre briefs.</div>
+  </div>
+
+  <div class="evidence-row">
+    <div class="ev-cell" style="flex:2;">
+      <div class="ev-label">CLINICAL EVIDENCE</div>
+      <div class="ev-text">&ldquo;Brands built on big human ideas are four times more profitable.&rdquo; &mdash; WARC / Kantar, 2023</div>
+    </div>
+    <div class="ev-cell" style="flex:1;">
+      <div class="ev-label">DOSAGE</div>
+      <div class="ev-text">Apply daily.<br>All 12 at once.</div>
+    </div>
+    <div class="ev-cell" style="flex:1;">
+      <div class="ev-label">KEEP IN</div>
+      <div class="ev-text">Plain sight.<br>On every wall.</div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <div>peter-buck.com</div>
+    <div class="center">+1 (310) 871 7775</div>
+    <div class="right">&copy; 2026</div>
+  </div>
+
+</div>
+</body>
+</html>
