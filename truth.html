@@ -1393,13 +1393,17 @@ const CHALLENGE_LINES = [
 function buildRejectionCard(verdict, showRetry) {
   const challenge = CHALLENGE_LINES[Math.floor(Math.random() * CHALLENGE_LINES.length)];
   const retryBtn = showRetry ? `<button class="btn-primary" onclick="retryAnswer()" style="margin-top:12px;">TRY AGAIN ↺</button>` : '';
+  const evidence = verdict.evidence || [];
+  const quotes = evidence.map(e => `
+    <div style="border-left:2px solid #333;padding:12px 14px;margin-bottom:8px;background:#111;">
+      <div style="font-family:'Poppins',sans-serif;font-size:14px;color:#ccc;line-height:1.6;">"${e.quote}"</div>
+      ${e.source ? `<div style="font-family:'Poppins',sans-serif;font-size:11px;color:#666;margin-top:6px;letter-spacing:0.05em;">${e.source}</div>` : ''}
+    </div>`).join('');
   return `
     <div style="border:1px solid rgba(255,51,51,0.4);background:rgba(255,51,51,0.08);padding:20px;margin:20px 0;animation:fadeUp 0.4s ease;">
       <div style="font-family:'Manrope',sans-serif;font-weight:900;font-size:clamp(18px,5vw,24px);text-transform:uppercase;color:var(--red);line-height:1.1;margin-bottom:16px;">${verdict.verdict_headline}</div>
       <p style="font-family:'Poppins',sans-serif;font-weight:400;font-size:15px;color:#fff;line-height:1.7;margin-bottom:16px;">${challenge} For some inspiration, here's what people actually say when nobody's watching.</p>
-      <div style="border-left:2px solid #333;padding:12px 14px;margin-bottom:8px;background:#111;min-height:44px;"></div>
-      <div style="border-left:2px solid #333;padding:12px 14px;margin-bottom:8px;background:#111;min-height:44px;"></div>
-      <div style="border-left:2px solid #333;padding:12px 14px;margin-bottom:8px;background:#111;min-height:44px;"></div>
+      ${quotes}
     </div>
     ${retryBtn}
   `;
