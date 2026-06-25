@@ -785,7 +785,7 @@
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: #fff;
-    background: #1a1a1a;
+    background: #222222;
     border-left: 4px solid #FFFF00;
     padding: 12px 16px;
     margin: 48px 0 24px 0;
@@ -1146,7 +1146,7 @@ firebase.initializeApp({
     </div>
     <div id="prov-buttons" style="margin-top:48px;display:flex;flex-direction:column;gap:12px;">
       <button onclick="copyRoomCode(this)" style="width:100%;padding:16px 20px;background:transparent;color:#fff;border:1px solid #fff;font-family:'Manrope',sans-serif;font-size:clamp(14px,3.5vw,18px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;">COPY CODE</button>
-      <button onclick="downloadProvocationPDF()" style="width:100%;padding:16px 20px;background:transparent;color:#fff;border:1px solid #fff;font-family:'Manrope',sans-serif;font-size:clamp(14px,3.5vw,18px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;">DOWNLOAD AS PDF</button>
+      <button onclick="downloadProvocationPDF()" style="width:100%;padding:16px 20px;background:transparent;color:#fff;border:1px solid #fff;outline:none;font-family:'Manrope',sans-serif;font-size:clamp(14px,3.5vw,18px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;">DOWNLOAD AS PDF</button>
       <button onclick="window.location.href='/storm.html'" style="width:100%;padding:16px 20px;background:#FFFF00;color:#000;border:none;font-family:'Manrope',sans-serif;font-size:clamp(16px,4vw,20px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;">OPEN THE STORM →</button>
     </div>
   </div>
@@ -1796,7 +1796,7 @@ function renderProvocation() {
       var border = i > 0 ? 'border-top:1px solid #333;' : '';
       pairsHTML += '<div style="' + border + 'padding:16px 0;">' +
         '<div style="font-family:\'Poppins\',sans-serif;font-weight:600;font-size:18px;color:#888;line-height:1.5;">THEY DO: ' + theyDo + '</div>' +
-        '<div style="font-family:\'Poppins\',sans-serif;font-weight:600;font-size:18px;color:#fff;line-height:1.5;">YOU DO: ' + youDo + '</div>' +
+        '<div style="font-family:\'Poppins\',sans-serif;font-weight:600;font-size:18px;color:#FFFF00;line-height:1.5;">YOU DO: ' + youDo + '</div>' +
         '</div>';
     });
     pairsEl.innerHTML = pairsHTML;
