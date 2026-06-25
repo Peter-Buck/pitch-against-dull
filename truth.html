@@ -1147,7 +1147,7 @@ firebase.initializeApp({
     <div id="prov-buttons" style="margin-top:48px;display:flex;flex-direction:column;gap:12px;">
       <button onclick="copyRoomCode(this)" style="width:100%;padding:16px 20px;background:transparent;color:#fff;border:1px solid #fff;font-family:'Manrope',sans-serif;font-size:clamp(14px,3.5vw,18px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;">COPY CODE</button>
       <button onclick="downloadProvocationPDF()" style="width:100%;padding:16px 20px;background:transparent;color:#fff;border:1px solid #fff;outline:none;font-family:'Manrope',sans-serif;font-size:clamp(14px,3.5vw,18px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;">DOWNLOAD AS PDF</button>
-      <button onclick="window.location.href='/storm.html'" style="width:100%;padding:16px 20px;background:#FFFF00;color:#000;border:none;font-family:'Manrope',sans-serif;font-size:clamp(16px,4vw,20px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;">OPEN THE STORM →</button>
+      <button onclick="openStorm()" style="width:100%;padding:16px 20px;background:#FFFF00;color:#000;border:none;font-family:'Manrope',sans-serif;font-size:clamp(16px,4vw,20px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;">OPEN THE STORM →</button>
     </div>
   </div>
   <footer class="kd-footer">
@@ -1244,6 +1244,7 @@ function toggleRole(btn, role) {
     state.roles.push(role);
   }
   document.getElementById('who-next-btn').disabled = state.roles.length === 0;
+  saveSession();
 }
 
 // START
@@ -1440,6 +1441,7 @@ function showNextBtn() {
   document.getElementById('next-question-btn').textContent = state.currentQuestion < 4 ? 'NEXT QUESTION →' : 'SEE THE CATEGORY →';
   renderSummaryPanel('summary-panel');
   syncSession();
+  saveSession();
 }
 
 function renderSummaryPanel(targetId) {
@@ -1547,6 +1549,7 @@ function useGeneratedAnswer() {
   document.getElementById('verdict-area').innerHTML += `<div style="font-size:11px;color:var(--yellow);margin-top:8px;letter-spacing:2px;font-weight:700;">USING THIS VERSION.</div>`;
   renderSummaryPanel('summary-panel');
   syncSession();
+  saveSession();
   showNextBtn();
 }
 
@@ -1650,6 +1653,7 @@ Return ONLY a JSON array of exactly 6 objects — no markdown, no backticks, jus
     state.categoryItems = items;
     initCategoryCards();
     generateProvocation();
+    saveSession();
 
   } catch(e) {
     console.error('Category autopsy failed:', e.message);
@@ -1663,6 +1667,7 @@ Return ONLY a JSON array of exactly 6 objects — no markdown, no backticks, jus
     ];
     initCategoryCards();
     generateProvocation();
+    saveSession();
   }
 }
 
@@ -1729,6 +1734,7 @@ Return ONLY the JSON. No preamble. No markdown backticks.`;
     state.provocation = JSON.parse(clean);
     console.log('Provocation ready:', state.provocation.name);
     syncSession();
+    saveSession();
 
   } catch(e) {
     console.error('Provocation generation failed:', e.message);
@@ -1813,13 +1819,14 @@ function downloadProvocationPDF() {
   window.print();
 }
 
-// Override showScreen to handle provocation render
+// Override showScreen to handle provocation render and persist position
 const originalShowScreen = showScreen;
 window.showScreen = function(id) {
   originalShowScreen(id);
   if (id === 'screen-provocation') {
     renderProvocation();
   }
+  saveSession();
 };
 
 function goToProvocation() {
@@ -2084,6 +2091,107 @@ async function handleAuth() {
   }
 }
 
+// ── SESSION PERSISTENCE ──────────────────────────────────────────────────────
+var KD_SESSION_KEY = 'kd_session_v1';
+
+function saveSession() {
+  try {
+    var active = document.querySelector('.screen.active');
+    if (!active) return;
+    var id = active.id;
+    if (id === 'screen-auth' || id === 'screen-kd-intro') return;
+    localStorage.setItem(KD_SESSION_KEY, JSON.stringify({
+      screen: id,
+      brand: state.brand,
+      category: state.category,
+      problem: state.problem,
+      roles: state.roles,
+      currentQuestion: state.currentQuestion,
+      answers: state.answers,
+      verdicts: state.verdicts,
+      categoryItems: state.categoryItems,
+      provocation: state.provocation,
+      savedAt: Date.now()
+    }));
+  } catch(e) {}
+}
+
+function clearSavedSession() {
+  try { localStorage.removeItem(KD_SESSION_KEY); } catch(e) {}
+}
+
+function loadSavedSession() {
+  try {
+    var raw = localStorage.getItem(KD_SESSION_KEY);
+    if (!raw) return null;
+    var s = JSON.parse(raw);
+    if (!s || !s.screen) return null;
+    if (s.savedAt && Date.now() - s.savedAt > 48 * 60 * 60 * 1000) {
+      clearSavedSession();
+      return null;
+    }
+    state.brand           = s.brand           || '';
+    state.category        = s.category        || '';
+    state.problem         = s.problem         || '';
+    state.roles           = s.roles           || [];
+    state.currentQuestion = typeof s.currentQuestion === 'number' ? s.currentQuestion : 0;
+    state.answers         = s.answers         || [];
+    state.verdicts        = s.verdicts        || [];
+    state.categoryItems   = s.categoryItems   || [];
+    state.provocation     = s.provocation     || null;
+    return s.screen;
+  } catch(e) { return null; }
+}
+
+function restoreSetupInputs() {
+  var b = document.getElementById('brand-input');
+  var c = document.getElementById('category-input');
+  var p = document.getElementById('problem-input');
+  if (b) b.value = state.brand;
+  if (c) c.value = state.category;
+  if (p) {
+    p.value = state.problem;
+    var pc = document.getElementById('problem-count');
+    if (pc) pc.textContent = state.problem.length;
+  }
+  checkSetupReady();
+}
+
+function restoreRoleButtons() {
+  document.querySelectorAll('.role-btn').forEach(function(btn) {
+    var m = (btn.getAttribute('onclick') || '').match(/toggleRole\(this,'([^']+)'\)/);
+    if (m && state.roles.indexOf(m[1]) !== -1) btn.classList.add('selected');
+  });
+  var wb = document.getElementById('who-next-btn');
+  if (wb) wb.disabled = state.roles.length === 0;
+}
+
+function resumeScreen(screenId) {
+  var postSetup = ['screen-setup', 'screen-who', 'screen-question', 'screen-category', 'screen-provocation'];
+  if (postSetup.indexOf(screenId) !== -1) restoreSetupInputs();
+  if (['screen-who', 'screen-question', 'screen-category', 'screen-provocation'].indexOf(screenId) !== -1) {
+    restoreRoleButtons();
+  }
+  if (screenId === 'screen-question') {
+    loadQuestion(state.currentQuestion);
+    if (state.answers[state.currentQuestion]) showNextBtn();
+  } else if (screenId === 'screen-category') {
+    if (state.categoryItems && state.categoryItems.length) {
+      initCategoryCards();
+      if (!state.provocation) generateProvocation();
+    } else {
+      loadCategoryAutopsy();
+    }
+  }
+  showScreen(screenId);
+}
+
+function openStorm() {
+  clearSavedSession();
+  window.location.href = '/storm.html';
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 function initFirebaseAuth() {
   firebase.auth().onAuthStateChanged(async (user) => {
     if (user) {
@@ -2094,7 +2202,12 @@ function initFirebaseAuth() {
           state.userProfile = snap.val();
           await createSession();
           document.getElementById('auth-loading').style.display = 'none';
-          showScreen('screen-intro');
+          var saved = loadSavedSession();
+          if (saved && saved !== 'screen-auth' && saved !== 'screen-kd-intro') {
+            resumeScreen(saved);
+          } else {
+            showScreen('screen-intro');
+          }
           return;
         }
       } catch(e) {
