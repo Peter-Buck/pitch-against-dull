@@ -776,6 +776,32 @@
     margin-top: 6px;
     letter-spacing: 1px;
   }
+
+  /* PROVOCATION SCREEN LABELS */
+  .prov-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #888;
+  }
+
+  /* PRINT — provocation screen only */
+  @media print {
+    .screen { display: none !important; }
+    #screen-provocation { display: block !important; background: #fff !important; min-height: auto !important; }
+    #prov-header { display: none !important; }
+    .kd-header { display: none !important; }
+    .kd-footer { display: none !important; }
+    #prov-buttons { display: none !important; }
+    .cookie-banner { display: none !important; }
+    #prov-content { padding: 0 24px !important; background: #fff !important; }
+    #prov-content * { color: #000 !important; background: #fff !important; border-color: #ccc !important; }
+    #prov-content .prov-label { color: #555 !important; }
+    #prov-room-code-block { display: block !important; }
+    #prov-room-code-display { font-size: 48px !important; letter-spacing: 4px !important; }
+  }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -1092,24 +1118,39 @@ firebase.initializeApp({
 
 <!-- SCREEN 5: PROVOCATION -->
 <div id="screen-provocation" class="screen">
-  <div class="kd-header">
-    <div class="kd-logo">TRUTH DETECTOR.</div>
+  <!-- Yellow header — this screen only -->
+  <div id="prov-header" style="background:#FFFF00;padding:24px 24px 28px;">
+    <div id="prov-header-text" style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;color:#000;line-height:0.95;white-space:nowrap;display:block;">YOUR TRUTH AND NOTHING BUT.</div>
   </div>
-  <div style="padding:24px 24px 48px;display:flex;flex-direction:column;">
-    <div style="font-family:'Poppins',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#888;margin-bottom:16px;">PROVOCATION</div>
-    <div id="prov-headline" style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;color:#fff;line-height:0.95;white-space:nowrap;display:block;"></div>
-    <div id="provocation-name" style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;color:#FFFF00;line-height:0.95;white-space:nowrap;display:block;margin-top:8px;"></div>
-    <div id="prov-sentence" style="font-family:'Poppins',sans-serif;font-weight:400;font-size:18px;color:#fff;line-height:1.6;margin-top:24px;"></div>
-    <div style="font-family:'Poppins',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#888;margin-top:40px;margin-bottom:16px;">WHAT CAME OUT OF THE ROOM.</div>
-    <div id="prov-truths"></div>
-    <div style="font-family:'Poppins',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#888;margin-top:40px;margin-bottom:16px;">WHAT YOUR CATEGORY NEVER DOES.</div>
-    <div id="prov-pairs"></div>
-    <div class="room-code-block" id="prov-room-code-block" style="padding:40px 0 0;text-align:left;">
-      <div id="prov-room-code-display" style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;color:#FFFF00;white-space:nowrap;display:block;line-height:0.95;"></div>
+  <!-- Content -->
+  <div id="prov-content" style="padding:48px 24px 64px;display:flex;flex-direction:column;background:#0a0a0a;flex:1;">
+    <!-- THE ONE WORD PROVOCATION -->
+    <div class="prov-label">THE ONE WORD PROVOCATION.</div>
+    <div id="provocation-name" style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;color:#FFFF00;line-height:0.9;white-space:nowrap;display:block;margin-top:12px;"></div>
+    <!-- Strategic sentence -->
+    <div id="prov-sentence" style="font-family:'Poppins',sans-serif;font-weight:400;font-size:18px;color:#fff;line-height:1.6;margin-top:48px;"></div>
+    <!-- WHAT CAME OUT OF THE ROOM -->
+    <div style="margin-top:48px;">
+      <div class="prov-label">WHAT CAME OUT OF THE ROOM.</div>
+      <div id="prov-truths" style="margin-top:16px;"></div>
     </div>
-    <div style="margin-top:24px;">
-      <button onclick="copyRoomCode(this)" class="btn-secondary" style="width:100%;padding:16px 20px;letter-spacing:0.05em;margin-bottom:12px;">COPY CODE</button>
-      <button class="btn-primary" onclick="window.location.href='/storm.html'" style="width:100%;padding:16px 20px;letter-spacing:0.05em;margin-top:0;">OPEN THE STORM →</button>
+    <!-- FLIP THE SCRIPT -->
+    <div style="margin-top:48px;">
+      <div class="prov-label">FLIP THE SCRIPT.</div>
+      <div id="prov-pairs" style="margin-top:16px;"></div>
+    </div>
+    <!-- ROOM CODE -->
+    <div style="margin-top:48px;">
+      <div class="prov-label">YOUR ROOM CODE.</div>
+      <div class="room-code-block" id="prov-room-code-block" style="padding:12px 0 0;text-align:left;">
+        <div id="prov-room-code-display" style="font-family:'Poppins',sans-serif;font-weight:900;color:#FFFF00;font-size:80px;line-height:1;letter-spacing:6px;"></div>
+      </div>
+    </div>
+    <!-- Buttons -->
+    <div id="prov-buttons" style="margin-top:48px;display:flex;flex-direction:column;gap:12px;">
+      <button onclick="copyRoomCode(this)" style="width:100%;padding:16px 20px;background:transparent;color:#fff;border:1px solid #fff;font-family:'Manrope',sans-serif;font-size:clamp(14px,3.5vw,18px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;">COPY CODE</button>
+      <button onclick="downloadProvocationPDF()" style="width:100%;padding:16px 20px;background:transparent;color:#fff;border:1px solid #fff;font-family:'Manrope',sans-serif;font-size:clamp(14px,3.5vw,18px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;">DOWNLOAD AS PDF</button>
+      <button onclick="window.location.href='/storm.html'" style="width:100%;padding:16px 20px;background:#FFFF00;color:#000;border:none;font-family:'Manrope',sans-serif;font-size:clamp(16px,4vw,20px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;">OPEN THE STORM →</button>
     </div>
   </div>
   <footer class="kd-footer">
@@ -1712,19 +1753,16 @@ document.getElementById('screen-provocation') && document.addEventListener('scre
 function renderProvocation() {
   if (!state.provocation) return;
   try {
-    const saved = localStorage.getItem('kd_storm_room_code');
+    var saved = localStorage.getItem('kd_storm_room_code');
     if (saved) showRoomCode(saved);
   } catch(e) {}
-  const p = state.provocation;
+  var p = state.provocation;
 
-  // Headline
-  var hlEl = document.getElementById('prov-headline');
-  if (hlEl) {
-    hlEl.textContent = 'YOUR TRUTH AND NOTHING BUT.';
-    fitToWidth(hlEl, false, 48);
-  }
+  // Header — fitted to full width
+  var headerEl = document.getElementById('prov-header-text');
+  if (headerEl) fitToWidth(headerEl, false, 48);
 
-  // Provocation word — first word only, massive yellow
+  // Provocation word — first word only, massive yellow, fitted
   var nameEl = document.getElementById('provocation-name');
   if (nameEl) {
     nameEl.textContent = (p.name || '').split(' ')[0].toUpperCase();
@@ -1735,41 +1773,47 @@ function renderProvocation() {
   var sentEl = document.getElementById('prov-sentence');
   if (sentEl) sentEl.textContent = p.tagline || '';
 
-  // Five truths — the actual answers
+  // Five Q&A pairs — question in grey italic above, answer in white below
   var truthsEl = document.getElementById('prov-truths');
   if (truthsEl) {
     var truthsHTML = '';
     state.answers.forEach(function(a, i) {
       if (!a) return;
-      truthsHTML += '<div style="display:flex;gap:16px;margin-bottom:16px;">' +
-        '<span style="font-family:\'Poppins\',sans-serif;font-weight:900;font-size:18px;color:#FFFF00;line-height:1.6;min-width:20px;flex-shrink:0;">' + (i + 1) + '</span>' +
-        '<span style="font-family:\'Poppins\',sans-serif;font-weight:400;font-size:18px;color:#fff;line-height:1.6;">' + a + '</span>' +
+      var q = QUESTIONS[i] ? QUESTIONS[i].text : '';
+      var border = i > 0 ? 'border-top:1px solid #333;' : '';
+      truthsHTML += '<div style="' + border + 'padding:16px 0;">' +
+        '<div style="font-family:\'Poppins\',sans-serif;font-size:13px;font-style:italic;color:#888;margin-bottom:8px;">' + q + '</div>' +
+        '<div style="font-family:\'Poppins\',sans-serif;font-weight:400;font-size:18px;color:#fff;line-height:1.6;">' + a + '</div>' +
         '</div>';
     });
     truthsEl.innerHTML = truthsHTML;
   }
 
-  // Six pairs — THEY DO / YOU DO from flip cards
+  // Six THEY DO / YOU DO pairs — grey / white, all caps, Poppins 600
   var pairsEl = document.getElementById('prov-pairs');
   if (pairsEl) {
     var pairsHTML = '';
     (state.categoryItems || []).forEach(function(item, i) {
-      var theyDo = item.they_do || item.always || '';
-      var youDo = item.you_do || item.dont || '';
-      var borderTop = i > 0 ? 'border-top:1px solid #333;' : '';
-      pairsHTML += '<div style="' + borderTop + 'padding:16px 0;">' +
-        '<div style="font-family:\'Poppins\',sans-serif;font-weight:400;font-size:18px;color:#888;line-height:1.6;">THEY DO: ' + theyDo + '</div>' +
-        '<div style="font-family:\'Poppins\',sans-serif;font-weight:400;font-size:18px;color:#fff;line-height:1.6;">YOU DO: ' + youDo + '</div>' +
+      var theyDo = (item.they_do || item.always || '').toUpperCase();
+      var youDo = (item.you_do || item.dont || '').toUpperCase();
+      var border = i > 0 ? 'border-top:1px solid #333;' : '';
+      pairsHTML += '<div style="' + border + 'padding:16px 0;">' +
+        '<div style="font-family:\'Poppins\',sans-serif;font-weight:600;font-size:18px;color:#888;line-height:1.5;">THEY DO: ' + theyDo + '</div>' +
+        '<div style="font-family:\'Poppins\',sans-serif;font-weight:600;font-size:18px;color:#fff;line-height:1.5;">YOU DO: ' + youDo + '</div>' +
         '</div>';
     });
     pairsEl.innerHTML = pairsHTML;
   }
 
-  // Room code fitted to width
+  // Room code — fixed 80px, no fitToWidth
   var codeEl = document.getElementById('prov-room-code-display');
   if (codeEl && codeEl.textContent) {
-    fitToWidth(codeEl, false, 48);
+    codeEl.style.fontSize = '80px';
   }
+}
+
+function downloadProvocationPDF() {
+  window.print();
 }
 
 // Override showScreen to handle provocation render
@@ -2200,22 +2244,64 @@ function fitAll() {
   if (catHl && catHl.textContent && catHl.offsetParent !== null) {
     fitToWidth(catHl, false, 48);
   }
-  var provHl = document.getElementById('prov-headline');
-  if (provHl && provHl.textContent && provHl.offsetParent !== null) {
-    fitToWidth(provHl, false, 48);
+  var provHeader = document.getElementById('prov-header-text');
+  if (provHeader && provHeader.offsetParent !== null) {
+    fitToWidth(provHeader, false, 48);
   }
   var provName = document.getElementById('provocation-name');
   if (provName && provName.textContent && provName.offsetParent !== null) {
     fitToWidth(provName, false, 48);
   }
-  var provCode = document.getElementById('prov-room-code-display');
-  if (provCode && provCode.textContent && provCode.offsetParent !== null) {
-    fitToWidth(provCode, false, 48);
-  }
 }
 document.addEventListener('DOMContentLoaded', fitAll);
 window.addEventListener('load', fitAll);
 window.addEventListener('resize', fitAll);
+
+// DEV SHORTCUT: Shift+D → jump to Provocation with dummy data
+document.addEventListener('keydown', function(e) {
+  if (e.code !== 'KeyD' || !e.shiftKey) return;
+  try {
+    state.brand = 'Oatly';
+    state.category = 'Plant-based milk';
+    state.problem = 'The category is full of earnest sustainability messaging that nobody believes.';
+    state.answers = [
+      'Oatly is the only brand in this category that makes people feel slightly guilty for choosing any other option — and somehow they love them for it.',
+      'People say the packaging is annoying but they keep buying it. They mock the brand in public and defend it in private. That tension is the whole product.',
+      'No competitor has the guts to print a financial document on the side of a milk carton. Oatly turns self-aware corporate awkwardness into a brand personality.',
+      'Sustainability fatigue is real. People are exhausted by brands that lecture. Oatly is the only one laughing at itself hard enough to earn the right to mean it.',
+      'If Oatly disappeared, coffee shops would have to find another way to signal that they have a soul. That is not nothing.'
+    ];
+    state.categoryItems = [
+      { they_do: 'Lead with the planet', you_do: 'Lead with the absurdity' },
+      { they_do: 'Show happy cows in fields', you_do: 'Show awkward humans in meetings' },
+      { they_do: 'Use clinical nutrition claims', you_do: 'Use self-deprecating confessions' },
+      { they_do: 'Speak in a calm green voice', you_do: 'Speak in a chaotic oat voice' },
+      { they_do: 'Compete on taste', you_do: 'Compete on character' },
+      { they_do: 'Avoid controversy', you_do: 'Court it deliberately' }
+    ];
+    state.provocation = {
+      name: 'UNCOMFORTABLE',
+      tagline: 'A world where brands are honest about how weird it is to care about things.',
+      provocation: 'Oatly has discovered that sincerity sells better when it is wrapped in sarcasm. The category is screaming about saving the planet. Oatly is the only one willing to admit that is a strange thing to put on a milk carton.',
+      nevers: [
+        'Never speak in the calm voice of someone who has never doubted themselves',
+        'Never show nature without showing the humans destroying it',
+        'Never make a claim you cannot undercut with a joke',
+        'Never let earnestness go unexamined',
+        'Never pretend the brief was easy to write'
+      ]
+    };
+    try { localStorage.setItem('kd_storm_room_code', 'DEVX'); } catch(_) {}
+    showRoomCode('DEVX');
+    var screens = document.querySelectorAll('.screen');
+    screens.forEach(function(s) { s.classList.remove('active'); });
+    document.getElementById('screen-provocation').classList.add('active');
+    window.scrollTo(0, 0);
+    renderProvocation();
+  } catch(err) {
+    console.error('DEV shortcut error:', err);
+  }
+});
 </script>
 
 <div id="cookie-banner" class="cookie-banner">
