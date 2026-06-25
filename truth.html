@@ -1095,23 +1095,21 @@ firebase.initializeApp({
   <div class="kd-header">
     <div class="kd-logo">TRUTH DETECTOR.</div>
   </div>
-  <div class="kd-body" style="padding-left:0;padding-right:0;">
-    <div style="padding:0 24px;">
-      <div class="kd-screen-label">Provocation</div>
-      <div class="ft-headline" id="prov-intro-hl" style="color:var(--white);">WHAT YOUR CATEGORY NEVER DOES.</div>
-      <div class="ft-headline" id="prov-do-it" style="color:var(--yellow);margin-top:4px;">DO IT.</div>
+  <div style="padding:24px 24px 48px;display:flex;flex-direction:column;">
+    <div style="font-family:'Poppins',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#888;margin-bottom:16px;">PROVOCATION</div>
+    <div id="prov-headline" style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;color:#fff;line-height:0.95;white-space:nowrap;display:block;"></div>
+    <div id="provocation-name" style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;color:#FFFF00;line-height:0.95;white-space:nowrap;display:block;margin-top:8px;"></div>
+    <div id="prov-sentence" style="font-family:'Poppins',sans-serif;font-weight:400;font-size:18px;color:#fff;line-height:1.6;margin-top:24px;"></div>
+    <div style="font-family:'Poppins',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#888;margin-top:40px;margin-bottom:16px;">WHAT CAME OUT OF THE ROOM.</div>
+    <div id="prov-truths"></div>
+    <div style="font-family:'Poppins',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#888;margin-top:40px;margin-bottom:16px;">WHAT YOUR CATEGORY NEVER DOES.</div>
+    <div id="prov-pairs"></div>
+    <div class="room-code-block" id="prov-room-code-block" style="padding:40px 0 0;text-align:left;">
+      <div id="prov-room-code-display" style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;color:#FFFF00;white-space:nowrap;display:block;line-height:0.95;"></div>
     </div>
-    <div id="provocation-name" class="provocation-name" style="margin:20px 0 0;display:block;"></div>
-    <div style="padding:0 24px;">
-      <div id="provocation-tagline" class="provocation-tagline" style="margin-top:16px;"></div>
-      <div id="provocation-nevers" style="margin-top:24px;"></div>
-    </div>
-    <div class="room-code-block" id="prov-room-code-block" style="padding:32px 24px 0;">
-      <div class="room-code-number" id="prov-room-code-display" style="text-align:left;letter-spacing:6px;"></div>
-    </div>
-    <div style="padding:20px 24px 0;">
-      <button onclick="copyRoomCode(this)" class="btn-secondary" style="margin-bottom:0;">COPY CODE</button>
-      <button class="btn-primary" onclick="window.location.href='/storm.html'" style="margin-top:12px;">OPEN THE STORM →</button>
+    <div style="margin-top:24px;">
+      <button onclick="copyRoomCode(this)" class="btn-secondary" style="width:100%;padding:16px 20px;letter-spacing:0.05em;margin-bottom:12px;">COPY CODE</button>
+      <button class="btn-primary" onclick="window.location.href='/storm.html'" style="width:100%;padding:16px 20px;letter-spacing:0.05em;margin-top:0;">OPEN THE STORM →</button>
     </div>
   </div>
   <footer class="kd-footer">
@@ -1551,7 +1549,7 @@ function nextQuestion() {
 function initCategoryCards() {
   document.getElementById('cat-loading').style.display = 'none';
   document.getElementById('cat-cards').style.display = 'flex';
-  fitToWidth(document.getElementById('cat-script-hl'), false, 32);
+  fitToWidth(document.getElementById('cat-script-hl'), false, 48);
   var grid = document.getElementById('flip-grid');
   grid.innerHTML = '';
   state.categoryItems.forEach(function(item, i) {
@@ -1719,24 +1717,59 @@ function renderProvocation() {
   } catch(e) {}
   const p = state.provocation;
 
-  var introHl = document.getElementById('prov-intro-hl');
-  var doIt = document.getElementById('prov-do-it');
-  if (introHl) fitToWidth(introHl, false, 48);
-  if (doIt) fitToWidth(doIt, false, 48);
+  // Headline
+  var hlEl = document.getElementById('prov-headline');
+  if (hlEl) {
+    hlEl.textContent = 'YOUR TRUTH AND NOTHING BUT.';
+    fitToWidth(hlEl, false, 48);
+  }
 
-  // Provocation word — massive, full bleed
+  // Provocation word — first word only, massive yellow
   var nameEl = document.getElementById('provocation-name');
-  nameEl.textContent = p.name;
-  fitToWidth(nameEl, false, 0);
+  if (nameEl) {
+    nameEl.textContent = (p.name || '').split(' ')[0].toUpperCase();
+    fitToWidth(nameEl, false, 48);
+  }
 
-  document.getElementById('provocation-tagline').textContent = p.tagline;
+  // Strategic sentence
+  var sentEl = document.getElementById('prov-sentence');
+  if (sentEl) sentEl.textContent = p.tagline || '';
 
-  // NEVERs — plain lines, no labels
-  let neversHTML = '';
-  p.nevers.forEach(n => {
-    neversHTML += `<div style="font-size:13px;font-weight:700;letter-spacing:1px;color:var(--white);padding:12px 0;border-bottom:1px solid var(--border);text-transform:uppercase;">${n}</div>`;
-  });
-  document.getElementById('provocation-nevers').innerHTML = neversHTML;
+  // Five truths — the actual answers
+  var truthsEl = document.getElementById('prov-truths');
+  if (truthsEl) {
+    var truthsHTML = '';
+    state.answers.forEach(function(a, i) {
+      if (!a) return;
+      truthsHTML += '<div style="display:flex;gap:16px;margin-bottom:16px;">' +
+        '<span style="font-family:\'Poppins\',sans-serif;font-weight:900;font-size:18px;color:#FFFF00;line-height:1.6;min-width:20px;flex-shrink:0;">' + (i + 1) + '</span>' +
+        '<span style="font-family:\'Poppins\',sans-serif;font-weight:400;font-size:18px;color:#fff;line-height:1.6;">' + a + '</span>' +
+        '</div>';
+    });
+    truthsEl.innerHTML = truthsHTML;
+  }
+
+  // Six pairs — THEY DO / YOU DO from flip cards
+  var pairsEl = document.getElementById('prov-pairs');
+  if (pairsEl) {
+    var pairsHTML = '';
+    (state.categoryItems || []).forEach(function(item, i) {
+      var theyDo = item.they_do || item.always || '';
+      var youDo = item.you_do || item.dont || '';
+      var borderTop = i > 0 ? 'border-top:1px solid #333;' : '';
+      pairsHTML += '<div style="' + borderTop + 'padding:16px 0;">' +
+        '<div style="font-family:\'Poppins\',sans-serif;font-weight:400;font-size:18px;color:#888;line-height:1.6;">THEY DO: ' + theyDo + '</div>' +
+        '<div style="font-family:\'Poppins\',sans-serif;font-weight:400;font-size:18px;color:#fff;line-height:1.6;">YOU DO: ' + youDo + '</div>' +
+        '</div>';
+    });
+    pairsEl.innerHTML = pairsHTML;
+  }
+
+  // Room code fitted to width
+  var codeEl = document.getElementById('prov-room-code-display');
+  if (codeEl && codeEl.textContent) {
+    fitToWidth(codeEl, false, 48);
+  }
 }
 
 // Override showScreen to handle provocation render
@@ -2163,9 +2196,21 @@ function fitAll() {
   document.querySelectorAll('.ft-headline').forEach(function(el) {
     fitToWidth(el, false, 64);
   });
+  var catHl = document.getElementById('cat-script-hl');
+  if (catHl && catHl.textContent && catHl.offsetParent !== null) {
+    fitToWidth(catHl, false, 48);
+  }
+  var provHl = document.getElementById('prov-headline');
+  if (provHl && provHl.textContent && provHl.offsetParent !== null) {
+    fitToWidth(provHl, false, 48);
+  }
   var provName = document.getElementById('provocation-name');
   if (provName && provName.textContent && provName.offsetParent !== null) {
-    fitToWidth(provName, false, 0);
+    fitToWidth(provName, false, 48);
+  }
+  var provCode = document.getElementById('prov-room-code-display');
+  if (provCode && provCode.textContent && provCode.offsetParent !== null) {
+    fitToWidth(provCode, false, 48);
   }
 }
 document.addEventListener('DOMContentLoaded', fitAll);
