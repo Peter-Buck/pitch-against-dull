@@ -782,12 +782,20 @@
     font-family: 'Poppins', sans-serif;
     font-size: 13px;
     font-weight: 700;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: #888;
+    color: #fff;
+    background: #1a1a1a;
+    border-left: 4px solid #FFFF00;
+    padding: 12px 16px;
+    margin: 48px 0 24px 0;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   /* PRINT — provocation screen only */
+  @page { margin: 1cm; }
   @media print {
     .screen { display: none !important; }
     #screen-provocation { display: block !important; background: #fff !important; min-height: auto !important; }
@@ -796,11 +804,12 @@
     .kd-footer { display: none !important; }
     #prov-buttons { display: none !important; }
     .cookie-banner { display: none !important; }
-    #prov-content { padding: 0 24px !important; background: #fff !important; }
+    #prov-content { padding: 0 !important; background: #fff !important; }
     #prov-content * { color: #000 !important; background: #fff !important; border-color: #ccc !important; }
-    #prov-content .prov-label { color: #555 !important; }
+    #prov-content .prov-label { background: #f0f0f0 !important; color: #000 !important; border-left-color: #FFFF00 !important; border-left-width: 4px !important; border-left-style: solid !important; }
     #prov-room-code-block { display: block !important; }
     #prov-room-code-display { font-size: 48px !important; letter-spacing: 4px !important; }
+    #provocation-name { font-size: 15vw !important; white-space: normal !important; max-width: 100% !important; overflow: hidden !important; word-break: break-word !important; }
   }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -1122,31 +1131,19 @@ firebase.initializeApp({
   <div id="prov-header" style="background:#FFFF00;padding:24px 24px 28px;">
     <div id="prov-header-text" style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;color:#000;line-height:0.95;white-space:nowrap;display:block;">YOUR TRUTH AND NOTHING BUT.</div>
   </div>
-  <!-- Content -->
-  <div id="prov-content" style="padding:48px 24px 64px;display:flex;flex-direction:column;background:#0a0a0a;flex:1;">
-    <!-- THE ONE WORD PROVOCATION -->
+  <!-- Content — flat structure so .prov-label margin:48px 0 24px handles all spacing -->
+  <div id="prov-content" style="padding:0 24px 64px;display:flex;flex-direction:column;background:#0a0a0a;flex:1;">
     <div class="prov-label">THE ONE WORD PROVOCATION.</div>
-    <div id="provocation-name" style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;color:#FFFF00;line-height:0.9;white-space:nowrap;display:block;margin-top:12px;"></div>
-    <!-- Strategic sentence -->
-    <div id="prov-sentence" style="font-family:'Poppins',sans-serif;font-weight:400;font-size:18px;color:#fff;line-height:1.6;margin-top:48px;"></div>
-    <!-- WHAT CAME OUT OF THE ROOM -->
-    <div style="margin-top:48px;">
-      <div class="prov-label">WHAT CAME OUT OF THE ROOM.</div>
-      <div id="prov-truths" style="margin-top:16px;"></div>
+    <div id="provocation-name" style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;color:#FFFF00;line-height:0.9;white-space:nowrap;display:block;"></div>
+    <div id="prov-sentence" style="font-family:'Poppins',sans-serif;font-weight:400;font-size:18px;color:#fff;line-height:1.6;margin-top:24px;"></div>
+    <div class="prov-label">WHAT CAME OUT OF THE ROOM.</div>
+    <div id="prov-truths"></div>
+    <div class="prov-label">FLIP THE SCRIPT.</div>
+    <div id="prov-pairs"></div>
+    <div class="prov-label">YOUR ROOM CODE.</div>
+    <div class="room-code-block" id="prov-room-code-block" style="padding:0;text-align:left;">
+      <div id="prov-room-code-display" style="font-family:'Poppins',sans-serif;font-weight:900;color:#FFFF00;font-size:80px;line-height:1;letter-spacing:6px;"></div>
     </div>
-    <!-- FLIP THE SCRIPT -->
-    <div style="margin-top:48px;">
-      <div class="prov-label">FLIP THE SCRIPT.</div>
-      <div id="prov-pairs" style="margin-top:16px;"></div>
-    </div>
-    <!-- ROOM CODE -->
-    <div style="margin-top:48px;">
-      <div class="prov-label">YOUR ROOM CODE.</div>
-      <div class="room-code-block" id="prov-room-code-block" style="padding:12px 0 0;text-align:left;">
-        <div id="prov-room-code-display" style="font-family:'Poppins',sans-serif;font-weight:900;color:#FFFF00;font-size:80px;line-height:1;letter-spacing:6px;"></div>
-      </div>
-    </div>
-    <!-- Buttons -->
     <div id="prov-buttons" style="margin-top:48px;display:flex;flex-direction:column;gap:12px;">
       <button onclick="copyRoomCode(this)" style="width:100%;padding:16px 20px;background:transparent;color:#fff;border:1px solid #fff;font-family:'Manrope',sans-serif;font-size:clamp(14px,3.5vw,18px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;">COPY CODE</button>
       <button onclick="downloadProvocationPDF()" style="width:100%;padding:16px 20px;background:transparent;color:#fff;border:1px solid #fff;font-family:'Manrope',sans-serif;font-size:clamp(14px,3.5vw,18px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;">DOWNLOAD AS PDF</button>
