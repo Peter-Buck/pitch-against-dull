@@ -1,0 +1,2225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Kill Dull — The Storm</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* ── RESET & TOKENS ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; border-radius: 0; }
+    :root { --y: #FFFF00; --k: #0a0a0a; --w: #F4F2EA; --b: #222; --r: #ff4d4d; --max: 600px; }
+    html, body { height: 100%; background: var(--k); color: var(--w); font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes screenIn   { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes breathe    { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.3; } }
+    @keyframes timerPulse { from { opacity: 1; } to { opacity: 0.35; } }
+    @keyframes spin       { to { transform: rotate(360deg); } }
+
+    /* ── GLOBAL HEADER ── */
+    #kd-header { background: var(--y); padding: 24px 16px 28px 16px; display: none; }
+    #kd-header .inner { }
+    .kd-logo  { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: clamp(26px, 7vw, 36px); line-height: 0.9; color: var(--k); text-transform: uppercase; }
+    .kd-tool  { font-family: 'Poppins', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: rgba(0,0,0,0.45); margin-top: 4px; }
+
+    /* ── SCREENS ── */
+    .screen { display: none; flex-direction: column; min-height: 100dvh; padding: 0 24px; }
+    .screen.active { display: flex; animation: screenIn 0.3s ease; }
+    body.header-on .screen.active { min-height: calc(100dvh - 72px); }
+
+    /* ── TYPOGRAPHY ── */
+    .kill-dull-title { font-family: 'Poppins', sans-serif; font-weight: 900; line-height: 1.1; display: block; width: 100%; padding: 0; color: #000; text-transform: uppercase; }
+    .kd-logo-sub { font-family: 'Poppins', sans-serif; font-weight: 600; letter-spacing: 0; color: #000; margin-top: 0; margin-bottom: 4px; padding-left: 0; text-align: left; display: block; width: 100%; line-height: 1.4; }
+    .kd-footer { background: #F4F2EA; padding: 24px 16px; margin-top: auto; }
+    .kd-footer-logo { color: #000000; font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 35px; line-height: 1; }
+    .kd-footer-copy { color: #000000; font-family: 'Poppins', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: 1px; margin-top: 10px; }
+    .kd-footer-stat { color: #000000; font-family: 'Poppins', sans-serif; font-weight: 400; font-size: 12px; font-style: italic; margin-top: 6px; }
+    .storm-sub  { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(32px, 8vw, 52px); color: var(--w); text-transform: uppercase; letter-spacing: 4px; margin-top: 8px; }
+    .tagline    { font-family: 'Poppins', sans-serif; font-size: 15px; color: rgba(255,255,255,0.4); margin-top: 10px; line-height: 1.55; }
+    .heading-xl { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(64px, 16vw, 96px); line-height: 0.9; color: var(--y); text-transform: uppercase; }
+    .heading-lg { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(48px, 12vw, 72px); line-height: 0.95; color: var(--y); text-transform: uppercase; }
+    .heading-md { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(28px, 7vw, 40px); color: var(--w); text-transform: uppercase; }
+    .eyebrow    { font-family: 'Poppins', sans-serif; font-size: 10px; color: rgba(255,255,255,0.28); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 8px; font-weight: 700; }
+
+    /* ── BUTTONS ── */
+    .btn { display: block; width: 100%; padding: 20px 24px; font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(20px, 5vw, 26px); letter-spacing: 3px; text-transform: uppercase; border: none; cursor: pointer; transition: transform 0.1s; -webkit-tap-highlight-color: transparent; }
+    .btn:active { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.35; cursor: default; }
+    .btn:disabled:active { transform: none; }
+    .btn-yellow         { background: var(--y); color: var(--k); }
+    .btn-outline-yellow { background: transparent; color: var(--y); border: 2px solid var(--y); }
+
+    /* ── INPUTS ── */
+    .field-label { font-family: 'Poppins', sans-serif; font-size: 10px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; font-weight: 700; display: block; }
+    .input { display: block; width: 100%; background: var(--k); border: none; border-bottom: 2px solid var(--y); padding: 20px 0; color: var(--w); font-family: 'Poppins', sans-serif; font-size: 20px; font-weight: 600; outline: none; -webkit-appearance: none; }
+    .input:focus { border-bottom-color: #F4F2EA; }
+    .input::placeholder { color: rgba(255,255,255,0.18); }
+    .input-code { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(40px, 10vw, 56px); text-align: center; letter-spacing: 12px; padding: 16px 0; text-transform: uppercase; }
+    .form-group { margin-bottom: 32px; }
+
+    /* ── BACK / ERROR ── */
+    .error-msg { font-family: 'Poppins', sans-serif; font-size: 13px; color: var(--r); margin-top: 12px; display: none; }
+    .back-btn  { display: inline-flex; align-items: center; gap: 6px; background: none; border: none; color: rgba(255,255,255,0.3); font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; padding: 20px 0 12px; -webkit-tap-highlight-color: transparent; }
+    .back-btn:active { color: var(--w); }
+
+    /* ── CARDS ── */
+    .card        { border: 1px solid var(--b); padding: 18px 20px; margin-bottom: 12px; }
+    .card-yellow { border: 1px solid rgba(255,255,0,0.25); background: rgba(255,255,0,0.03); padding: 18px 20px; margin-bottom: 12px; }
+    .card-body   { font-family: 'Poppins', sans-serif; font-size: 15px; color: rgba(255,255,255,0.68); line-height: 1.6; }
+
+    /* ── LAYOUT ── */
+    .divider { height: 1px; background: var(--b); margin: 24px 0; }
+    .flex-1  { flex: 1; }
+
+    /* ── ROOM CODE ── */
+    .room-code-big { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(80px, 22vw, 140px); color: var(--y); letter-spacing: 16px; text-align: center; line-height: 1; }
+
+    /* ── PLAYERS ── */
+    .players-count { font-family: 'Poppins', sans-serif; font-size: 10px; color: rgba(255,255,255,0.28); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 3px; font-weight: 700; }
+    .players-list { list-style: none; }
+    .players-list li { padding: 20px 0; border-bottom: 1px solid var(--b); font-family: 'Poppins', sans-serif; font-size: 17px; font-weight: 600; color: rgba(255,255,255,0.85); }
+    .players-list li:last-child { border-bottom: none; }
+
+    /* ── WAITING ── */
+    .waiting-row { display: flex; align-items: center; gap: 12px; padding-bottom: 40px; }
+    .waiting-dot { width: 8px; height: 8px; border-radius: 50% !important; background: var(--y); animation: breathe 2s ease-in-out infinite; flex-shrink: 0; }
+    .waiting-label { font-family: 'Poppins', sans-serif; font-size: 13px; color: rgba(255,255,255,0.32); font-weight: 600; letter-spacing: 0.3px; }
+
+    /* ── LANDING ── */
+    #screen-landing { padding: 0; height: 100vh; min-height: 0; }
+    #screen-landing .hero   { padding: 24px 16px 28px 16px; overflow: hidden; background: #FFFF00; }
+    #screen-landing .btn-row { display: flex; flex-direction: column; border-top: 1px solid var(--b); padding-bottom: 2px; }
+    #screen-landing .btn-row .btn { border-bottom: 1px solid var(--b); }
+    #screen-landing .btn-row .btn-outline-yellow { border: 2px solid #FFFF00; }
+
+    /* ── ROOM CODE SCREEN ── */
+    #screen-room-code .code-area { padding: 40px 0 28px; text-align: center; border-bottom: 1px solid var(--b); margin-bottom: 28px; }
+
+    /* ── ROUND 1 ── */
+    .words-stack { display: flex; flex-direction: column; margin: 20px 0; }
+    .word-chip { display: block; border: 1px solid rgba(255,255,0,0.3); border-top: none; padding: 18px 20px; font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(28px, 7vw, 40px); color: var(--y); text-transform: uppercase; letter-spacing: 1px; text-align: center; }
+    .word-chip:first-child { border-top: 1px solid rgba(255,255,0,0.3); }
+    .pitch-order-list { list-style: none; margin: 16px 0; }
+    .pitch-order-list li { display: flex; align-items: center; gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--b); font-family: 'Poppins', sans-serif; font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.85); }
+    .pitch-order-list li:last-child { border-bottom: none; }
+    .pitch-num { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: 28px; color: rgba(255,255,255,0.15); width: 28px; text-align: center; flex-shrink: 0; }
+    .countdown-big { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(100px, 30vw, 180px); color: var(--y); text-align: center; line-height: 1; padding-bottom: 40px; }
+    .timer-display { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(64px, 18vw, 100px); color: var(--y); text-align: center; line-height: 1; }
+    .timer-display.dimmed { color: rgba(255,255,255,0.12); }
+    .timer-display.timer-pulse { animation: timerPulse 0.5s ease-in-out infinite alternate; }
+    .timer-bar-track { width: 100%; height: 3px; background: var(--b); overflow: hidden; margin: 16px 0 0; }
+    .timer-bar-fill { height: 100%; background: var(--y); transition: width 1s linear; }
+    .timer-bar-fill.dimmed { background: #2a2a2a; }
+    .up-next-hero { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 0; }
+    .up-next-title { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(56px, 15vw, 80px); line-height: 0.9; color: var(--y); text-transform: uppercase; margin-bottom: 12px; }
+    .vote-grid { display: flex; flex-direction: column; margin: 16px 0; }
+    .vote-card { border: 1px solid var(--b); border-top: none; padding: 16px 20px; cursor: pointer; transition: background 0.1s; -webkit-tap-highlight-color: transparent; user-select: none; }
+    .vote-card:first-child { border-top: 1px solid var(--b); }
+    .vote-card:active { background: rgba(255,255,255,0.03); }
+    .vote-card.selected { border-color: var(--y); background: rgba(255,255,0,0.05); }
+    .vote-card.self-vote { opacity: 0.22; pointer-events: none; }
+    .vote-card-name { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(22px, 5vw, 28px); color: var(--w); text-transform: uppercase; }
+    .vote-card.selected .vote-card-name { color: var(--y); }
+    .vote-card-idea { font-family: 'Poppins', sans-serif; font-size: 13px; color: rgba(255,255,255,0.38); margin-top: 3px; }
+    .result-winner { border: 2px solid var(--y); padding: 28px 20px; text-align: center; background: rgba(255,255,0,0.03); }
+    .result-list { list-style: none; margin-top: 12px; }
+    .result-list li { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--b); font-family: 'Poppins', sans-serif; font-size: 15px; color: rgba(255,255,255,0.6); }
+    .result-list li:last-child { border-bottom: none; }
+    .result-list li.winner { color: var(--y); }
+    .vote-tally { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: 24px; color: rgba(255,255,255,0.2); flex-shrink: 0; }
+    .result-list li.winner .vote-tally { color: var(--y); }
+    .host-band { border: 1px solid rgba(255,255,0,0.2); padding: 16px 20px; margin-bottom: 12px; background: rgba(255,255,0,0.02); }
+    .host-band-label { font-family: 'Poppins', sans-serif; font-size: 10px; color: rgba(255,255,0,0.38); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 12px; font-weight: 700; }
+    .player-word-row { display: flex; align-items: baseline; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--b); font-family: 'Poppins', sans-serif; font-size: 14px; }
+    .player-word-row:last-child { border-bottom: none; }
+    .player-word-name  { color: rgba(255,255,255,0.45); font-weight: 700; min-width: 90px; }
+    .player-word-chips { color: var(--y); font-family: 'Manrope', sans-serif; font-weight: 900; font-size: 18px; letter-spacing: 1px; }
+
+    /* ── ROUND 2 ── */
+    .campaign-card      { border: 1px solid var(--b); padding: 20px; margin: 16px 0; }
+    .campaign-card-name { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(24px, 6vw, 32px); color: var(--w); text-transform: uppercase; line-height: 1; margin-bottom: 4px; }
+    .campaign-card-meta { font-family: 'Poppins', sans-serif; font-size: 10px; color: rgba(255,255,255,0.28); margin-bottom: 16px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; }
+    .campaign-card-field { margin-bottom: 14px; }
+    .campaign-card-field:last-child { margin-bottom: 0; }
+    .campaign-card-label { font-family: 'Poppins', sans-serif; font-size: 9px; color: rgba(255,255,255,0.22); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 4px; font-weight: 700; }
+    .campaign-card-text  { font-family: 'Poppins', sans-serif; font-size: 15px; color: rgba(255,255,255,0.8); line-height: 1.55; }
+    .phase-rule { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--b); }
+    .phase-rule:last-child { border-bottom: none; }
+    .phase-rule-num  { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: 28px; color: var(--y); flex-shrink: 0; width: 28px; line-height: 1; }
+    .phase-rule-text { font-family: 'Poppins', sans-serif; font-size: 15px; color: rgba(255,255,255,0.62); line-height: 1.55; padding-top: 4px; }
+    .phase-player-row { display: flex; align-items: center; gap: 12px; padding: 20px 0; border-bottom: 1px solid var(--b); }
+    .phase-player-row:last-child { border-bottom: none; }
+    .phase-player-name { font-family: 'Poppins', sans-serif; font-size: 16px; font-weight: 600; color: rgba(255,255,255,0.8); }
+    .phase-player-dot  { width: 6px; height: 6px; border-radius: 50% !important; background: var(--y); flex-shrink: 0; }
+
+    /* ── ROUND 3 / GAME OVER ── */
+    .r3-idea-card { border: 1px solid var(--b); border-top: none; padding: 16px 20px; }
+    .r3-idea-card:first-child { border-top: 1px solid var(--b); }
+    .r3-idea-card.develop { border-color: rgba(255,255,0,0.35); background: rgba(255,255,0,0.03); }
+    .r3-idea-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+    .r3-idea-name { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(20px, 5vw, 26px); color: var(--w); text-transform: uppercase; line-height: 1; }
+    .r3-idea-card.develop .r3-idea-name { color: var(--y); }
+    .r3-idea-meta { font-family: 'Poppins', sans-serif; font-size: 10px; color: rgba(255,255,255,0.25); margin-top: 3px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+    .r3-vote-btns { display: flex; margin-top: 14px; }
+    .r3-vote-btn { flex: 1; padding: 12px 4px; font-family: 'Manrope', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: 1px; text-transform: uppercase; border: 1px solid var(--b); border-right: none; background: transparent; color: rgba(255,255,255,0.28); cursor: pointer; transition: background 0.1s, color 0.1s; -webkit-tap-highlight-color: transparent; }
+    .r3-vote-btn:last-child { border-right: 1px solid var(--b); }
+    .r3-vote-btn:active { transform: scale(0.97); }
+    .r3-vote-btn.kill.active    { background: rgba(255,60,60,0.1);  color: var(--r); border-color: rgba(255,60,60,0.35); }
+    .r3-vote-btn.keep.active    { background: rgba(255,255,255,0.06); color: var(--w); border-color: rgba(255,255,255,0.28); }
+    .r3-vote-btn.develop.active { background: rgba(255,255,0,0.07); color: var(--y); border-color: rgba(255,255,0,0.35); }
+    .r3-tally-row { display: flex; justify-content: space-between; align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--b); font-family: 'Poppins', sans-serif; font-size: 14px; color: rgba(255,255,255,0.55); }
+    .r3-tally-row:last-child { border-bottom: none; }
+    .r3-tally-chips { display: flex; gap: 16px; }
+    .r3-tally-chip { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: 20px; }
+    .r3-tally-chip.kill    { color: rgba(255,60,60,0.7); }
+    .r3-tally-chip.keep    { color: rgba(255,255,255,0.22); }
+    .r3-tally-chip.develop { color: var(--y); }
+    .survive-card      { border: 1px solid rgba(255,255,0,0.3); border-top: none; padding: 18px 20px; background: rgba(255,255,0,0.03); }
+    .survive-card:first-child { border-top: 1px solid rgba(255,255,0,0.3); }
+    .survive-card-name { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(24px, 6vw, 32px); color: var(--y); text-transform: uppercase; line-height: 1; margin-bottom: 4px; }
+    .survive-card-meta { font-family: 'Poppins', sans-serif; font-size: 10px; color: rgba(255,255,0,0.4); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; }
+    .gameover-prov { font-family: 'Poppins', sans-serif; font-size: 15px; color: rgba(255,255,255,0.58); line-height: 1.75; border-left: 2px solid rgba(255,255,0,0.35); padding-left: 18px; margin: 20px 0; }
+    .gameover-coda { font-family: 'Poppins', sans-serif; font-size: 13px; color: rgba(255,255,255,0.28); margin-top: 24px; text-align: center; line-height: 1.8; letter-spacing: 0.5px; }
+
+  </style>
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════
+       GLOBAL HEADER (hidden on landing)
+  ════════════════════════════════════════ -->
+  <header id="kd-header">
+    <div class="inner">
+      <div class="kd-logo">Kill Dull.</div>
+      <div class="kd-tool" id="kd-header-tool">The Storm</div>
+    </div>
+  </header>
+
+  <!-- SPLASH SCREEN -->
+  <div id="screen-splash" style="position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;z-index:9999;">
+    <div id="kd-wrap" style="width:100vw;overflow:hidden;box-sizing:border-box;">
+      <div id="kd-text" style="font-family:'Poppins',sans-serif;font-weight:900;line-height:1.05;white-space:nowrap;display:block;text-transform:uppercase;color:#FFFF00;padding:0 16px;">KILL DULL.</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: KD INTRO
+  ════════════════════════════════════════ -->
+  <div id="screen-kd-intro" class="screen">
+    <div style="padding: 48px 16px 20px;">
+      <div class="kill-dull-title" style="color: var(--w); line-height: 0.95;">DULL IS</div>
+      <div class="kill-dull-title" style="color: var(--y); line-height: 0.95;">EXPENSIVE.</div>
+    </div>
+    <div style="padding: 0 16px; flex: 1; display: flex; flex-direction: column;">
+      <p style="font-family:'Poppins',sans-serif; font-size:clamp(16px,1.6vw,26px); line-height:1.7; color:#F4F2EA; margin-top:32px;">According to System1 &amp; Effie (The Creative Dividend, 2025), boring advertising pays back 40% less. Entertaining advertising delivers a 21x profit multiplier. In short: dull isn&rsquo;t just boring &mdash; it&rsquo;s a business decision you can&rsquo;t afford.</p>
+      <div class="flex-1"></div>
+      <div style="padding-top: 48px; padding-bottom: 48px;">
+        <button class="btn btn-yellow" onclick="showScreen('screen-five-tools')">LET&rsquo;S KILL DULL &rarr;</button>
+      </div>
+    </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: FIVE TOOLS
+  ════════════════════════════════════════ -->
+  <div id="screen-five-tools" class="screen" style="padding: 0;">
+    <div style="padding: 48px 32px 0;">
+      <div class="ft-headline" style="font-family:'Poppins',sans-serif; font-weight:900; text-transform:uppercase; display:block; width:100%; line-height:0.95; color:var(--w);">FIVE TOOLS. ONE MISSION.</div>
+      <div class="ft-headline" style="font-family:'Poppins',sans-serif; font-weight:900; text-transform:uppercase; display:block; width:100%; line-height:0.95; color:var(--y);">KILL DULL.</div>
+    </div>
+    <div style="padding: 24px 16px 48px; flex: 1; display: flex; flex-direction: column;">
+      <div style="padding: 20px 0; border-top: 1px solid #333;">
+        <div style="font-family:'Poppins',sans-serif; font-size:11px; font-weight:700; color:#555; margin-bottom:4px;">01</div>
+        <div style="font-family:'Poppins',sans-serif; font-weight:700; font-size:clamp(14px,1.2vw,18px); color:var(--y); text-transform:uppercase; margin-bottom:3px;">TRUTH DETECTOR</div>
+        <div style="font-family:'Poppins',sans-serif; font-size:clamp(16px,1.4vw,22px); line-height:1.6; color:#aaa;">Write briefs that say the truth and nothing but the truth. Five questions. No safe answers.</div>
+      </div>
+      <div style="padding: 20px 0; border-top: 1px solid #333;">
+        <div style="font-family:'Poppins',sans-serif; font-size:11px; font-weight:700; color:#555; margin-bottom:4px;">02</div>
+        <div style="font-family:'Poppins',sans-serif; font-weight:700; font-size:clamp(14px,1.2vw,18px); color:var(--y); text-transform:uppercase; margin-bottom:3px;">THE STORM</div>
+        <div style="font-family:'Poppins',sans-serif; font-size:clamp(16px,1.4vw,22px); line-height:1.6; color:#aaa;">Two rounds. One brief. No safety net. The best idea wins.</div>
+      </div>
+      <div style="padding: 20px 0; border-top: 1px solid #333;">
+        <div style="font-family:'Poppins',sans-serif; font-size:11px; font-weight:700; color:#555; margin-bottom:4px;">03</div>
+        <div style="font-family:'Poppins',sans-serif; font-weight:700; font-size:clamp(14px,1.2vw,18px); color:var(--y); text-transform:uppercase; margin-bottom:3px;">RECKONING</div>
+        <div style="font-family:'Poppins',sans-serif; font-size:clamp(16px,1.4vw,22px); line-height:1.6; color:#aaa;">Rigorous. Ruthless. Relentless. The process: brutal. The results: sublime.</div>
+      </div>
+      <div style="padding: 20px 0; border-top: 1px solid #333;">
+        <div style="font-family:'Poppins',sans-serif; font-size:11px; font-weight:700; color:#555; margin-bottom:4px;">04</div>
+        <div style="font-family:'Poppins',sans-serif; font-weight:700; font-size:clamp(14px,1.2vw,18px); color:var(--y); text-transform:uppercase; margin-bottom:3px;">FEEDFORWARD</div>
+        <div style="font-family:'Poppins',sans-serif; font-size:clamp(16px,1.4vw,22px); line-height:1.6; color:#aaa;">The winning idea learns to fly. AI maps the channels. Humans refine the plan.</div>
+      </div>
+      <div style="padding: 20px 0; border-top: 1px solid #333; border-bottom: 1px solid #333;">
+        <div style="font-family:'Poppins',sans-serif; font-size:11px; font-weight:700; color:#555; margin-bottom:4px;">05</div>
+        <div style="font-family:'Poppins',sans-serif; font-weight:700; font-size:clamp(14px,1.2vw,18px); color:var(--y); text-transform:uppercase; margin-bottom:3px;">PRODUCTION</div>
+        <div style="font-family:'Poppins',sans-serif; font-size:clamp(16px,1.4vw,22px); line-height:1.6; color:#aaa;">Coming soon.</div>
+      </div>
+      <div class="flex-1"></div>
+      <button class="btn btn-yellow" onclick="showScreen('screen-landing')">LET&rsquo;S BEGIN &rarr;</button>
+    </div>
+  <footer class="kd-footer" style="width:100%; margin:0; padding:24px 16px; box-sizing:border-box;">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: LANDING
+  ════════════════════════════════════════ -->
+  <div id="screen-landing" class="screen">
+    <div class="hero">
+      <div class="kill-dull-title">PITCH AGAINST DULL.</div>
+      <div class="kd-logo-sub">AI precision. Human intuition. Dead set on the work that works.</div>
+    </div>
+    <div style="height: 60px; background: #000;"></div>
+    <div class="btn-row">
+      <button class="btn btn-yellow" onclick="showScreen('screen-host-code')">Host</button>
+      <button class="btn btn-outline-yellow" onclick="showScreen('screen-join')">Join</button>
+    </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: HOST CODE
+  ════════════════════════════════════════ -->
+  <div id="screen-host-code" class="screen">
+    <button class="back-btn" onclick="showScreen('screen-landing')">&#8592; Back</button>
+    <div class="heading-md" style="margin-bottom: 10px;">Enter your Truth Detector room code</div>
+    <p class="tagline" style="margin-top: 0; margin-bottom: 32px;">The 4-character code from your active Truth Detector session</p>
+    <div class="form-group">
+      <div class="field-label">Room Code</div>
+      <input id="truth-code-input" class="input input-code" type="text" maxlength="4" placeholder="XXXX"
+        autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false">
+    </div>
+    <div id="host-code-error" class="error-msg"></div>
+    <div class="flex-1"></div>
+    <div style="padding-bottom: 48px;">
+      <button class="btn btn-yellow" onclick="lookupTruthRoom()">Find Room</button>
+    </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: PROVOCATION CONFIRM
+  ════════════════════════════════════════ -->
+  <div id="screen-provocation-confirm" class="screen">
+    <button class="back-btn" onclick="showScreen('screen-host-code')">&#8592; Back</button>
+    <div class="eyebrow">Provocation</div>
+    <div id="provocation-name-display" class="heading-xl" style="margin-bottom: 6px;"></div>
+    <div id="provocation-tagline-display" class="tagline" style="margin-bottom: 16px;"></div>
+    <div id="provocation-body-display" class="card" style="display:none;">
+      <div class="eyebrow">The Brief</div>
+      <div id="provocation-body-text" class="card-body"></div>
+    </div>
+    <div id="provocation-nevers-display" class="card" style="display:none;">
+      <div class="eyebrow">Never</div>
+      <div id="provocation-nevers-list"></div>
+    </div>
+    <div id="brand-card" class="card" style="display:none;">
+      <div class="eyebrow">Brand</div>
+      <div id="brand-name-display" class="card-body" style="font-size: 18px; font-weight: 700; color: #F4F2EA;"></div>
+    </div>
+    <div id="brief-card" class="card" style="display:none;">
+      <div class="eyebrow">Brief</div>
+      <div id="brief-text-display" class="card-body"></div>
+    </div>
+    <div class="flex-1"></div>
+    <div style="padding-bottom: 48px;">
+      <button class="btn btn-yellow" onclick="createStormRoom()">Create Storm Room</button>
+    </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: ROOM CODE (HOST LOBBY)
+  ════════════════════════════════════════ -->
+  <div id="screen-room-code" class="screen">
+    <div class="code-area">
+      <div class="eyebrow" style="text-align:center;">Storm Room Code</div>
+      <div id="storm-room-code-display" class="room-code-big"></div>
+    </div>
+    <div class="card" style="margin-bottom: 16px; text-align: center;">
+      <div class="card-body" style="font-size: 14px; line-height: 1.6;">
+        Players go to <strong style="color:#F4F2EA;">pitch-against-dull.vercel.app/storm.html</strong> and tap <strong style="color:#F4F2EA;">Join</strong>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="eyebrow">Players</div>
+    <div id="players-count" class="players-count">0 players</div>
+    <ul id="players-list" class="players-list"></ul>
+    <div class="flex-1"></div>
+    <div style="padding-bottom: 48px;">
+      <div id="start-round1-waiting" style="font-family:'Poppins',sans-serif; font-size:13px; color:rgba(255,255,255,0.35); text-align:center; margin-bottom:12px; display:block;">Waiting for players — need at least 2 to start</div>
+      <button id="start-round1-btn" class="btn btn-yellow" onclick="moveToStormIntro()" disabled>Start Round 1</button>
+    </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: JOIN
+  ════════════════════════════════════════ -->
+  <div id="screen-join" class="screen">
+    <button class="back-btn" onclick="showScreen('screen-landing')">&#8592; Back</button>
+    <div class="heading-md" style="margin-bottom: 8px;">Join a Storm</div>
+    <p class="tagline" style="margin-top: 0; margin-bottom: 32px;">Enter your name and the room code from your host</p>
+    <div class="form-group">
+      <div class="field-label">Your Name</div>
+      <input id="player-name-input" class="input" type="text" placeholder="e.g. Jamie"
+        autocomplete="off" autocorrect="off" spellcheck="false">
+    </div>
+    <div class="form-group">
+      <div class="field-label">Room Code</div>
+      <input id="join-code-input" class="input input-code" type="tel" maxlength="4" placeholder="0000"
+        autocomplete="off" spellcheck="false">
+    </div>
+    <div id="join-error" class="error-msg"></div>
+    <div class="flex-1"></div>
+    <div style="padding-bottom: 48px;">
+      <button class="btn btn-yellow" onclick="joinRoom()">Join</button>
+    </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: WAITING
+  ════════════════════════════════════════ -->
+  <div id="screen-waiting" class="screen">
+    <div style="padding-top: 48px; padding-bottom: 28px;">
+      <div class="eyebrow">You're in</div>
+      <div id="waiting-player-name" class="heading-lg" style="color: #F4F2EA;"></div>
+    </div>
+    <div id="waiting-brief-card" class="card" style="display:none;">
+      <div class="eyebrow">Brief</div>
+      <div id="waiting-brief-text" class="card-body"></div>
+    </div>
+    <div class="card-yellow">
+      <div class="eyebrow">Provocation</div>
+      <div id="waiting-provocation-name" class="heading-md" style="color: #FFFF00; margin-bottom: 4px;"></div>
+      <div id="waiting-provocation-tagline" class="card-body" style="font-size: 14px; margin-top: 4px;"></div>
+    </div>
+    <div class="flex-1"></div>
+    <div class="waiting-row">
+      <div class="waiting-dot"></div>
+      <span class="waiting-label">Waiting for host to start&hellip;</span>
+    </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: STORM INTRO
+  ════════════════════════════════════════ -->
+  <div id="screen-storm-intro" class="screen">
+    <div id="storm-intro-host" style="display:none; flex-direction:column; flex:1;">
+      <div style="padding-top: 48px; margin-bottom: 24px;">
+        <div class="heading-md" style="color: var(--y);">IT STARTS LIKE A BLIZZARD. BUILDS LIKE A HURRICANE. TOUCHES DOWN LIKE A TORNADO.</div>
+      </div>
+      <p style="font-family:'Poppins',sans-serif; font-size:15px; line-height:1.75; color:rgba(255,255,255,0.7);">Two rounds. One brief. One provocation. Everything you pitch must serve it. Round one detoxes your brain from the obvious. Round two steals from the best work ever made. The best idea wins. No slides. No mercy.</p>
+      <div class="flex-1"></div>
+      <div style="padding-bottom: 48px;">
+        <button class="btn btn-yellow" onclick="advanceToR1Intro()">START ROUND 1 &rarr;</button>
+      </div>
+    </div>
+    <div id="storm-intro-player" style="display:none; flex-direction:column; flex:1;">
+      <div style="padding-top: 48px; margin-bottom: 24px;">
+        <div class="heading-md" style="color: var(--y);">IT STARTS LIKE A BLIZZARD. BUILDS LIKE A HURRICANE. TOUCHES DOWN LIKE A TORNADO.</div>
+      </div>
+      <p style="font-family:'Poppins',sans-serif; font-size:15px; line-height:1.75; color:rgba(255,255,255,0.7);">Two rounds. One brief. One provocation. Everything you pitch must serve it. Round one detoxes your brain from the obvious. Round two steals from the best work ever made. The best idea wins. No slides. No mercy.</p>
+      <div class="flex-1"></div>
+      <div class="waiting-row" style="padding-bottom: 48px;">
+        <div class="waiting-dot"></div>
+        <span class="waiting-label">Waiting for host&hellip;</span>
+      </div>
+    </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: R1 INTRO
+  ════════════════════════════════════════ -->
+  <div id="screen-r1-intro" class="screen">
+    <div id="r1-intro-host" style="display:none; flex-direction:column; flex:1;">
+      <div style="padding-top: 48px; margin-bottom: 24px;">
+        <div class="eyebrow">Round 1</div>
+        <div class="heading-lg" style="color: var(--y);">ROUND ONE. RANDOM WORDS.</div>
+      </div>
+      <p style="font-family:'Poppins',sans-serif; font-size:15px; line-height:1.75; color:rgba(255,255,255,0.7);">Three words. 90 seconds. Go. Your brain defaults to the obvious. These words break that. Use them however you want — literally, metaphorically, sideways. The weirder the connection, the better the idea. Pitch it. Name it. Add it to the list. No winner. No pressure. Just ideas.</p>
+      <div class="flex-1"></div>
+      <div style="padding-bottom: 48px;">
+        <button class="btn btn-yellow" onclick="startRound1()">ASSIGN WORDS &rarr;</button>
+      </div>
+    </div>
+    <div id="r1-intro-player" style="display:none; flex-direction:column; flex:1;">
+      <div style="padding-top: 48px; margin-bottom: 24px;">
+        <div class="eyebrow">Round 1</div>
+        <div class="heading-lg" style="color: var(--y);">ROUND ONE. RANDOM WORDS.</div>
+      </div>
+      <p style="font-family:'Poppins',sans-serif; font-size:15px; line-height:1.75; color:rgba(255,255,255,0.7);">Three words. 90 seconds. Go. Your brain defaults to the obvious. These words break that. Use them however you want — literally, metaphorically, sideways. The weirder the connection, the better the idea. Pitch it. Name it. Add it to the list. No winner. No pressure. Just ideas.</p>
+      <div class="flex-1"></div>
+      <div class="waiting-row" style="padding-bottom: 48px;">
+        <div class="waiting-dot"></div>
+        <span class="waiting-label">Waiting for host&hellip;</span>
+      </div>
+    </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: R1 — WORDS
+  ════════════════════════════════════════ -->
+  <div id="screen-r1-words" class="screen">
+    <div id="r1-words-host" style="display:none; flex-direction:column; flex:1;">
+      <div style="padding-top: 48px; margin-bottom: 24px;">
+        <div class="eyebrow">Round 1 — Random Words</div>
+        <div class="heading-md" style="color: #FFFF00;">Words Assigned</div>
+        <p class="tagline" style="margin-top: 6px;">Everyone has their 3 random words</p>
+      </div>
+      <div id="r1-words-host-list" class="card"></div>
+      <div class="flex-1"></div>
+      <div style="padding-bottom: 48px;">
+        <button class="btn btn-yellow" onclick="showPitchOrder()">Show Pitch Order &rarr;</button>
+      </div>
+    </div>
+    <div id="r1-words-player" style="display:none; flex-direction:column; flex:1;">
+      <div style="padding-top: 48px;">
+        <div class="eyebrow">Round 1 — Random Words</div>
+        <div class="heading-md" style="color: #F4F2EA; margin-bottom: 4px;">Your 3 Words</div>
+        <p class="tagline" style="margin-top: 0;">Use these to spark your pitch idea</p>
+      </div>
+      <div id="r1-words-display" class="words-stack"></div>
+      <div class="flex-1"></div>
+      <div class="waiting-row" style="padding-bottom: 48px;">
+        <div class="waiting-dot"></div>
+        <span class="waiting-label">Waiting for host&hellip;</span>
+      </div>
+    </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: R1 — PITCH ORDER
+  ════════════════════════════════════════ -->
+  <div id="screen-r1-pitchorder" class="screen">
+    <div style="padding-top: 48px; margin-bottom: 8px;">
+      <div id="r1-pitchorder-eyebrow" class="eyebrow">Round 1 — Random Words</div>
+      <div class="heading-md" style="color: #FFFF00;">Pitch Order</div>
+    </div>
+    <ol id="r1-pitch-order-list" class="pitch-order-list"></ol>
+    <div class="flex-1"></div>
+    <div id="r1-pitchorder-countdown" class="countdown-big">5</div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: R1/R2 — NAME YOUR IDEA (shared)
+  ════════════════════════════════════════ -->
+  <div id="screen-r1-nameidea" class="screen">
+    <!-- Pitcher panel -->
+    <div id="r1-ni-pitcher" style="display:none; flex-direction:column; flex:1;">
+      <div style="padding-top: 40px;">
+        <div class="eyebrow">Your Turn to Pitch</div>
+        <div class="heading-md" style="color: #F4F2EA; margin-bottom: 4px;">Name your idea</div>
+        <p class="tagline" style="margin-top: 0; margin-bottom: 20px;">You'll pitch it in the next step</p>
+        <!-- R1: words -->
+        <div id="r1-ni-words-block">
+          <div class="eyebrow" style="margin-bottom: 0;">Your words</div>
+          <div id="r1-ni-words" class="words-stack"></div>
+        </div>
+        <!-- R2: campaign card -->
+        <div id="r1-ni-card-block" style="display:none;">
+          <div class="eyebrow" style="margin-bottom: 0;">Your campaign card</div>
+          <div id="r1-ni-card" class="campaign-card"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="field-label">Idea Name</div>
+        <input id="r1-idea-name-input" class="input" type="text" placeholder="e.g. Thunder Compass"
+          autocomplete="off" autocorrect="off" spellcheck="false">
+      </div>
+      <div class="flex-1"></div>
+      <div style="padding-bottom: 48px;">
+        <button class="btn btn-yellow" onclick="submitIdeaName()">Start Pitching &rarr;</button>
+      </div>
+    </div>
+    <!-- Watcher / host panel -->
+    <div id="r1-ni-watcher" style="display:none; flex-direction:column; flex:1;">
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding: 40px 0;">
+        <div class="eyebrow">Coming up</div>
+        <div id="r1-ni-pitcher-name" class="heading-lg" style="color: #F4F2EA;"></div>
+        <p class="tagline" style="margin-top: 8px;">is naming their idea&hellip;</p>
+      </div>
+      <div id="r1-ni-host-band" class="host-band" style="display:none;">
+        <div class="host-band-label">Host</div>
+        <button class="btn btn-outline-yellow" onclick="forceAdvancePitch()">Skip &rarr;</button>
+      </div>
+      <div class="waiting-row" style="padding-bottom: 48px; justify-content: center;">
+        <div class="waiting-dot"></div>
+        <span class="waiting-label">Standby</span>
+      </div>
+    </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: R1/R2 — PITCH (shared, active pitcher)
+  ════════════════════════════════════════ -->
+  <div id="screen-r1-pitch" class="screen">
+    <div style="padding-top: 32px;">
+      <div class="eyebrow">Your Pitch</div>
+      <div id="r1-pitch-idea-name" class="heading-lg" style="color: #F4F2EA; margin-bottom: 16px;"></div>
+      <!-- R1: words -->
+      <div id="r1-pitch-words-block">
+        <div class="eyebrow" style="margin-bottom: 0;">Your words</div>
+        <div id="r1-pitch-words" class="words-stack"></div>
+      </div>
+      <!-- R2: campaign card -->
+      <div id="r1-pitch-card-block" style="display:none;">
+        <div class="eyebrow" style="margin-bottom: 0;">Your campaign card</div>
+        <div id="r1-pitch-card" class="campaign-card"></div>
+      </div>
+    </div>
+    <div style="text-align:center; margin: 20px 0 8px;">
+      <div id="r1-pitch-timer" class="timer-display">1:30</div>
+      <div class="timer-bar-track">
+        <div id="r1-pitch-bar" class="timer-bar-fill" style="width:100%;"></div>
+      </div>
+    </div>
+    <div class="flex-1"></div>
+    <div style="padding-bottom: 48px;">
+      <button class="btn btn-yellow" onclick="donePitching()">Done Pitching</button>
+    </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: R1/R2 — UP NEXT (shared)
+  ════════════════════════════════════════ -->
+  <div id="screen-r1-upnext" class="screen">
+    <div class="up-next-hero">
+      <div class="up-next-title">You Are<br>Up Next</div>
+      <p class="tagline">Get ready to pitch</p>
+      <div style="margin-top: 40px;">
+        <div class="eyebrow" style="text-align:center; margin-bottom: 8px;">Time remaining</div>
+        <div id="r1-upnext-timer" class="timer-display">1:30</div>
+        <div class="timer-bar-track" style="margin-top: 16px;">
+          <div id="r1-upnext-bar" class="timer-bar-fill" style="width:100%;"></div>
+        </div>
+      </div>
+    </div>
+    <div style="height: 48px;"></div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: R1/R2 — WATCHING (shared)
+  ════════════════════════════════════════ -->
+  <div id="screen-r1-watching" class="screen">
+    <div style="padding-top: 48px;">
+      <div id="r1-watching-eyebrow" class="eyebrow">Now Pitching</div>
+      <div id="r1-watching-pitcher-name" class="heading-lg" style="color: #F4F2EA;"></div>
+      <div id="r1-watching-idea-name" class="tagline" style="margin-top: 4px;"></div>
+    </div>
+    <div id="r1-watching-timer-block" style="text-align:center; margin: 32px 0 8px;">
+      <div id="r1-watching-timer" class="timer-display dimmed">1:30</div>
+      <div class="timer-bar-track">
+        <div id="r1-watching-bar" class="timer-bar-fill dimmed" style="width:100%;"></div>
+      </div>
+    </div>
+    <div id="r1-watching-host-band" class="host-band" style="display:none;">
+      <div class="host-band-label">Host</div>
+      <button class="btn btn-outline-yellow" onclick="forceAdvancePitch()">Force Next &rarr;</button>
+    </div>
+    <div class="flex-1"></div>
+    <div class="waiting-row" style="padding-bottom: 48px;">
+      <div class="waiting-dot"></div>
+      <span class="waiting-label" id="r1-watching-status-label">Listening&hellip;</span>
+    </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: R1/R2 — VOTE (shared)
+  ════════════════════════════════════════ -->
+  <div id="screen-r1-vote" class="screen">
+    <div style="padding-top: 40px; margin-bottom: 8px;">
+      <div id="vote-screen-eyebrow" class="eyebrow">Round 1 — Vote</div>
+      <div class="heading-md" style="color: #FFFF00;">Who had the best idea?</div>
+      <p class="tagline" style="margin-top: 4px;">Tap to select. No self-voting.</p>
+    </div>
+    <div id="r1-vote-grid" class="vote-grid"></div>
+    <div id="r1-vote-error" class="error-msg"></div>
+    <div class="flex-1"></div>
+    <div id="r1-vote-player-ctrls" style="padding-bottom: 48px; display:none;">
+      <button id="r1-lock-vote-btn" class="btn btn-yellow" onclick="lockInVote()">Lock In Vote</button>
+    </div>
+    <div id="r1-vote-host-ctrls" style="padding-bottom: 48px; display:none;">
+      <div class="host-band" style="margin-bottom: 12px;">
+        <div class="host-band-label">Host</div>
+        <div id="r1-vote-tally" style="font-family:'Poppins',sans-serif; font-size:14px; color:rgba(255,255,255,0.4); margin-bottom:10px;"></div>
+        <button class="btn btn-yellow" onclick="showResults()">Show Results &rarr;</button>
+      </div>
+    </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: R1/R2 — RESULT (shared)
+  ════════════════════════════════════════ -->
+  <div id="screen-r1-result" class="screen">
+    <div style="padding-top: 48px; margin-bottom: 20px;">
+      <div id="result-screen-eyebrow" class="eyebrow">Round 1 Result</div>
+      <div class="heading-lg">The Winner</div>
+    </div>
+    <div id="r1-result-winner" class="result-winner"></div>
+    <div style="margin-top: 24px;">
+      <div class="eyebrow" style="margin-bottom: 4px;">All results</div>
+      <ul id="r1-result-list" class="result-list"></ul>
+    </div>
+    <div class="flex-1"></div>
+    <!-- Host: start round 2 -->
+    <div id="result-host-band" class="host-band" style="display:none; margin-bottom: 12px;">
+      <div class="host-band-label">Host</div>
+      <button class="btn btn-yellow" onclick="startRound2()">Start Round 2 &rarr;</button>
+    </div>
+    <div style="height: 48px;"></div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: R1 DONE
+  ════════════════════════════════════════ -->
+  <div id="screen-r1-done" class="screen">
+    <div id="r1-done-host" style="display:none; flex-direction:column; flex:1;">
+      <div style="padding-top: 48px; margin-bottom: 24px;">
+        <div class="eyebrow">Round 1 Complete</div>
+        <div class="heading-lg" style="color: var(--y);">ALL IDEAS<br>SAVED.</div>
+      </div>
+      <p style="font-family:'Poppins',sans-serif; font-size:15px; line-height:1.75; color:rgba(255,255,255,0.7);">Every pitch is on the list. No winner, no losers — just a pile of raw ideas. Round two is where they get sharpened.</p>
+      <div class="flex-1"></div>
+      <div style="padding-bottom: 48px;">
+        <button class="btn btn-yellow" onclick="moveToRound2()">MOVE TO ROUND 2 &rarr;</button>
+      </div>
+    </div>
+    <div id="r1-done-player" style="display:none; flex-direction:column; flex:1;">
+      <div style="padding-top: 48px; margin-bottom: 24px;">
+        <div class="eyebrow">Round 1 Complete</div>
+        <div class="heading-lg" style="color: var(--y);">ALL IDEAS<br>SAVED.</div>
+      </div>
+      <p style="font-family:'Poppins',sans-serif; font-size:15px; line-height:1.75; color:rgba(255,255,255,0.7);">Every pitch is on the list. No winner, no losers — just a pile of raw ideas. Round two is where they get sharpened.</p>
+      <div class="flex-1"></div>
+      <div class="waiting-row" style="padding-bottom: 48px;">
+        <div class="waiting-dot"></div>
+        <span class="waiting-label">Waiting for host&hellip;</span>
+      </div>
+    </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: R2 — INTRO
+  ════════════════════════════════════════ -->
+  <div id="screen-r2-intro" class="screen">
+    <div id="r2-intro-host" style="display:none; flex-direction:column; flex:1;">
+      <div style="padding-top: 48px; margin-bottom: 24px;">
+        <div class="eyebrow">Round 2</div>
+        <div class="heading-lg" style="color: var(--y);">ROUND TWO. STEAL AND REINTERPRET.</div>
+      </div>
+      <p style="font-family:'Poppins',sans-serif; font-size:15px; line-height:1.75; color:rgba(255,255,255,0.7);">You&rsquo;re about to receive a campaign card. World class work. Study it privately. Find the mechanic — the thing that made it work. Now apply it to this brief. Open your pitch with: <em>I stole from X because&hellip;</em> Imitation is lazy. Reinterpretation is genius.</p>
+      <div class="flex-1"></div>
+      <div style="padding-bottom: 48px;">
+        <button class="btn btn-yellow" onclick="assignCards()">Assign Cards &rarr;</button>
+      </div>
+    </div>
+    <div id="r2-intro-player" style="display:none; flex-direction:column; flex:1;">
+      <div style="padding-top: 48px; margin-bottom: 24px;">
+        <div class="eyebrow">Round 2</div>
+        <div class="heading-lg" style="color: var(--y);">ROUND TWO. STEAL AND REINTERPRET.</div>
+      </div>
+      <p style="font-family:'Poppins',sans-serif; font-size:15px; line-height:1.75; color:rgba(255,255,255,0.7);">You&rsquo;re about to receive a campaign card. World class work. Study it privately. Find the mechanic — the thing that made it work. Now apply it to this brief. Open your pitch with: <em>I stole from X because&hellip;</em> Imitation is lazy. Reinterpretation is genius.</p>
+      <div class="flex-1"></div>
+      <div class="waiting-row" style="padding-bottom: 48px;">
+        <div class="waiting-dot"></div>
+        <span class="waiting-label">Waiting for host to assign cards&hellip;</span>
+      </div>
+    </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: R2 — PHASE 1 (private card)
+  ════════════════════════════════════════ -->
+  <div id="screen-r2-phase1" class="screen">
+    <div id="r2-p1-host" style="display:none; flex-direction:column; flex:1;">
+      <div style="padding-top: 48px; margin-bottom: 20px;">
+        <div class="eyebrow">Round 2 — Phase 1</div>
+        <div class="heading-md" style="color: #FFFF00;">Cards Assigned</div>
+        <p class="tagline" style="margin-top: 6px;">Players are reading their campaign cards privately</p>
+      </div>
+      <div id="r2-p1-host-list" class="card"></div>
+      <div class="flex-1"></div>
+      <div style="padding-bottom: 48px;">
+        <button class="btn btn-yellow" onclick="moveToPhase2()">Move to Phase 2 &rarr;</button>
+      </div>
+    </div>
+    <div id="r2-p1-player" style="display:none; flex-direction:column; flex:1;">
+      <div style="padding-top: 40px;">
+        <div class="eyebrow">Round 2 — Phase 1</div>
+        <div class="heading-md" style="color: #F4F2EA; margin-bottom: 4px;">Your Campaign Card</div>
+        <p class="tagline" style="margin-top: 0;">Keep this private — it's yours to steal from</p>
+        <div id="r2-p1-card" class="campaign-card"></div>
+      </div>
+      <div class="flex-1"></div>
+      <div class="waiting-row" style="padding-bottom: 48px;">
+        <div class="waiting-dot"></div>
+        <span class="waiting-label">Waiting for host&hellip;</span>
+      </div>
+    </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: R2 — PHASE 2 (brief revealed)
+  ════════════════════════════════════════ -->
+  <div id="screen-r2-phase2" class="screen">
+    <div id="r2-p2-host" style="display:none; flex-direction:column; flex:1;">
+      <div style="padding-top: 48px; margin-bottom: 20px;">
+        <div class="eyebrow">Round 2 — Phase 2</div>
+        <div class="heading-md" style="color: #FFFF00;">Brief Revealed</div>
+        <p class="tagline" style="margin-top: 6px;">Players are connecting their card mechanic to the brief</p>
+      </div>
+      <div class="card">
+        <div class="eyebrow">The Brief</div>
+        <div id="r2-p2-host-brief" class="card-body"></div>
+      </div>
+      <div class="flex-1"></div>
+      <div style="padding-bottom: 48px;">
+        <button class="btn btn-yellow" onclick="moveToPhase3()">Move to Phase 3 &rarr;</button>
+      </div>
+    </div>
+    <div id="r2-p2-player" style="display:none; flex-direction:column; flex:1;">
+      <div style="padding-top: 40px;">
+        <div class="eyebrow">Round 2 — Phase 2</div>
+        <div class="heading-md" style="color: #F4F2EA; margin-bottom: 4px;">Connect the Dots</div>
+        <p class="tagline" style="margin-top: 0; margin-bottom: 16px;">How does your card's mechanic apply to this brief?</p>
+        <div class="card">
+          <div class="eyebrow">The Brief</div>
+          <div id="r2-p2-brief" class="card-body"></div>
+        </div>
+        <div class="eyebrow" style="margin-bottom: 0;">Your card</div>
+        <div id="r2-p2-card" class="campaign-card"></div>
+      </div>
+      <div class="flex-1"></div>
+      <div class="waiting-row" style="padding-bottom: 48px;">
+        <div class="waiting-dot"></div>
+        <span class="waiting-label">Waiting for host&hellip;</span>
+      </div>
+    </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: R2 — PHASE 3 (build the idea)
+  ════════════════════════════════════════ -->
+  <div id="screen-r2-phase3" class="screen">
+    <div id="r2-p3-host" style="display:none; flex-direction:column; flex:1;">
+      <div style="padding-top: 48px; margin-bottom: 20px;">
+        <div class="eyebrow">Round 2 — Phase 3</div>
+        <div class="heading-md" style="color: #FFFF00;">Build Your Ideas</div>
+        <p class="tagline" style="margin-top: 6px;">Players are building their ideas from card and brief</p>
+      </div>
+      <div class="flex-1"></div>
+      <div style="padding-bottom: 48px;">
+        <button class="btn btn-yellow" onclick="startR2Pitching()">Start Pitching &rarr;</button>
+      </div>
+    </div>
+    <div id="r2-p3-player" style="display:none; flex-direction:column; flex:1;">
+      <div style="padding-top: 40px;">
+        <div class="eyebrow">Round 2 — Phase 3</div>
+        <div class="heading-md" style="color: #F4F2EA; margin-bottom: 4px;">Build Your Idea</div>
+        <p class="tagline" style="margin-top: 0; margin-bottom: 16px;">Steal the mechanic. Make it yours.</p>
+        <div class="card">
+          <div class="eyebrow">The Brief</div>
+          <div id="r2-p3-brief" class="card-body"></div>
+        </div>
+        <div class="eyebrow" style="margin-bottom: 0;">Your card</div>
+        <div id="r2-p3-card" class="campaign-card"></div>
+      </div>
+      <div class="flex-1"></div>
+      <div class="waiting-row" style="padding-bottom: 48px;">
+        <div class="waiting-dot"></div>
+        <span class="waiting-label">Waiting for host to start pitching&hellip;</span>
+      </div>
+    </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: R3 — INTRO
+  ════════════════════════════════════════ -->
+  <div id="screen-r3-intro" class="screen">
+    <div id="r3-intro-host" style="display:none; flex-direction:column; flex:1;">
+      <div style="padding-top: 48px; margin-bottom: 24px;">
+        <div class="eyebrow">Round 3</div>
+        <div class="heading-lg">The Reckoning</div>
+        <p class="tagline" style="margin-top: 8px;">Every idea from both rounds is on the table. The room decides what survives.</p>
+      </div>
+      <div class="card">
+        <div class="phase-rule"><div class="phase-rule-num">1</div><div class="phase-rule-text">All ideas from Round 1 and Round 2 are shown to everyone</div></div>
+        <div class="phase-rule"><div class="phase-rule-num">2</div><div class="phase-rule-text">Vote on each idea — Kill It, Keep It, or Develop It</div></div>
+        <div class="phase-rule"><div class="phase-rule-num">3</div><div class="phase-rule-text">You cannot vote on your own ideas</div></div>
+        <div class="phase-rule"><div class="phase-rule-num">4</div><div class="phase-rule-text">Ideas where Develop It wins the most votes are the survivors</div></div>
+      </div>
+      <div class="flex-1"></div>
+      <div style="padding-bottom: 48px;">
+        <button class="btn btn-yellow" onclick="startR3Voting()">Open The Reckoning &rarr;</button>
+      </div>
+    </div>
+    <div id="r3-intro-player" style="display:none; flex-direction:column; flex:1;">
+      <div style="flex:1; display:flex; flex-direction:column; justify-content:center; padding: 48px 0;">
+        <div class="eyebrow">Round 3</div>
+        <div class="heading-lg" style="margin-bottom: 16px;">The<br>Reckoning</div>
+        <div class="card">
+          <div class="phase-rule"><div class="phase-rule-num">1</div><div class="phase-rule-text">All ideas from both rounds go on the table</div></div>
+          <div class="phase-rule"><div class="phase-rule-num">2</div><div class="phase-rule-text">Vote on each idea — Kill It, Keep It, or Develop It</div></div>
+          <div class="phase-rule"><div class="phase-rule-num">3</div><div class="phase-rule-text">You cannot vote on your own ideas</div></div>
+          <div class="phase-rule"><div class="phase-rule-num">4</div><div class="phase-rule-text">Develop It wins → that idea survives</div></div>
+        </div>
+      </div>
+      <div class="waiting-row" style="padding-bottom: 48px;">
+        <div class="waiting-dot"></div>
+        <span class="waiting-label">Waiting for host to open the voting&hellip;</span>
+      </div>
+    </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: R3 — VOTE
+  ════════════════════════════════════════ -->
+  <div id="screen-r3-vote" class="screen">
+    <div id="r3-vote-player" style="display:none; flex-direction:column; flex:1;">
+      <div style="padding-top: 40px; margin-bottom: 8px;">
+        <div class="eyebrow">Round 3 — The Reckoning</div>
+        <div class="heading-md" style="color: #FFFF00;">Vote on Every Idea</div>
+        <p class="tagline" style="margin-top: 4px; margin-bottom: 20px;">Kill It / Keep It / Develop It — you cannot vote on your own.</p>
+      </div>
+      <div id="r3-vote-list"></div>
+      <div id="r3-vote-error" class="error-msg"></div>
+      <div style="padding-bottom: 48px; margin-top: 12px;">
+        <button id="r3-submit-btn" class="btn btn-yellow" onclick="submitR3Votes()">Submit All Votes</button>
+      </div>
+    </div>
+    <div id="r3-vote-host" style="display:none; flex-direction:column; flex:1;">
+      <div style="padding-top: 40px; margin-bottom: 16px;">
+        <div class="eyebrow">Round 3 — The Reckoning</div>
+        <div class="heading-md" style="color: #FFFF00;">Live Tally</div>
+      </div>
+      <div id="r3-host-tally"></div>
+      <div class="flex-1"></div>
+      <div style="padding-bottom: 48px;">
+        <div class="host-band">
+          <div class="host-band-label">Host</div>
+          <div id="r3-vote-progress" style="font-family:'Poppins',sans-serif; font-size:14px; color:rgba(255,255,255,0.4); margin-bottom: 10px;"></div>
+          <button class="btn btn-yellow" onclick="showR3Results()">Show Results &rarr;</button>
+        </div>
+      </div>
+    </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: R3 — RESULT
+  ════════════════════════════════════════ -->
+  <div id="screen-r3-result" class="screen">
+    <div style="padding-top: 48px; margin-bottom: 20px;">
+      <div class="eyebrow">The Reckoning — Results</div>
+      <div class="heading-lg">Ideas Judged</div>
+    </div>
+    <div id="r3-result-list"></div>
+    <div id="r3-result-survive-count" style="font-family:'Poppins',sans-serif; font-size:14px; color:rgba(255,255,255,0.4); margin: 12px 0;"></div>
+    <div class="flex-1"></div>
+    <div id="r3-result-host-band" class="host-band" style="display:none; margin-bottom: 12px;">
+      <div class="host-band-label">Host</div>
+      <button class="btn btn-yellow" onclick="showGameOver()">See Survivors &rarr;</button>
+    </div>
+    <div style="height: 48px;"></div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN: GAME OVER
+  ════════════════════════════════════════ -->
+  <div id="screen-gameover" class="screen">
+    <div style="padding-top: 48px; margin-bottom: 20px;">
+      <div class="eyebrow">Kill Dull — The Storm</div>
+      <div class="heading-lg">Survivors</div>
+    </div>
+    <div id="gameover-survivors"></div>
+    <div style="margin-top: 24px;">
+      <div class="eyebrow" style="margin-bottom: 6px;">The Provocation</div>
+      <div id="gameover-prov-name" class="heading-md" style="color: #FFFF00; margin-bottom: 8px;"></div>
+      <div id="gameover-prov-body" class="gameover-prov"></div>
+    </div>
+    <div class="gameover-coda">These ideas killed dull.<br>Take them into Kill Dull Review.</div>
+    <div style="padding: 24px 0 48px;">
+      <button class="btn btn-yellow" onclick="copySummary()">Copy Summary</button>
+    </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+      </footer>
+  </div>
+
+
+  <!-- Firebase compat SDK from gstatic -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+  <script>
+    // ── Firebase init ──────────────────────────────────────
+    const firebaseConfig = {
+      apiKey: "AIzaSyC5IuFzlJymFWoJd1gSyeXuRsbC5HwMgBU",
+      authDomain: "pitch-against-dull.firebaseapp.com",
+      databaseURL: "https://pitch-against-dull-default-rtdb.firebaseio.com",
+      projectId: "pitch-against-dull"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const rtdb = firebase.database();
+
+    // ── Word lists ─────────────────────────────────────────
+    const NOUNS = ['thunder','mirror','rocket','anchor','bridge','crown','flame','river','shadow','tower',
+      'whale','arrow','castle','dragon','forest','glacier','harbor','island','jungle','kingdom',
+      'lantern','mountain','needle','ocean','palace','quartz','rainbow','storm','tunnel','vortex',
+      'water','yacht','zebra','apple','bullet','carpet','dungeon','engine','fabric','garden',
+      'hammer','iceberg','jewel','knife','ladder','marble','nebula','orbit','puzzle','quill',
+      'ribbon','spiral','ticket','umbrella','vessel','window','balloon','compass','diamond',
+      'earthquake','feather','gravity','horizon','iron','journal','kaleidoscope','legend',
+      'magnet','nucleus','oasis','pillar','quest','radiance','satellite','temple','universe',
+      'volcano','wave','artifact','blade','cipher','drift','echo','frontier','ghost','hybrid',
+      'impulse','junction','key','labyrinth','myth','portal','remedy','sphere','totem',
+      'undertow','vertex','whirlpool','xenon','zenith'];
+
+    const ADJECTIVES = ['bold','calm','dark','epic','fierce','grand','huge','icy','jagged','keen',
+      'loud','mad','neon','odd','pure','quick','raw','sharp','tall','vivid','wild','young','zany',
+      'ancient','bright','crisp','dense','electric','frozen','golden','hollow','infinite','knotted',
+      'liquid','massive','narrow','oblique','polished','quiet','rough','sleek','turbulent','unstable',
+      'vibrant','warped','abstract','broken','cosmic','digital','elastic','fluid','glowing','heavy',
+      'invisible','jumbled','kinetic','lunar','molten','novel','opaque','prismatic','radiant',
+      'scorched','tactile','volatile','weathered','angular','blazing','chaotic','drifting','empty',
+      'fractured','gritty','hazy','immense','lush','murky','numb','pale','restless','surreal',
+      'twisted','urgent','vast','whirling','yearning','barren','colossal','desolate','ethereal',
+      'feverish','ghostly','hidden','jarring','limitless','obscure','relentless','savage','timeless','wired'];
+
+    const VERBS = ['build','crash','drift','erupt','forge','grow','hack','ignite','jump','keep',
+      'launch','morph','navigate','orbit','pivot','run','spark','transform','unlock','vanish',
+      'warp','expand','zoom','accelerate','blast','collide','destroy','emerge','filter','generate',
+      'harness','innovate','jolt','kindle','leverage','multiply','nourish','optimize','propel',
+      'reinvent','shatter','trigger','unite','visualize','wrestle','amplify','break','capture',
+      'decode','elevate','fuel','grant','hustle','inspire','juggle','loop','map','nurture',
+      'overcome','power','reshape','shift','tear','upend','venture','win','extract','absorb',
+      'balance','challenge','defend','energize','fold','guide','imagine','leap','mobilize','open',
+      'pitch','reinforce','scale','turbocharge','upgrade','validate','weave','activate','converge',
+      'disrupt','evolve','flip','gather','hijack','intercept','knot','liberate','manifest',
+      'narrate','observe','penetrate','question'];
+
+    // ── Campaign cards ─────────────────────────────────────
+    const CAMPAIGNS = [
+      { name: 'Think Small', year: '1959', brand: 'Volkswagen', mechanic: 'Lean into the limitation — make small the hero', humanTruth: 'People trust brands that don\'t pretend to be what they\'re not' },
+      { name: 'Just Do It', year: '1988', brand: 'Nike', mechanic: 'Sell an identity and a philosophy, not a product', humanTruth: 'People buy who they want to become, not what the product does' },
+      { name: 'Real Beauty', year: '2004', brand: 'Dove', mechanic: 'Challenge the industry\'s own distortion of reality', humanTruth: 'Women know they\'re being lied to — naming it creates instant trust' },
+      { name: 'The Man Your Man Could Smell Like', year: '2010', brand: 'Old Spice', mechanic: 'Laugh at your own category tropes before anyone else does', humanTruth: 'Brands that are in on the joke feel more honest than those that aren\'t' },
+      { name: '1984', year: '1984', brand: 'Apple', mechanic: 'Define the enemy before defining the hero', humanTruth: 'People rally around an alternative more readily than a feature list' },
+      { name: 'Surfer', year: '1999', brand: 'Guinness', mechanic: 'Make waiting the point — patience as a form of devotion', humanTruth: 'Things worth having are worth waiting for — and we know it' },
+      { name: 'Cog', year: '2003', brand: 'Honda', mechanic: 'Show the process, not the product, to prove obsession', humanTruth: 'We trust brands that are clearly obsessed with getting things right' },
+      { name: 'Gorilla', year: '2007', brand: 'Cadbury', mechanic: 'Create pure emotion with no product logic', humanTruth: 'Joy shared is the most contagious emotion — it doesn\'t need a reason' },
+      { name: '#LikeAGirl', year: '2014', brand: 'Always', mechanic: 'Reclaim a derogatory phrase as a badge of strength', humanTruth: 'Language shapes identity — changing how we say it changes how we see it' },
+      { name: 'Share a Coke', year: '2011', brand: 'Coca-Cola', mechanic: 'Replace the brand name with the customer\'s name', humanTruth: 'Seeing your own name on something makes it feel made for you' },
+      { name: 'Worlds Apart', year: '2017', brand: 'Heineken', mechanic: 'Create a situation and let it unfold — brand stays out of the way', humanTruth: 'Common ground exists even between people who seem utterly opposed' },
+      { name: 'Moldy Whopper', year: '2020', brand: 'Burger King', mechanic: 'Show the product at its worst to prove a good-values claim', humanTruth: 'We trust uncomfortable proof more than polished promises' },
+      { name: 'Dream Crazy', year: '2018', brand: 'Nike', mechanic: 'Take a cultural stand before it is popular', humanTruth: 'Brands that stand for something attract people who stand for the same thing' },
+      { name: 'Don\'t Buy This Jacket', year: '2011', brand: 'Patagonia', mechanic: 'Tell customers to buy less, earning trust to buy more', humanTruth: 'We trust advice from people who don\'t seem to benefit from giving it' },
+      { name: 'Christmas 2011', year: '2011', brand: 'John Lewis', mechanic: 'Trigger emotion through story, mention product only at the end', humanTruth: 'How a brand makes you feel is more memorable than what it sells' },
+      { name: 'We Try Harder', year: '1962', brand: 'Avis', mechanic: 'Turn a competitive disadvantage into honest brand character', humanTruth: 'Second place works harder — and that\'s worth something' },
+      { name: 'The Lamp', year: '2002', brand: 'IKEA', mechanic: 'Set up emotional attachment, then undercut it with product logic', humanTruth: 'We laugh at ourselves when caught being irrational — and we love it' },
+      { name: 'You\'re Not You When Hungry', year: '2010', brand: 'Snickers', mechanic: 'Name a universal human experience and own it entirely', humanTruth: 'Everyone recognises the moment — the brand just gives it a name' },
+      { name: 'Fearless Girl', year: '2017', brand: 'State Street Global Advisors', mechanic: 'Place new meaning next to an existing cultural symbol', humanTruth: 'Context changes meaning — the right juxtaposition says everything' },
+      { name: 'Wrapped', year: '2016', brand: 'Spotify', mechanic: 'Turn personal data into a personal story worth sharing', humanTruth: 'What we consume reflects who we are — and we love being reminded' },
+      { name: 'Imagine', year: '1980s', brand: 'LEGO', mechanic: 'Show the inner world the product creates, not the product itself', humanTruth: 'The real product is what happens inside the child\'s head' },
+      { name: 'Got Milk?', year: '1993', brand: 'California Milk Processor Board', mechanic: 'Demonstrate value through its sudden removal', humanTruth: 'We don\'t appreciate what we have until the moment we don\'t' },
+      { name: 'Marlboro Man', year: '1954', brand: 'Marlboro', mechanic: 'Replace the product entirely with an aspirational archetype', humanTruth: 'The strongest appeal isn\'t what you get but who you become' },
+      { name: 'Hilltop', year: '1971', brand: 'Coca-Cola', mechanic: 'Use the brand as a vehicle for a universal human desire', humanTruth: 'When a brand reflects our best hopes back at us, we adopt it as our own' },
+      { name: 'Epic Split', year: '2013', brand: 'Volvo', mechanic: 'Demonstrate the functional truth in the most dramatic way possible', humanTruth: 'An extraordinary proof of an ordinary claim is unforgettable' },
+      { name: 'Belong Anywhere', year: '2014', brand: 'Airbnb', mechanic: 'Reframe the service as a human need, not a transaction', humanTruth: 'The deepest human need is not accommodation — it\'s belonging' },
+      { name: 'Back to the Start', year: '2011', brand: 'Chipotle', mechanic: 'Use an unexpected format to make a complex message land emotionally', humanTruth: 'We are more open to hard truths when they are delivered gently' },
+      { name: 'Year in Search', year: '2012', brand: 'Google', mechanic: 'Curate the year\'s human moments into a single emotional mirror', humanTruth: 'We see ourselves in aggregate data and feel less alone' },
+      { name: 'Keep Walking', year: '1999', brand: 'Johnnie Walker', mechanic: 'Find the universal idea that transcends cultural context', humanTruth: 'Everyone understands the desire to keep moving forward' },
+      { name: 'Economist Posters', year: '1990s', brand: 'The Economist', mechanic: 'Be so smart that only the right audience gets it', humanTruth: 'Being made to feel clever makes you feel positive about whoever did it' },
+      { name: 'Every Little Helps', year: '1993', brand: 'Tesco', mechanic: 'Lead with small, human gestures rather than scale or power', humanTruth: 'Genuine care for small things signals trustworthiness better than grand claims' },
+      { name: 'Where Amazing Happens', year: '2008', brand: 'NBA', mechanic: 'Make the audience part of the story, not just spectators', humanTruth: 'We don\'t want to watch greatness — we want to feel like we were there' },
+      { name: 'Axe Effect', year: '2002', brand: 'Lynx / Axe', mechanic: 'Take the product promise to its most absurd logical extreme', humanTruth: 'Exaggeration so extreme becomes its own kind of honesty' },
+      { name: 'Priceless', year: '1997', brand: 'MasterCard', mechanic: 'Name the thing money can\'t buy, then show you deliver it anyway', humanTruth: 'We spend money to reach the moments money can\'t actually touch' },
+      { name: 'There\'s Only One', year: '1990s', brand: 'Jeep', mechanic: 'Assert heritage without defending it — let the confidence do the work', humanTruth: 'Brands that know what they are don\'t need to explain what they are' },
+      { name: 'Wassup', year: '1999', brand: 'Budweiser', mechanic: 'Record real social behaviour and make it the campaign', humanTruth: 'When a brand gets how you actually talk, it feels like a friend' },
+      { name: 'The Hire', year: '2001', brand: 'BMW Films', mechanic: 'Make something so entertaining that finding it feels like a reward', humanTruth: 'We share things that make us look good for having found them' },
+      { name: 'Unsung Hero', year: '2014', brand: 'Thai Life Insurance', mechanic: 'Earn emotional investment over minutes before revealing the brand', humanTruth: 'We do good things for no reward — being seen doing it touches something deep' },
+      { name: 'Home Try-On', year: '2010', brand: 'Warby Parker', mechanic: 'Identify the one thing stopping people buying and eliminate it', humanTruth: 'The purchase decision was made — we just needed the risk removed' },
+      { name: 'Dumb Ways to Die', year: '2012', brand: 'Metro Trains Melbourne', mechanic: 'Wrap a serious message in such delight that it travels globally', humanTruth: 'We engage with difficult things more readily when they make us smile first' },
+      { name: 'Shot on iPhone', year: '2015', brand: 'Apple', mechanic: 'Turn your best customers into your global creative team', humanTruth: 'User-generated proof beats brand-generated claims every time' },
+      { name: 'Way of Life', year: '1980s', brand: 'Harley-Davidson', mechanic: 'Build a community around a shared identity, not a purchase', humanTruth: 'The strongest loyalty isn\'t to the product — it\'s to the tribe' },
+      { name: 'Slice of Summer', year: '2022', brand: 'Heinz', mechanic: 'Let the most passionate fans set the creative brief', humanTruth: 'Superfans understand your brand better than your agency does' },
+      { name: 'BookBook', year: '2014', brand: 'IKEA', mechanic: 'Parody the cultural format your audience knows best', humanTruth: 'When you get the reference, you feel in on the joke and closer to the brand' },
+      { name: 'Evolution', year: '2006', brand: 'Dove', mechanic: 'Expose the process behind an industry lie and let outrage spread it', humanTruth: 'Once you see how the illusion works, you can\'t unsee it' },
+      { name: 'Murder Your Thirst', year: '2019', brand: 'Liquid Death', mechanic: 'Borrow the codes of a completely different category to own your own', humanTruth: 'Breaking category codes gets attention precisely because we expect them to hold' },
+      { name: 'Our Blades Are F***ing Great', year: '2012', brand: 'Dollar Shave Club', mechanic: 'Put a real person on camera and let them be themselves', humanTruth: 'We can tell the difference between a person talking and a brand performing' },
+      { name: 'Oatly Packaging', year: '2014', brand: 'Oatly', mechanic: 'Treat packaging as editorial real estate and fill it with personality', humanTruth: 'People read what\'s in front of them — packaging is attention nobody else uses' },
+      { name: 'Opt Outside', year: '2015', brand: 'REI', mechanic: 'Take an action that costs the business money to prove values are real', humanTruth: 'We believe brands that give something up more than brands that claim something' },
+      { name: 'Compare the Meerkat', year: '2009', brand: 'Compare the Market', mechanic: 'Create a character so distinctive it makes a boring category entertaining', humanTruth: 'People don\'t want to think about insurance — give them something to love instead' },
+    ];
+
+    function pickRandom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+    // ── State ──────────────────────────────────────────────
+    let state = {
+      provocation: null, brand: null, brief: null, stormCode: null,
+      isHost: false, playerName: null, playerId: null,
+      roomRef: null,
+      timerInterval: null, pitchOrderInterval: null,
+      lastRouteKey: null,
+      latestRoom: null,
+      selectedVoteId: null,
+      currentRound: 'r1',
+    };
+
+    // ── Helpers ────────────────────────────────────────────
+    const SCREEN_LABELS = {
+      'screen-host-code':           'The Storm — Host',
+      'screen-provocation-confirm': 'The Storm — Host',
+      'screen-room-code':           'The Storm — Host',
+      'screen-join':                'The Storm — Join',
+      'screen-waiting':             'The Storm',
+      'screen-storm-intro':         'The Storm',
+      'screen-r1-intro':            'Round 1 — Random Words',
+      'screen-r1-done':             'Round 1',
+      'screen-r1-words':            'Round 1 — Random Words',
+      'screen-r1-pitchorder':       'Round 1 — Pitch Order',
+      'screen-r1-nameidea':         'Round 1 — Pitch',
+      'screen-r1-pitch':            'Round 1 — Pitch',
+      'screen-r1-upnext':           'Round 1 — Pitch',
+      'screen-r1-watching':         'Round 1 — Pitch',
+      'screen-r1-vote':             'Round 1 — Vote',
+      'screen-r1-result':           'Round 1 — Result',
+      'screen-r2-intro':            'Round 2 — Steal & Reinterpret',
+      'screen-r2-phase1':           'Round 2 — Phase 1',
+      'screen-r2-phase2':           'Round 2 — Phase 2',
+      'screen-r2-phase3':           'Round 2 — Phase 3',
+      'screen-r3-intro':            'Round 3 — The Reckoning',
+      'screen-r3-vote':             'Round 3 — The Reckoning',
+      'screen-r3-result':           'Round 3 — The Reckoning',
+      'screen-gameover':            'Kill Dull Storm',
+    };
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => { s.style.display = 'none'; s.classList.remove('active'); });
+      const el = document.getElementById(id);
+      if (el) { el.style.display = 'flex'; el.classList.add('active'); }
+      const hdr    = document.getElementById('kd-header');
+      const toolEl = document.getElementById('kd-header-tool');
+      const onLanding = (id === 'screen-landing' || id === 'screen-kd-intro' || id === 'screen-five-tools');
+      if (hdr) hdr.style.display = onLanding ? 'none' : 'block';
+      document.body.classList.toggle('header-on', !onLanding);
+      if (toolEl && SCREEN_LABELS[id]) toolEl.textContent = SCREEN_LABELS[id];
+      fitAll();
+    }
+    function showError(id, msg) { const el = document.getElementById(id); if (!el) return; el.textContent = msg; el.style.display = 'block'; }
+    function hideError(id) { const el = document.getElementById(id); if (el) el.style.display = 'none'; }
+    function extractText(val) { if (!val) return ''; if (typeof val === 'string') return val; return val.text || val.description || val.name || val.title || ''; }
+    function escHtml(str) { return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    function formatTime(s) { const m = Math.floor(s/60); return m+':'+ String(Math.max(0,s)%60).padStart(2,'0'); }
+    function clearTimers() { clearInterval(state.timerInterval); clearInterval(state.pitchOrderInterval); state.timerInterval = null; state.pitchOrderInterval = null; }
+
+    // Round-aware Firebase key lookup
+    function rKey(base) {
+      if (state.currentRound !== 'r2') return base;
+      const map = { pitchOrder:'r2PitchOrder', currentPitcherIndex:'r2CurrentPitcherIndex', pitcherStartedAt:'r2PitcherStartedAt', ideas:'r2Ideas', votes:'r2Votes' };
+      return map[base] || base;
+    }
+
+    function renderCampaignCard(assignment) {
+      if (!assignment) return '<p style="color:rgba(255,255,255,0.3);font-size:14px;">No card assigned.</p>';
+      return `<div class="campaign-card-name">${escHtml(assignment.name)}</div>
+        <div class="campaign-card-meta">${escHtml(assignment.brand)} &middot; ${escHtml(assignment.year)}</div>
+        <div class="campaign-card-field"><div class="campaign-card-label">Mechanic</div><div class="campaign-card-text">${escHtml(assignment.mechanic)}</div></div>
+        <div class="campaign-card-field"><div class="campaign-card-label">Human Truth</div><div class="campaign-card-text">${escHtml(assignment.humanTruth)}</div></div>`;
+    }
+
+    // ── Room listener ──────────────────────────────────────
+    function listenToRoom(code) {
+      if (state.roomRef) state.roomRef.off();
+      const ref = rtdb.ref('stormrooms/' + code);
+      state.roomRef = ref;
+      ref.on('value', snap => { if (!snap.exists()) return; state.latestRoom = snap.val(); routeRoom(state.latestRoom); });
+    }
+
+    function routeRoom(room) {
+      const status = room.status || 'waiting';
+      const isR2   = status.startsWith('r2');
+      const idxKey = isR2 ? 'r2CurrentPitcherIndex' : 'currentPitcherIndex';
+      const idx    = room[idxKey] || 0;
+      const routeKey = status + ':' + idx;
+
+      state.latestRoom = room;
+
+      // Live updates regardless of dedup
+      if (status === 'waiting' && state.isHost) updateLobbyPlayers(room.players);
+      if (status === 'r1-vote' && state.isHost) updateVoteTally(room.votes, room.pitchOrder);
+      if (status === 'r2-vote' && state.isHost) updateVoteTally(room.r2Votes, room.r2PitchOrder);
+      if (status === 'r3-vote' && state.isHost) updateR3HostTally(room.r3votes, room.players, room.ideas, room.r2Ideas);
+
+      if (routeKey === state.lastRouteKey) return;
+      state.lastRouteKey = routeKey;
+      state.currentRound = isR2 ? 'r2' : status.startsWith('r3') || status === 'gameover' ? 'r3' : 'r1';
+      clearTimers();
+
+      // ── LOBBY ──
+      if (status === 'waiting') {
+        if (state.isHost) { updateLobbyPlayers(room.players); showScreen('screen-room-code'); }
+        else showScreen('screen-waiting');
+        return;
+      }
+      if (status === 'storm-intro') { renderStormIntro(room); showScreen('screen-storm-intro'); return; }
+
+      // ── ROUND 1 ──
+      if (status === 'r1-intro')    { renderR1Intro(room); showScreen('screen-r1-intro'); return; }
+      if (status === 'r1-words')      { renderWordsScreen(room); return; }
+      if (status === 'r1-pitchorder') { renderPitchOrderScreen(room, 'Round 1 — Random Words'); showScreen('screen-r1-pitchorder'); startPitchOrderCountdown('r1-nameidea'); return; }
+      if (status === 'r1-nameidea')   { renderNameIdeaScreen(room, idx); return; }
+      if (status === 'r1-pitch')      { renderPitchPhase(room, idx); return; }
+      if (status === 'r1-done')       { renderR1Done(room); showScreen('screen-r1-done'); return; }
+      if (status === 'r1-vote')       { renderVoteScreen(room, 'Round 1'); showScreen('screen-r1-vote'); return; }
+      if (status === 'r1-result')     { renderResultScreen(room, 'Round 1'); showScreen('screen-r1-result'); return; }
+
+      // ── ROUND 2 ──
+      if (status === 'r2-intro')      { renderR2Intro(); showScreen('screen-r2-intro'); return; }
+      if (status === 'r2-phase1')     { renderR2Phase1(room); showScreen('screen-r2-phase1'); return; }
+      if (status === 'r2-phase2')     { renderR2Phase2(room); showScreen('screen-r2-phase2'); return; }
+      if (status === 'r2-phase3')     { renderR2Phase3(room); showScreen('screen-r2-phase3'); return; }
+      if (status === 'r2-pitchorder') { renderPitchOrderScreen(room, 'Round 2 — Steal & Reinterpret'); showScreen('screen-r1-pitchorder'); startPitchOrderCountdown('r2-nameidea'); return; }
+      if (status === 'r2-nameidea')   { renderNameIdeaScreen(room, idx); return; }
+      if (status === 'r2-pitch')      { renderPitchPhase(room, idx); return; }
+      if (status === 'r2-vote')       { renderVoteScreen(room, 'Round 2'); showScreen('screen-r1-vote'); return; }
+      if (status === 'r2-result')     { renderResultScreen(room, 'Round 2'); showScreen('screen-r1-result'); return; }
+
+      // ── ROUND 3 ──
+      if (status === 'r3-intro')  { renderR3Intro(); showScreen('screen-r3-intro'); return; }
+      if (status === 'r3-vote')   { renderR3VoteScreen(room); showScreen('screen-r3-vote'); return; }
+      if (status === 'r3-result') { renderR3ResultScreen(room); showScreen('screen-r3-result'); return; }
+      if (status === 'gameover')  { renderGameOver(room); showScreen('screen-gameover'); return; }
+    }
+
+    // ── HOST SETUP ─────────────────────────────────────────
+    async function lookupTruthRoom() {
+      hideError('host-code-error');
+      const code = document.getElementById('truth-code-input').value.trim().toUpperCase();
+      if (code.length !== 4) { showError('host-code-error', 'Please enter a 4-character room code.'); return; }
+      try {
+        const snap = await rtdb.ref('sessions').once('value');
+        let data = null;
+        snap.forEach(child => { if (child.val().roomCode === code) { data = child.val(); return true; } });
+        if (!data) { showError('host-code-error', 'No session found with that code.'); return; }
+        state.provocation = data.provocation || null;
+        state.brand       = data.brand       || null;
+        state.brief       = data.brief       || null;
+        const prov    = state.provocation || {};
+        const provName    = prov.name     || prov.title   || extractText(state.provocation) || 'Untitled Provocation';
+        const provTagline = prov.tagline  || '';
+        const provBody    = prov.provocation || '';
+        const provNevers  = Array.isArray(prov.nevers) ? prov.nevers : [];
+        document.getElementById('provocation-name-display').textContent = provName;
+        document.getElementById('provocation-tagline-display').textContent = provTagline;
+        const bodyEl = document.getElementById('provocation-body-display');
+        if (provBody) { document.getElementById('provocation-body-text').textContent = provBody; bodyEl.style.display = 'block'; } else bodyEl.style.display = 'none';
+        const neversEl = document.getElementById('provocation-nevers-display');
+        if (provNevers.length) {
+          document.getElementById('provocation-nevers-list').innerHTML = provNevers.map(n => `<div style="font-family:'Poppins',sans-serif;font-size:14px;color:rgba(255,255,255,0.65);padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.07);">${escHtml(n)}</div>`).join('');
+          neversEl.style.display = 'block';
+        } else { neversEl.style.display = 'none'; }
+        const brandEl = document.getElementById('brand-card');
+        if (state.brand) { document.getElementById('brand-name-display').textContent = extractText(state.brand); brandEl.style.display = 'block'; } else brandEl.style.display = 'none';
+        const briefEl = document.getElementById('brief-card');
+        if (state.brief) { document.getElementById('brief-text-display').textContent = extractText(state.brief); briefEl.style.display = 'block'; } else briefEl.style.display = 'none';
+        showScreen('screen-provocation-confirm');
+      } catch (err) { showError('host-code-error', 'Error: ' + err.message); }
+    }
+
+    async function createStormRoom() {
+      const code = String(Math.floor(1000 + Math.random() * 9000));
+      state.stormCode = code;
+      state.isHost    = true;
+      try {
+        await rtdb.ref('stormrooms/' + code).set({ code, provocation: state.provocation, brand: state.brand, brief: state.brief, status: 'waiting', players: {}, createdAt: firebase.database.ServerValue.TIMESTAMP });
+        document.getElementById('storm-room-code-display').textContent = code;
+        showScreen('screen-room-code');
+        listenToRoom(code);
+      } catch (err) { alert('Error creating room: ' + err.message); }
+    }
+
+    function updateLobbyPlayers(players) {
+      const names = Object.values(players || {}).map(p => (typeof p === 'object' ? p.name : p) || '');
+      const list  = document.getElementById('players-list');
+      const count = document.getElementById('players-count');
+      const btn   = document.getElementById('start-round1-btn');
+      const msg   = document.getElementById('start-round1-waiting');
+      if (list)  list.innerHTML  = names.map(n => `<li>${escHtml(n)}</li>`).join('');
+      if (count) count.textContent = names.length + ' player' + (names.length !== 1 ? 's' : '');
+      const ready = names.length >= 2;
+      if (btn) btn.disabled = !ready;
+      if (msg) msg.style.display = ready ? 'none' : 'block';
+    }
+
+    // ── ROUND 1: START ─────────────────────────────────────
+    async function startRound1() {
+      if (!state.stormCode) return;
+      const snap    = await rtdb.ref('stormrooms/' + state.stormCode + '/players').get();
+      const players = snap.val() || {};
+      const assignments = {};
+      Object.keys(players).forEach(id => { assignments[id] = { words: [pickRandom(NOUNS), pickRandom(ADJECTIVES), pickRandom(VERBS)] }; });
+      await rtdb.ref('stormrooms/' + state.stormCode).update({ wordAssignments: assignments, status: 'r1-words' });
+    }
+
+    // ── STORM INTRO / R1 INTRO / R1 DONE ──────────────────
+    async function moveToStormIntro() {
+      if (!state.stormCode) return;
+      await rtdb.ref('stormrooms/' + state.stormCode).update({ status: 'storm-intro' });
+    }
+    function renderStormIntro(room) {
+      document.getElementById('storm-intro-host').style.display   = state.isHost ? 'flex' : 'none';
+      document.getElementById('storm-intro-player').style.display = state.isHost ? 'none' : 'flex';
+    }
+    function advanceToR1Intro() {
+      if (!state.stormCode) return;
+      rtdb.ref('stormrooms/' + state.stormCode).update({ status: 'r1-intro' });
+    }
+    function renderR1Intro(room) {
+      document.getElementById('r1-intro-host').style.display   = state.isHost ? 'flex' : 'none';
+      document.getElementById('r1-intro-player').style.display = state.isHost ? 'none' : 'flex';
+    }
+    function renderR1Done(room) {
+      document.getElementById('r1-done-host').style.display   = state.isHost ? 'flex' : 'none';
+      document.getElementById('r1-done-player').style.display = state.isHost ? 'none' : 'flex';
+    }
+    function moveToRound2() {
+      if (!state.stormCode) return;
+      rtdb.ref('stormrooms/' + state.stormCode).update({ status: 'r2-intro' });
+    }
+
+    // ── R1: WORDS ──────────────────────────────────────────
+    function renderWordsScreen(room) {
+      const assignments = room.wordAssignments || {};
+      const players     = room.players         || {};
+      if (state.isHost) {
+        const rows = Object.keys(players).map(id => {
+          const name  = players[id]?.name || id;
+          const words = assignments[id]?.words || [];
+          return `<div class="player-word-row"><span class="player-word-name">${escHtml(name)}</span><span class="player-word-chips">${words.map(w => escHtml(w.toUpperCase())).join(' · ')}</span></div>`;
+        }).join('');
+        document.getElementById('r1-words-host-list').innerHTML = rows || '<p style="color:rgba(255,255,255,0.3);font-size:14px;">No players yet.</p>';
+        document.getElementById('r1-words-host').style.display   = 'flex';
+        document.getElementById('r1-words-player').style.display = 'none';
+      } else {
+        const myWords = assignments[state.playerId]?.words || [];
+        document.getElementById('r1-words-display').innerHTML = myWords.map(w => `<div class="word-chip">${escHtml(w)}</div>`).join('');
+        document.getElementById('r1-words-host').style.display   = 'none';
+        document.getElementById('r1-words-player').style.display = 'flex';
+      }
+      showScreen('screen-r1-words');
+    }
+
+    // ── R1: PITCH ORDER ────────────────────────────────────
+    async function showPitchOrder() {
+      const snap    = await rtdb.ref('stormrooms/' + state.stormCode + '/players').get();
+      const players = snap.val() || {};
+      const ids     = Object.keys(players);
+      for (let i = ids.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i+1)); [ids[i],ids[j]] = [ids[j],ids[i]]; }
+      await rtdb.ref('stormrooms/' + state.stormCode).update({ pitchOrder: ids, currentPitcherIndex: 0, status: 'r1-pitchorder' });
+    }
+
+    function renderPitchOrderScreen(room, eyebrow) {
+      const orderKey   = state.currentRound === 'r2' ? 'r2PitchOrder' : 'pitchOrder';
+      const pitchOrder = room[orderKey] || room.pitchOrder || [];
+      const players    = room.players   || {};
+      document.getElementById('r1-pitchorder-eyebrow').textContent = eyebrow || 'Pitch Order';
+      document.getElementById('r1-pitch-order-list').innerHTML = pitchOrder.map((id,i) => `<li><span class="pitch-num">${i+1}</span>${escHtml(players[id]?.name || id)}</li>`).join('');
+    }
+
+    function startPitchOrderCountdown(nextStatus) {
+      let count = 5;
+      const el = document.getElementById('r1-pitchorder-countdown');
+      el.textContent = count;
+      state.pitchOrderInterval = setInterval(() => {
+        count--;
+        el.textContent = Math.max(0, count);
+        if (count <= 0) {
+          clearInterval(state.pitchOrderInterval);
+          state.pitchOrderInterval = null;
+          if (state.isHost) {
+            const idxKey = nextStatus === 'r2-nameidea' ? 'r2CurrentPitcherIndex' : 'currentPitcherIndex';
+            rtdb.ref('stormrooms/' + state.stormCode).update({ status: nextStatus, [idxKey]: 0 });
+          }
+        }
+      }, 1000);
+    }
+
+    // ── NAME IDEA (shared r1/r2) ───────────────────────────
+    function renderNameIdeaScreen(room, idx) {
+      const orderKey    = rKey('pitchOrder');
+      const pitchOrder  = room[orderKey]       || [];
+      const players     = room.players         || {};
+      const assignments = room.wordAssignments || {};
+      const cards       = room.cardAssignments || {};
+      const pitcherId   = pitchOrder[idx];
+      const pitcherName = players[pitcherId]?.name || '…';
+      const isR2        = state.currentRound === 'r2';
+
+      if (state.playerId === pitcherId) {
+        if (isR2) {
+          document.getElementById('r1-ni-words-block').style.display = 'none';
+          document.getElementById('r1-ni-card-block').style.display  = 'block';
+          document.getElementById('r1-ni-card').innerHTML = renderCampaignCard(cards[state.playerId]);
+        } else {
+          document.getElementById('r1-ni-words-block').style.display = 'block';
+          document.getElementById('r1-ni-card-block').style.display  = 'none';
+          const words = assignments[state.playerId]?.words || [];
+          document.getElementById('r1-ni-words').innerHTML = words.map(w => `<div class="word-chip">${escHtml(w)}</div>`).join('');
+        }
+        document.getElementById('r1-idea-name-input').value = '';
+        document.getElementById('r1-ni-pitcher').style.display = 'flex';
+        document.getElementById('r1-ni-watcher').style.display = 'none';
+      } else {
+        document.getElementById('r1-ni-pitcher-name').textContent = pitcherName;
+        document.getElementById('r1-ni-host-band').style.display  = state.isHost ? 'block' : 'none';
+        document.getElementById('r1-ni-pitcher').style.display    = 'none';
+        document.getElementById('r1-ni-watcher').style.display    = 'flex';
+      }
+      showScreen('screen-r1-nameidea');
+    }
+
+    async function submitIdeaName() {
+      const name = document.getElementById('r1-idea-name-input').value.trim();
+      if (!name) { document.getElementById('r1-idea-name-input').focus(); return; }
+      const room = state.latestRoom;
+      if (!room) return;
+      const orderKey   = rKey('pitchOrder');
+      const idxKey     = rKey('currentPitcherIndex');
+      const ideasKey   = rKey('ideas');
+      const startKey   = rKey('pitcherStartedAt');
+      const pitchStat  = state.currentRound === 'r2' ? 'r2-pitch' : 'r1-pitch';
+      const pitcherId  = (room[orderKey] || [])[room[idxKey] || 0];
+      await rtdb.ref('stormrooms/' + state.stormCode + '/' + ideasKey + '/' + pitcherId).set({ name });
+      await rtdb.ref('stormrooms/' + state.stormCode).update({ status: pitchStat, [startKey]: firebase.database.ServerValue.TIMESTAMP });
+    }
+
+    // ── PITCH PHASE (shared r1/r2) ─────────────────────────
+    function renderPitchPhase(room, idx) {
+      const orderKey  = rKey('pitchOrder');
+      const ideasKey  = rKey('ideas');
+      const startKey  = rKey('pitcherStartedAt');
+      const pitchOrder = room[orderKey] || [];
+      const players   = room.players          || {};
+      const ideas     = room[ideasKey]        || {};
+      const cards     = room.cardAssignments  || {};
+      const assignments = room.wordAssignments || {};
+      const pitcherId = pitchOrder[idx];
+      const nextId    = pitchOrder[idx + 1];
+      const startedAt = room[startKey] || Date.now();
+      const DURATION  = 90;
+      const isR2      = state.currentRound === 'r2';
+      const pitcherName = players[pitcherId]?.name || '…';
+      const ideaName    = ideas[pitcherId]?.name   || '';
+
+      if (state.playerId === pitcherId) {
+        document.getElementById('r1-pitch-idea-name').textContent = ideaName;
+        if (isR2) {
+          document.getElementById('r1-pitch-words-block').style.display = 'none';
+          document.getElementById('r1-pitch-card-block').style.display  = 'block';
+          document.getElementById('r1-pitch-card').innerHTML = renderCampaignCard(cards[state.playerId]);
+        } else {
+          document.getElementById('r1-pitch-words-block').style.display = 'block';
+          document.getElementById('r1-pitch-card-block').style.display  = 'none';
+          const words = assignments[state.playerId]?.words || [];
+          document.getElementById('r1-pitch-words').innerHTML = words.map(w => `<div class="word-chip">${escHtml(w)}</div>`).join('');
+        }
+        showScreen('screen-r1-pitch');
+        startTimer('r1-pitch-timer', 'r1-pitch-bar', startedAt, DURATION, false, donePitching);
+      } else if (!state.isHost && state.playerId === nextId) {
+        showScreen('screen-r1-upnext');
+        startTimer('r1-upnext-timer', 'r1-upnext-bar', startedAt, DURATION, false, null);
+      } else {
+        document.getElementById('r1-watching-pitcher-name').textContent    = pitcherName;
+        document.getElementById('r1-watching-idea-name').textContent       = ideaName ? '"' + ideaName + '"' : '';
+        document.getElementById('r1-watching-status-label').textContent    = 'Listening…';
+        document.getElementById('r1-watching-timer-block').style.display   = 'block';
+        document.getElementById('r1-watching-host-band').style.display     = state.isHost ? 'block' : 'none';
+        showScreen('screen-r1-watching');
+        startTimer('r1-watching-timer', 'r1-watching-bar', startedAt, DURATION, true, state.isHost ? forceAdvancePitch : null);
+      }
+    }
+
+    function startTimer(timerId, barId, startedAt, duration, dimmed, onComplete) {
+      const timerEl = document.getElementById(timerId);
+      const barEl   = document.getElementById(barId);
+      function tick() {
+        const elapsed   = Math.floor((Date.now() - startedAt) / 1000);
+        const remaining = Math.max(0, duration - elapsed);
+        if (timerEl) {
+          timerEl.textContent = formatTime(remaining);
+          timerEl.classList.toggle('timer-pulse', remaining > 0 && remaining <= 15 && !timerEl.classList.contains('dimmed'));
+        }
+        if (barEl) barEl.style.width = (remaining / duration * 100) + '%';
+        if (remaining <= 0) { clearInterval(state.timerInterval); state.timerInterval = null; if (onComplete) onComplete(); }
+      }
+      tick();
+      state.timerInterval = setInterval(tick, 1000);
+    }
+
+    function donePitching()      { advancePitch(); }
+    function forceAdvancePitch() { advancePitch(); }
+
+    function advancePitch() {
+      const room = state.latestRoom;
+      if (!room) return;
+      const orderKey  = rKey('pitchOrder');
+      const idxKey    = rKey('currentPitcherIndex');
+      const niStatus  = state.currentRound === 'r2' ? 'r2-nameidea' : 'r1-nameidea';
+      const voteStatus = state.currentRound === 'r2' ? 'r2-vote' : 'r1-done';
+      const idx  = room[idxKey] || 0;
+      const next = idx + 1;
+      if (next >= (room[orderKey] || []).length) {
+        rtdb.ref('stormrooms/' + state.stormCode).update({ status: voteStatus });
+      } else {
+        rtdb.ref('stormrooms/' + state.stormCode).update({ status: niStatus, [idxKey]: next });
+      }
+    }
+
+    // ── VOTE (shared r1/r2) ────────────────────────────────
+    function renderVoteScreen(room, roundLabel) {
+      const orderKey   = rKey('pitchOrder');
+      const ideasKey   = rKey('ideas');
+      const votesKey   = rKey('votes');
+      const pitchOrder = room[orderKey]  || [];
+      const players    = room.players    || {};
+      const ideas      = room[ideasKey]  || {};
+      const votes      = room[votesKey]  || {};
+
+      document.getElementById('vote-screen-eyebrow').textContent = (roundLabel || 'Round') + ' — Vote';
+      state.selectedVoteId = votes[state.playerId] || null;
+      const alreadyVoted   = !!state.selectedVoteId;
+
+      const grid = document.getElementById('r1-vote-grid');
+      grid.innerHTML = pitchOrder.map(id => {
+        const name     = players[id]?.name || id;
+        const idea     = ideas[id]?.name   || '';
+        const isSelf   = id === state.playerId;
+        const selected = id === state.selectedVoteId;
+        return `<div class="vote-card${isSelf?' self-vote':''}${selected?' selected':''}" data-pid="${escHtml(id)}">
+          <div class="vote-card-name">${escHtml(name)}</div>
+          <div class="vote-card-idea">${idea ? escHtml(idea) : '<span style="opacity:0.3">No idea name</span>'}</div>
+        </div>`;
+      }).join('');
+
+      grid.onclick = function(e) {
+        const card = e.target.closest('.vote-card');
+        if (!card || card.classList.contains('self-vote') || alreadyVoted) return;
+        selectVote(card.dataset.pid);
+      };
+
+      if (state.isHost) {
+        document.getElementById('r1-vote-player-ctrls').style.display = 'none';
+        document.getElementById('r1-vote-host-ctrls').style.display   = 'block';
+        updateVoteTally(votes, pitchOrder);
+      } else {
+        document.getElementById('r1-vote-player-ctrls').style.display = 'block';
+        document.getElementById('r1-vote-host-ctrls').style.display   = 'none';
+        const btn = document.getElementById('r1-lock-vote-btn');
+        if (alreadyVoted) { btn.textContent = 'Vote Locked In ✓'; btn.disabled = true; }
+        else              { btn.textContent = 'Lock In Vote';      btn.disabled = false; }
+      }
+    }
+
+    function selectVote(playerId) {
+      state.selectedVoteId = playerId;
+      document.querySelectorAll('.vote-card').forEach(card => { card.classList.toggle('selected', card.dataset.pid === playerId); });
+      hideError('r1-vote-error');
+    }
+
+    async function lockInVote() {
+      if (!state.selectedVoteId) { showError('r1-vote-error', 'Tap a player to vote for them first.'); return; }
+      const btn = document.getElementById('r1-lock-vote-btn');
+      btn.disabled = true; btn.textContent = 'Locking in…';
+      await rtdb.ref('stormrooms/' + state.stormCode + '/' + rKey('votes') + '/' + state.playerId).set(state.selectedVoteId);
+      btn.textContent = 'Vote Locked In ✓';
+    }
+
+    function updateVoteTally(votes, pitchOrder) {
+      const count = Object.keys(votes || {}).length;
+      const total = (pitchOrder || []).length;
+      const el = document.getElementById('r1-vote-tally');
+      if (el) el.textContent = count + ' / ' + total + ' players voted';
+    }
+
+    function showResults() {
+      const nextStatus = state.currentRound === 'r2' ? 'r2-result' : 'r1-result';
+      rtdb.ref('stormrooms/' + state.stormCode).update({ status: nextStatus });
+    }
+
+    // ── RESULT (shared r1/r2) ──────────────────────────────
+    function renderResultScreen(room, roundLabel) {
+      const orderKey   = rKey('pitchOrder');
+      const ideasKey   = rKey('ideas');
+      const votesKey   = rKey('votes');
+      const pitchOrder = room[orderKey]  || [];
+      const players    = room.players    || {};
+      const ideas      = room[ideasKey]  || {};
+      const votes      = room[votesKey]  || {};
+
+      document.getElementById('result-screen-eyebrow').textContent = (roundLabel || 'Round') + ' Result';
+
+      const tally = {};
+      pitchOrder.forEach(id => { tally[id] = 0; });
+      Object.values(votes).forEach(targetId => { if (tally[targetId] !== undefined) tally[targetId]++; });
+
+      let winnerId = pitchOrder[0];
+      pitchOrder.forEach(id => { if (tally[id] > tally[winnerId]) winnerId = id; });
+
+      const winnerName  = players[winnerId]?.name || winnerId;
+      const winnerIdea  = ideas[winnerId]?.name   || '';
+      const winnerVotes = tally[winnerId] || 0;
+
+      document.getElementById('r1-result-winner').innerHTML = `
+        <div class="eyebrow" style="color:rgba(255,255,0,0.5);text-align:center;">Winner</div>
+        <div class="heading-lg" style="text-align:center;">${escHtml(winnerName)}</div>
+        ${winnerIdea ? `<div style="font-family:'Poppins',sans-serif;font-size:15px;color:rgba(255,255,0,0.7);margin-top:6px;text-align:center;">"${escHtml(winnerIdea)}"</div>` : ''}
+        <div style="font-family:'Poppins',sans-serif;font-size:13px;color:rgba(255,255,0,0.45);margin-top:10px;text-align:center;">${winnerVotes} vote${winnerVotes!==1?'s':''}</div>`;
+
+      const sorted = [...pitchOrder].sort((a,b) => tally[b] - tally[a]);
+      document.getElementById('r1-result-list').innerHTML = sorted.map(id => {
+        const name  = players[id]?.name || id;
+        const idea  = ideas[id]?.name   || '';
+        const count = tally[id] || 0;
+        const isWin = id === winnerId;
+        return `<li class="${isWin?'winner':''}">
+          <div><div style="font-weight:700;">${escHtml(name)}</div>${idea?`<div style="font-size:13px;opacity:0.45;">"${escHtml(idea)}"</div>`:''}</div>
+          <div class="vote-tally">${count}</div></li>`;
+      }).join('');
+
+      // Host controls after each round
+      const hostBand = document.getElementById('result-host-band');
+      const hostBtn  = hostBand ? hostBand.querySelector('button') : null;
+      if (hostBand && state.isHost) {
+        hostBand.style.display = 'block';
+        if (state.currentRound === 'r1') {
+          if (hostBtn) { hostBtn.textContent = 'Start Round 2 →'; hostBtn.setAttribute('onclick', 'startRound2()'); }
+        } else {
+          if (hostBtn) { hostBtn.textContent = 'Start Round 3 →'; hostBtn.setAttribute('onclick', 'startRound3()'); }
+        }
+      } else if (hostBand) {
+        hostBand.style.display = 'none';
+      }
+    }
+
+    // ── ROUND 2: INTRO ─────────────────────────────────────
+    function startRound2() {
+      rtdb.ref('stormrooms/' + state.stormCode).update({ status: 'r2-intro' });
+    }
+
+    function renderR2Intro() {
+      document.getElementById('r2-intro-host').style.display   = state.isHost ? 'flex' : 'none';
+      document.getElementById('r2-intro-player').style.display = state.isHost ? 'none' : 'flex';
+    }
+
+    async function assignCards() {
+      const snap    = await rtdb.ref('stormrooms/' + state.stormCode + '/players').get();
+      const players = snap.val() || {};
+      const assignments = {};
+      Object.keys(players).forEach(id => { assignments[id] = pickRandom(CAMPAIGNS); });
+      await rtdb.ref('stormrooms/' + state.stormCode).update({ cardAssignments: assignments, status: 'r2-phase1' });
+    }
+
+    // ── ROUND 2: PHASE 1 ───────────────────────────────────
+    function renderR2Phase1(room) {
+      const players = room.players        || {};
+      const cards   = room.cardAssignments || {};
+      if (state.isHost) {
+        const rows = Object.keys(players).map(id => {
+          const name = players[id]?.name || id;
+          return `<div class="phase-player-row"><div class="phase-player-dot"></div><div class="phase-player-name">${escHtml(name)}</div></div>`;
+        }).join('');
+        document.getElementById('r2-p1-host-list').innerHTML = rows || '<p style="color:rgba(255,255,255,0.3);font-size:14px;">No players.</p>';
+        document.getElementById('r2-p1-host').style.display   = 'flex';
+        document.getElementById('r2-p1-player').style.display = 'none';
+      } else {
+        document.getElementById('r2-p1-card').innerHTML = renderCampaignCard(cards[state.playerId]);
+        document.getElementById('r2-p1-host').style.display   = 'none';
+        document.getElementById('r2-p1-player').style.display = 'flex';
+      }
+    }
+
+    function moveToPhase2() {
+      rtdb.ref('stormrooms/' + state.stormCode).update({ status: 'r2-phase2' });
+    }
+
+    // ── ROUND 2: PHASE 2 ───────────────────────────────────
+    function renderR2Phase2(room) {
+      const brief = extractText(room.brief);
+      const cards = room.cardAssignments || {};
+      if (state.isHost) {
+        document.getElementById('r2-p2-host-brief').textContent = brief || '(no brief)';
+        document.getElementById('r2-p2-host').style.display   = 'flex';
+        document.getElementById('r2-p2-player').style.display = 'none';
+      } else {
+        document.getElementById('r2-p2-brief').textContent      = brief || '(no brief)';
+        document.getElementById('r2-p2-card').innerHTML         = renderCampaignCard(cards[state.playerId]);
+        document.getElementById('r2-p2-host').style.display   = 'none';
+        document.getElementById('r2-p2-player').style.display = 'flex';
+      }
+    }
+
+    function moveToPhase3() {
+      rtdb.ref('stormrooms/' + state.stormCode).update({ status: 'r2-phase3' });
+    }
+
+    // ── ROUND 2: PHASE 3 ───────────────────────────────────
+    function renderR2Phase3(room) {
+      const brief = extractText(room.brief);
+      const cards = room.cardAssignments || {};
+      if (state.isHost) {
+        document.getElementById('r2-p3-host').style.display   = 'flex';
+        document.getElementById('r2-p3-player').style.display = 'none';
+      } else {
+        document.getElementById('r2-p3-brief').textContent    = brief || '(no brief)';
+        document.getElementById('r2-p3-card').innerHTML       = renderCampaignCard(cards[state.playerId]);
+        document.getElementById('r2-p3-host').style.display   = 'none';
+        document.getElementById('r2-p3-player').style.display = 'flex';
+      }
+    }
+
+    async function startR2Pitching() {
+      const snap = await rtdb.ref('stormrooms/' + state.stormCode + '/pitchOrder').get();
+      const r1Order = snap.val() || [];
+      await rtdb.ref('stormrooms/' + state.stormCode).update({
+        r2PitchOrder: r1Order,
+        r2CurrentPitcherIndex: 0,
+        status: 'r2-pitchorder'
+      });
+    }
+
+    // ── ROUND 3: INTRO ────────────────────────────────────
+    function startRound3() {
+      rtdb.ref('stormrooms/' + state.stormCode).update({ status: 'r3-intro' });
+    }
+
+    function renderR3Intro() {
+      document.getElementById('r3-intro-host').style.display   = state.isHost ? 'flex' : 'none';
+      document.getElementById('r3-intro-player').style.display = state.isHost ? 'none' : 'flex';
+    }
+
+    function startR3Voting() {
+      rtdb.ref('stormrooms/' + state.stormCode).update({ status: 'r3-vote' });
+    }
+
+    // ── ROUND 3: VOTE ─────────────────────────────────────
+    // Build the flat idea list from both rounds for R3
+    function buildIdeaList(room) {
+      const players  = room.players  || {};
+      const r1Ideas  = room.ideas    || {};
+      const r2Ideas  = room.r2Ideas  || {};
+      const r1Order  = room.pitchOrder   || [];
+      const r2Order  = room.r2PitchOrder || [];
+      const list = [];
+      r1Order.forEach(pid => {
+        const ideaName = r1Ideas[pid]?.name;
+        if (ideaName) list.push({ id: 'r1_' + pid, playerId: pid, playerName: players[pid]?.name || pid, ideaName, round: 'Round 1' });
+      });
+      r2Order.forEach(pid => {
+        const ideaName = r2Ideas[pid]?.name;
+        if (ideaName) list.push({ id: 'r2_' + pid, playerId: pid, playerName: players[pid]?.name || pid, ideaName, round: 'Round 2' });
+      });
+      return list;
+    }
+
+    // Per-player R3 vote state: { [ideaId]: 'kill'|'keep'|'develop' }
+    let r3Selections = {};
+
+    function renderR3VoteScreen(room) {
+      const ideas = buildIdeaList(room);
+      r3Selections = {};
+
+      if (state.isHost) {
+        document.getElementById('r3-vote-player').style.display = 'none';
+        document.getElementById('r3-vote-host').style.display   = 'flex';
+        updateR3HostTally(room.r3votes, room.players, room.ideas, room.r2Ideas);
+      } else {
+        document.getElementById('r3-vote-player').style.display = 'flex';
+        document.getElementById('r3-vote-host').style.display   = 'none';
+
+        const existingVotes = (room.r3votes || {})[state.playerId] || {};
+        const alreadyVoted  = Object.keys(existingVotes).length > 0;
+        r3Selections = Object.assign({}, existingVotes);
+
+        const list = document.getElementById('r3-vote-list');
+        list.innerHTML = ideas.map(idea => {
+          const isSelf = idea.playerId === state.playerId;
+          const sel    = existingVotes[idea.id] || null;
+          const killCls    = sel === 'kill'    ? ' active' : '';
+          const keepCls    = sel === 'keep'    ? ' active' : '';
+          const developCls = sel === 'develop' ? ' active' : '';
+          if (isSelf) {
+            return `<div class="r3-idea-card">
+              <div class="r3-idea-header">
+                <div><div class="r3-idea-name">${escHtml(idea.ideaName)}</div><div class="r3-idea-meta">${escHtml(idea.playerName)} &middot; ${escHtml(idea.round)}</div></div>
+                <div style="font-family:'Poppins',sans-serif;font-size:11px;color:rgba(255,255,255,0.25);padding-top:3px;">Your idea</div>
+              </div>
+            </div>`;
+          }
+          return `<div class="r3-idea-card" id="r3card_${escHtml(idea.id)}">
+            <div class="r3-idea-header"><div>
+              <div class="r3-idea-name">${escHtml(idea.ideaName)}</div>
+              <div class="r3-idea-meta">${escHtml(idea.playerName)} &middot; ${escHtml(idea.round)}</div>
+            </div></div>
+            <div class="r3-vote-btns">
+              <button class="r3-vote-btn kill${killCls}" onclick="selectR3Vote('${idea.id}','kill')"${alreadyVoted?' disabled':''}>Kill It</button>
+              <button class="r3-vote-btn keep${keepCls}" onclick="selectR3Vote('${idea.id}','keep')"${alreadyVoted?' disabled':''}>Keep It</button>
+              <button class="r3-vote-btn develop${developCls}" onclick="selectR3Vote('${idea.id}','develop')"${alreadyVoted?' disabled':''}>Develop It</button>
+            </div>
+          </div>`;
+        }).join('');
+
+        const btn = document.getElementById('r3-submit-btn');
+        if (alreadyVoted) { btn.textContent = 'Votes Submitted ✓'; btn.disabled = true; }
+        else              { btn.textContent = 'Submit All Votes';   btn.disabled = false; }
+      }
+    }
+
+    function selectR3Vote(ideaId, choice) {
+      r3Selections[ideaId] = choice;
+      const card = document.getElementById('r3card_' + ideaId);
+      if (!card) return;
+      card.querySelectorAll('.r3-vote-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.classList.contains(choice)) btn.classList.add('active');
+      });
+    }
+
+    async function submitR3Votes() {
+      hideError('r3-vote-error');
+      const room  = state.latestRoom;
+      const ideas = buildIdeaList(room);
+      const votable = ideas.filter(i => i.playerId !== state.playerId);
+      const missing = votable.filter(i => !r3Selections[i.id]);
+      if (missing.length > 0) { showError('r3-vote-error', 'Vote on every idea before submitting.'); return; }
+      const btn = document.getElementById('r3-submit-btn');
+      btn.disabled = true; btn.textContent = 'Submitting…';
+      await rtdb.ref('stormrooms/' + state.stormCode + '/r3votes/' + state.playerId).set(r3Selections);
+      btn.textContent = 'Votes Submitted ✓';
+    }
+
+    function updateR3HostTally(r3votes, players, r1Ideas, r2Ideas) {
+      const room = state.latestRoom;
+      if (!room) return;
+      const ideas = buildIdeaList(room);
+      const votes = r3votes || {};
+
+      // Count votes cast by each player
+      const voterCount = Object.keys(players || {}).length;
+      const votedCount = Object.keys(votes).length;
+      const progEl = document.getElementById('r3-vote-progress');
+      if (progEl) progEl.textContent = votedCount + ' / ' + voterCount + ' players voted';
+
+      // Aggregate tally per idea
+      const tally = {};
+      ideas.forEach(i => { tally[i.id] = { kill: 0, keep: 0, develop: 0 }; });
+      Object.values(votes).forEach(voterVotes => {
+        Object.entries(voterVotes).forEach(([ideaId, choice]) => {
+          if (tally[ideaId] && choice) tally[ideaId][choice]++;
+        });
+      });
+
+      const tallyEl = document.getElementById('r3-host-tally');
+      if (!tallyEl) return;
+      tallyEl.innerHTML = ideas.map(idea => {
+        const t = tally[idea.id] || { kill:0, keep:0, develop:0 };
+        return `<div class="r3-tally-row">
+          <div style="font-weight:700;">${escHtml(idea.ideaName)}<div class="r3-idea-meta" style="font-size:12px;">${escHtml(idea.round)}</div></div>
+          <div class="r3-tally-chips">
+            <span class="r3-tally-chip kill">${t.kill}K</span>
+            <span class="r3-tally-chip keep">${t.keep}Kp</span>
+            <span class="r3-tally-chip develop">${t.develop}D</span>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function showR3Results() {
+      rtdb.ref('stormrooms/' + state.stormCode).update({ status: 'r3-result' });
+    }
+
+    // ── ROUND 3: RESULT ───────────────────────────────────
+    function renderR3ResultScreen(room) {
+      const ideas  = buildIdeaList(room);
+      const votes  = room.r3votes || {};
+
+      const tally = {};
+      ideas.forEach(i => { tally[i.id] = { kill: 0, keep: 0, develop: 0 }; });
+      Object.values(votes).forEach(voterVotes => {
+        Object.entries(voterVotes).forEach(([ideaId, choice]) => {
+          if (tally[ideaId] && choice) tally[ideaId][choice]++;
+        });
+      });
+
+      // An idea "survives" if develop is its top vote
+      function survives(id) {
+        const t = tally[id] || { kill:0, keep:0, develop:0 };
+        return t.develop >= t.kill && t.develop >= t.keep && t.develop > 0;
+      }
+
+      const survivors = ideas.filter(i => survives(i.id));
+      const surCountEl = document.getElementById('r3-result-survive-count');
+      if (surCountEl) {
+        if (state.isHost) surCountEl.textContent = survivors.length + ' idea' + (survivors.length !== 1 ? 's' : '') + ' survived';
+        else surCountEl.textContent = '';
+      }
+
+      document.getElementById('r3-result-list').innerHTML = ideas.map(idea => {
+        const t = tally[idea.id] || { kill:0, keep:0, develop:0 };
+        const survived = survives(idea.id);
+        return `<div class="r3-idea-card${survived ? ' develop' : ''}">
+          <div class="r3-idea-header">
+            <div>
+              <div class="r3-idea-name">${escHtml(idea.ideaName)}</div>
+              <div class="r3-idea-meta">${escHtml(idea.playerName)} &middot; ${escHtml(idea.round)}</div>
+            </div>
+            ${survived ? `<div style="font-family:'Manrope',sans-serif;font-weight:900;font-size:16px;color:#FFFF00;flex-shrink:0;padding-top:3px;">DEVELOP</div>` : ''}
+          </div>
+          <div class="r3-tally-chips" style="margin-top:8px;">
+            <span class="r3-tally-chip kill">${t.kill} Kill</span>
+            <span class="r3-tally-chip keep">${t.keep} Keep</span>
+            <span class="r3-tally-chip develop">${t.develop} Develop</span>
+          </div>
+        </div>`;
+      }).join('');
+
+      const hostBand = document.getElementById('r3-result-host-band');
+      if (hostBand) hostBand.style.display = state.isHost ? 'block' : 'none';
+    }
+
+    function showGameOver() {
+      rtdb.ref('stormrooms/' + state.stormCode).update({ status: 'gameover' });
+    }
+
+    // ── GAME OVER ─────────────────────────────────────────
+    function renderGameOver(room) {
+      const ideas  = buildIdeaList(room);
+      const votes  = room.r3votes || {};
+
+      const tally = {};
+      ideas.forEach(i => { tally[i.id] = { kill:0, keep:0, develop:0 }; });
+      Object.values(votes).forEach(voterVotes => {
+        Object.entries(voterVotes).forEach(([ideaId, choice]) => {
+          if (tally[ideaId] && choice) tally[ideaId][choice]++;
+        });
+      });
+
+      function survives(id) {
+        const t = tally[id] || { kill:0, keep:0, develop:0 };
+        return t.develop >= t.kill && t.develop >= t.keep && t.develop > 0;
+      }
+
+      const survivors = ideas.filter(i => survives(i.id));
+      const survivorsEl = document.getElementById('gameover-survivors');
+      if (survivorsEl) {
+        if (survivors.length === 0) {
+          survivorsEl.innerHTML = '<p style="font-family:\'Poppins\',sans-serif;font-size:15px;color:rgba(255,255,255,0.3);">No ideas made it through The Reckoning.</p>';
+        } else {
+          survivorsEl.innerHTML = survivors.map(idea => `
+            <div class="survive-card">
+              <div class="survive-card-name">${escHtml(idea.ideaName)}</div>
+              <div class="survive-card-meta">${escHtml(idea.playerName)} &middot; ${escHtml(idea.round)}</div>
+            </div>`).join('');
+        }
+      }
+
+      const prov = room.provocation || {};
+      const provName = prov.name || prov.title || extractText(room.provocation) || '';
+      const provBody = prov.provocation || prov.tagline || extractText(room.provocation) || '';
+      const provNameEl = document.getElementById('gameover-prov-name');
+      const provBodyEl = document.getElementById('gameover-prov-body');
+      if (provNameEl) provNameEl.textContent = provName;
+      if (provBodyEl) provBodyEl.textContent  = provBody;
+    }
+
+    function copySummary() {
+      const room = state.latestRoom;
+      if (!room) return;
+      const ideas    = buildIdeaList(room);
+      const votes    = room.r3votes || {};
+      const tally    = {};
+      ideas.forEach(i => { tally[i.id] = { kill:0, keep:0, develop:0 }; });
+      Object.values(votes).forEach(vv => {
+        Object.entries(vv).forEach(([id, c]) => { if (tally[id] && c) tally[id][c]++; });
+      });
+      function survives(id) {
+        const t = tally[id] || { kill:0, keep:0, develop:0 };
+        return t.develop >= t.kill && t.develop >= t.keep && t.develop > 0;
+      }
+      const survivors = ideas.filter(i => survives(i.id));
+      const prov = room.provocation || {};
+      const provName = prov.name || extractText(room.provocation) || '';
+      const provBody = prov.provocation || prov.tagline || '';
+
+      const lines = ['KILL DULL — THE STORM', '', `PROVOCATION: ${provName}`, provBody, '', 'SURVIVING IDEAS:', ''];
+      if (survivors.length === 0) {
+        lines.push('No ideas survived The Reckoning.');
+      } else {
+        survivors.forEach((idea, i) => {
+          lines.push(`${i + 1}. ${idea.ideaName} (${idea.playerName} — ${idea.round})`);
+        });
+      }
+      lines.push('', 'These ideas killed dull. Take them into Kill Dull Review.');
+
+      navigator.clipboard.writeText(lines.join('\n')).then(() => {
+        const btn = document.querySelector('#screen-gameover .btn');
+        if (btn) { btn.textContent = 'Copied ✓'; setTimeout(() => { btn.textContent = 'Copy Summary'; }, 2000); }
+      }).catch(() => {});
+    }
+
+    // ── JOIN FLOW ──────────────────────────────────────────
+    async function joinRoom() {
+      hideError('join-error');
+      const name = document.getElementById('player-name-input').value.trim();
+      const code = document.getElementById('join-code-input').value.trim();
+      if (!name) { showError('join-error', 'Please enter your name.'); return; }
+      if (!/^\d{4}$/.test(code)) { showError('join-error', 'Please enter a 4-digit room code.'); return; }
+      try {
+        const snap = await rtdb.ref('stormrooms/' + code).get();
+        if (!snap.exists()) { showError('join-error', 'Room not found. Check the code and try again.'); return; }
+        const room = snap.val();
+        state.playerName = name;
+        state.stormCode  = code;
+        const playerRef  = rtdb.ref('stormrooms/' + code + '/players').push();
+        state.playerId   = playerRef.key;
+        await playerRef.set({ name, joinedAt: firebase.database.ServerValue.TIMESTAMP });
+
+        const brief       = extractText(room.brief);
+        const provName    = room.provocation ? (room.provocation.name || room.provocation.title || extractText(room.provocation)) : '';
+        const provTagline = room.provocation?.tagline || '';
+        document.getElementById('waiting-player-name').textContent = name;
+        const waitBriefCard = document.getElementById('waiting-brief-card');
+        if (brief) { document.getElementById('waiting-brief-text').textContent = brief; waitBriefCard.style.display = 'block'; } else waitBriefCard.style.display = 'none';
+        document.getElementById('waiting-provocation-name').textContent    = provName;
+        document.getElementById('waiting-provocation-tagline').textContent = provTagline;
+        showScreen('screen-waiting');
+        listenToRoom(code);
+      } catch (err) { showError('join-error', 'Error joining room: ' + err.message); }
+    }
+
+  </script>
+<script>
+(function(){
+  var wrap = document.getElementById('kd-wrap');
+  var el = document.getElementById('kd-text');
+  var lastWidth = 0;
+  function buildSpans() {
+    el.style.fontFamily = "'Poppins', sans-serif";
+    el.style.fontWeight = '900';
+    el.style.whiteSpace = 'nowrap';
+    el.style.overflow = 'hidden';
+    el.style.fontSize = (window.innerWidth * 0.185) + 'px';
+    el.innerHTML =
+      '<span id="l0">K</span>' +
+      '<span id="l1">I</span>' +
+      '<span id="l2">L</span>' +
+      '<span id="l3">L</span>' +
+      '<span id="lsp" style="display:inline-block;width:0.22em;"></span>' +
+      '<span id="l4">D</span>' +
+      '<span id="l5">U</span>' +
+      '<span id="l6">L</span>' +
+      '<span id="l7">L</span>' +
+      '<span id="dot">.</span>';
+  }
+  var revealOrder = [1,3,2,7,6,4,5,0];
+  var running = false;
+  var dotInterval = null;
+  function sleep(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
+  function startDotFlicker(dot){
+    dotInterval = setInterval(function(){
+      dot.style.opacity = Math.random()>0.3?'1':'0.1';
+      dot.style.color = Math.random()>0.4?'#FFFF00':'#F4F2EA';
+    }, 60+Math.random()*80);
+  }
+  function stopDotFlicker(dot, c){
+    clearInterval(dotInterval);
+    dot.style.opacity='1';
+    dot.style.color=c;
+  }
+  function flickerIn(el, color, times){
+    return new Promise(async function(resolve){
+      for(var i=0;i<times;i++){
+        el.style.color=color;
+        el.style.opacity=Math.random()>0.3?'1':'0.2';
+        await sleep(30+Math.random()*60);
+        el.style.opacity='0';
+        await sleep(20+Math.random()*40);
+      }
+      el.style.color=color;
+      el.style.opacity='1';
+      resolve();
+    });
+  }
+  async function runAnimation(){
+    if(running) return;
+    running=true;
+    var letters = revealOrder.map(function(i){ return document.getElementById('l'+i); });
+    var allLetters = [0,1,2,3,4,5,6,7].map(function(i){ return document.getElementById('l'+i); });
+    var dot = document.getElementById('dot');
+    allLetters.forEach(function(l){ l.style.opacity='0'; l.style.color='#FFFF00'; });
+    dot.style.opacity='1'; dot.style.color='#FFFF00';
+    startDotFlicker(dot);
+    await sleep(400);
+    for(var i=0;i<letters.length;i++){
+      await flickerIn(letters[i],'#FFFF00',2+Math.floor(Math.random()*3));
+      await sleep(80+Math.random()*150);
+    }
+    await sleep(300);
+    var fa=allLetters.map(function(l){ return flickerIn(l,'#F4F2EA',6+Math.floor(Math.random()*5)); });
+    await Promise.all(fa);
+    allLetters.forEach(function(l){ l.style.color='#F4F2EA'; l.style.opacity='1'; });
+    stopDotFlicker(dot,'#F4F2EA');
+    await sleep(800);
+    var splash = document.getElementById('screen-splash');
+    splash.style.transition = 'opacity 0.5s ease';
+    splash.style.opacity = '0';
+    setTimeout(function(){
+      splash.style.display = 'none';
+      showScreen('screen-kd-intro');
+      fitAll();
+    }, 500);
+  }
+  function init(){
+    buildSpans();
+    lastWidth = wrap.offsetWidth;
+    runAnimation();
+  }
+  setInterval(function(){
+    var w = wrap.offsetWidth;
+    if(w !== lastWidth && !running){
+      lastWidth = w;
+      buildSpans();
+    }
+  }, 500);
+  setTimeout(init, 500);
+})();
+</script>
+<script>
+function fitToWidth(el, allowWrap, subtractPx) {
+  var available = window.innerWidth - (subtractPx || 32);
+  el.style.whiteSpace = 'nowrap';
+  el.style.fontSize = '500px';
+  var textWidth = el.scrollWidth;
+  var size = Math.floor((available / textWidth) * 500);
+  if (allowWrap && size < 16) {
+    el.style.whiteSpace = 'normal';
+    el.style.fontSize = '16px';
+  } else {
+    el.style.fontSize = size + 'px';
+  }
+}
+function fitAll() {
+  document.querySelectorAll('.kd-logo, .kill-dull-title').forEach(function(el) {
+    fitToWidth(el, false);
+  });
+  document.querySelectorAll('.kd-logo-sub').forEach(function(el) {
+    fitToWidth(el, true);
+  });
+  document.querySelectorAll('.ft-headline').forEach(function(el) {
+    fitToWidth(el, false, 64);
+  });
+}
+document.addEventListener('DOMContentLoaded', fitAll);
+window.addEventListener('load', fitAll);
+window.addEventListener('resize', fitAll);
+</script>
+</body>
+</html>

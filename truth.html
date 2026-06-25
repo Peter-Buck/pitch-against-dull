@@ -1,0 +1,2202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Kill Dull — Truth Detector</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Poppins:wght@400;600;700;900&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; border-radius: 0; }
+
+  :root {
+    --yellow: #FFFF00;
+    --black: #0a0a0a;
+    --white: #F4F2EA;
+    --grey: #888;
+    --border: #222;
+    --red: #ff3333;
+    --green: #00ff88;
+  }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Poppins', -apple-system, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+@keyframes screenIn  { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes spin      { to { transform: rotate(360deg); } }
+  @keyframes fadeUp    { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* SCREENS */
+  .screen { display: none; min-height: 100vh; flex-direction: column; overflow-y: auto; }
+  .screen.active { display: flex; animation: screenIn 0.3s ease; }
+
+  /* HEADER */
+  .kd-header { background: var(--yellow); padding: 24px 16px 28px 16px; }
+  .kd-logo {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900;
+    line-height: 1.1;
+    display: block;
+    width: 100%;
+    padding: 0;
+    color: var(--black);
+    text-transform: uppercase;
+  }
+  .kd-logo-sub {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: #000;
+    margin-top: 0;
+    margin-bottom: 4px;
+    padding-left: 0;
+    text-align: left;
+    display: block;
+    width: 100%;
+    line-height: 1.4;
+  }
+  #auth-submit-btn {
+    margin-top: auto;
+    width: 100%;
+  }
+  .kd-screen-label {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #888;
+    display: block;
+    margin-bottom: 16px;
+  }
+  .kd-header .kd-logo { letter-spacing: 0.03em; }
+  .kd-footer {
+    background: #F4F2EA;
+    padding: 24px 16px;
+    margin-top: auto;
+  }
+  .kd-footer-logo {
+    color: #000000;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900;
+    font-size: 35px;
+    line-height: 1;
+  }
+  .kd-footer-copy {
+    color: #000000;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 13px;
+    letter-spacing: 1px;
+    margin-top: 10px;
+  }
+  #screen-auth .kd-eyebrow {
+    font-size: 13px;
+    color: var(--white);
+    letter-spacing: 2px;
+  }
+
+  /* BODY */
+  .kd-body {
+    flex: 1;
+    padding: 32px 24px 48px;
+    display: flex;
+    flex-direction: column;
+  }
+  #screen-auth .kd-body {
+    padding-bottom: 0;
+  }
+
+  .kd-eyebrow {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #aaa;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .kd-title {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 900;
+    font-size: clamp(32px, 8vw, 48px);
+    line-height: 0.95;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    margin-bottom: 16px;
+  }
+
+  .kd-title span { color: var(--yellow); }
+
+  .kd-body-text {
+    font-size: 15px;
+    line-height: 1.75;
+    color: #ccc;
+    font-weight: 400;
+    margin-bottom: 32px;
+  }
+
+  .kd-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 24px 0;
+  }
+
+  /* BUTTONS */
+  .btn-primary {
+    width: 100%;
+    padding: 16px 20px;
+    background: var(--yellow);
+    color: var(--black);
+    border: none;
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(16px, 4vw, 20px);
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: auto;
+    transition: transform 0.1s;
+  }
+  .btn-primary:active { transform: scale(0.97); }
+
+  .btn-secondary {
+    width: 100%;
+    padding: 12px 20px;
+    background: transparent;
+    color: rgba(255,255,255,0.6);
+    border: none;
+    border: 1px solid var(--border);
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(14px, 3.5vw, 18px);
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: transform 0.1s;
+  }
+  .btn-secondary:active { transform: scale(0.97); }
+
+  .btn-primary:disabled {
+    background: #1c1c1c;
+    color: rgba(255,255,255,0.2);
+    border: 1px solid #2a2a2a;
+    cursor: not-allowed;
+  }
+  .btn-primary:disabled:active { transform: none; }
+
+  /* INPUTS */
+  .kd-input {
+    width: 100%;
+    padding: 20px 0;
+    background: var(--black);
+    border: none;
+    border-bottom: 1px solid var(--white);
+    color: var(--white);
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    outline: none;
+    margin-bottom: 16px;
+    -webkit-appearance: none;
+  }
+  .kd-input:focus { border-bottom-color: var(--yellow); }
+
+  .kd-textarea {
+    width: 100%;
+    padding: 20px 0;
+    background: var(--black);
+    border: none;
+    border-bottom: 1px solid var(--white);
+    color: var(--white);
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    outline: none;
+    resize: none;
+    min-height: 120px;
+    line-height: 1.6;
+  }
+  .kd-textarea:focus { border-bottom-color: var(--yellow); caret-color: var(--yellow); }
+
+  .kd-input::placeholder, .kd-textarea::placeholder { color: rgba(255,255,255,0.4); }
+
+  @keyframes kd-blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+  .answer-cursor-blink {
+    position: absolute; top: 20px; left: 1px;
+    color: var(--yellow); font-family: 'Poppins', sans-serif;
+    font-size: 15px; font-weight: 700; line-height: 1.6;
+    pointer-events: none; user-select: none;
+    animation: kd-blink 1s step-end infinite;
+  }
+
+  .char-count {
+    font-size: 13px;
+    color: #aaa;
+    text-align: right;
+    margin-top: 8px;
+    margin-bottom: 16px;
+  }
+
+  /* QUESTION SCREEN */
+  .question-progress-wrap {
+    flex-shrink: 0;
+  }
+
+  .question-number {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--yellow);
+    font-weight: 700;
+    padding: 14px 24px 8px;
+    margin-bottom: 0;
+  }
+
+  .question-text {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 900;
+    font-size: clamp(28px, 7vw, 40px);
+    line-height: 1;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    color: var(--white);
+  }
+
+  .question-sub {
+    font-size: 13px;
+    color: #999;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    font-style: italic;
+  }
+
+  /* PROGRESS */
+  .progress-bar {
+    height: 6px;
+    background: var(--border);
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--yellow);
+    transition: width 0.5s ease;
+  }
+
+  /* VERDICT */
+  .verdict-box {
+    border: 1px solid var(--border);
+    padding: 20px;
+    margin: 20px 0;
+    animation: fadeUp 0.4s ease;
+  }
+
+  .verdict-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .verdict-true { color: var(--green); border-color: rgba(0,255,136,0.4); background: rgba(0,255,136,0.10); }
+  .verdict-almost { color: var(--yellow); border-color: rgba(255,255,0,0.4); background: rgba(255,255,0,0.10); }
+  .verdict-marketing { color: var(--red); border-color: rgba(255,51,51,0.4); background: rgba(255,51,51,0.10); }
+
+  .verdict-title {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .verdict-text {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #ffffff;
+    margin-bottom: 16px;
+  }
+
+  .evidence-title {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #ffffff;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .evidence-quote {
+    border-left: 2px solid rgba(255,255,255,0.2);
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: #ffffff;
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  .evidence-source {
+    font-size: 10px;
+    color: #ffffff;
+    font-style: normal;
+    margin-top: 4px;
+  }
+
+  /* THINKING */
+  .thinking {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 0;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #888;
+    font-weight: 700;
+  }
+
+  .spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border);
+    border-top-color: var(--yellow);
+    border-radius: 50% !important;
+    animation: spin 0.8s linear infinite;
+    flex-shrink: 0;
+  }
+
+  /* CATEGORY CARD SYSTEM */
+  .cat-subline {
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.6);
+    margin-top: 12px;
+  }
+
+  /* FLIP CARDS */
+  .flip-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 16px 16px 0;
+  }
+  @media (min-width: 600px) { .flip-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 900px) { .flip-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .flip-card {
+    width: 100%;
+    height: 520px;
+    cursor: pointer;
+    perspective: 1000px;
+    -webkit-perspective: 1000px;
+  }
+  .flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    transition: transform 0.14s linear;
+  }
+  .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+
+  @keyframes border-pulse {
+    0%, 100% { border-color: var(--yellow); }
+    50% { border-color: rgba(255,255,0,0.15); }
+  }
+  @media (hover: hover) {
+    .flip-card:hover .flip-card-front { animation: border-pulse 1.2s ease-in-out infinite; }
+    .flip-card.flipped:hover .flip-card-back { animation: border-pulse 1.2s ease-in-out infinite; }
+  }
+
+  .flip-card-front,
+  .flip-card-back {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 16px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  .flip-card-front {
+    background: var(--black);
+    border: 1px solid var(--yellow);
+  }
+  .flip-card-back {
+    background: #FFFF00;
+    border: 1px solid #000;
+    transform: rotateY(180deg);
+  }
+
+.flip-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 8px;
+    z-index: 1;
+  }
+  .flip-front-label { color: #555; }
+  .flip-back-label { color: rgba(0,0,0,0.45); }
+
+  .flip-front-text,
+  .flip-back-text {
+    width: 100%;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900;
+    font-size: clamp(16px, 4.5vw, 22px);
+    text-transform: uppercase;
+    line-height: 1.2;
+    position: relative;
+    z-index: 1;
+  }
+  .flip-front-text { color: #fff; }
+  .flip-back-text { color: #000; }
+
+  .category-never {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  /* PROVOCATION */
+  .provocation-name {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 900;
+    font-size: clamp(48px, 12vw, 72px);
+    line-height: 0.9;
+    text-transform: uppercase;
+    color: var(--yellow);
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+
+  .provocation-tagline {
+    font-size: 16px;
+    color: var(--white);
+    font-weight: 600;
+    margin-bottom: 20px;
+    line-height: 1.4;
+  }
+
+  .provocation-body {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #888;
+    font-weight: 300;
+    border-left: 2px solid var(--yellow);
+    padding-left: 16px;
+    margin-bottom: 24px;
+  }
+
+  /* ROOM CODE */
+  .room-code-display {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 900;
+    font-size: 64px;
+    letter-spacing: 8px;
+    color: var(--yellow);
+    text-align: center;
+    padding: 32px 0;
+    border: 1px solid var(--border);
+    margin: 24px 0;
+  }
+
+  /* BRIEF DISPLAY */
+  .brief-display {
+    background: #111;
+    border: 1px solid var(--border);
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+
+  .brief-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #888;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .brief-text {
+    font-size: 14px;
+    color: var(--white);
+    line-height: 1.6;
+  }
+
+  /* ANIMATIONS (defined above) */
+
+  /* ROLE SELECTOR */
+  .role-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .role-btn {
+    padding: 12px 20px;
+    background: transparent;
+    border: 2px solid #444;
+    border-radius: 100px;
+    color: #aaa;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .role-btn.selected { background: var(--yellow); color: #000; border-color: var(--yellow); }
+
+  /* NOTICE */
+  .notice {
+    background: #111;
+    border: 1px solid var(--border);
+    padding: 14px 16px;
+    font-size: 12px;
+    color: #999;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .notice strong { color: var(--white); }
+
+  /* SUMMARY PANEL */
+  .summary-panel {
+    border-top: 1px solid var(--border);
+    margin-top: 32px;
+    padding-top: 24px;
+  }
+
+  .summary-panel-eyebrow {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .summary-item {
+    margin-bottom: 20px;
+  }
+
+  .summary-q {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--yellow);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .summary-q-text {
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 6px;
+    font-style: italic;
+  }
+
+  .summary-a {
+    font-size: 13px;
+    color: #ffffff;
+    line-height: 1.6;
+    border-left: 2px solid rgba(255,255,255,0.2);
+    padding-left: 12px;
+  }
+
+  /* SHARP ANSWER */
+  .sharp-answer-box {
+    border-color: rgba(255,255,0,0.4);
+    background: rgba(255,255,0,0.05);
+  }
+
+  .sharp-answer-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .sharp-answer-actions .btn-primary,
+  .sharp-answer-actions .btn-secondary { margin-top: 0; }
+
+  /* AUTH SCREEN */
+  .auth-toggle {
+    display: flex;
+    border: 2px solid var(--white);
+    margin-bottom: 24px;
+  }
+
+  .auth-tab {
+    flex: 1;
+    padding: 14px 8px;
+    background: #111;
+    border: none;
+    color: var(--white);
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, transform 0.1s;
+  }
+  .auth-tab:active { transform: scale(0.97); }
+  .auth-tab + .auth-tab { border-left: 2px solid var(--white); }
+
+  .auth-tab.active { background: var(--yellow); color: var(--black); }
+
+  .btn-google {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    width: 100%; padding: 16px; background: #ffffff; border: none;
+    color: #1a1a1a; font-family: 'Poppins', sans-serif; font-size: 11px;
+    font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    cursor: pointer; transition: opacity 0.2s; margin-bottom: 0;
+  }
+  .btn-google:hover { opacity: 0.88; }
+  .btn-google:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .auth-divider {
+    display: flex; align-items: center; gap: 14px;
+    margin: 24px 0; color: rgba(255,255,255,0.7);
+    font-size: 13px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+  }
+  .auth-divider::before, .auth-divider::after {
+    content: ''; flex: 1; height: 1px; background: #444;
+  }
+
+  .cookie-banner {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: #111; border-top: 1px solid var(--border);
+    padding: 14px 20px; display: none; align-items: center;
+    justify-content: space-between; gap: 16px; z-index: 10000;
+  }
+  .cookie-banner-text {
+    font-family: 'Poppins', sans-serif; font-size: 11px;
+    color: rgba(255,255,255,0.55); line-height: 1.5; margin: 0;
+  }
+  .cookie-banner-text a { color: var(--yellow); text-decoration: none; }
+  .cookie-banner-btns { display: flex; gap: 8px; flex-shrink: 0; }
+  .cookie-btn {
+    padding: 8px 16px; font-family: 'Poppins', sans-serif; font-size: 9px;
+    font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    cursor: pointer; border: 1px solid; white-space: nowrap;
+  }
+  .cookie-btn-accept { background: var(--yellow); color: var(--black); border-color: var(--yellow); }
+  .cookie-btn-decline { background: transparent; color: rgba(255,255,255,0.4); border-color: var(--border); }
+
+  .field-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #888;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .kd-select {
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+  }
+
+  .kd-select option { background: #111; color: var(--white); }
+
+  #auth-error {
+    font-size: 12px;
+    color: var(--red);
+    margin-bottom: 12px;
+    display: none;
+    line-height: 1.5;
+  }
+
+  /* ROOM BADGE — hidden, replaced by inline display on provocation screen */
+  #room-badge { display: none; }
+
+  /* PROMINENT ROOM CODE */
+  .room-code-block {
+    display: none;
+    text-align: center;
+    padding: 24px 0 8px;
+  }
+  .room-code-block.visible { display: block; }
+  .room-code-eyebrow {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #888;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .room-code-number {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 900;
+    font-size: 80px;
+    line-height: 1;
+    color: var(--yellow);
+    letter-spacing: 10px;
+    text-indent: 10px;
+  }
+  .room-code-hint {
+    font-size: 12px;
+    color: #888;
+    margin-top: 6px;
+    letter-spacing: 1px;
+  }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script>
+firebase.initializeApp({
+  apiKey: "AIzaSyC5IuFzlJymFWoJd1gSyeXuRsbC5HwMgBU",
+  authDomain: "pitch-against-dull.firebaseapp.com",
+  databaseURL: "https://pitch-against-dull-default-rtdb.firebaseio.com",
+  projectId: "pitch-against-dull",
+  storageBucket: "pitch-against-dull.firebasestorage.app",
+  messagingSenderId: "90967669175",
+  appId: "1:90967669175:web:3c9217ff3d647ccb629032"
+});
+</script>
+</head>
+<body>
+
+<!-- SPLASH SCREEN -->
+<div id="screen-splash" style="position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;padding-bottom:120px;z-index:9999;">
+  <div id="kd-wrap" style="width:100vw;overflow:hidden;box-sizing:border-box;">
+    <div id="kd-text" style="font-family:'Poppins',sans-serif;font-weight:900;line-height:1.05;white-space:nowrap;display:block;text-transform:uppercase;color:#FFFF00;padding:0 16px;">PITCH AGAINST DULL.</div>
+  </div>
+  <footer style="position:absolute;bottom:0;left:0;right:0;background:#F4F2EA;padding:24px 16px;">
+    <div style="color:#000;font-family:'Poppins',sans-serif;font-weight:900;font-size:35px;line-height:1;">KILL DULL.</div>
+    <div style="color:#000;font-family:'Poppins',sans-serif;font-weight:400;font-size:13px;letter-spacing:1px;margin-top:10px;">© 2026 Kill Dull. · human@killdull.com</div>
+  </footer>
+</div>
+
+<!-- LOADING OVERLAY -->
+<div id="auth-loading" style="position:fixed;inset:0;background:var(--black);z-index:900;display:flex;align-items:center;justify-content:center;">
+  <div class="spinner" style="width:24px;height:24px;border-width:2px;"></div>
+</div>
+
+<!-- ROOM BADGE -->
+<div id="room-badge">ROOM <span id="room-badge-code"></span></div>
+
+<!-- SCREEN KD INTRO -->
+<div id="screen-kd-intro" class="screen">
+  <div style="padding: 48px 16px 20px;">
+    <div class="kd-logo" style="color: var(--white); line-height: 0.95;">DULL IS</div>
+    <div class="kd-logo" style="color: var(--yellow); line-height: 0.95;">EXPENSIVE.</div>
+  </div>
+  <div style="padding: 0 16px 48px; flex: 1; display: flex; flex-direction: column;">
+    <p style="font-family:'Poppins',sans-serif; font-size:clamp(16px,1.6vw,26px); line-height:1.7; margin-top:32px;"><span style="color:#F4F2EA;">System1 &amp; Effie prove it: dull pays back 40% less. Entertaining work delivers a 21x profit multiplier. That&rsquo;s why we built Pitch Against Dull.</span> <span style="color:#FFFF00;">AI precision. Human intuition. Dead set on the work that works.</span></p>
+    <button class="btn-primary" style="margin-top: 48px;" onclick="showScreen('screen-five-tools')">LET&rsquo;S WORK ON IT. &rarr;</button>
+  </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="/privacy.html" style="color:inherit;text-decoration:none;">Privacy</a></div>
+  </footer>
+</div>
+
+<!-- SCREEN FIVE TOOLS -->
+<div id="screen-five-tools" class="screen">
+  <div style="padding: 48px 32px 0;">
+    <div class="ft-headline" style="font-family:'Poppins',sans-serif; font-weight:900; text-transform:uppercase; display:block; width:100%; line-height:0.95; color:var(--white);">FIVE TOOLS.</div>
+    <div class="ft-headline" style="font-family:'Poppins',sans-serif; font-weight:900; text-transform:uppercase; display:block; width:100%; line-height:0.95; color:var(--yellow);">ONE MISSION.</div>
+  </div>
+  <div style="padding: 24px 16px 48px; flex: 1; display: flex; flex-direction: column;">
+    <div style="padding: 20px 0; border-top: 1px solid #222;">
+      <div style="font-family:'Poppins',sans-serif; font-size:11px; font-weight:700; color:#777; margin-bottom:4px;">01</div>
+      <div style="font-family:'Poppins',sans-serif; font-weight:700; font-size:clamp(14px,1.2vw,18px); color:var(--yellow); text-transform:uppercase; margin-bottom:3px;">TRUTH DETECTOR</div>
+      <div style="font-family:'Poppins',sans-serif; font-size:clamp(16px,1.4vw,22px); line-height:1.6; color:#aaa;">Write briefs that say the truth and nothing but the truth. Five questions. No safe answers.</div>
+    </div>
+    <div style="padding: 20px 0; border-top: 1px solid #222;">
+      <div style="font-family:'Poppins',sans-serif; font-size:11px; font-weight:700; color:#777; margin-bottom:4px;">02</div>
+      <div style="font-family:'Poppins',sans-serif; font-weight:700; font-size:clamp(14px,1.2vw,18px); color:var(--yellow); text-transform:uppercase; margin-bottom:3px;">THE STORM</div>
+      <div style="font-family:'Poppins',sans-serif; font-size:clamp(16px,1.4vw,22px); line-height:1.6; color:#aaa;">Two rounds. One brief. No safety net. The best idea wins.</div>
+    </div>
+    <div style="padding: 20px 0; border-top: 1px solid #222;">
+      <div style="font-family:'Poppins',sans-serif; font-size:11px; font-weight:700; color:#777; margin-bottom:4px;">03</div>
+      <div style="font-family:'Poppins',sans-serif; font-weight:700; font-size:clamp(14px,1.2vw,18px); color:var(--yellow); text-transform:uppercase; margin-bottom:3px;">RECKONING</div>
+      <div style="font-family:'Poppins',sans-serif; font-size:clamp(16px,1.4vw,22px); line-height:1.6; color:#aaa;">Rigorous. Ruthless. Relentless. The process: brutal. The results: sublime.</div>
+    </div>
+    <div style="padding: 20px 0; border-top: 1px solid #222;">
+      <div style="font-family:'Poppins',sans-serif; font-size:11px; font-weight:700; color:#777; margin-bottom:4px;">04</div>
+      <div style="font-family:'Poppins',sans-serif; font-weight:700; font-size:clamp(14px,1.2vw,18px); color:var(--yellow); text-transform:uppercase; margin-bottom:3px;">FEEDFORWARD</div>
+      <div style="font-family:'Poppins',sans-serif; font-size:clamp(16px,1.4vw,22px); line-height:1.6; color:#aaa;">The winning idea learns to fly. AI maps the channels. Humans refine the plan.</div>
+    </div>
+    <div style="padding: 20px 0; border-top: 1px solid #222; border-bottom: 1px solid #222;">
+      <div style="font-family:'Poppins',sans-serif; font-size:11px; font-weight:700; color:#777; margin-bottom:4px;">05</div>
+      <div style="font-family:'Poppins',sans-serif; font-weight:700; font-size:clamp(14px,1.2vw,18px); color:var(--yellow); text-transform:uppercase; margin-bottom:3px;">PRODUCTION</div>
+      <div style="font-family:'Poppins',sans-serif; font-size:clamp(16px,1.4vw,22px); line-height:1.6; color:#aaa;">Coming soon.</div>
+    </div>
+    <button class="btn-primary" onclick="showScreen('screen-auth')">I&rsquo;M IN. &rarr;</button>
+  </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="/privacy.html" style="color:inherit;text-decoration:none;">Privacy</a></div>
+  </footer>
+</div>
+
+<!-- SCREEN AUTH -->
+<div id="screen-auth" class="screen">
+  <div style="padding: 48px 16px 32px;">
+    <div class="kd-logo" style="color: var(--white); line-height: 0.95;">LICENCE TO</div>
+    <div class="kd-logo" style="color: var(--yellow); line-height: 0.95;">KILL DULL.</div>
+  </div>
+  <div class="kd-body">
+    <button id="google-signin-btn" class="btn-google" onclick="signInWithGoogle()">
+      <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/>
+        <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z" fill="#34A853"/>
+        <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+        <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+      </svg>
+      SIGN IN WITH GOOGLE
+    </button>
+    <div class="auth-divider"><span>or use email</span></div>
+    <div class="auth-toggle">
+      <button class="auth-tab active" id="tab-create" onclick="switchAuthTab('create')">CREATE ACCOUNT</button>
+      <button class="auth-tab" id="tab-signin" onclick="switchAuthTab('signin')">SIGN IN</button>
+    </div>
+
+    <div id="auth-create-fields">
+      <label class="field-label">Full Name</label>
+      <input class="kd-input" id="auth-name" type="text" placeholder="Your full name" maxlength="80" autocomplete="name">
+
+      <label class="field-label">Company</label>
+      <input class="kd-input" id="auth-company" type="text" placeholder="Your company or organisation" maxlength="80" autocomplete="organization">
+
+      <label class="field-label">Role</label>
+      <select class="kd-input kd-select" id="auth-role">
+        <option value="">Select your role...</option>
+        <option value="CMO">CMO</option>
+        <option value="CEO">CEO</option>
+        <option value="CCO">CCO</option>
+        <option value="CDO">CDO</option>
+        <option value="Marketing Director">Marketing Director</option>
+        <option value="Brand Director">Brand Director</option>
+        <option value="Creative Director">Creative Director</option>
+        <option value="Art Director">Art Director</option>
+        <option value="Copywriter">Copywriter</option>
+        <option value="Strategist">Strategist</option>
+        <option value="Planner">Planner</option>
+        <option value="Researcher">Researcher</option>
+        <option value="Account Director">Account Director</option>
+        <option value="Producer">Producer</option>
+        <option value="Facilitator">Facilitator</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+
+    <label class="field-label">Email</label>
+    <input class="kd-input" id="auth-email" type="email" placeholder="Your email address" maxlength="120" autocomplete="email">
+
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;">
+      <label class="field-label" style="margin-bottom:0;">Password</label>
+      <a id="forgot-link" href="#" onclick="forgotPassword(event)" style="display:none;font-size:10px;color:#888;letter-spacing:1px;text-decoration:none;font-weight:700;text-transform:uppercase;">Forgot password?</a>
+    </div>
+    <div style="position:relative;">
+      <input class="kd-input" id="auth-password" type="password" placeholder="Minimum 6 characters" maxlength="100" autocomplete="current-password" style="margin-bottom:0;padding-right:48px;">
+      <button type="button" onclick="togglePasswordVisibility()" aria-label="Show/hide password" style="position:absolute;right:0;top:0;bottom:0;width:48px;background:none;border:none;cursor:pointer;color:#888;display:flex;align-items:center;justify-content:center;" id="pw-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+    </div>
+
+    <div id="auth-error"></div>
+
+    <button class="btn-primary" id="auth-submit-btn" onclick="handleAuth()">CONTINUE →</button>
+    <button class="btn-secondary" onclick="createTestAccount()" style="margin-top:24px;border-color:#333;color:#888;">CREATE TEST ACCOUNT (test@killdull.com)</button>
+  </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="/privacy.html" style="color:inherit;text-decoration:none;">Privacy</a></div>
+  </footer>
+</div>
+
+<!-- SCREEN 0: INTRO -->
+<div id="screen-intro" class="screen">
+  <div class="kd-header">
+    <div class="kd-logo">TRUTH DETECTOR.</div>
+  </div>
+  <div class="kd-body">
+    <div class="kd-screen-label">Intro</div>
+    <div class="kd-title">Most briefs dance around the truth.<br/><span>This one won't.</span></div>
+    <div class="kd-body-text">Most briefs protect the brand instead of interrogating it. The Kill Dull® Truth Detector changes that. Five questions. No safe answers. The uncomfortable truth your brief has been avoiding — surfaced, verified against the real world, turned into a provocation that makes great work inevitable.<br/><br/>Do this whenever you're ready to stop protecting the brand and start telling the truth about it. Before the room comes together, or days in advance.<br/><br/>What comes out of this session is your brief. Everything else follows.</div>
+    <button class="btn-primary" onclick="showScreen('screen-setup')">START →</button>
+  </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="/privacy.html" style="color:inherit;text-decoration:none;">Privacy</a></div>
+  </footer>
+</div>
+
+<!-- SCREEN 1: SETUP -->
+<div id="screen-setup" class="screen">
+  <div class="kd-header">
+    <div class="kd-logo">TRUTH DETECTOR.</div>
+  </div>
+  <div class="kd-body">
+    <div class="kd-screen-label">Brief</div>
+    <div class="kd-eyebrow">Step 1 of 2</div>
+    <div class="kd-title">The brand.<br/><span>The problem.</span></div>
+
+    <label style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#888;font-weight:700;display:block;margin-bottom:8px;">The Brand</label>
+    <input class="kd-input" id="brand-input" type="text" placeholder="Your brand name" maxlength="60">
+
+    <label style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#888;font-weight:700;display:block;margin-bottom:8px;">The Category</label>
+    <input class="kd-input" id="category-input" type="text" placeholder="Your category" maxlength="60">
+
+    <label style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#888;font-weight:700;display:block;margin-bottom:8px;">The Problem in One Sentence</label>
+    <textarea class="kd-textarea" id="problem-input" placeholder="What are you trying to solve? One sentence. Don't overthink it yet." maxlength="280" style="min-height:100px;"></textarea>
+    <div class="char-count"><span id="problem-count">0</span>/280</div>
+
+    <button class="btn-primary" id="setup-next-btn" onclick="setupNext()" disabled>NEXT →</button>
+    <button class="btn-secondary" onclick="showScreen('screen-intro')">← BACK</button>
+  </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="/privacy.html" style="color:inherit;text-decoration:none;">Privacy</a></div>
+  </footer>
+</div>
+
+<!-- SCREEN 2: WHO IS IN THE ROOM -->
+<div id="screen-who" class="screen">
+  <div class="kd-header">
+    <div class="kd-logo">TRUTH DETECTOR.</div>
+  </div>
+  <div class="kd-body">
+    <div class="kd-screen-label">Room</div>
+    <div class="kd-eyebrow">Step 2 of 2</div>
+    <div class="kd-title">Who's in<br/><span>the room?</span></div>
+    <div class="kd-body-text" style="margin-bottom:20px;">Select everyone present. Different roles see different things. The Truth Detector will use this to frame its questions.</div>
+
+    <div class="role-grid">
+      <button class="role-btn" onclick="toggleRole(this,'CMO')">CMO</button>
+      <button class="role-btn" onclick="toggleRole(this,'CEO')">CEO</button>
+      <button class="role-btn" onclick="toggleRole(this,'CCO')">CCO</button>
+      <button class="role-btn" onclick="toggleRole(this,'Strategist')">Strategist</button>
+      <button class="role-btn" onclick="toggleRole(this,'Researcher')">Researcher</button>
+      <button class="role-btn" onclick="toggleRole(this,'Other')">Other</button>
+    </div>
+
+    <button class="btn-primary" id="who-next-btn" onclick="startDetector()" disabled>BEGIN THE INTERROGATION →</button>
+    <button class="btn-secondary" onclick="showScreen('screen-setup')">← BACK</button>
+  </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="/privacy.html" style="color:inherit;text-decoration:none;">Privacy</a></div>
+  </footer>
+</div>
+
+<!-- SCREEN 3: QUESTION -->
+<div id="screen-question" class="screen">
+  <div class="kd-header">
+    <div class="kd-logo">TRUTH DETECTOR.</div>
+  </div>
+  <div class="question-progress-wrap">
+    <div class="question-number" id="q-number">Question 1 of 5</div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:20%"></div></div>
+  </div>
+  <div class="kd-body">
+    <div id="brief-display-q" class="brief-display" style="display:none;">
+      <div class="brief-label">The Brand & Problem</div>
+      <div class="brief-text" id="brief-display-text"></div>
+    </div>
+    <div class="question-text" id="q-text"></div>
+    <div class="question-sub" id="q-sub"></div>
+
+    <div style="position:relative;">
+      <textarea class="kd-textarea" id="answer-input" placeholder="Answer honestly. The Truth Detector can tell the difference." maxlength="600"></textarea>
+      <span class="answer-cursor-blink" id="answer-cursor">|</span>
+    </div>
+    <div class="char-count"><span id="answer-count">600</span> remaining</div>
+
+    <div id="thinking-state" class="thinking" style="display:none;">
+      <div class="spinner"></div>
+      <span id="thinking-text">Checking against the real world...</span>
+    </div>
+
+    <div id="verdict-area"></div>
+
+    <button class="btn-primary" id="submit-answer-btn" onclick="submitAnswer()">SUBMIT ANSWER →</button>
+    <button class="btn-primary" id="next-question-btn" onclick="nextQuestion()" style="display:none;">NEXT QUESTION →</button>
+
+    <div id="summary-panel"></div>
+  </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="/privacy.html" style="color:inherit;text-decoration:none;">Privacy</a></div>
+  </footer>
+</div>
+
+<!-- SCREEN 4: CATEGORY -->
+<div id="screen-category" class="screen">
+  <div class="kd-header">
+    <div class="kd-logo">TRUTH DETECTOR.</div>
+  </div>
+  <div class="kd-screen-label" style="padding:16px 16px 0;">Category</div>
+
+  <!-- loading -->
+  <div id="cat-loading" style="flex:1;display:flex;align-items:center;justify-content:center;padding:32px;">
+    <div class="thinking"><div class="spinner"></div><span>Performing the autopsy...</span></div>
+  </div>
+
+  <!-- flip cards -->
+  <div id="cat-cards" style="display:none;flex:1;flex-direction:column;overflow-y:auto;">
+    <div style="padding:0 16px 32px;">
+      <div id="cat-script-hl" style="font-family:'Poppins',sans-serif;font-weight:900;color:#fff;white-space:nowrap;line-height:1;">FLIP THE SCRIPT.</div>
+      <p style="font-family:'Poppins',sans-serif;font-size:16px;font-weight:500;color:#fff;line-height:1.5;margin-top:12px;">Six things your category can't stop doing. Flip to see the escape.</p>
+    </div>
+    <div id="flip-grid" class="flip-grid"></div>
+    <div style="padding:32px 16px 32px;">
+      <button class="btn-primary" id="category-next-btn" onclick="goToProvocation()" style="margin-top:0;">WITH THE OBVIOUS REMOVED. HERE'S WHAT'S LEFT. →</button>
+    </div>
+  </div>
+
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="/privacy.html" style="color:inherit;text-decoration:none;">Privacy</a></div>
+  </footer>
+</div>
+
+<!-- SCREEN 5: PROVOCATION -->
+<div id="screen-provocation" class="screen">
+  <div class="kd-header">
+    <div class="kd-logo">TRUTH DETECTOR.</div>
+  </div>
+  <div class="kd-body" style="padding-left:0;padding-right:0;">
+    <div style="padding:0 24px;">
+      <div class="kd-screen-label">Provocation</div>
+      <div class="ft-headline" id="prov-intro-hl" style="color:var(--white);">WHAT YOUR CATEGORY NEVER DOES.</div>
+      <div class="ft-headline" id="prov-do-it" style="color:var(--yellow);margin-top:4px;">DO IT.</div>
+    </div>
+    <div id="provocation-name" class="provocation-name" style="margin:20px 0 0;display:block;"></div>
+    <div style="padding:0 24px;">
+      <div id="provocation-tagline" class="provocation-tagline" style="margin-top:16px;"></div>
+      <div id="provocation-nevers" style="margin-top:24px;"></div>
+    </div>
+    <div class="room-code-block" id="prov-room-code-block" style="padding:32px 24px 0;">
+      <div class="room-code-number" id="prov-room-code-display" style="text-align:left;letter-spacing:6px;"></div>
+    </div>
+    <div style="padding:20px 24px 0;">
+      <button onclick="copyRoomCode(this)" class="btn-secondary" style="margin-bottom:0;">COPY CODE</button>
+      <button class="btn-primary" onclick="window.location.href='/storm.html'" style="margin-top:12px;">OPEN THE STORM →</button>
+    </div>
+  </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="/privacy.html" style="color:inherit;text-decoration:none;">Privacy</a></div>
+  </footer>
+</div>
+
+
+<script>
+// Truth Detector — no Firebase needed, standalone session
+
+// STATE
+let state = {
+  brand: '',
+  category: '',
+  problem: '',
+  roles: [],
+  currentQuestion: 0,
+  answers: [],
+  verdicts: [],
+  categoryItems: [],
+  provocation: null,
+  retries: 0,
+  finalAttempt: false,
+  sharpenedAnswer: null
+};
+
+const QUESTIONS = [
+  {
+    text: "The truth and nothing but the truth.",
+    sub: "Not the marketing truth. Not what you'd put in a press release. The thing everyone in this room knows but nobody has said out loud yet. What makes this brand genuinely interesting — or genuinely broken?",
+    thinking: "Checking against consumer reality..."
+  },
+  {
+    text: "What do real people actually say about this category when nobody's listening?",
+    sub: "Not focus group answers. Not survey responses. The thing people say to their friends, type into Reddit at midnight, write in one-star reviews. What is the honest frustration with this entire category?",
+    thinking: "Searching the real conversations..."
+  },
+  {
+    text: "What does this brand do that no competitor could honestly claim?",
+    sub: "Not aspirational. Not what you wish were true. What is provably, demonstrably, undeniably different about this brand? If the answer is nothing — that's the most important truth you've found today.",
+    thinking: "Verifying against the competitive landscape..."
+  },
+  {
+    text: "Why does this matter right now?",
+    sub: "What is happening in the world — culturally, socially, economically — that makes this brand relevant today in a way it wasn't three years ago? If the answer is nothing, the brief needs a different question.",
+    thinking: "Cross-referencing with cultural reality..."
+  },
+  {
+    text: "If this brand disappeared tomorrow — what would the world actually lose?",
+    sub: "Not what the brand would lose. What the world would lose. Real people. Real lives. Real consequences. If the honest answer is 'not much' — that's not failure. That's the most useful brief you've ever been given.",
+    thinking: "Finding the evidence..."
+  }
+];
+
+// SCREEN MANAGEMENT
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  fitAll();
+}
+
+// SETUP
+document.getElementById('problem-input').addEventListener('input', function() {
+  document.getElementById('problem-count').textContent = this.value.length;
+  checkSetupReady();
+});
+document.getElementById('brand-input').addEventListener('input', checkSetupReady);
+document.getElementById('category-input').addEventListener('input', checkSetupReady);
+
+function checkSetupReady() {
+  const b = document.getElementById('brand-input').value.trim();
+  const c = document.getElementById('category-input').value.trim();
+  const p = document.getElementById('problem-input').value.trim();
+  document.getElementById('setup-next-btn').disabled = !(b && c && p.length > 10);
+}
+
+function setupNext() {
+  state.brand = document.getElementById('brand-input').value.trim();
+  state.category = document.getElementById('category-input').value.trim();
+  state.problem = document.getElementById('problem-input').value.trim();
+  syncSession();
+  showScreen('screen-who');
+}
+
+// ROLES
+function toggleRole(btn, role) {
+  btn.classList.toggle('selected');
+  if (state.roles.includes(role)) {
+    state.roles = state.roles.filter(r => r !== role);
+  } else {
+    state.roles.push(role);
+  }
+  document.getElementById('who-next-btn').disabled = state.roles.length === 0;
+}
+
+// START
+function startDetector() {
+  state.currentQuestion = 0;
+  state.answers = [];
+  state.verdicts = [];
+  loadQuestion(0);
+  showScreen('screen-question');
+}
+
+function loadQuestion(idx) {
+  const q = QUESTIONS[idx];
+  document.getElementById('q-number').textContent = `Question ${idx + 1} of 5`;
+  document.getElementById('q-text').textContent = q.text;
+  document.getElementById('q-sub').textContent = q.sub;
+  document.getElementById('answer-input').value = '';
+  document.getElementById('answer-count').textContent = '600';
+  document.getElementById('verdict-area').innerHTML = '';
+  document.getElementById('thinking-state').style.display = 'none';
+  document.getElementById('submit-answer-btn').style.display = 'block';
+  document.getElementById('next-question-btn').style.display = 'none';
+
+  const progress = ((idx + 1) / 5) * 100;
+  document.getElementById('progress-fill').style.width = progress + '%';
+
+  if (idx > 0) {
+    document.getElementById('brief-display-q').style.display = 'block';
+    document.getElementById('brief-display-text').textContent = `${state.brand} — ${state.problem}`;
+  }
+
+  state.retries = 0;
+  state.finalAttempt = false;
+  state.sharpenedAnswer = null;
+  renderSummaryPanel('summary-panel');
+}
+
+document.getElementById('answer-input').addEventListener('input', function() {
+  document.getElementById('answer-count').textContent = 600 - this.value.length;
+  document.getElementById('answer-cursor').style.display = this.value ? 'none' : '';
+});
+(function() {
+  var ta = document.getElementById('answer-input');
+  var cur = document.getElementById('answer-cursor');
+  ta.addEventListener('focus', function() { cur.style.display = 'none'; });
+  ta.addEventListener('blur', function() { if (!ta.value) cur.style.display = ''; });
+})();
+
+// SUBMIT ANSWER
+async function submitAnswer() {
+  const answer = document.getElementById('answer-input').value.trim();
+  if (answer.length < 20) {
+    alert('Give us more than that. The Truth Detector needs something real to work with.');
+    return;
+  }
+
+  document.getElementById('submit-answer-btn').style.display = 'none';
+  document.getElementById('thinking-state').style.display = 'flex';
+  document.getElementById('thinking-text').textContent = QUESTIONS[state.currentQuestion].thinking;
+
+  try {
+    const verdict = await callTruthDetector(answer, state.currentQuestion);
+    state.answers[state.currentQuestion] = answer;
+    state.verdicts[state.currentQuestion] = verdict;
+    displayVerdict(verdict);
+  } catch(e) {
+    document.getElementById('thinking-state').style.display = 'none';
+    document.getElementById('submit-answer-btn').style.display = 'block';
+    document.getElementById('verdict-area').innerHTML = `<div class="verdict-box verdict-almost"><div class="verdict-label">Connection Error</div><div class="verdict-text">Could not reach the Truth Detector. Check your connection and try again.</div></div>`;
+  }
+}
+
+async function callTruthDetector(answer, questionIdx) {
+  const q = QUESTIONS[questionIdx];
+  const systemPrompt = `You are the Kill Dull Truth Detector. Your job is to determine whether an answer about a brand is genuinely true, or whether it is corporate marketing speak.
+
+The brand: ${state.brand}
+The category: ${state.category}
+The problem: ${state.problem}
+Roles in the room: ${state.roles.join(', ')}
+Question asked: ${q.text}
+
+You must return ONLY a JSON object with this exact structure:
+{
+  "verdict": "TRUE" | "ALMOST" | "MARKETING_TRUTH",
+  "verdict_headline": "One punchy sentence — the verdict in plain English",
+  "verdict_explanation": "2-3 sentences explaining why this verdict was reached. Be direct. No softening.",
+  "evidence": [
+    {
+      "quote": "A real-sounding consumer quote or observation that supports or contradicts the answer — written as if from Reddit, a review, or a forum",
+      "source": "e.g. Reddit r/[relevant subreddit], Trustpilot review, Twitter/X comment, Google review"
+    },
+    {
+      "quote": "Another real-sounding quote",
+      "source": "Another source"
+    },
+    {
+      "quote": "A third quote",
+      "source": "A third source"
+    }
+  ],
+  "bridge": "One sentence that connects what was said to what is actually true in the world."
+}
+
+VERDICT RULES:
+- TRUE: The answer contains a genuine, uncomfortable, specific truth that real people would recognise. It names something real, not aspirational. For Question 2 (about the category), accept a category-level truth — it does not need to implicate this specific brand.
+- ALMOST: There is a truth trying to get out but the person is still using safe language or protecting something. Close but not there yet.
+- MARKETING_TRUTH: This sounds right but it is the managed version of the truth. It would appear in a press release. It protects everyone in the room. Reject it.
+
+IMPORTANT: Question 2 asks about the CATEGORY, not the brand. Judge accordingly — a true observation about the category is valid even if it doesn't name the brand specifically.
+Be rigorous. Most first answers are ALMOST or MARKETING_TRUTH. A TRUE verdict must be earned.
+Return ONLY the JSON. No preamble. No markdown backticks.`;
+
+  const res = await fetch('https://killdull.vercel.app/api/critique', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-password': 'killdull2026' },
+    body: JSON.stringify({
+      system: systemPrompt,
+      messages: [{ role: 'user', content: [{ type: 'text', text: answer }] }]
+    })
+  });
+
+  const data = await res.json();
+  if (data.error) throw new Error(data.error);
+  let tdText = '';
+  if (data.content && Array.isArray(data.content)) {
+    const tb = data.content.find(b => b.type === 'text');
+    tdText = tb ? tb.text : '';
+  } else if (typeof data.content === 'string') {
+    tdText = data.content;
+  }
+  if (!tdText) throw new Error('Empty verdict response');
+  const clean = tdText.replace(/```json|```/g, '').trim();
+  return JSON.parse(clean);
+}
+
+const CHALLENGE_LINES = [
+  "That's not it. You know it isn't.",
+  "Something truer is waiting. Go find it.",
+  "The real answer is in the room. Say it out loud.",
+  "You're protecting something. Stop.",
+  "Almost. Now say the thing you nearly said.",
+  "You're still missing the bullseye."
+];
+
+function buildRejectionCard(verdict, showRetry) {
+  const challenge = CHALLENGE_LINES[Math.floor(Math.random() * CHALLENGE_LINES.length)];
+  const retryBtn = showRetry ? `<button class="btn-primary" onclick="retryAnswer()" style="margin-top:12px;">TRY AGAIN ↺</button>` : '';
+  return `
+    <div style="border:1px solid rgba(255,51,51,0.4);background:rgba(255,51,51,0.08);padding:20px;margin:20px 0;animation:fadeUp 0.4s ease;">
+      <div style="font-family:'Manrope',sans-serif;font-weight:900;font-size:clamp(18px,5vw,24px);text-transform:uppercase;color:var(--red);line-height:1.1;margin-bottom:16px;">${verdict.verdict_headline}</div>
+      <p style="font-family:'Poppins',sans-serif;font-weight:400;font-size:15px;color:#fff;line-height:1.7;margin-bottom:16px;">${challenge} For some inspiration, here's what people actually say when nobody's watching.</p>
+      <div style="border-left:2px solid #333;padding:12px 14px;margin-bottom:8px;background:#111;min-height:44px;"></div>
+      <div style="border-left:2px solid #333;padding:12px 14px;margin-bottom:8px;background:#111;min-height:44px;"></div>
+      <div style="border-left:2px solid #333;padding:12px 14px;margin-bottom:8px;background:#111;min-height:44px;"></div>
+    </div>
+    ${retryBtn}
+  `;
+}
+
+function displayVerdict(verdict) {
+  document.getElementById('thinking-state').style.display = 'none';
+
+  if (verdict.verdict === 'TRUE') {
+    document.getElementById('verdict-area').innerHTML = `
+      <div class="verdict-box verdict-true">
+        <div class="verdict-label">✓ True</div>
+        <div class="verdict-title">${verdict.verdict_headline}</div>
+        <div class="verdict-text">${verdict.verdict_explanation}</div>
+        ${verdict.bridge ? `<div style="margin-top:12px;font-size:12px;color:#ffffff;font-style:italic;border-top:1px solid #222;padding-top:12px;">${verdict.bridge}</div>` : ''}
+      </div>
+    `;
+    showNextBtn();
+    return;
+  }
+
+  if (state.finalAttempt) {
+    document.getElementById('verdict-area').innerHTML = `<div style="font-size:11px;color:var(--yellow);margin-top:8px;letter-spacing:2px;font-weight:700;">ACCEPTED. MOVING ON.</div>`;
+    showNextBtn();
+    return;
+  }
+
+  if (state.retries >= 2) {
+    document.getElementById('verdict-area').innerHTML = buildRejectionCard(verdict, false);
+    generateSharpAnswer(state.answers[state.currentQuestion], verdict);
+    return;
+  }
+
+  document.getElementById('verdict-area').innerHTML = buildRejectionCard(verdict, true);
+}
+
+function showNextBtn() {
+  document.getElementById('next-question-btn').style.display = 'block';
+  document.getElementById('next-question-btn').textContent = state.currentQuestion < 4 ? 'NEXT QUESTION →' : 'SEE THE CATEGORY →';
+  renderSummaryPanel('summary-panel');
+  syncSession();
+}
+
+function renderSummaryPanel(targetId) {
+  const el = document.getElementById(targetId);
+  if (!el) return;
+  const answered = QUESTIONS.map((q, i) => ({ q, i, a: state.answers[i] })).filter(x => x.a);
+  if (!answered.length) { el.innerHTML = ''; return; }
+  let html = `<div class="summary-panel"><div class="summary-panel-eyebrow">The interrogation</div>`;
+  answered.forEach(({ q, i, a }) => {
+    html += `<div class="summary-item">
+      <div class="summary-q">Q${i + 1}</div>
+      <div class="summary-q-text">${q.text}</div>
+      <div class="summary-a">${a}</div>
+    </div>`;
+  });
+  html += `</div>`;
+  el.innerHTML = html;
+}
+
+function retryAnswer() {
+  state.retries++;
+  document.getElementById('verdict-area').innerHTML = '';
+  document.getElementById('answer-input').value = '';
+  document.getElementById('answer-count').textContent = '600';
+  document.getElementById('submit-answer-btn').style.display = 'block';
+  document.getElementById('next-question-btn').style.display = 'none';
+  document.getElementById('answer-input').focus();
+}
+
+async function generateSharpAnswer(originalAnswer, verdict) {
+  document.getElementById('verdict-area').innerHTML += `
+    <div id="sharp-thinking" class="thinking" style="margin-top:16px;">
+      <div class="spinner"></div>
+      <span>Writing the truth you're avoiding...</span>
+    </div>`;
+
+  const q = QUESTIONS[state.currentQuestion];
+  const systemPrompt = `You are the Kill Dull Truth Detector. A brand team has failed to give a true answer after three attempts. Write the TRUE answer for them — the honest, uncomfortable version they keep dancing around.
+
+Brand: ${state.brand}
+Category: ${state.category}
+Problem: ${state.problem}
+Question asked: ${q.text}
+
+Their answer: "${originalAnswer}"
+Why it failed: ${verdict.verdict_headline} — ${verdict.verdict_explanation}
+
+Write the sharpened, honest version. Cut the corporate protection. Name the specific uncomfortable truth. Make it something a good creative director would lean forward to read. 2–4 sentences.
+
+Return ONLY: { "sharpened": "The sharper version here." }
+No preamble. No markdown.`;
+
+  try {
+    const res = await fetch('https://killdull.vercel.app/api/critique', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-password': 'killdull2026' },
+      body: JSON.stringify({
+        system: systemPrompt,
+        messages: [{ role: 'user', content: [{ type: 'text', text: 'Generate the sharper truth.' }] }]
+      })
+    });
+    const data = await res.json();
+    let text = '';
+    if (data.content && Array.isArray(data.content)) {
+      const tb = data.content.find(b => b.type === 'text');
+      text = tb ? tb.text : '';
+    } else if (typeof data.content === 'string') {
+      text = data.content;
+    }
+    const clean = text.replace(/```json|```/g, '').trim();
+    const result = JSON.parse(clean);
+    state.sharpenedAnswer = result.sharpened;
+  } catch(e) {
+    state.sharpenedAnswer = null;
+  }
+
+  const thinkingEl = document.getElementById('sharp-thinking');
+  if (thinkingEl) thinkingEl.remove();
+  displaySharpAnswer();
+}
+
+function displaySharpAnswer() {
+  if (!state.sharpenedAnswer) {
+    showNextBtn();
+    return;
+  }
+
+  document.getElementById('verdict-area').innerHTML += `
+    <div class="verdict-box sharp-answer-box" style="margin-top:16px;">
+      <div class="verdict-label" style="color:var(--yellow);">Here's the truth as we see it</div>
+      <div class="verdict-text" style="color:var(--white);font-size:14px;line-height:1.7;">${state.sharpenedAnswer}</div>
+    </div>
+    <div class="sharp-answer-actions">
+      <button class="btn-primary" onclick="useGeneratedAnswer()">USE THIS →</button>
+      <button class="btn-secondary" onclick="refineGeneratedAnswer()">REFINE IT ↺</button>
+      <button class="btn-secondary" onclick="writeMyOwn()">WRITE MY OWN ✎</button>
+    </div>
+  `;
+}
+
+function useGeneratedAnswer() {
+  state.answers[state.currentQuestion] = state.sharpenedAnswer;
+  const actions = document.querySelector('.sharp-answer-actions');
+  if (actions) actions.remove();
+  document.getElementById('verdict-area').innerHTML += `<div style="font-size:11px;color:var(--yellow);margin-top:8px;letter-spacing:2px;font-weight:700;">USING THIS VERSION.</div>`;
+  renderSummaryPanel('summary-panel');
+  syncSession();
+  showNextBtn();
+}
+
+function refineGeneratedAnswer() {
+  state.finalAttempt = true;
+  document.getElementById('answer-input').value = state.sharpenedAnswer;
+  document.getElementById('answer-count').textContent = 600 - state.sharpenedAnswer.length;
+  document.getElementById('verdict-area').innerHTML = '';
+  document.getElementById('submit-answer-btn').style.display = 'block';
+  document.getElementById('next-question-btn').style.display = 'none';
+  document.getElementById('answer-input').focus();
+  window.scrollTo(0, 0);
+}
+
+function writeMyOwn() {
+  state.finalAttempt = true;
+  document.getElementById('answer-input').value = '';
+  document.getElementById('answer-count').textContent = '600';
+  document.getElementById('verdict-area').innerHTML = '';
+  document.getElementById('submit-answer-btn').style.display = 'block';
+  document.getElementById('next-question-btn').style.display = 'none';
+  document.getElementById('answer-input').focus();
+  window.scrollTo(0, 0);
+}
+
+function nextQuestion() {
+  state.currentQuestion++;
+  if (state.currentQuestion >= 5) {
+    showScreen('screen-category');
+    loadCategoryAutopsy();
+  } else {
+    loadQuestion(state.currentQuestion);
+    window.scrollTo(0,0);
+  }
+}
+
+// CATEGORY AUTOPSY
+function initCategoryCards() {
+  document.getElementById('cat-loading').style.display = 'none';
+  document.getElementById('cat-cards').style.display = 'flex';
+  fitToWidth(document.getElementById('cat-script-hl'), false, 32);
+  var grid = document.getElementById('flip-grid');
+  grid.innerHTML = '';
+  state.categoryItems.forEach(function(item, i) {
+    var card = document.createElement('div');
+    card.className = 'flip-card';
+    card.innerHTML =
+      '<div class="flip-card-inner">' +
+        '<div class="flip-card-front">' +
+          '<div class="flip-label flip-front-label">THEY DO</div>' +
+          '<div class="flip-front-text">' + (item.they_do || item.always || '') + '</div>' +
+        '</div>' +
+        '<div class="flip-card-back">' +
+          '<div class="flip-label flip-back-label">YOU DO</div>' +
+          '<div class="flip-back-text">' + (item.you_do || item.dont || '') + '</div>' +
+        '</div>' +
+      '</div>';
+    card.addEventListener('click', function() { this.classList.toggle('flipped'); });
+    grid.appendChild(card);
+  });
+}
+
+async function loadCategoryAutopsy() {
+  try {
+    const systemPrompt = `You are the most uncomfortably honest creative strategist who has ever sat in a briefing room. You have watched entire industries sleepwalk into mediocrity and call it best practice. You are done being polite about it.
+
+The user is working in the ${state.category} category. The brand is ${state.brand}.
+
+Perform a full autopsy. Identify 6 creative conventions this category repeats on a loop — so embedded nobody sees them anymore. Not generalities. Specifics. The exact visual. The exact casting call. The music chosen because it tested well. The human truth that stopped being true the moment it became a brief.
+
+For each one, give what THEY do — and what YOU should do instead. Both must be brutal and specific. Maximum 8 words each. Upper case.
+
+Return ONLY a JSON array of exactly 6 objects — no markdown, no backticks, just the raw array:
+[
+  {
+    "they_do": "Max 8 words. What the category always does. Upper case.",
+    "you_do": "Max 8 words. The brutal specific alternative. Upper case."
+  }
+]`;
+
+    const res = await fetch('https://killdull.vercel.app/api/critique', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-password': 'killdull2026' },
+      body: JSON.stringify({
+        system: systemPrompt,
+        messages: [{ role: 'user', content: [{ type: 'text', text: `Perform a category autopsy for the ${state.category} category.` }] }]
+      })
+    });
+
+    const data = await res.json();
+    let catText = '';
+    if (data.content && Array.isArray(data.content)) {
+      const tb = data.content.find(b => b.type === 'text');
+      catText = tb ? tb.text : '';
+    } else if (typeof data.content === 'string') {
+      catText = data.content;
+    }
+    if (!catText) throw new Error('Empty category response');
+    const items = JSON.parse(catText.replace(/```json|```/g, '').trim());
+
+    state.categoryItems = items;
+    initCategoryCards();
+    generateProvocation();
+
+  } catch(e) {
+    console.error('Category autopsy failed:', e.message);
+    state.categoryItems = [
+      { they_do: 'SHOW THE AFTER, NOT THE WORK.', you_do: 'SHOW THE EXACT MOMENT BEFORE.' },
+      { they_do: 'CAST PEOPLE WHO DON\'T BUY IT.', you_do: 'FIND YOUR MOST INTERESTING REAL CUSTOMER.' },
+      { they_do: 'USE MUSIC TO FAKE AN EMOTION.', you_do: 'USE SILENCE. OR YOUR PRODUCT\'S ACTUAL SOUND.' },
+      { they_do: 'RECYCLE A TRUTH FROM ANOTHER ERA.', you_do: 'SAY THE THING THAT\'S TRUE RIGHT NOW.' },
+      { they_do: 'INVENT A PURPOSE NOBODY BELIEVES.', you_do: 'ADMIT WHAT YOU\'RE ACTUALLY FOR.' },
+      { they_do: 'SHOW THE PRODUCT. NOT THE PROBLEM.', you_do: 'MAKE THE PROBLEM UNFORGETTABLE FIRST.' }
+    ];
+    initCategoryCards();
+    generateProvocation();
+  }
+}
+
+// GENERATE PROVOCATION
+async function generateProvocation() {
+  console.log('Generating provocation... answers:', state.answers.length, 'categoryItems:', state.categoryItems.length);
+  try {
+    const answersText = state.answers.map((a,i) => {
+      const q = QUESTIONS[i] ? QUESTIONS[i].text : 'Question ' + (i+1);
+      return 'Q' + (i+1) + ': ' + q + '\nA: ' + (a || 'No answer');
+    }).join('\n\n');
+    const categoryText = state.categoryItems.map(c => c && c.they_do ? `THEY DO: ${c.they_do} / YOU DO: ${c.you_do || ''}` : String(c)).join('\n');
+
+    const systemPrompt = `You are the Kill Dull Truth Detector. You have completed the interrogation of a brand. Now you must produce the Kill Dull Provocation — the brief that opens the creative session.
+
+Brand: ${state.brand}
+Category: ${state.category}
+Problem: ${state.problem}
+
+The interrogation answers:
+${answersText}
+
+The category clichés to eliminate:
+${categoryText}
+
+Produce the Kill Dull Provocation. Return ONLY a JSON object:
+{
+  "name": "One word. Maximum two. This is the strategic name of the provocation. It should feel like a mission. Not a tagline. Examples: REBELLION. INVISIBLE. UNDESERVED. PERMISSION. RECKONING.",
+  "tagline": "One sentence. The opportunity. Not what the problem is — what the world looks like if this brand solves it brilliantly.",
+  "provocation": "Three sentences maximum. The dangerously clear truth. Human truth. Brand truth. Cultural tension. All in one provocation that would make a creative lean forward in their chair.",
+  "nevers": [
+    "One specific thing from the category autopsy stated as a creative prohibition",
+    "Second prohibition",
+    "Third prohibition",
+    "Fourth prohibition",
+    "Fifth prohibition"
+  ]
+}
+
+The provocation must be DANGEROUSLY CLEAR. Julian Cole clear. Rob Campbell dangerous. M&C Saatchi brutal. If it could appear in a press release — rewrite it.
+Return ONLY the JSON. No preamble. No markdown backticks.`;
+
+    const res = await fetch('https://killdull.vercel.app/api/critique', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-password': 'killdull2026' },
+      body: JSON.stringify({
+        system: systemPrompt,
+        messages: [{ role: 'user', content: [{ type: 'text', text: 'Generate the Kill Dull Provocation.' }] }]
+      })
+    });
+
+    const data = await res.json();
+    console.log('Provocation API raw:', JSON.stringify(data).slice(0, 300));
+    
+    let text = '';
+    if (data.content && Array.isArray(data.content)) {
+      const textBlock = data.content.find(b => b.type === 'text');
+      text = textBlock ? textBlock.text : '';
+    } else if (typeof data.content === 'string') {
+      text = data.content;
+    }
+    if (!text) throw new Error('Empty response: ' + JSON.stringify(data).slice(0, 100));
+    const clean = text.replace(/```json|```/g, '').trim();
+    state.provocation = JSON.parse(clean);
+    console.log('Provocation ready:', state.provocation.name);
+    syncSession();
+
+  } catch(e) {
+    console.error('Provocation generation failed:', e.message);
+    const nevers = (state.categoryItems || []).map(c => c.you_do || c.they_do || String(c)).filter(Boolean).slice(0, 5);
+    state.provocation = {
+      name: state.brand.toUpperCase(),
+      tagline: "The truth about this brand has been found. Now make work worthy of it.",
+      provocation: state.brand + " knows what it has lost. The question is whether it has the courage to name it out loud and build from that truth rather than around it.",
+      nevers: nevers.length ? nevers : ["Do what everyone else in the category does."]
+    };
+  }
+}
+
+// SHOW PROVOCATION
+document.getElementById('screen-provocation') && document.addEventListener('screenChange', function(e) {
+  if (e.detail === 'screen-provocation') renderProvocation();
+});
+
+function renderProvocation() {
+  if (!state.provocation) return;
+  try {
+    const saved = localStorage.getItem('kd_storm_room_code');
+    if (saved) showRoomCode(saved);
+  } catch(e) {}
+  const p = state.provocation;
+
+  var introHl = document.getElementById('prov-intro-hl');
+  var doIt = document.getElementById('prov-do-it');
+  if (introHl) fitToWidth(introHl, false, 48);
+  if (doIt) fitToWidth(doIt, false, 48);
+
+  // Provocation word — massive, full bleed
+  var nameEl = document.getElementById('provocation-name');
+  nameEl.textContent = p.name;
+  fitToWidth(nameEl, false, 0);
+
+  document.getElementById('provocation-tagline').textContent = p.tagline;
+
+  // NEVERs — plain lines, no labels
+  let neversHTML = '';
+  p.nevers.forEach(n => {
+    neversHTML += `<div style="font-size:13px;font-weight:700;letter-spacing:1px;color:var(--white);padding:12px 0;border-bottom:1px solid var(--border);text-transform:uppercase;">${n}</div>`;
+  });
+  document.getElementById('provocation-nevers').innerHTML = neversHTML;
+}
+
+// Override showScreen to handle provocation render
+const originalShowScreen = showScreen;
+window.showScreen = function(id) {
+  originalShowScreen(id);
+  if (id === 'screen-provocation') {
+    renderProvocation();
+  }
+};
+
+function goToProvocation() {
+  if (!state.provocation) {
+    document.getElementById('category-next-btn').textContent = 'FINDING YOUR TRUTH...';
+    document.getElementById('category-next-btn').disabled = true;
+    let dots = 0;
+    const wait = setInterval(() => {
+      dots = (dots + 1) % 4;
+      const dotStr = '.'.repeat(dots);
+      if (document.getElementById('category-next-btn')) {
+        document.getElementById('category-next-btn').textContent = 'FINDING YOUR TRUTH' + dotStr;
+      }
+      if (state.provocation) {
+        clearInterval(wait);
+        showScreen('screen-provocation');
+        renderProvocation();
+      }
+    }, 500);
+  } else {
+    showScreen('screen-provocation');
+    renderProvocation();
+  }
+}
+
+function openSession() {
+  window.location.href = '/pro.html';
+}
+
+function copyProvocation() {
+  if (!state.provocation) return;
+  const p = state.provocation;
+  const nevers = p.nevers.map((n, i) => `${i + 1}. ${n}`).join('\n');
+  const qa = QUESTIONS.map((q, i) => {
+    const a = state.answers[i];
+    return a ? `Q${i + 1}: ${q.text}\n${a}` : null;
+  }).filter(Boolean).join('\n\n');
+  const text = `KILL DULL — ${p.name}\n\n${p.tagline}\n\n${p.provocation}\n\nNEVER:\n${nevers}\n\nTHE INTERROGATION:\n\n${qa}`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    btn.textContent = 'COPIED ✓';
+    setTimeout(() => btn.textContent = 'COPY PROVOCATION', 2000);
+  });
+}
+
+// ── FIREBASE AUTH & SESSION ──────────────────────────────────────────────────
+
+function generateRoomCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+  return Array.from({length: 4}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+}
+
+async function createSession() {
+  state.roomCode = generateRoomCode();
+  const newRef = firebase.database().ref('sessions').push();
+  state.sessionId = newRef.key;
+  await newRef.set({
+    roomCode: state.roomCode,
+    userId: state.userId,
+    userProfile: state.userProfile || {},
+    brand: '', category: '', problem: '',
+    answers: {}, provocation: null,
+    createdAt: Date.now(), status: 'active'
+  });
+  document.getElementById('room-badge-code').textContent = state.roomCode;
+  // persist and display the room code
+  try { localStorage.setItem('kd_storm_room_code', state.roomCode); } catch(e) {}
+  showRoomCode(state.roomCode);
+}
+
+function showRoomCode(code) {
+  const inlineCode  = document.getElementById('prov-room-code-display');
+  const inlineBlock = document.getElementById('prov-room-code-block');
+  if (inlineCode)  inlineCode.textContent = code;
+  if (inlineBlock) inlineBlock.classList.add('visible');
+}
+
+function copyRoomCode(btn) {
+  const code = document.getElementById('prov-room-code-display').textContent;
+  if (!code) return;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = 'COPIED ✓';
+    setTimeout(() => { btn.textContent = 'COPY CODE'; }, 2000);
+  }).catch(() => {});
+}
+
+function syncSession() {
+  if (!state.sessionId) return;
+  const answersObj = {};
+  state.answers.forEach((a, i) => { if (a) answersObj[i] = a; });
+  firebase.database().ref(`sessions/${state.sessionId}`).update({
+    brand: state.brand || '',
+    category: state.category || '',
+    problem: state.problem || '',
+    answers: answersObj,
+    provocation: state.provocation || null,
+    updatedAt: Date.now()
+  });
+}
+
+function switchAuthTab(mode) {
+  const isCreate = mode === 'create';
+  document.getElementById('tab-create').classList.toggle('active', isCreate);
+  document.getElementById('tab-signin').classList.toggle('active', !isCreate);
+  document.getElementById('auth-create-fields').style.display = isCreate ? 'block' : 'none';
+  document.getElementById('forgot-link').style.display = isCreate ? 'none' : 'inline';
+  document.getElementById('auth-submit-btn').textContent = 'CONTINUE →';
+  document.getElementById('auth-error').style.display = 'none';
+}
+
+const GOOGLE_ICON_SVG = '<svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z" fill="#34A853"/><path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z" fill="#EA4335"/></svg>';
+
+async function signInWithGoogle() {
+  const btn = document.getElementById('google-signin-btn');
+  btn.disabled = true;
+  btn.innerHTML = GOOGLE_ICON_SVG + ' CONNECTING...';
+  document.getElementById('auth-error').style.display = 'none';
+  try {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    const cred = await firebase.auth().signInWithPopup(provider);
+    const user = cred.user;
+    const snap = await firebase.database().ref(`users/${user.uid}`).once('value');
+    let profile;
+    if (snap.exists()) {
+      profile = snap.val();
+    } else {
+      profile = { name: user.displayName || '', email: user.email || '', company: '', role: '' };
+      await firebase.database().ref(`users/${user.uid}`).set(profile);
+    }
+    state.userId = user.uid;
+    state.userProfile = profile;
+    try { await createSession(); } catch(e) {}
+    showScreen('screen-intro');
+  } catch(e) {
+    btn.disabled = false;
+    btn.innerHTML = GOOGLE_ICON_SVG + ' SIGN IN WITH GOOGLE';
+    showAuthError(firebaseErrorMessage(e.code));
+  }
+}
+
+function createTestAccount() {
+  switchAuthTab('create');
+  document.getElementById('auth-name').value = 'Test User';
+  document.getElementById('auth-company').value = 'Kill Dull';
+  document.getElementById('auth-role').value = 'Facilitator';
+  document.getElementById('auth-email').value = 'test@killdull.com';
+  document.getElementById('auth-password').value = 'killdull2026';
+  handleAuth();
+}
+
+function togglePasswordVisibility() {
+  const input = document.getElementById('auth-password');
+  const btn = document.getElementById('pw-toggle');
+  const isHidden = input.type === 'password';
+  input.type = isHidden ? 'text' : 'password';
+  btn.innerHTML = isHidden
+    ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/><line x1="1" y1="1" x2="23" y2="23"/></svg>'
+    : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+}
+
+async function forgotPassword(e) {
+  e.preventDefault();
+  const email = document.getElementById('auth-email').value.trim();
+  if (!email) { showAuthError('Enter your email address above first.'); return; }
+  try {
+    await firebase.auth().sendPasswordResetEmail(email);
+    const el = document.getElementById('auth-error');
+    el.style.display = 'block';
+    el.style.color = 'var(--green)';
+    el.textContent = 'Reset email sent. Check your inbox.';
+  } catch(e) {
+    showAuthError(firebaseErrorMessage(e.code));
+  }
+}
+
+function showAuthError(msg) {
+  const el = document.getElementById('auth-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function firebaseErrorMessage(code) {
+  const map = {
+    'auth/email-already-in-use': 'An account with this email already exists. Sign in instead.',
+    'auth/invalid-email': 'Please enter a valid email address.',
+    'auth/weak-password': 'Password must be at least 6 characters.',
+    'auth/user-not-found': 'No account found with this email.',
+    'auth/wrong-password': 'Incorrect password. Try again.',
+    'auth/invalid-credential': 'Incorrect email or password.',
+    'auth/invalid-login-credentials': 'Incorrect email or password.',
+    'auth/user-disabled': 'This account has been disabled.',
+    'auth/network-request-failed': 'Network error. Check your connection and try again.',
+    'auth/too-many-requests': 'Too many attempts. Please try again later.',
+    'auth/operation-not-allowed': 'Sign-in is not enabled for this app.',
+    'auth/requires-recent-login': 'Please sign in again to continue.',
+    'auth/popup-closed-by-user': 'Sign-in was cancelled.',
+    'auth/missing-password': 'Please enter your password.'
+  };
+  return map[code] || `Sign-in failed (${code || 'unknown error'}). Please try again.`;
+}
+
+async function handleAuth() {
+  const isCreate = document.getElementById('tab-create').classList.contains('active');
+  const email = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  document.getElementById('auth-error').style.display = 'none';
+
+  if (!email || !password) { showAuthError('Email and password are required.'); return; }
+
+  const btn = document.getElementById('auth-submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'CONTINUING...';
+
+  let user, profile;
+
+  try {
+    if (isCreate) {
+      const name = document.getElementById('auth-name').value.trim();
+      const company = document.getElementById('auth-company').value.trim();
+      const role = document.getElementById('auth-role').value;
+      if (!name || !company || !role) {
+        showAuthError('Please fill in all fields.');
+        btn.disabled = false;
+        btn.textContent = 'CONTINUE →';
+        return;
+      }
+      const cred = await firebase.auth().createUserWithEmailAndPassword(email, password);
+      user = cred.user;
+      profile = { name, email, company, role };
+      await firebase.database().ref(`users/${user.uid}`).set(profile);
+    } else {
+      console.log('Attempting sign in for:', email);
+      const cred = await firebase.auth().signInWithEmailAndPassword(email, password);
+      user = cred.user;
+      console.log('Sign in succeeded, uid:', user.uid);
+      const snap = await firebase.database().ref(`users/${user.uid}`).once('value');
+      profile = snap.exists() ? snap.val() : { email };
+    }
+  } catch(e) {
+    console.log('Firebase error code:', e.code);
+    console.log('Firebase error message:', e.message);
+    console.error('Full error:', e);
+    btn.disabled = false;
+    btn.textContent = 'CONTINUE →';
+    showAuthError(`${firebaseErrorMessage(e.code)} [${e.code || 'no-code'}]`);
+    return;
+  }
+
+  try {
+    state.userId = user.uid;
+    state.userProfile = profile;
+    await createSession();
+    showScreen('screen-intro');
+  } catch(e) {
+    console.log('Post-auth error code:', e.code);
+    console.log('Post-auth error message:', e.message);
+    console.error('Full post-auth error:', e);
+    // Auth succeeded — proceed even if session creation fails
+    state.userId = user.uid;
+    state.userProfile = profile;
+    showScreen('screen-intro');
+  }
+}
+
+function initFirebaseAuth() {
+  firebase.auth().onAuthStateChanged(async (user) => {
+    if (user) {
+      try {
+        const snap = await firebase.database().ref(`users/${user.uid}`).once('value');
+        if (snap.exists()) {
+          state.userId = user.uid;
+          state.userProfile = snap.val();
+          await createSession();
+          document.getElementById('auth-loading').style.display = 'none';
+          showScreen('screen-intro');
+          return;
+        }
+      } catch(e) {
+        console.error('Auto sign-in error:', e.code, e.message);
+      }
+    }
+    document.getElementById('auth-loading').style.display = 'none';
+    showScreen('screen-kd-intro');
+  });
+}
+
+initFirebaseAuth();
+
+</script>
+<script>
+(function(){
+  var wrap = document.getElementById('kd-wrap');
+  var el = document.getElementById('kd-text');
+  var lastWidth = 0;
+  function buildSpans() {
+    el.style.fontFamily = "'Poppins', sans-serif";
+    el.style.fontWeight = '900';
+    el.style.whiteSpace = 'nowrap';
+    el.style.overflow = 'hidden';
+    el.style.fontSize = '200px';
+    el.textContent = 'PITCH AGAINST DULL.';
+    var size = Math.floor(((window.innerWidth - 32) / el.scrollWidth) * 200);
+    el.style.fontSize = size + 'px';
+    el.innerHTML =
+      '<span id="l0">P</span>' +
+      '<span id="l1">I</span>' +
+      '<span id="l2">T</span>' +
+      '<span id="l3">C</span>' +
+      '<span id="l4">H</span>' +
+      '<span id="lsp" style="display:inline-block;width:0.22em;"></span>' +
+      '<span id="l5">A</span>' +
+      '<span id="l6">G</span>' +
+      '<span id="l7">A</span>' +
+      '<span id="l8">I</span>' +
+      '<span id="l9">N</span>' +
+      '<span id="l10">S</span>' +
+      '<span id="l11">T</span>' +
+      '<span id="lsp2" style="display:inline-block;width:0.22em;"></span>' +
+      '<span id="l12">D</span>' +
+      '<span id="l13">U</span>' +
+      '<span id="l14">L</span>' +
+      '<span id="l15">L</span>' +
+      '<span id="dot">.</span>';
+  }
+  var revealOrder = [4,1,10,7,13,2,9,15,6,0,11,14,3,8,12,5];
+  var running = false;
+  var dotInterval = null;
+  function sleep(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
+  function startDotFlicker(dot){
+    dotInterval = setInterval(function(){
+      dot.style.opacity = Math.random()>0.3?'1':'0.1';
+      dot.style.color = Math.random()>0.4?'#FFFF00':'#F4F2EA';
+    }, 60+Math.random()*80);
+  }
+  function stopDotFlicker(dot, c){
+    clearInterval(dotInterval);
+    dot.style.opacity='1';
+    dot.style.color=c;
+  }
+  function flickerInDuration(el, durationMs){
+    return new Promise(async function(resolve){
+      el.style.opacity='0';
+      var start = Date.now();
+      while(Date.now() - start < durationMs){
+        el.style.color = Math.random() > 0.5 ? '#ffffff' : '#FFFF00';
+        el.style.opacity = Math.random() > 0.25 ? '1' : '0.15';
+        await sleep(20+Math.random()*50);
+        el.style.opacity='0';
+        await sleep(10+Math.random()*30);
+      }
+      el.style.color='#FFFF00';
+      el.style.opacity='1';
+      resolve();
+    });
+  }
+  async function runAnimation(){
+    if(running) return;
+    running=true;
+    var allLetters = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(function(i){ return document.getElementById('l'+i); });
+    var dot = document.getElementById('dot');
+    allLetters.forEach(function(l){ l.style.opacity='0'; l.style.color='#FFFF00'; });
+    dot.style.opacity='1'; dot.style.color='#FFFF00';
+    startDotFlicker(dot);
+    await sleep(200);
+    var fa = allLetters.map(function(l){ return flickerInDuration(l, 800+Math.random()*400); });
+    await Promise.all(fa);
+    allLetters.forEach(function(l){ l.style.color='#FFFF00'; l.style.opacity='1'; });
+    stopDotFlicker(dot,'#FFFF00');
+    await sleep(1500);
+    var splash = document.getElementById('screen-splash');
+    splash.style.transition = 'opacity 0.6s ease';
+    splash.style.opacity = '0';
+    setTimeout(function(){
+      splash.style.display = 'none';
+      fitAll();
+      if (typeof window.showCookieBannerIfNeeded === 'function') window.showCookieBannerIfNeeded();
+    }, 600);
+  }
+  function init(){
+    buildSpans();
+    lastWidth = wrap.offsetWidth;
+    runAnimation();
+  }
+  setInterval(function(){
+    var w = wrap.offsetWidth;
+    if(w !== lastWidth && !running){
+      lastWidth = w;
+      buildSpans();
+    }
+  }, 500);
+  setTimeout(init, 500);
+})();
+</script>
+<script>
+function fitToWidth(el, allowWrap, subtractPx) {
+  var available = window.innerWidth - (subtractPx || 32);
+  el.style.whiteSpace = 'nowrap';
+  el.style.fontSize = '500px';
+  var textWidth = el.scrollWidth;
+  var size = Math.floor((available / textWidth) * 500);
+  if (allowWrap && size < 16) {
+    el.style.whiteSpace = 'normal';
+    el.style.fontSize = '16px';
+  } else {
+    el.style.fontSize = size + 'px';
+  }
+}
+function fitAll() {
+  document.querySelectorAll('.kd-logo, .kill-dull-title').forEach(function(el) {
+    fitToWidth(el, false);
+  });
+  document.querySelectorAll('.kd-logo-sub').forEach(function(el) {
+    fitToWidth(el, true, 64);
+  });
+  document.querySelectorAll('.ft-headline').forEach(function(el) {
+    fitToWidth(el, false, 64);
+  });
+  var provName = document.getElementById('provocation-name');
+  if (provName && provName.textContent && provName.offsetParent !== null) {
+    fitToWidth(provName, false, 0);
+  }
+}
+document.addEventListener('DOMContentLoaded', fitAll);
+window.addEventListener('load', fitAll);
+window.addEventListener('resize', fitAll);
+</script>
+
+<div id="cookie-banner" class="cookie-banner">
+  <p class="cookie-banner-text">We use cookies to keep you signed in and remember your preferences. <a href="/privacy.html">Privacy policy</a></p>
+  <div class="cookie-banner-btns">
+    <button class="cookie-btn cookie-btn-decline" onclick="declineCookies()">Decline</button>
+    <button class="cookie-btn cookie-btn-accept" onclick="acceptCookies()">Accept</button>
+  </div>
+</div>
+
+<script>
+window.showCookieBannerIfNeeded = function() {
+  try {
+    if (!localStorage.getItem('kd_cookie_consent')) {
+      document.getElementById('cookie-banner').style.display = 'flex';
+    }
+  } catch(e) {}
+};
+function acceptCookies() {
+  try { localStorage.setItem('kd_cookie_consent', 'accepted'); } catch(e) {}
+  document.getElementById('cookie-banner').style.display = 'none';
+}
+function declineCookies() {
+  try { localStorage.setItem('kd_cookie_consent', 'declined'); } catch(e) {}
+  document.getElementById('cookie-banner').style.display = 'none';
+}
+</script>
+</body>
+</html>
