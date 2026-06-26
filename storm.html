@@ -269,7 +269,7 @@
         <div style="font-family:'Poppins',sans-serif; font-size:clamp(16px,1.4vw,22px); line-height:1.6; color:#aaa;">Coming soon.</div>
       </div>
       <div class="flex-1"></div>
-      <button class="btn btn-yellow" onclick="showScreen('screen-landing')">LET&rsquo;S BEGIN &rarr;</button>
+      <button class="btn btn-yellow" onclick="showTitleCard('THE STORM.', function(){ showScreen('screen-landing'); })">LET&rsquo;S BEGIN &rarr;</button>
     </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
@@ -2144,51 +2144,98 @@
   </script>
 <script>
 (function(){
-  var running = false;
-  function sleep(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
-  async function runSplash() {
-    if (running) return;
-    running = true;
-    try { await document.fonts.ready; } catch(e) {}
-    var splash = document.getElementById('screen-splash');
-    if (splash) splash.style.display = 'none';
-    var tc = document.getElementById('title-card');
-    var tt = document.getElementById('title-card-text');
-    if (!tc || !tt) { showScreen('screen-landing'); fitAll(); return; }
-    function fitLine(el) {
-      var avail = window.innerWidth - 32;
-      el.style.fontSize = '500px';
-      el.style.whiteSpace = 'nowrap';
-      var tw = el.scrollWidth;
-      if (tw > 0) el.style.fontSize = Math.floor(avail / tw * 500) + 'px';
-    }
-    function showCard(lines, ms) {
-      return new Promise(function(resolve) {
-        tt.innerHTML = '';
-        lines.forEach(function(line) {
-          var d = document.createElement('div');
-          d.textContent = line.text;
-          d.style.color = line.color;
-          d.style.display = 'block';
-          d.style.whiteSpace = 'nowrap';
-          d.style.lineHeight = '1.05';
-          tt.appendChild(d);
-        });
-        tc.style.display = 'flex';
-        tc.style.visibility = 'hidden';
-        tt.querySelectorAll('div').forEach(fitLine);
-        tc.style.visibility = 'visible';
-        setTimeout(function() { tc.style.display = 'none'; resolve(); }, ms);
-      });
-    }
-    await showCard([{text:'KILL DULL.', color:'#F4F2EA'}], 800);
-    await showCard([{text:'DULL IS EXPENSIVE.', color:'#F4F2EA'}], 800);
-    await showCard([{text:'FIVE TOOLS.', color:'#F4F2EA'},{text:'ONE MISSION.', color:'#FFFF00'}], 800);
-    await showCard([{text:'THE STORM.', color:'#FFFF00'}], 800);
-    showScreen('screen-landing');
-    fitAll();
+  var wrap = document.getElementById('kd-wrap');
+  var el = document.getElementById('kd-text');
+  var lastWidth = 0;
+  function buildSpans() {
+    el.style.fontFamily = "'Poppins', sans-serif";
+    el.style.fontWeight = '900';
+    el.style.whiteSpace = 'nowrap';
+    el.style.overflow = 'hidden';
+    el.style.fontSize = (window.innerWidth * 0.185) + 'px';
+    el.innerHTML =
+      '<span id="l0">K</span>' +
+      '<span id="l1">I</span>' +
+      '<span id="l2">L</span>' +
+      '<span id="l3">L</span>' +
+      '<span id="lsp" style="display:inline-block;width:0.22em;"></span>' +
+      '<span id="l4">D</span>' +
+      '<span id="l5">U</span>' +
+      '<span id="l6">L</span>' +
+      '<span id="l7">L</span>' +
+      '<span id="dot">.</span>';
   }
-  setTimeout(runSplash, 50);
+  var revealOrder = [1,3,2,7,6,4,5,0];
+  var running = false;
+  var dotInterval = null;
+  function sleep(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
+  function startDotFlicker(dot){
+    dotInterval = setInterval(function(){
+      dot.style.opacity = Math.random()>0.3?'1':'0.1';
+      dot.style.color = Math.random()>0.4?'#FFFF00':'#F4F2EA';
+    }, 60+Math.random()*80);
+  }
+  function stopDotFlicker(dot, c){
+    clearInterval(dotInterval);
+    dot.style.opacity='1';
+    dot.style.color=c;
+  }
+  function flickerIn(el, color, times){
+    return new Promise(async function(resolve){
+      for(var i=0;i<times;i++){
+        el.style.color=color;
+        el.style.opacity=Math.random()>0.3?'1':'0.2';
+        await sleep(30+Math.random()*60);
+        el.style.opacity='0';
+        await sleep(20+Math.random()*40);
+      }
+      el.style.color=color;
+      el.style.opacity='1';
+      resolve();
+    });
+  }
+  async function runAnimation(){
+    if(running) return;
+    running=true;
+    var letters = revealOrder.map(function(i){ return document.getElementById('l'+i); });
+    var allLetters = [0,1,2,3,4,5,6,7].map(function(i){ return document.getElementById('l'+i); });
+    var dot = document.getElementById('dot');
+    allLetters.forEach(function(l){ l.style.opacity='0'; l.style.color='#FFFF00'; });
+    dot.style.opacity='1'; dot.style.color='#FFFF00';
+    startDotFlicker(dot);
+    await sleep(400);
+    for(var i=0;i<letters.length;i++){
+      await flickerIn(letters[i],'#FFFF00',2+Math.floor(Math.random()*3));
+      await sleep(80+Math.random()*150);
+    }
+    await sleep(300);
+    var fa=allLetters.map(function(l){ return flickerIn(l,'#F4F2EA',6+Math.floor(Math.random()*5)); });
+    await Promise.all(fa);
+    allLetters.forEach(function(l){ l.style.color='#F4F2EA'; l.style.opacity='1'; });
+    stopDotFlicker(dot,'#F4F2EA');
+    await sleep(800);
+    var splash = document.getElementById('screen-splash');
+    splash.style.transition = 'opacity 0.5s ease';
+    splash.style.opacity = '0';
+    setTimeout(function(){
+      splash.style.display = 'none';
+      showScreen('screen-kd-intro');
+      fitAll();
+    }, 500);
+  }
+  function init(){
+    buildSpans();
+    lastWidth = wrap.offsetWidth;
+    runAnimation();
+  }
+  setInterval(function(){
+    var w = wrap.offsetWidth;
+    if(w !== lastWidth && !running){
+      lastWidth = w;
+      buildSpans();
+    }
+  }, 500);
+  setTimeout(init, 500);
 })();
 </script>
 <script>
