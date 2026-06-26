@@ -1418,45 +1418,45 @@ function escapeHtml(str) {
 
 function buildRejectionCard(verdict, showRetry) {
   const challenge = CHALLENGE_LINES[Math.floor(Math.random() * CHALLENGE_LINES.length)];
-  const LBL = “display:block;padding:12px 16px;background:#222;border-left:4px solid #FFFF00;color:#fff;font-family:'Poppins',sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:0.15em;margin:0;”;
+  const LBL = "display:block;padding:12px 16px;background:#222;border-left:4px solid #FFFF00;color:#fff;font-family:'Poppins',sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:0.15em;margin:0;";
   const CARD = 'border:1px solid #222;';
   const retryBtn = showRetry
-    ? `<button class=”btn-primary” onclick=”retryAnswer()” style=”margin-top:32px;”>TRY AGAIN ↺</button>`
+    ? `<button class="btn-primary" onclick="retryAnswer()" style="margin-top:32px;">TRY AGAIN ↺</button>`
     : '';
   return `
-    <div style=”border:1px solid rgba(255,51,51,0.4);background:rgba(255,51,51,0.08);padding:20px;margin:20px 0;animation:fadeUp 0.4s ease;”>
-      <div style=”font-family:'Poppins',sans-serif;font-weight:900;font-size:clamp(18px,5vw,24px);text-transform:uppercase;color:var(--red);line-height:1.1;margin-bottom:16px;”>${escapeHtml(verdict.verdict_headline)}</div>
-      <p style=”font-size:16px;color:#fff;line-height:1.7;margin:0;”>${challenge}</p>
+    <div style="border:1px solid rgba(255,51,51,0.4);background:rgba(255,51,51,0.08);padding:20px;margin:20px 0;animation:fadeUp 0.4s ease;">
+      <div style="font-family:'Poppins',sans-serif;font-weight:900;font-size:clamp(18px,5vw,24px);text-transform:uppercase;color:var(--red);line-height:1.1;margin-bottom:16px;">${escapeHtml(verdict.verdict_headline)}</div>
+      <p style="font-size:16px;color:#fff;line-height:1.7;margin:0;">${challenge}</p>
     </div>
 
-    <div id=”consumer-quotes-wrapper”>
-      <div style=”${CARD}margin-top:32px;”>
-        <div style=”${LBL}”>INSTINCT TIER</div>
-        <div style=”padding:16px;background:#0d0d0d;”>
-          <div style=”font-size:11px;font-weight:700;color:#888;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;”>AI-GENERATED CONSUMER SENTIMENT</div>
-          <div id=”consumer-quotes-container”>
-            <div style=”border-left:3px solid #FFFF00;padding:12px 14px;margin-bottom:8px;background:#111;font-family:'Poppins',sans-serif;font-size:13px;color:#555;letter-spacing:0.06em;”>GENERATING CONSUMER SENTIMENT…</div>
+    <div id="consumer-quotes-wrapper">
+      <div style="${CARD}margin-top:32px;">
+        <div style="${LBL}">INSTINCT TIER</div>
+        <div style="padding:16px;background:#0d0d0d;">
+          <div style="font-size:11px;font-weight:700;color:#888;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;">AI-GENERATED CONSUMER SENTIMENT</div>
+          <div id="consumer-quotes-container">
+            <div style="border-left:3px solid #FFFF00;padding:12px 14px;margin-bottom:8px;background:#111;font-family:'Poppins',sans-serif;font-size:13px;color:#555;letter-spacing:0.06em;">GENERATING CONSUMER SENTIMENT…</div>
           </div>
         </div>
       </div>
 
-      <div style=”${CARD}margin-top:32px;”>
-        <div style=”${LBL}”>EVIDENCE TIER</div>
-        <div style=”padding:20px;background:#0d0d0d;”>
-          <div style=”margin-bottom:16px;”>
-            <img src=”assets/system1-logo.png” alt=”System1” style=”max-height:32px;display:block;” onerror=”this.nextElementSibling.style.display='inline';this.style.display='none'”>
-            <span style=”display:none;font-family:'Poppins',sans-serif;font-weight:900;font-size:14px;color:#FF69B4;letter-spacing:0.1em;text-transform:uppercase;”>SYSTEM1</span>
+      <div style="${CARD}margin-top:32px;">
+        <div style="${LBL}">EVIDENCE TIER</div>
+        <div style="padding:20px;background:#0d0d0d;">
+          <div style="margin-bottom:16px;">
+            <img src="assets/system1-logo.png" alt="System1" style="max-height:32px;display:block;" onerror="this.nextElementSibling.style.display='inline';this.style.display='none'">
+            <span style="display:none;font-family:'Poppins',sans-serif;font-weight:900;font-size:14px;color:#FF69B4;letter-spacing:0.1em;text-transform:uppercase;">SYSTEM1</span>
           </div>
-          <p style=”font-size:18px;color:#F4F2EA;line-height:1.65;margin:0 0 20px;”>Real data from System1 and research partners.</p>
-          <button disabled style=”width:100%;padding:16px 20px;background:#000;color:#fff;border:1px solid #555;font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;opacity:0.45;box-sizing:border-box;”>COMING SOON →</button>
+          <p style="font-size:18px;color:#F4F2EA;line-height:1.65;margin:0 0 20px;">Real data from System1 and research partners.</p>
+          <button disabled style="width:100%;padding:16px 20px;background:#000;color:#fff;border:1px solid #555;font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;opacity:0.45;box-sizing:border-box;">COMING SOON →</button>
         </div>
       </div>
 
-      <div style=”${CARD}margin-top:32px;”>
-        <div style=”${LBL}”>VERDICT TIER</div>
-        <div style=”padding:20px;background:#0d0d0d;”>
-          <p style=”font-size:18px;color:#F4F2EA;line-height:1.65;margin:0 0 20px;”>Custom data integration for your brand.</p>
-          <a href=”mailto:human@killdull.com” style=”display:block;width:100%;padding:16px 20px;background:#000;color:#fff;border:1px solid #fff;font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;text-align:center;box-sizing:border-box;”>TALK TO US →</a>
+      <div style="${CARD}margin-top:32px;">
+        <div style="${LBL}">VERDICT TIER</div>
+        <div style="padding:20px;background:#0d0d0d;">
+          <p style="font-size:18px;color:#F4F2EA;line-height:1.65;margin:0 0 20px;">Custom data integration for your brand.</p>
+          <a href="mailto:human@killdull.com" style="display:block;width:100%;padding:16px 20px;background:#000;color:#fff;border:1px solid #fff;font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;text-align:center;box-sizing:border-box;">TALK TO US →</a>
         </div>
       </div>
     </div>
@@ -1477,18 +1477,18 @@ async function loadConsumerSentiment() {
     const container = document.getElementById('consumer-quotes-container');
     if (!container) return;
     if (!quotes.length) {
-      container.innerHTML = '<div style=”font-size:13px;color:#555;padding:8px 0;letter-spacing:0.06em;text-transform:uppercase;”>No consumer data available.</div>';
+      container.innerHTML = '<div style="font-size:13px;color:#555;padding:8px 0;letter-spacing:0.06em;text-transform:uppercase;">No consumer data available.</div>';
       return;
     }
     container.innerHTML = quotes.map(function(q) {
-      return '<div style=”border-left:3px solid var(--yellow);padding:12px 14px;margin-bottom:8px;background:#111;”>' +
-        '<div style=”font-size:14px;color:#fff;line-height:1.6;”>”' + escapeHtml(q.quote) + '”</div>' +
-        (q.persona ? '<div style=”font-size:11px;color:#888;margin-top:8px;letter-spacing:0.05em;”>' + escapeHtml(q.persona) + '</div>' : '') +
+      return '<div style="border-left:3px solid var(--yellow);padding:12px 14px;margin-bottom:8px;background:#111;">' +
+        '<div style="font-size:14px;color:#fff;line-height:1.6;">"' + escapeHtml(q.quote) + '"</div>' +
+        (q.persona ? '<div style="font-size:11px;color:#888;margin-top:8px;letter-spacing:0.05em;">' + escapeHtml(q.persona) + '</div>' : '') +
         '</div>';
     }).join('');
   } catch(e) {
     const container = document.getElementById('consumer-quotes-container');
-    if (container) container.innerHTML = '<div style=”font-size:13px;color:#555;padding:8px 0;letter-spacing:0.06em;text-transform:uppercase;”>Unable to load consumer data.</div>';
+    if (container) container.innerHTML = '<div style="font-size:13px;color:#555;padding:8px 0;letter-spacing:0.06em;text-transform:uppercase;">Unable to load consumer data.</div>';
   }
 }
 
