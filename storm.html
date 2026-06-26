@@ -2118,23 +2118,70 @@
       } catch (err) { showError('join-error', 'Error joining room: ' + err.message); }
     }
 
-    function showTitleCard(title, cb) {
+    async function showTitleCard(title, cb) {
       var tc = document.getElementById('title-card');
       var tt = document.getElementById('title-card-text');
       if (!tc || !tt) { if (cb) cb(); return; }
+      // Size text to viewport width (measure before building spans)
       tt.textContent = title;
       tt.style.fontSize = '500px';
       tt.style.whiteSpace = 'nowrap';
       var tw = tt.scrollWidth;
       var avail = window.innerWidth - 32;
-      if (tw > 0) tt.style.fontSize = Math.floor(avail / tw * 500) + 'px';
+      var size = tw > 0 ? Math.floor(avail / tw * 500) : 64;
+      tt.style.fontSize = size + 'px';
+      // Build individual letter spans (same pattern as PITCH AGAINST DULL. splash)
+      var letterIdx = 0, html = '';
+      for (var ci = 0; ci < title.length; ci++) {
+        var ch = title[ci];
+        if (ch === ' ')       { html += '<span style="display:inline-block;width:0.22em;"></span>'; }
+        else if (ch === '.') { html += '<span id="tc-dot">' + ch + '</span>'; }
+        else                 { html += '<span id="tc-l' + letterIdx + '">' + ch + '</span>'; letterIdx++; }
+      }
+      tt.innerHTML = html;
+      var allLetters = [];
+      for (var li = 0; li < letterIdx; li++) { var l = document.getElementById('tc-l' + li); if (l) allLetters.push(l); }
+      var dotEl = document.getElementById('tc-dot');
+      // Init: letters invisible, dot visible
+      allLetters.forEach(function(l) { l.style.opacity = '0'; l.style.color = '#FFFF00'; });
+      if (dotEl) { dotEl.style.opacity = '1'; dotEl.style.color = '#FFFF00'; }
       tc.style.pointerEvents = 'auto';
       tc.style.opacity = '1';
-      setTimeout(function() {
-        tc.style.opacity = '0';
-        tc.style.pointerEvents = 'none';
-        if (cb) cb();
-      }, 600);
+      // Flicker helpers (mirrors splash IIFE)
+      function tcSleep(ms) { return new Promise(function(r) { setTimeout(r, ms); }); }
+      function tcFlicker(el, durationMs) {
+        return new Promise(async function(resolve) {
+          el.style.opacity = '0';
+          var start = Date.now();
+          while (Date.now() - start < durationMs) {
+            el.style.color   = Math.random() > 0.5  ? '#ffffff' : '#FFFF00';
+            el.style.opacity = Math.random() > 0.25 ? '1'       : '0.15';
+            await tcSleep(20 + Math.random() * 50);
+            el.style.opacity = '0';
+            await tcSleep(10 + Math.random() * 30);
+          }
+          el.style.color = '#FFFF00'; el.style.opacity = '1';
+          resolve();
+        });
+      }
+      // Dot flickers throughout letter animation
+      var tcDotInterval = null;
+      if (dotEl) {
+        tcDotInterval = setInterval(function() {
+          dotEl.style.opacity = Math.random() > 0.3 ? '1' : '0.1';
+          dotEl.style.color   = Math.random() > 0.4 ? '#FFFF00' : '#F4F2EA';
+        }, 60 + Math.random() * 80);
+      }
+      // Run: 200ms delay → all letters flicker simultaneously → 1500ms hold → hard cut
+      await tcSleep(200);
+      await Promise.all(allLetters.map(function(l) { return tcFlicker(l, 800 + Math.random() * 400); }));
+      allLetters.forEach(function(l) { l.style.color = '#FFFF00'; l.style.opacity = '1'; });
+      if (tcDotInterval) { clearInterval(tcDotInterval); }
+      if (dotEl) { dotEl.style.opacity = '1'; dotEl.style.color = '#FFFF00'; }
+      await tcSleep(1500);
+      tc.style.opacity = '0';
+      tc.style.pointerEvents = 'none';
+      if (cb) cb();
     }
 
     window.addEventListener('keydown', function(e) {
