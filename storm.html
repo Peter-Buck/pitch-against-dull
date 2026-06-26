@@ -195,7 +195,7 @@
 <body>
 
   <!-- TITLE CARD — stage transitions -->
-  <div id="title-card" style="display:none;position:fixed;inset:0;background:#0a0a0a;z-index:9998;align-items:center;justify-content:center;">
+  <div id="title-card" style="display:flex;opacity:0;pointer-events:none;position:fixed;inset:0;background:#0a0a0a;z-index:9998;align-items:center;justify-content:center;">
     <div id="title-card-text" style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;white-space:nowrap;line-height:1.05;padding:0 16px;color:#FFFF00;"></div>
   </div>
 
@@ -207,10 +207,16 @@
   </div>
 
   <!-- SPLASH SCREEN -->
-  <div id="screen-splash" style="position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;z-index:9999;">
-    <div id="kd-wrap" style="width:100vw;overflow:hidden;box-sizing:border-box;">
-      <div id="kd-text" style="font-family:'Poppins',sans-serif;font-weight:900;line-height:1.05;white-space:nowrap;display:block;text-transform:uppercase;color:#FFFF00;padding:0 16px;">PITCH AGAINST DULL.</div>
+  <div id="screen-splash" style="position:fixed;inset:0;background:#000;display:flex;flex-direction:column;z-index:9999;">
+    <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+      <div id="kd-wrap" style="width:100vw;overflow:hidden;box-sizing:border-box;">
+        <div id="kd-text" style="font-family:'Poppins',sans-serif;font-weight:900;line-height:1.05;white-space:nowrap;display:block;text-transform:uppercase;color:#FFFF00;padding:0 16px;">PITCH AGAINST DULL.</div>
+      </div>
     </div>
+    <footer class="kd-footer">
+      <div class="kd-footer-logo">KILL DULL.</div>
+      <div class="kd-footer-copy">Â© 2026 Kill Dull. Â· human@killdull.com Â· <a href="privacy.html">Privacy</a></div>
+    </footer>
   </div>
 
   <!-- ════════════════════════════════════════
@@ -284,9 +290,9 @@
     <div class="hero">
       <div class="kill-dull-title">THE STORM.</div>
     </div>
-    <div style="height:24px;"></div>
+    <div id="landing-gap" style="height:24px;"></div>
     <div class="btn-row">
-      <button class="btn btn-yellow" onclick="showScreen('screen-host-code')">Host</button>
+      <button id="landing-host-btn" class="btn btn-yellow" onclick="showScreen('screen-host-code')">Host</button>
       <button class="btn btn-outline-yellow" onclick="showScreen('screen-join')">Player</button>
     </div>
     <div class="flex-1"></div>
@@ -1213,6 +1219,13 @@
       document.body.classList.toggle('header-on', !onLanding);
       if (toolEl && SCREEN_LABELS[id]) toolEl.textContent = SCREEN_LABELS[id];
       fitAll();
+      if (id === 'screen-landing') {
+        requestAnimationFrame(function() {
+          var gap = document.getElementById('landing-gap');
+          var hostBtn = document.getElementById('landing-host-btn');
+          if (gap && hostBtn) gap.style.height = hostBtn.offsetHeight + 'px';
+        });
+      }
     }
     function showError(id, msg) { const el = document.getElementById(id); if (!el) return; el.textContent = msg; el.style.display = 'block'; }
     function hideError(id) { const el = document.getElementById(id); if (el) el.style.display = 'none'; }
@@ -2112,14 +2125,14 @@
       tt.textContent = title;
       tt.style.fontSize = '500px';
       tt.style.whiteSpace = 'nowrap';
-      tc.style.visibility = 'hidden';
-      tc.style.display = 'flex';
       var tw = tt.scrollWidth;
       var avail = window.innerWidth - 32;
       if (tw > 0) tt.style.fontSize = Math.floor(avail / tw * 500) + 'px';
-      tc.style.visibility = 'visible';
+      tc.style.pointerEvents = 'auto';
+      tc.style.opacity = '1';
       setTimeout(function() {
-        tc.style.display = 'none';
+        tc.style.opacity = '0';
+        tc.style.pointerEvents = 'none';
         if (cb) cb();
       }, 600);
     }
@@ -2268,12 +2281,12 @@ function fitAll() {
     fitToWidth(el, false);
   });
   document.querySelectorAll('.kill-dull-title').forEach(function(el) {
-    var pw = el.parentElement ? el.parentElement.clientWidth : 0;
-    if (!pw) return;
     el.style.whiteSpace = 'nowrap';
+    var avail = el.offsetWidth;
+    if (!avail) return;
     el.style.fontSize = '500px';
     var tw = el.scrollWidth;
-    if (tw) el.style.fontSize = Math.floor((pw / tw) * 500) + 'px';
+    if (tw) el.style.fontSize = Math.floor((avail / tw) * 500) + 'px';
   });
   document.querySelectorAll('.kd-logo-sub').forEach(function(el) {
     fitToWidth(el, true);
