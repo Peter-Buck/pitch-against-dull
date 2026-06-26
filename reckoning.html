@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Kill Dull — The Reckoning</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; border-radius: 0; }
+
+  :root {
+    --yellow: #FFFF00;
+    --black: #0a0a0a;
+    --white: #F4F2EA;
+    --grey: #888;
+    --border: #222;
+  }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Poppins', -apple-system, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @keyframes screenIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes spin     { to { transform: rotate(360deg); } }
+  @keyframes fadeUp   { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+  .screen { display: none; min-height: 100vh; flex-direction: column; }
+  .screen.active { display: flex; animation: screenIn 0.15s ease; }
+
+  /* HEADER */
+  .kd-header { background: var(--yellow); padding: 20px 16px 24px; overflow: hidden; }
+  .kd-logo {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900;
+    line-height: 1.05;
+    display: block;
+    width: 100%;
+    color: var(--black);
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .kd-phase-label {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.5);
+    margin-top: 6px;
+    display: block;
+  }
+
+  /* BODY */
+  .kd-body {
+    flex: 1;
+    padding: 28px 16px 48px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* SECTION LABELS */
+  .section-label {
+    background: #1a1a1a;
+    border-left: 4px solid var(--yellow);
+    padding: 10px 14px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0;
+  }
+  .section-label span {
+    font-weight: 400;
+    color: #555;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 12px;
+  }
+
+  /* BUTTONS */
+  .btn-primary {
+    width: 100%;
+    padding: 16px 20px;
+    background: var(--yellow);
+    color: var(--black);
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(16px, 4vw, 20px);
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+  .btn-primary:active { transform: scale(0.97); }
+  .btn-primary:disabled {
+    background: #1c1c1c;
+    color: rgba(255,255,255,0.2);
+    border: 1px solid #2a2a2a;
+    cursor: not-allowed;
+  }
+  .btn-primary:disabled:active { transform: none; }
+
+  .btn-secondary {
+    width: 100%;
+    padding: 14px 20px;
+    background: transparent;
+    color: rgba(255,255,255,0.6);
+    border: 1px solid var(--border);
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(14px, 3.5vw, 17px);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: transform 0.1s;
+  }
+  .btn-secondary:active { transform: scale(0.97); }
+
+  /* INPUTS */
+  .kd-textarea {
+    width: 100%;
+    padding: 16px 14px;
+    background: #111;
+    border: none;
+    border-bottom: 1px solid #333;
+    color: var(--white);
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    outline: none;
+    resize: vertical;
+    min-height: 90px;
+    line-height: 1.6;
+  }
+  .kd-textarea:focus { border-bottom-color: var(--yellow); }
+  .kd-textarea::placeholder { color: rgba(255,255,255,0.3); }
+
+  /* STAGE CARDS */
+  .stage-grid { display: grid; grid-template-columns: 1fr; gap: 2px; margin-top: 24px; }
+  .stage-card {
+    padding: 20px 16px;
+    background: #111;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    transition: background 0.1s;
+    border-radius: 0;
+  }
+  .stage-card.selected { background: var(--yellow); }
+  .stage-card-num { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #555; font-weight: 700; margin-bottom: 5px; }
+  .stage-card.selected .stage-card-num { color: rgba(0,0,0,0.5); }
+  .stage-card-title { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 16px; color: #fff; margin-bottom: 4px; }
+  .stage-card.selected .stage-card-title { color: #000; }
+  .stage-card-desc { font-size: 12px; color: #666; line-height: 1.45; }
+  .stage-card.selected .stage-card-desc { color: rgba(0,0,0,0.6); }
+
+  /* UPLOAD AREA */
+  .upload-drop {
+    border: 1px dashed #333;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    background: #111;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .upload-drop.drag-over { border-color: var(--yellow); background: rgba(255,255,0,0.04); }
+  .upload-drop-icon { font-size: 28px; margin-bottom: 10px; }
+  .upload-drop-label { font-size: 12px; font-weight: 700; color: #fff; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px; }
+  .upload-drop-hint { font-size: 11px; color: #555; letter-spacing: 0.05em; }
+
+  /* IMAGE GRID */
+  .image-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 6px; padding: 12px; background: #111; }
+  .image-thumb { position: relative; aspect-ratio: 4/3; }
+  .image-thumb img { width: 100%; height: 100%; object-fit: cover; border: 1px solid #2a2a2a; display: block; }
+  .image-thumb-del {
+    position: absolute; top: 3px; right: 3px;
+    width: 22px; height: 22px;
+    background: rgba(0,0,0,0.85); border: 1px solid #444;
+    color: #fff; cursor: pointer; font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+    line-height: 1;
+  }
+  .image-thumb-add {
+    aspect-ratio: 4/3;
+    border: 1px dashed #2a2a2a;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; background: #0d0d0d; color: #444; font-size: 11px;
+    flex-direction: column; gap: 4px;
+  }
+  .image-thumb-pdf {
+    position: absolute; bottom: 3px; left: 3px;
+    background: rgba(0,0,0,0.8); color: #aaa;
+    font-size: 9px; font-weight: 700; letter-spacing: 1px;
+    padding: 2px 5px;
+  }
+
+  /* THINKING */
+  .thinking-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 20px 0; font-size: 11px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: #666; font-weight: 600;
+  }
+  .spinner {
+    width: 20px; height: 20px; border: 2px solid #222;
+    border-top-color: var(--yellow); border-radius: 50%;
+    animation: spin 0.8s linear infinite; flex-shrink: 0;
+  }
+
+  /* CRITIQUE OUTPUT */
+  .critique-wrap { border: 1px solid var(--border); animation: fadeUp 0.4s ease; margin-top: 8px; }
+  .critique-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 20px; border-bottom: 1px solid var(--border); background: #111;
+  }
+  .critique-label { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: #555; font-weight: 700; }
+  .critique-tag { background: var(--yellow); color: #000; font-size: 9px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; padding: 3px 9px; }
+  .critique-body { padding: 28px 20px; font-size: 14px; line-height: 1.85; color: #ccc; }
+  .critique-body strong { color: #fff; }
+  .critique-body hr { border: none; border-top: 1px solid #1e1e1e; margin: 24px 0; }
+
+  /* SCORE */
+  .score-block { padding: 28px 20px; border-top: 1px solid var(--border); text-align: center; }
+  .score-number { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 96px; line-height: 1; color: var(--yellow); }
+  .score-label { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: #555; font-weight: 700; margin-bottom: 8px; }
+  .score-desc { font-size: 13px; color: #888; margin-top: 10px; line-height: 1.6; max-width: 360px; margin-left: auto; margin-right: auto; }
+  .score-tier { font-size: 12px; color: #FFFF00; margin-top: 8px; font-weight: 600; }
+
+  /* PRINCIPLE ROW */
+  .principle-row {
+    display: grid; grid-template-columns: 28px 1fr auto;
+    gap: 8px 12px; align-items: start;
+    padding: 12px 0; border-bottom: 1px solid #1a1a1a;
+  }
+  .p-num { font-size: 10px; color: #444; font-weight: 700; }
+  .p-name { font-size: 13px; font-weight: 700; color: #ddd; margin-bottom: 3px; }
+  .p-note { font-size: 13px; color: #888; line-height: 1.5; }
+  .p-stars { font-size: 14px; color: var(--yellow); white-space: nowrap; letter-spacing: 2px; }
+
+  /* PRINCIPLE ROW — no stars (rough idea stage) */
+  .principle-row-ns { display: grid; grid-template-columns: 28px 1fr; gap: 8px 12px; align-items: start; padding: 12px 0; border-bottom: 1px solid #1a1a1a; }
+
+  /* TIER LABEL */
+  .tier-label { font-size: 10px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: #444; margin: 20px 0 8px; }
+
+  /* FOOTER */
+  .kd-footer {
+    background: var(--white);
+    padding: 22px 16px;
+    margin-top: auto;
+  }
+  .kd-footer-logo { color: #000; font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 32px; line-height: 1; }
+  .kd-footer-copy { color: #000; font-family: 'Poppins', sans-serif; font-weight: 400; font-size: 12px; letter-spacing: 0.06em; margin-top: 8px; }
+  .kd-footer-copy a { color: inherit; text-decoration: none; }
+
+  /* 12 PRINCIPLES GRID */
+  .principles-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid #1a1a1a; margin-bottom: 24px; }
+  .principle-cell { padding: 10px 12px; }
+  .principle-cell:not(:nth-child(3n)) { border-right: 1px solid #1a1a1a; }
+  .principle-cell:not(:nth-last-child(-n+3)) { border-bottom: 1px solid #1a1a1a; }
+  .p-cell-num { font-size: 9px; color: #555; letter-spacing: 1px; margin-bottom: 2px; }
+  .p-cell-text { font-size: 11px; font-weight: 600; color: #999; line-height: 1.3; }
+
+  /* PRINT */
+  @media print {
+    .kd-header, .kd-footer, .critique-actions, #thinking { display: none !important; }
+    .critique-body { padding: 0 !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="screen-splash" style="position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;padding-bottom:110px;z-index:9999;">
+  <div id="kd-wrap" style="width:100vw;overflow:hidden;">
+    <div id="kd-text" style="font-family:'Poppins',sans-serif;font-weight:900;line-height:1.05;white-space:nowrap;display:block;text-transform:uppercase;color:#FFFF00;padding:0 16px;">THE RECKONING.</div>
+  </div>
+  <footer style="position:absolute;bottom:0;left:0;right:0;background:#F4F2EA;padding:22px 16px;">
+    <div style="color:#000;font-family:'Poppins',sans-serif;font-weight:900;font-size:32px;line-height:1;">KILL DULL.</div>
+    <div style="color:#000;font-family:'Poppins',sans-serif;font-weight:400;font-size:12px;letter-spacing:0.06em;margin-top:8px;">© 2026 Kill Dull. · human@killdull.com</div>
+  </footer>
+</div>
+
+<!-- SCREEN: STAGE SELECTOR -->
+<div id="screen-stage" class="screen">
+  <div class="kd-header">
+    <div class="kd-logo" id="logo-stage">THE RECKONING.</div>
+    <span class="kd-phase-label">Select your stage</span>
+  </div>
+  <div class="kd-body">
+    <p style="font-size:14px;color:#888;line-height:1.7;margin-bottom:4px;">Upload your work. Get an honest critique against all 12 principles. No fluff. No ego protection.</p>
+
+    <div class="stage-grid" id="stage-grid">
+      <button class="stage-card selected" data-stage="idea" onclick="selectStage(this,'idea')">
+        <div class="stage-card-num">Stage 01</div>
+        <div class="stage-card-title">Rough Idea</div>
+        <div class="stage-card-desc">Is this concept worth developing? Judge the idea — not the execution.</div>
+      </button>
+      <button class="stage-card" data-stage="present" onclick="selectStage(this,'present')">
+        <div class="stage-card-num">Stage 02</div>
+        <div class="stage-card-title">Ready to Present</div>
+        <div class="stage-card-desc">Is this ready to show? Judge idea and execution. What is the one fix?</div>
+      </button>
+      <button class="stage-card" data-stage="award" onclick="selectStage(this,'award')">
+        <div class="stage-card-num">Stage 03</div>
+        <div class="stage-card-title">Award Entry</div>
+        <div class="stage-card-desc">Is this worth entering? Which shows, which categories, how strong is the case?</div>
+      </button>
+    </div>
+
+    <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #1a1a1a;">
+      <p style="font-size:11px;color:#444;margin-bottom:16px;letter-spacing:0.05em;text-transform:uppercase;font-weight:700;">12 Principles applied to your work</p>
+      <div class="principles-grid">
+        <div class="principle-cell"><div class="p-cell-num">01</div><div class="p-cell-text">Product is king.</div></div>
+        <div class="principle-cell"><div class="p-cell-num">02</div><div class="p-cell-text">Invisible is enemy.</div></div>
+        <div class="principle-cell"><div class="p-cell-num">03</div><div class="p-cell-text">Truth triumphs, always.</div></div>
+        <div class="principle-cell"><div class="p-cell-num">04</div><div class="p-cell-text">Simple isn't.</div></div>
+        <div class="principle-cell"><div class="p-cell-num">05</div><div class="p-cell-text">Craft shows love.</div></div>
+        <div class="principle-cell"><div class="p-cell-num">06</div><div class="p-cell-text">Laughter is contagious.</div></div>
+        <div class="principle-cell"><div class="p-cell-num">07</div><div class="p-cell-text">Wrong could be right.</div></div>
+        <div class="principle-cell"><div class="p-cell-num">08</div><div class="p-cell-text">Daring is caring.</div></div>
+        <div class="principle-cell"><div class="p-cell-num">09</div><div class="p-cell-text">Fame is invaluable.</div></div>
+        <div class="principle-cell"><div class="p-cell-num">10</div><div class="p-cell-text">Risk creates rewards.</div></div>
+        <div class="principle-cell"><div class="p-cell-num">11</div><div class="p-cell-text">Dull is expensive.</div></div>
+        <div class="principle-cell"><div class="p-cell-num">12</div><div class="p-cell-text">Feelings refine facts.</div></div>
+      </div>
+    </div>
+
+    <button class="btn-primary" style="margin-top:auto;" onclick="goToUpload()">CONTINUE →</button>
+  </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="/privacy.html">Privacy</a></div>
+  </footer>
+</div>
+
+<!-- SCREEN: UPLOAD -->
+<div id="screen-upload" class="screen">
+  <div class="kd-header">
+    <div class="kd-logo" id="logo-upload">THE RECKONING.</div>
+    <span class="kd-phase-label" id="upload-phase-label">Stage 01 — Rough Idea</span>
+  </div>
+  <div class="kd-body">
+
+    <!-- UPLOAD AREA -->
+    <div class="section-label" style="margin-bottom:0;">Upload Your Work <span>— Up to 10 images or PDFs</span></div>
+    <div id="image-grid-wrap" style="display:none; margin-bottom:0;">
+      <div class="image-grid" id="image-grid"></div>
+    </div>
+    <div id="upload-drop" class="upload-drop" onclick="document.getElementById('file-input').click()"
+      ondragover="event.preventDefault();this.classList.add('drag-over')"
+      ondragleave="this.classList.remove('drag-over')"
+      ondrop="handleDrop(event)">
+      <div class="upload-drop-icon">📎</div>
+      <div class="upload-drop-label">Drop here or tap to upload</div>
+      <div class="upload-drop-hint">JPG · PNG · PDF · Storyboard · Up to 10 files</div>
+    </div>
+    <input id="file-input" type="file" accept="image/*,application/pdf" multiple style="display:none" onchange="handleFileSelect(this.files)">
+
+    <!-- SCRIPT -->
+    <div class="section-label" style="margin-top:20px;">Script or Voiceover <span>— Optional</span></div>
+    <textarea id="input-script" class="kd-textarea" placeholder="Paste script, voiceover, headline, or copy here…"></textarea>
+
+    <!-- CONTEXT -->
+    <div class="section-label" style="margin-top:16px;">Brief &amp; Context <span>— Recommended</span></div>
+    <textarea id="input-context" class="kd-textarea" placeholder="e.g. TV spot for a challenger beer brand, targeting 25–35 year olds. Brief was to own summer."></textarea>
+
+    <!-- AWARDS (only for award stage) -->
+    <div id="awards-section" style="display:none;">
+      <div class="section-label" style="margin-top:16px;">Awards &amp; Recognition <span>— Optional</span></div>
+      <textarea id="input-awards" class="kd-textarea" style="min-height:64px;" placeholder="e.g. D&amp;AD Black Pencil, Cannes Grand Prix — or leave blank"></textarea>
+    </div>
+
+    <!-- THINKING -->
+    <div id="thinking" style="display:none;">
+      <div class="thinking-row">
+        <div class="spinner"></div>
+        <span id="thinking-text">Analysing your work…</span>
+      </div>
+    </div>
+
+    <button class="btn-primary" id="run-btn" onclick="runCritique()" style="margin-top:24px;">
+      RUN THE RECKONING →
+    </button>
+    <button class="btn-secondary" onclick="showScreen('screen-stage')">← CHANGE STAGE</button>
+  </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="/privacy.html">Privacy</a></div>
+  </footer>
+</div>
+
+<!-- SCREEN: RESULTS -->
+<div id="screen-results" class="screen">
+  <div class="kd-header">
+    <div class="kd-logo" id="logo-results">THE RECKONING.</div>
+    <span class="kd-phase-label" id="results-phase-label">Creative Critique</span>
+  </div>
+  <div class="kd-body">
+
+    <!-- SCORE -->
+    <div id="score-block" class="score-block" style="padding-left:0;padding-right:0;text-align:left;border:none;border-bottom:1px solid #1a1a1a;margin-bottom:24px;">
+      <div class="score-label">Kill Dull Score</div>
+      <div class="score-number" id="score-number">—</div>
+      <div class="score-tier" id="score-tier"></div>
+      <div class="score-desc" id="score-desc" style="margin:8px 0 0;text-align:left;max-width:none;"></div>
+    </div>
+
+    <!-- CRITIQUE -->
+    <div class="critique-wrap">
+      <div class="critique-header">
+        <span class="critique-label">Creative Critique · 12 Principles Applied</span>
+        <span class="critique-tag" id="results-stage-tag">ROUGH IDEA</span>
+      </div>
+      <div class="critique-body" id="critique-body"></div>
+      <div style="border-top:1px solid #1a1a1a;padding:14px 20px;background:#0d0d0d;">
+        <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#444;margin-bottom:4px;font-weight:700;">⚠ Warning</div>
+        <div style="font-size:12px;color:#333;line-height:1.6;">This critique may cause discomfort. Side effects include better work, braver decisions, and the inability to settle for ordinary.</div>
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="critique-actions" style="display:flex;flex-direction:column;gap:10px;margin-top:20px;">
+      <button class="btn-primary" onclick="window.print()">↓ PRINT / SAVE AS PDF</button>
+      <button class="btn-secondary" onclick="startNew()">↑ START NEW CRITIQUE</button>
+    </div>
+  </div>
+  <footer class="kd-footer">
+    <div class="kd-footer-logo">KILL DULL.</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="/privacy.html">Privacy</a></div>
+  </footer>
+</div>
+
+<script>
+// ── CONSTANTS ────────────────────────────────────────────────────────────────
+
+var PRINCIPLES = '01. Product is king. — The work must serve the product/brand, not the other way around.\n' +
+'02. Invisible is enemy. — If it does not get noticed, it does not exist. Visibility is non-negotiable.\n' +
+'03. Truth triumphs, always. — Authentic, honest work outlasts clever fiction.\n' +
+'04. Simple is not. — True simplicity is brutally hard. Complexity is the lazy default.\n' +
+'05. Craft shows love. — The quality of execution signals how much you care.\n' +
+'06. Laughter is contagious. — Humour is a superpower. Work that makes people laugh spreads.\n' +
+'07. Wrong could be right. — The unexpected angle, the rule-break, the weird choice — it might be the answer.\n' +
+'08. Daring is caring. — Playing it safe is the most dangerous thing you can do for a brand.\n' +
+'09. Fame is invaluable. — Work that creates cultural fame earns more than any media spend.\n' +
+'10. Risk creates rewards. — The biggest returns go to the bravest work.\n' +
+'11. Dull is expensive. — Forgettable advertising is the most expensive kind. Dullness has a real cost.\n' +
+'12. Feelings refine facts. — Emotion is not decoration. It is the engine that makes facts land.';
+
+var PROMPT_IDEA = 'You are one of the greatest creative minds in advertising history. You have spent decades making and judging world-class work. Your philosophy is Kill Dull.\n\n' +
+'The work you are about to see is at ROUGH IDEA STAGE. The person wants to know: is this concept worth developing? You are judging the IDEA ONLY. Ignore rough execution, placeholder visuals, unpolished craft. Those are irrelevant at this stage. The only question is: is there a real, original, human idea here?\n\n' +
+'Your 12 Principles:\n' + PRINCIPLES + '\n\n' +
+'CRITICAL RULES:\n' +
+'1. Judge the idea, not the execution. A rough sketch with a brilliant idea beats a polished ad with no idea every time.\n' +
+'2. Be direct about whether the idea has legs. Do not hedge.\n' +
+'3. If the idea is not original, say so clearly. Derivative ideas waste everyone\'s time.\n' +
+'4. Identify the single most important thing to resolve before developing further.\n\n' +
+'Structure your response:\n\n' +
+'**THE IDEA**\nWhat is the core idea? State it in one sentence. Is it original? Has it been done before?\n\n' +
+'**DOES IT HAVE LEGS?**\nCan this idea scale? Can it work across multiple executions, media, touchpoints? Or is it a one-trick pony?\n\n' +
+'**WHAT IS HUMAN ABOUT IT?**\nDoes this idea connect to something true about people? What emotion, behaviour or truth does it tap into?\n\n' +
+'**PRINCIPLES IN PLAY**\n' +
+'Pick the 3-4 principles most relevant to this specific idea — the ones it is either honouring or violating. For each, write one sharp, specific sentence. Format exactly like this on its own line:\n' +
+'07 · Wrong could be right · The idea breaks the category convention — but is it breaking it with purpose or just being different for its own sake?\n\n' +
+'Only include principles that genuinely matter to this idea.\n\n' +
+'**THE SINGLE THING TO RESOLVE**\nBefore developing this further, what is the one question that must be answered? What is the risk?\n\n' +
+'**KILL DULL VERDICT**\nNot a score — a clear recommendation. Develop it. Kill it. Or: develop it but fix this first. One sentence. Be direct.';
+
+var PROMPT_PRESENT = 'You are one of the greatest creative minds in advertising history. You have spent decades making and judging world-class work. Your philosophy is Kill Dull.\n\n' +
+'The work you are about to see is READY TO PRESENT. Judge idea and execution. What is the one thing to fix before they walk in that room?\n\n' +
+'Your 12 Principles:\n' + PRINCIPLES + '\n\n' +
+'CRITICAL RULES:\n' +
+'1. INTENTIONALITY FIRST. Before criticising any creative choice, ask: is this deliberate?\n' +
+'2. Judge idea first, then execution.\n' +
+'3. If nothing needs fixing, say so. Do not manufacture criticism.\n' +
+'4. One fix only. Not a list.\n' +
+'5. Be honest about whether this is ready.\n\n' +
+'SCORING — internal calibration only, never reference it:\n' +
+'10 — Changes the world. Once in a generation.\n' +
+'9 — Changes the way people live. Grand Prix territory.\n' +
+'8 — Changes the way people think and feel. Amazing. Career-defining.\n' +
+'7 — Rare and outstanding. Would win at major award shows.\n' +
+'6 — Genuinely good. Intelligent, purposeful, confident.\n' +
+'5 — Acceptable but forgettable. Not a compliment.\n' +
+'4 — Below standard. No clear purpose.\n' +
+'3 — Invisible. Wallpaper. Cliche.\n' +
+'2 — No idea. Waste of money.\n' +
+'1 — Destructive. Does damage.\n\n' +
+'The average professionally produced ad scores a 4. A 6 is genuinely good. A 7 is rare. An 8 is exceptional. Never score generously.\n\n' +
+'AWARDED WORK — HARD MINIMUMS:\n' +
+'- D&AD Black Pencil, Cannes Grand Prix = 9 minimum\n' +
+'- D&AD Gold, Cannes Grand Prix category = 8.5 minimum\n' +
+'- Cannes Gold Lion, D&AD Yellow Pencil = 8 minimum\n' +
+'- Cannes Silver, D&AD Graphite = 7.5 minimum\n' +
+'- Cannes Bronze, D&AD Wood Pencil = 7 minimum\n\n' +
+'Structure your response:\n\n' +
+'**PRINCIPLES SCORECARD**\n\n' +
+'TIER 1 — THE MOST RELEVANT\nPick 4-5 principles most relevant to this work. Format exactly:\n' +
+'01 · Product is king · ★★★★★ · One sharp specific sentence.\n\n' +
+'TIER 2 — SUPPORTING PRINCIPLES\nPick 5 more. Same format.\n\n' +
+'---\n\n' +
+'**THE IDEA**\nWhat is the single idea? Is it original? Does it earn attention?\n\n' +
+'**WHAT IT DOES BRILLIANTLY**\nWhat is genuinely excellent? Be specific. If a choice looks unconventional, consider whether that IS the point.\n\n' +
+'**WHERE IT COULD BE BRAVER**\nWhat is holding it back? If nothing is — say so clearly. Do not manufacture criticism.\n\n' +
+'**THE ONE THING TO FIX BEFORE YOU PRESENT**\nOne specific actionable fix. If it is ready as is, say so.\n\n' +
+'**KILL DULL SCORE**\nRate 1-10. One sentence that stays with the person.';
+
+var PROMPT_AWARD = 'You are one of the greatest creative minds in advertising history and one of the most experienced award show judges in the industry. You have judged at Cannes, D&AD, the One Show, Clio, and every major show. Your philosophy is Kill Dull.\n\n' +
+'The person wants to know: is this work worth entering into award shows? Give them the honest truth. Entering awards costs money and reputation.\n\n' +
+'Your 12 Principles:\n' + PRINCIPLES + '\n\n' +
+'The major award shows:\n' +
+'- D&AD: Craft, originality, purity of idea. The hardest show to win. A Black Pencil is the industry highest honour.\n' +
+'- Cannes Lions: Cultural impact, innovation, effectiveness. Grand Prix work changes something in the world.\n' +
+'- One Show: Craft and concept in equal measure.\n' +
+'- Clio Awards: Broad across categories, respected for entertainment and design.\n' +
+'- Effie Awards: Effectiveness above all. Results matter as much as creativity.\n\n' +
+'CRITICAL RULES:\n' +
+'1. Be honest about the work\'s chances. False hope is expensive.\n' +
+'2. Be specific about which categories and which shows.\n' +
+'3. If the work is not ready to enter, say what would make it entry-worthy.\n\n' +
+'AWARDED WORK — HARD MINIMUMS:\n' +
+'- D&AD Black Pencil, Cannes Grand Prix = 9 minimum\n' +
+'- D&AD Gold, Cannes Grand Prix category = 8.5 minimum\n' +
+'- Cannes Gold Lion, D&AD Yellow Pencil = 8 minimum\n' +
+'- Cannes Silver, D&AD Graphite = 7.5 minimum\n' +
+'- Cannes Bronze, D&AD Wood Pencil = 7 minimum\n\n' +
+'Structure your response:\n\n' +
+'**PRINCIPLES SCORECARD**\n\n' +
+'TIER 1 — THE MOST RELEVANT\nPick 4-5 principles. Format exactly:\n' +
+'01 · Product is king · ★★★★★ · One sharp specific sentence.\n\n' +
+'TIER 2 — SUPPORTING PRINCIPLES\nPick 5 more. Same format.\n\n' +
+'---\n\n' +
+'**THE HONEST VERDICT**\nIs this work award-worthy? Yes, no, or not yet. Be direct.\n\n' +
+'**WHICH SHOWS TO ENTER**\nName specific shows and categories where this has the best chance. Explain why.\n\n' +
+'**THE COMPETITIVE CASE**\nWhat makes this stand out against the best work in the world?\n\n' +
+'**WHAT COULD LOSE IT THE VOTE**\nWhat will the jury question or argue against?\n\n' +
+'**IF IT IS NOT READY — THE ONE FIX**\nWhat single change would make this genuinely award-worthy? If it is ready, say so.\n\n' +
+'**KILL DULL SCORE**\nRate 1-10. A 7 is the minimum for serious award consideration. One sentence verdict.';
+
+var SCORE_TIERS = {
+  10: 'Changes the world.',
+  9:  'Changes the way people live. Grand Prix territory.',
+  8:  'Changes the way people think and feel. Amazing. Career-defining.',
+  7:  'Rare and outstanding. Would win at major award shows.',
+  6:  'Genuinely good.',
+  5:  'Acceptable but forgettable.',
+  4:  'Below standard.',
+  3:  'Invisible. Wallpaper.',
+  2:  'No idea. Waste of money.',
+  1:  'Destructive. Does damage.'
+};
+
+var THINKING_MSGS = {
+  idea:    ['Is the idea original?', 'Does it have legs?', 'What is human about it?', 'Is it worth developing?'],
+  present: ['Applying all 12 principles…', 'Judging idea then execution…', 'Asking: is this ready?', 'Finding the one fix…'],
+  award:   ['Thinking like a jury…', 'Comparing to the best work in the world…', 'Which show? Which category?', 'Is this Grand Prix territory?']
+};
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+
+var state = {
+  stage: 'idea',
+  images: [], // [{id, dataUrl, base64, mime, isPdf}]
+};
+
+// ── SCREEN MANAGEMENT ────────────────────────────────────────────────────────
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  var el = document.getElementById(id);
+  if (el) { el.classList.add('active'); window.scrollTo(0,0); }
+  fitAll();
+}
+
+// ── STAGE ────────────────────────────────────────────────────────────────────
+
+function selectStage(btn, stage) {
+  document.querySelectorAll('.stage-card').forEach(function(c) { c.classList.remove('selected'); });
+  btn.classList.add('selected');
+  state.stage = stage;
+}
+
+function goToUpload() {
+  var phaseLabels = {
+    idea:    'Stage 01 — Rough Idea',
+    present: 'Stage 02 — Ready to Present',
+    award:   'Stage 03 — Award Entry'
+  };
+  var stageTags = {
+    idea:    'ROUGH IDEA',
+    present: 'READY TO PRESENT',
+    award:   'AWARD ENTRY'
+  };
+  document.getElementById('upload-phase-label').textContent = phaseLabels[state.stage];
+  document.getElementById('awards-section').style.display = state.stage === 'award' ? 'block' : 'none';
+  document.getElementById('results-stage-tag').textContent = stageTags[state.stage];
+  document.getElementById('results-phase-label').textContent = phaseLabels[state.stage] + ' · Critique';
+  showScreen('screen-upload');
+}
+
+// ── IMAGE UPLOAD ─────────────────────────────────────────────────────────────
+
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('upload-drop').classList.remove('drag-over');
+  if (e.dataTransfer && e.dataTransfer.files.length) processFiles(e.dataTransfer.files);
+}
+
+function handleFileSelect(files) {
+  processFiles(files);
+  document.getElementById('file-input').value = '';
+}
+
+function processFiles(files) {
+  var arr = Array.from(files);
+  var remaining = 10 - state.images.length;
+  arr.slice(0, remaining).forEach(function(file) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var dataUrl = e.target.result;
+      var parts = dataUrl.split(',');
+      var mime = parts[0].match(/:(.*?);/)[1];
+      var b64 = parts[1];
+      var id = Math.random().toString(36).substr(2,9);
+      state.images.push({ id: id, dataUrl: dataUrl, base64: b64, mime: mime, isPdf: mime === 'application/pdf' });
+      renderImageGrid();
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function removeImage(id) {
+  state.images = state.images.filter(function(img) { return img.id !== id; });
+  renderImageGrid();
+}
+
+function renderImageGrid() {
+  var grid = document.getElementById('image-grid');
+  var wrap = document.getElementById('image-grid-wrap');
+  var drop = document.getElementById('upload-drop');
+
+  if (state.images.length === 0) {
+    wrap.style.display = 'none';
+    drop.style.display = 'block';
+    return;
+  }
+
+  drop.style.display = 'none';
+  wrap.style.display = 'block';
+
+  var html = state.images.map(function(img) {
+    var thumb = img.isPdf
+      ? '<div style="width:100%;height:100%;background:#1a1a1a;display:flex;align-items:center;justify-content:center;border:1px solid #2a2a2a;"><span style="font-size:11px;color:#666;font-weight:700;letter-spacing:1px;">PDF</span></div>'
+      : '<img src="' + img.dataUrl + '" style="width:100%;height:100%;object-fit:cover;border:1px solid #2a2a2a;display:block;">';
+    return '<div class="image-thumb">' + thumb +
+      '<button class="image-thumb-del" onclick="removeImage(\'' + img.id + '\')">×</button>' +
+      '</div>';
+  }).join('');
+
+  if (state.images.length < 10) {
+    html += '<div class="image-thumb-add" onclick="document.getElementById(\'file-input\').click()"><span style="font-size:18px;">+</span><span>Add more</span></div>';
+  }
+
+  grid.innerHTML = html;
+}
+
+// ── API CALL ──────────────────────────────────────────────────────────────────
+
+var thinkingInterval = null;
+
+function startThinking() {
+  var msgs = THINKING_MSGS[state.stage] || THINKING_MSGS.idea;
+  var idx = 0;
+  document.getElementById('thinking-text').textContent = msgs[0];
+  thinkingInterval = setInterval(function() {
+    idx = (idx + 1) % msgs.length;
+    document.getElementById('thinking-text').textContent = msgs[idx];
+  }, 2200);
+}
+
+function stopThinking() {
+  clearInterval(thinkingInterval);
+  thinkingInterval = null;
+}
+
+function getPrompt() {
+  if (state.stage === 'idea') return PROMPT_IDEA;
+  if (state.stage === 'present') return PROMPT_PRESENT;
+  return PROMPT_AWARD;
+}
+
+async function runCritique() {
+  var script  = document.getElementById('input-script').value.trim();
+  var context = document.getElementById('input-context').value.trim();
+  var awards  = document.getElementById('input-awards') ? document.getElementById('input-awards').value.trim() : '';
+
+  if (state.images.length === 0 && !script && !context) {
+    alert('Add some work first — upload images or paste your brief.');
+    return;
+  }
+
+  var runBtn = document.getElementById('run-btn');
+  runBtn.disabled = true;
+  runBtn.textContent = 'Analysing…';
+  document.getElementById('thinking').style.display = 'block';
+  startThinking();
+
+  try {
+    var parts = ['Critique this creative work.'];
+    if (context) parts.push('Brief & context: ' + context);
+    if (script)  parts.push('Script / voiceover / copy: ' + script);
+    if (awards)  parts.push('Awards & recognition: ' + awards);
+    var userText = parts.join('\n\n');
+
+    var contentBlocks = [];
+    state.images.forEach(function(img) {
+      if (img.isPdf) {
+        contentBlocks.push({ type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: img.base64 } });
+      } else {
+        contentBlocks.push({ type: 'image', source: { type: 'base64', media_type: img.mime, data: img.base64 } });
+      }
+    });
+    contentBlocks.push({ type: 'text', text: userText });
+
+    var res = await fetch('https://killdull.vercel.app/api/critique', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-password': 'killdull2026' },
+      body: JSON.stringify({ system: getPrompt(), messages: [{ role: 'user', content: contentBlocks }] })
+    });
+
+    var data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    var text = '';
+    if (data.content) {
+      for (var i = 0; i < data.content.length; i++) {
+        if (data.content[i].type === 'text') { text = data.content[i].text; break; }
+      }
+    }
+    if (!text) throw new Error('No critique returned.');
+
+    displayResults(text);
+
+  } catch(err) {
+    stopThinking();
+    document.getElementById('thinking').style.display = 'none';
+    runBtn.disabled = false;
+    runBtn.textContent = 'RUN THE RECKONING →';
+    alert('Something went wrong: ' + (err.message || 'Please try again.'));
+  }
+}
+
+// ── RESULTS ──────────────────────────────────────────────────────────────────
+
+function extractScore(text) {
+  // Look for KILL DULL SCORE section, find the first number
+  var m = text.match(/KILL DULL (?:SCORE|VERDICT)[\s\S]{0,200}?(\d+(?:\.\d+)?)/i);
+  if (m) {
+    var n = parseFloat(m[1]);
+    if (n >= 1 && n <= 10) return n;
+  }
+  return null;
+}
+
+function scoreTierText(n) {
+  var rounded = Math.round(n);
+  return SCORE_TIERS[rounded] || '';
+}
+
+function renderCritique(text) {
+  var html = text;
+
+  // Bold
+  html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+  // HR
+  html = html.replace(/^---$/gm, '<hr>');
+
+  // Tier labels
+  html = html.replace(/^(TIER \d[^\n<]*)/gm, '<div class="tier-label">$1</div>');
+
+  // Principles WITH stars (scorecard format)
+  html = html.replace(/^(\d{1,2})\s*[·•]\s*([^·•\n]+?)\s*[·•]\s*([★☆✩\s]+?)\s*[·•]\s*(.+)$/gm, function(_, num, principle, stars, note) {
+    return '<div class="principle-row">' +
+      '<span class="p-num">' + String(num).padStart(2,'0') + '</span>' +
+      '<div><div class="p-name">' + principle.trim() + '</div><div class="p-note">' + note.trim() + '</div></div>' +
+      '<span class="p-stars">' + stars.trim() + '</span>' +
+      '</div>';
+  });
+
+  // Principles WITHOUT stars (rough idea stage)
+  html = html.replace(/^(\d{1,2})\s*[·•]\s*([^·•\n]+?)\s*[·•]\s*(.+)$/gm, function(_, num, principle, note) {
+    return '<div class="principle-row-ns">' +
+      '<span class="p-num">' + String(num).padStart(2,'0') + '</span>' +
+      '<div><div class="p-name">' + principle.trim() + '</div><div class="p-note">' + note.trim() + '</div></div>' +
+      '</div>';
+  });
+
+  // Section headings
+  html = html.replace(/<strong>([A-Z][A-Z\s\d&—–'-]{3,})<\/strong>/g, function(_, heading) {
+    return '<div style="font-family:\'Poppins\',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#FFFF00;margin:24px 0 10px;border-top:1px solid #1a1a1a;padding-top:20px;">' + heading + '</div>';
+  });
+
+  // Paragraphs
+  html = html.replace(/\n\n+/g, '</p><p style="margin:12px 0;">');
+  html = html.replace(/\n/g, '<br>');
+  html = '<p style="margin:0 0 12px;">' + html + '</p>';
+
+  return html;
+}
+
+function displayResults(text) {
+  stopThinking();
+  document.getElementById('thinking').style.display = 'none';
+
+  var scoreNum = extractScore(text);
+
+  // Score block
+  if (scoreNum !== null) {
+    document.getElementById('score-number').textContent = scoreNum;
+    document.getElementById('score-tier').textContent = scoreTierText(scoreNum);
+    document.getElementById('score-desc').textContent = '';
+  } else {
+    document.getElementById('score-number').textContent = '—';
+    document.getElementById('score-tier').textContent = '';
+  }
+
+  // Critique
+  document.getElementById('critique-body').innerHTML = renderCritique(text);
+
+  // Switch screen
+  showScreen('screen-results');
+}
+
+// ── RESET ────────────────────────────────────────────────────────────────────
+
+function startNew() {
+  state.images = [];
+  renderImageGrid();
+  document.getElementById('upload-drop').style.display = 'block';
+  document.getElementById('image-grid-wrap').style.display = 'none';
+  document.getElementById('input-script').value = '';
+  document.getElementById('input-context').value = '';
+  if (document.getElementById('input-awards')) document.getElementById('input-awards').value = '';
+  document.getElementById('run-btn').disabled = false;
+  document.getElementById('run-btn').textContent = 'RUN THE RECKONING →';
+  document.getElementById('thinking').style.display = 'none';
+  document.getElementById('critique-body').innerHTML = '';
+  showScreen('screen-stage');
+}
+
+// ── FIT TO WIDTH ─────────────────────────────────────────────────────────────
+
+function fitToWidth(el, subtractPx) {
+  if (!el) return;
+  var available = window.innerWidth - (subtractPx || 32);
+  el.style.whiteSpace = 'nowrap';
+  el.style.fontSize = '500px';
+  var textWidth = el.scrollWidth;
+  if (!textWidth) return;
+  var size = Math.floor((available / textWidth) * 500);
+  el.style.fontSize = Math.max(size, 10) + 'px';
+}
+
+function fitAll() {
+  ['logo-stage', 'logo-upload', 'logo-results'].forEach(function(id) {
+    fitToWidth(document.getElementById(id), 32);
+  });
+}
+
+window.addEventListener('DOMContentLoaded', fitAll);
+window.addEventListener('load', fitAll);
+window.addEventListener('resize', fitAll);
+</script>
+
+<!-- SPLASH ANIMATION -->
+<script>
+(function() {
+  var wrap = document.getElementById('kd-wrap');
+  var el   = document.getElementById('kd-text');
+  var lastWidth = 0;
+  var running = false;
+  var dotInterval = null;
+
+  function sleep(ms) { return new Promise(function(r) { setTimeout(r, ms); }); }
+
+  function buildSpans() {
+    el.style.fontFamily = "'Poppins', sans-serif";
+    el.style.fontWeight = '900';
+    el.style.whiteSpace = 'nowrap';
+    el.style.overflow   = 'hidden';
+    el.style.fontSize   = '200px';
+    el.textContent = 'THE RECKONING.';
+    var size = Math.floor(((window.innerWidth - 32) / el.scrollWidth) * 200);
+    el.style.fontSize = size + 'px';
+    // T H E [sp] R E C K O N I N G .
+    el.innerHTML =
+      '<span id="r0">T</span>' +
+      '<span id="r1">H</span>' +
+      '<span id="r2">E</span>' +
+      '<span id="rsp" style="display:inline-block;width:0.25em;"></span>' +
+      '<span id="r3">R</span>' +
+      '<span id="r4">E</span>' +
+      '<span id="r5">C</span>' +
+      '<span id="r6">K</span>' +
+      '<span id="r7">O</span>' +
+      '<span id="r8">N</span>' +
+      '<span id="r9">I</span>' +
+      '<span id="r10">N</span>' +
+      '<span id="r11">G</span>' +
+      '<span id="rdot">.</span>';
+  }
+
+  function startDotFlicker(dot) {
+    dotInterval = setInterval(function() {
+      dot.style.opacity = Math.random() > 0.3 ? '1' : '0.1';
+      dot.style.color   = Math.random() > 0.4 ? '#FFFF00' : '#F4F2EA';
+    }, 60 + Math.random() * 80);
+  }
+
+  function stopDotFlicker(dot, c) {
+    clearInterval(dotInterval);
+    dot.style.opacity = '1';
+    dot.style.color   = c;
+  }
+
+  function flickerInDuration(el, durationMs) {
+    return new Promise(async function(resolve) {
+      el.style.opacity = '0';
+      var start = Date.now();
+      while (Date.now() - start < durationMs) {
+        el.style.color   = Math.random() > 0.5 ? '#ffffff' : '#FFFF00';
+        el.style.opacity = Math.random() > 0.25 ? '1' : '0.15';
+        await sleep(20 + Math.random() * 50);
+        el.style.opacity = '0';
+        await sleep(10 + Math.random() * 30);
+      }
+      el.style.color   = '#FFFF00';
+      el.style.opacity = '1';
+      resolve();
+    });
+  }
+
+  async function runAnimation() {
+    if (running) return;
+    running = true;
+
+    var letters = [0,1,2,3,4,5,6,7,8,9,10,11].map(function(i) {
+      return document.getElementById('r' + i);
+    }).filter(Boolean);
+    var dot = document.getElementById('rdot');
+
+    letters.forEach(function(l) { l.style.opacity = '0'; l.style.color = '#FFFF00'; });
+    dot.style.opacity = '1';
+    dot.style.color   = '#FFFF00';
+    startDotFlicker(dot);
+
+    await sleep(200);
+
+    var shuffled = letters.slice().sort(function() { return Math.random() - 0.5; });
+    var fas = shuffled.map(function(l) { return flickerInDuration(l, 700 + Math.random() * 400); });
+    await Promise.all(fas);
+
+    letters.forEach(function(l) { l.style.color = '#FFFF00'; l.style.opacity = '1'; });
+    stopDotFlicker(dot, '#FFFF00');
+
+    await sleep(1400);
+
+    var splash = document.getElementById('screen-splash');
+    splash.style.transition = 'opacity 0.5s ease';
+    splash.style.opacity = '0';
+    setTimeout(function() {
+      splash.style.display = 'none';
+      showScreen('screen-stage');
+    }, 500);
+  }
+
+  setInterval(function() {
+    var w = wrap ? wrap.offsetWidth : 0;
+    if (w !== lastWidth && !running) { lastWidth = w; buildSpans(); }
+  }, 500);
+
+  setTimeout(function() {
+    buildSpans();
+    lastWidth = wrap ? wrap.offsetWidth : 0;
+    runAnimation();
+  }, 400);
+})();
+</script>
+
+</body>
+</html>
