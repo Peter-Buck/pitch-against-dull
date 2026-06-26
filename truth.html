@@ -19,7 +19,7 @@
     --green: #00ff88;
   }
 
-  /* Kill Dull platform cursor: crosshair everywhere — no pointer, no default */
+  /* Kill Dull platform cursor: inherit everywhere — no pointer, no default */
   body {
     background: var(--black);
     color: var(--white);
@@ -27,7 +27,7 @@
     min-height: 100vh;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
-    cursor: crosshair;
+    cursor: inherit;
   }
 
 @keyframes screenIn  { from { opacity: 0; } to { opacity: 1; } }
@@ -162,7 +162,7 @@
     font-weight: 900;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    cursor: crosshair;
+    cursor: inherit;
     margin-top: auto;
     transition: transform 0.1s;
   }
@@ -180,7 +180,7 @@
     font-weight: 900;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    cursor: crosshair;
+    cursor: inherit;
     margin-top: 12px;
     transition: transform 0.1s;
   }
@@ -190,7 +190,7 @@
     background: #1c1c1c;
     color: rgba(255,255,255,0.2);
     border: 1px solid #2a2a2a;
-    cursor: crosshair;
+    cursor: inherit;
   }
   .btn-primary:disabled:active { transform: none; }
 
@@ -397,7 +397,7 @@
   .flip-card {
     width: 100%;
     height: 520px;
-    cursor: crosshair;
+    cursor: inherit;
     perspective: 1000px;
     -webkit-perspective: 1000px;
   }
@@ -569,7 +569,7 @@
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
-    cursor: crosshair;
+    cursor: inherit;
     transition: all 0.2s;
   }
 
@@ -667,7 +667,7 @@
     letter-spacing: 3px;
     text-transform: uppercase;
     white-space: nowrap;
-    cursor: crosshair;
+    cursor: inherit;
     transition: background 0.15s, color 0.15s, transform 0.1s;
   }
   .auth-tab:active { transform: scale(0.97); }
@@ -680,10 +680,10 @@
     width: 100%; padding: 16px; background: #ffffff; border: none;
     color: #1a1a1a; font-family: 'Poppins', sans-serif; font-size: 11px;
     font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-    cursor: crosshair; transition: opacity 0.2s; margin-bottom: 0;
+    cursor: inherit; transition: opacity 0.2s; margin-bottom: 0;
   }
   .btn-google:hover { opacity: 0.88; }
-  .btn-google:disabled { opacity: 0.5; cursor: crosshair; }
+  .btn-google:disabled { opacity: 0.5; cursor: inherit; }
 
   .auth-divider {
     display: flex; align-items: center; gap: 14px;
@@ -710,7 +710,7 @@
   .cookie-btn {
     padding: 8px 16px; font-family: 'Poppins', sans-serif; font-size: 9px;
     font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-    cursor: crosshair; border: 1px solid; white-space: nowrap;
+    cursor: inherit; border: 1px solid; white-space: nowrap;
   }
   .cookie-btn-accept { background: var(--yellow); color: var(--black); border-color: var(--yellow); }
   .cookie-btn-decline { background: transparent; color: rgba(255,255,255,0.4); border-color: var(--border); }
@@ -728,7 +728,7 @@
   .kd-select {
     -webkit-appearance: none;
     appearance: none;
-    cursor: crosshair;
+    cursor: inherit;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 16px center;
@@ -829,6 +829,11 @@ firebase.initializeApp({
   appId: "1:90967669175:web:3c9217ff3d647ccb629032"
 });
 </script>
+<style>
+  * {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect x='14.5' y='1' width='3' height='11' rx='1.5' fill='%23FFFF00'/%3E%3Crect x='14.5' y='20' width='3' height='11' rx='1.5' fill='%23FFFF00'/%3E%3Crect x='1' y='14.5' width='11' height='3' rx='1.5' fill='%23FFFF00'/%3E%3Crect x='20' y='14.5' width='11' height='3' rx='1.5' fill='%23FFFF00'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23FFFF00'/%3E%3C/svg%3E") 16 16, crosshair !important;
+  }
+</style>
 </head>
 <body>
 
@@ -967,7 +972,7 @@ firebase.initializeApp({
     </div>
     <div style="position:relative;">
       <input class="kd-input" id="auth-password" type="password" placeholder="Minimum 6 characters" maxlength="100" autocomplete="current-password" style="margin-bottom:0;padding-right:48px;">
-      <button type="button" onclick="togglePasswordVisibility()" aria-label="Show/hide password" style="position:absolute;right:0;top:0;bottom:0;width:48px;background:none;border:none;cursor:crosshair;color:#888;display:flex;align-items:center;justify-content:center;" id="pw-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+      <button type="button" onclick="togglePasswordVisibility()" aria-label="Show/hide password" style="position:absolute;right:0;top:0;bottom:0;width:48px;background:none;border:none;cursor:inherit;color:#888;display:flex;align-items:center;justify-content:center;" id="pw-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
     </div>
 
     <div id="auth-error"></div>
@@ -1147,9 +1152,9 @@ firebase.initializeApp({
       <div id="prov-room-code-display" style="font-family:'Poppins',sans-serif;font-weight:900;color:#FFFF00;font-size:80px;line-height:1;letter-spacing:6px;"></div>
     </div>
     <div id="prov-buttons" style="margin-top:48px;display:flex;flex-direction:column;gap:12px;">
-      <button onclick="copyRoomCode(this)" style="width:100%;padding:16px 20px;background:transparent;color:#fff;border:1px solid #fff;font-family:'Manrope',sans-serif;font-size:clamp(14px,3.5vw,18px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;cursor:crosshair;">COPY CODE</button>
-      <button onclick="downloadProvocationPDF()" style="width:100%;padding:16px 20px;background:transparent;color:#fff;border:1px solid #fff;outline:none;font-family:'Manrope',sans-serif;font-size:clamp(14px,3.5vw,18px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;cursor:crosshair;">DOWNLOAD AS PDF</button>
-      <button onclick="openStorm()" style="width:100%;padding:16px 20px;background:#FFFF00;color:#000;border:none;font-family:'Manrope',sans-serif;font-size:clamp(16px,4vw,20px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;cursor:crosshair;">OPEN THE STORM →</button>
+      <button onclick="copyRoomCode(this)" style="width:100%;padding:16px 20px;background:transparent;color:#fff;border:1px solid #fff;font-family:'Manrope',sans-serif;font-size:clamp(14px,3.5vw,18px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;cursor:inherit;">COPY CODE</button>
+      <button onclick="downloadProvocationPDF()" style="width:100%;padding:16px 20px;background:transparent;color:#fff;border:1px solid #fff;outline:none;font-family:'Manrope',sans-serif;font-size:clamp(14px,3.5vw,18px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;cursor:inherit;">DOWNLOAD AS PDF</button>
+      <button onclick="openStorm()" style="width:100%;padding:16px 20px;background:#FFFF00;color:#000;border:none;font-family:'Manrope',sans-serif;font-size:clamp(16px,4vw,20px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;cursor:inherit;">OPEN THE STORM →</button>
     </div>
   </div>
   <footer class="kd-footer">
