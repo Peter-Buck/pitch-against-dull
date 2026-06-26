@@ -249,13 +249,19 @@ body {
         <div style="padding:14px 16px;background:#0d0d0d;font-size:15px;color:#888;line-height:1.7;border-bottom:1px solid var(--border);">
           <strong style="color:#fff;">Submitting video?</strong> The AI cannot watch video. Screenshot 10–20 key frames, upload them here, paste your script below.
         </div>
-        <div style="padding:12px 16px;background:#111;display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start;">
-          <div id="frames-wrap" style="display:contents;"></div>
-          <label id="frame-add-btn" style="display:inline-flex;width:110px;height:74px;border:1px dashed #333;align-items:center;justify-content:center;cursor:pointer;font-size:11px;color:#555;text-align:center;background:#0d0d0d;flex-shrink:0;">
-            <input id="frame-in" type="file" accept="image/*" style="display:none" onchange="addFrame(this.files[0])">
-            + Add Frame
-          </label>
+        <div id="frames-grid-wrap" class="hidden">
+          <div class="img-grid" id="frames-grid"></div>
         </div>
+        <div id="frame-drop-zone" class="drop-zone"
+          onclick="document.getElementById('frame-in').click()"
+          ondragover="event.preventDefault();this.classList.add('drag-over')"
+          ondragleave="this.classList.remove('drag-over')"
+          ondrop="handleFrameDrop(event)">
+          <div class="drop-icon">🎬</div>
+          <div class="drop-title">Drop frames here or click to upload</div>
+          <div class="drop-hint">JPG · PNG · Up to 20 frames</div>
+        </div>
+        <input id="frame-in" type="file" accept="image/*" multiple style="display:none" onchange="handleFrameSelect(this.files)">
       </div>
 
       <!-- SCRIPT -->
@@ -464,17 +470,29 @@ function renderImages() {
 
 // ── FRAMES ───────────────────────────────────────────────────────────────────
 
-function addFrame(file) {
-  if (!file || state.frames.length >= 20) return;
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    var dataUrl = e.target.result;
-    var parts   = dataUrl.split(',');
-    state.frames.push({ base64: parts[1], mime: parts[0].match(/:(.*?);/)[1], dataUrl: dataUrl });
-    renderFrames();
-    document.getElementById('frame-in').value = '';
-  };
-  reader.readAsDataURL(file);
+function handleFrameDrop(e) {
+  e.preventDefault();
+  document.getElementById('frame-drop-zone').classList.remove('drag-over');
+  if (e.dataTransfer && e.dataTransfer.files.length) processFrames(e.dataTransfer.files);
+}
+
+function handleFrameSelect(files) {
+  processFrames(files);
+  document.getElementById('frame-in').value = '';
+}
+
+function processFrames(files) {
+  Array.from(files).slice(0, 20 - state.frames.length).forEach(function(file) {
+    if (!file.type.startsWith('image/')) return;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var dataUrl = e.target.result;
+      var parts   = dataUrl.split(',');
+      state.frames.push({ base64: parts[1], mime: parts[0].match(/:(.*?);/)[1], dataUrl: dataUrl });
+      renderFrames();
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
 function removeFrame(idx) {
@@ -483,11 +501,24 @@ function removeFrame(idx) {
 }
 
 function renderFrames() {
-  var wrap = document.getElementById('frames-wrap');
-  wrap.innerHTML = state.frames.map(function(f, i) {
-    return '<div style="position:relative;flex-shrink:0;"><img src="' + f.dataUrl + '" style="width:110px;height:74px;object-fit:cover;border:1px solid #333;display:block;"><button class="del-btn" style="top:2px;right:2px;width:18px;height:18px;font-size:11px;" onclick="removeFrame(' + i + ')">×</button></div>';
-  }).join('');
-  document.getElementById('frame-add-btn').style.display = state.frames.length >= 20 ? 'none' : '';
+  var gridWrap = document.getElementById('frames-grid-wrap');
+  var grid     = document.getElementById('frames-grid');
+  var dropZone = document.getElementById('frame-drop-zone');
+
+  if (!state.frames.length) {
+    gridWrap.classList.add('hidden');
+    dropZone.style.display = '';
+    return;
+  }
+
+  dropZone.style.display = 'none';
+  gridWrap.classList.remove('hidden');
+
+  grid.innerHTML = state.frames.map(function(f, i) {
+    return '<div class="img-thumb"><img src="' + f.dataUrl + '"><button class="del-btn" onclick="removeFrame(' + i + ')">×</button></div>';
+  }).join('') + (state.frames.length < 20
+    ? '<div class="add-more" onclick="document.getElementById(\'frame-in\').click()"><span style="font-size:20px;">+</span><span>Add more</span></div>'
+    : '');
 }
 
 // ── API ───────────────────────────────────────────────────────────────────────
