@@ -172,6 +172,11 @@ body {
 </head>
 <body>
 
+<!-- FLICKER OVERLAY — stage transitions -->
+<div id="flicker-overlay" style="display:none;position:fixed;inset:0;background:#0a0a0a;z-index:9999;align-items:center;justify-content:center;">
+  <div id="flicker-text" style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;white-space:nowrap;line-height:1.05;padding:0 16px;color:#FFFF00;"></div>
+</div>
+
 <!-- SPLASH -->
 <div id="splash" style="position:fixed;inset:0;background:#000;z-index:9999;display:flex;align-items:center;justify-content:center;padding-bottom:100px;">
   <div id="sp-wrap" style="width:100vw;overflow:hidden;padding:0 16px;">
@@ -399,19 +404,22 @@ var state = {
 // ── STAGE ────────────────────────────────────────────────────────────────────
 
 function selectStage(stage) {
-  state.stage = stage;
-
+  // Immediate card highlight — visual confirmation before flicker
   ['idea','present','award'].forEach(function(s) {
     document.getElementById('stage-' + s).classList.toggle('active', s === stage);
   });
 
-  document.getElementById('cta-btn').textContent = (CTA_LABELS[stage] || 'GET THE VERDICT') + ' →';
-  document.getElementById('awards-block').classList.toggle('hidden', stage !== 'award');
+  var titles = { idea: 'ROUGH IDEA.', present: 'READY TO PRESENT.', award: 'AWARD ENTRY.' };
+  var tags   = { idea: 'ROUGH IDEA',  present: 'READY TO PRESENT',  award: 'AWARD ENTRY'  };
 
-  var tags = { idea: 'ROUGH IDEA', present: 'READY TO PRESENT', award: 'AWARD ENTRY' };
-  document.getElementById('result-tag').textContent = tags[stage] || '';
-
-  document.getElementById('upload-zone').classList.remove('hidden');
+  flickerTransition(titles[stage] || stage.toUpperCase() + '.', function() {
+    state.stage = stage;
+    document.getElementById('cta-btn').textContent = (CTA_LABELS[stage] || 'GET THE VERDICT') + ' →';
+    document.getElementById('awards-block').classList.toggle('hidden', stage !== 'award');
+    document.getElementById('result-tag').textContent = tags[stage] || '';
+    document.getElementById('upload-zone').classList.remove('hidden');
+    window.scrollTo(0, 0);
+  });
 }
 
 // ── IMAGES ───────────────────────────────────────────────────────────────────
@@ -671,63 +679,115 @@ function renderCritique(text) {
   return html;
 }
 
-function displayResults(text) {
+async function displayResults(text) {
   stopThinking();
   document.getElementById('thinking').classList.add('hidden');
 
-  var score     = extractScore(text);
-  var scoreWrap = document.getElementById('score-wrap');
-  if (score !== null && state.stage !== 'idea') {
-    document.getElementById('score-num').textContent = score;
-    scoreWrap.classList.remove('hidden');
-  } else {
-    scoreWrap.classList.add('hidden');
-  }
+  await flickerTransition('THE VERDICT.', function() {
+    var score     = extractScore(text);
+    var scoreWrap = document.getElementById('score-wrap');
+    if (score !== null && state.stage !== 'idea') {
+      document.getElementById('score-num').textContent = score;
+      scoreWrap.classList.remove('hidden');
+    } else {
+      scoreWrap.classList.add('hidden');
+    }
 
-  document.getElementById('critique-body').innerHTML = renderCritique(text);
+    document.getElementById('critique-body').innerHTML = renderCritique(text);
+    document.getElementById('results').classList.remove('hidden');
 
-  var results = document.getElementById('results');
-  results.classList.remove('hidden');
+    var ctaBtn = document.getElementById('cta-btn');
+    ctaBtn.disabled = false;
+    ctaBtn.textContent = (CTA_LABELS[state.stage] || 'GET THE VERDICT') + ' →';
+    state.loading = false;
 
-  var ctaBtn = document.getElementById('cta-btn');
-  ctaBtn.disabled = false;
-  ctaBtn.textContent = (CTA_LABELS[state.stage] || 'GET THE VERDICT') + ' →';
-  state.loading = false;
-
-  setTimeout(function() {
-    results.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 100);
+    // Scroll to results while overlay still covers the page
+    document.getElementById('results').scrollIntoView({ block: 'start' });
+  });
 }
 
 // ── RESET ─────────────────────────────────────────────────────────────────────
 
 function resetAll() {
-  state.images  = [];
-  state.frames  = [];
-  state.stage   = null;
-  state.loading = false;
+  flickerTransition('THE RECKONING.', function() {
+    state.images  = [];
+    state.frames  = [];
+    state.stage   = null;
+    state.loading = false;
 
-  renderImages();
-  renderFrames();
+    renderImages();
+    renderFrames();
 
-  document.getElementById('input-script').value  = '';
-  document.getElementById('input-context').value = '';
-  document.getElementById('input-awards').value  = '';
-  document.getElementById('upload-zone').classList.add('hidden');
-  document.getElementById('results').classList.add('hidden');
-  document.getElementById('thinking').classList.add('hidden');
-  document.getElementById('critique-body').innerHTML = '';
-  document.getElementById('drop-zone').style.display = '';
+    document.getElementById('input-script').value  = '';
+    document.getElementById('input-context').value = '';
+    document.getElementById('input-awards').value  = '';
+    document.getElementById('upload-zone').classList.add('hidden');
+    document.getElementById('results').classList.add('hidden');
+    document.getElementById('thinking').classList.add('hidden');
+    document.getElementById('critique-body').innerHTML = '';
+    document.getElementById('drop-zone').style.display = '';
 
-  ['idea','present','award'].forEach(function(s) {
-    document.getElementById('stage-' + s).classList.remove('active');
+    ['idea','present','award'].forEach(function(s) {
+      document.getElementById('stage-' + s).classList.remove('active');
+    });
+
+    var ctaBtn = document.getElementById('cta-btn');
+    ctaBtn.disabled = false;
+    ctaBtn.textContent = 'GET THE VERDICT →';
+
+    window.scrollTo(0, 0);
   });
+}
 
-  var ctaBtn = document.getElementById('cta-btn');
-  ctaBtn.disabled = false;
-  ctaBtn.textContent = 'GET THE VERDICT →';
+// ── FLICKER TRANSITION ────────────────────────────────────────────────────────
 
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+function sleep(ms) { return new Promise(function(r) { setTimeout(r, ms); }); }
+
+var flickering = false;
+
+async function flickerTransition(title, contentSwitch) {
+  if (flickering) return;
+  flickering = true;
+
+  var overlay = document.getElementById('flicker-overlay');
+  var text    = document.getElementById('flicker-text');
+
+  // Set text and fit to full viewport width
+  text.textContent    = title;
+  text.style.fontSize = '500px';
+  text.style.whiteSpace = 'nowrap';
+  var tw = text.scrollWidth;
+  if (tw) text.style.fontSize = Math.max(10, Math.floor(((window.innerWidth - 32) / tw) * 500)) + 'px';
+
+  text.style.color   = '#FFFF00';
+  text.style.opacity = '0';
+  overlay.style.display = 'flex';
+
+  // Chaotic flicker: 800ms, random intervals, random yellow/white
+  var end = Date.now() + 800;
+  while (Date.now() < end) {
+    text.style.color   = Math.random() > 0.45 ? '#ffffff' : '#FFFF00';
+    text.style.opacity = Math.random() > 0.2  ? '1' : '0.1';
+    await sleep(12 + Math.random() * 50);
+    text.style.opacity = '0';
+    await sleep(5 + Math.random() * 20);
+  }
+
+  // Settle to yellow
+  text.style.color   = '#FFFF00';
+  text.style.opacity = '1';
+  await sleep(400);
+
+  // Content switch — user sees nothing, overlay covers everything
+  if (contentSwitch) contentSwitch();
+
+  // Single white flash
+  text.style.color = '#ffffff';
+  await sleep(60);
+
+  // Hard cut — overlay gone instantly
+  overlay.style.display = 'none';
+  flickering = false;
 }
 
 // ── FIT TO WIDTH ──────────────────────────────────────────────────────────────
