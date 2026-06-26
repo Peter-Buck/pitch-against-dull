@@ -9,12 +9,14 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 :root { --yellow: #FFFF00; --black: #0a0a0a; --white: #F4F2EA; --border: #222; }
 
+/* Kill Dull platform cursor: crosshair everywhere — no pointer, no default */
 body {
   background: var(--black);
   color: var(--white);
   font-family: 'Poppins', -apple-system, sans-serif;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  cursor: crosshair;
 }
 
 @keyframes spin    { to { transform: rotate(360deg); } }
@@ -57,7 +59,7 @@ body {
   padding: 20px 16px;
   border: none;
   background: #1a1a1a;
-  cursor: pointer;
+  cursor: crosshair;
   text-align: left;
   width: 100%;
   transition: box-shadow 0.12s;
@@ -76,7 +78,7 @@ body {
 .drop-zone {
   padding: 44px 28px;
   text-align: center;
-  cursor: pointer;
+  cursor: crosshair;
   background: #111;
   transition: outline 0.1s, background 0.1s;
 }
@@ -97,14 +99,14 @@ body {
   position: absolute; top: 3px; right: 3px;
   width: 22px; height: 22px;
   background: rgba(0,0,0,0.85); border: 1px solid #444;
-  color: #fff; cursor: pointer; font-size: 13px; line-height: 1;
+  color: #fff; cursor: crosshair; font-size: 13px; line-height: 1;
   display: flex; align-items: center; justify-content: center;
 }
 .add-more {
   aspect-ratio: 4/3;
   border: 1px dashed #2a2a2a;
   display: flex; align-items: center; justify-content: center;
-  cursor: pointer; background: #0d0d0d; color: #555;
+  cursor: crosshair; background: #0d0d0d; color: #555;
   font-size: 11px; flex-direction: column; gap: 4px;
 }
 
@@ -135,9 +137,9 @@ body {
   background: var(--yellow); color: #000; border: none;
   font-family: 'Poppins', sans-serif; font-size: clamp(12px, 3.2vw, 15px);
   font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
-  cursor: pointer; transition: background 0.15s; line-height: 1.2;
+  cursor: crosshair; transition: background 0.15s; line-height: 1.2;
 }
-.cta-btn:disabled { background: #1c1c1c; color: rgba(255,255,255,0.2); cursor: not-allowed; }
+.cta-btn:disabled { background: #1c1c1c; color: rgba(255,255,255,0.2); cursor: crosshair; }
 
 /* THINKING */
 .thinking { display: flex; align-items: center; gap: 14px; padding: 22px 0; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #888; font-weight: 600; }
@@ -171,6 +173,11 @@ body {
 </style>
 </head>
 <body>
+
+<!-- TITLE CARD — stage transitions -->
+<div id="title-card" style="display:none;position:fixed;inset:0;background:#0a0a0a;z-index:9998;align-items:center;justify-content:center;">
+  <div id="title-card-text" style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;white-space:nowrap;line-height:1.05;padding:0 16px;color:#FFFF00;"></div>
+</div>
 
 <!-- SPLASH -->
 <div id="splash" style="position:fixed;inset:0;background:#000;z-index:9999;display:flex;align-items:center;justify-content:center;padding-bottom:100px;">
@@ -334,8 +341,8 @@ body {
           </div>
 
           <div class="print-hide" style="padding:20px;border-top:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;">
-            <button onclick="window.print()" style="flex:1;padding:16px;background:var(--yellow);border:none;color:#000;font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;min-width:140px;">↓ Print / Save as PDF</button>
-            <button onclick="resetAll()" style="flex:1;padding:16px;background:transparent;border:2px solid var(--yellow);color:var(--yellow);font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;min-width:140px;">↑ Start New Critique</button>
+            <button onclick="window.print()" style="flex:1;padding:16px;background:var(--yellow);border:none;color:#000;font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:crosshair;min-width:140px;">↓ Print / Save as PDF</button>
+            <button onclick="resetAll()" style="flex:1;padding:16px;background:transparent;border:2px solid var(--yellow);color:var(--yellow);font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:crosshair;min-width:140px;">↑ Start New Critique</button>
           </div>
         </div>
       </div>
@@ -399,19 +406,19 @@ var state = {
 // ── STAGE ────────────────────────────────────────────────────────────────────
 
 function selectStage(stage) {
-  state.stage = stage;
+  var titles = { idea: 'ROUGH IDEA.', present: 'READY TO PRESENT.', award: 'AWARD ENTRY.' };
+  var tags   = { idea: 'ROUGH IDEA',  present: 'READY TO PRESENT',  award: 'AWARD ENTRY'  };
 
-  ['idea','present','award'].forEach(function(s) {
-    document.getElementById('stage-' + s).classList.toggle('active', s === stage);
+  showTitleCard(titles[stage] || stage.toUpperCase() + '.', function() {
+    state.stage = stage;
+    ['idea','present','award'].forEach(function(s) {
+      document.getElementById('stage-' + s).classList.toggle('active', s === stage);
+    });
+    document.getElementById('cta-btn').textContent = (CTA_LABELS[stage] || 'GET THE VERDICT') + ' →';
+    document.getElementById('awards-block').classList.toggle('hidden', stage !== 'award');
+    document.getElementById('result-tag').textContent = tags[stage] || '';
+    document.getElementById('upload-zone').classList.remove('hidden');
   });
-
-  document.getElementById('cta-btn').textContent = (CTA_LABELS[stage] || 'GET THE VERDICT') + ' →';
-  document.getElementById('awards-block').classList.toggle('hidden', stage !== 'award');
-
-  var tags = { idea: 'ROUGH IDEA', present: 'READY TO PRESENT', award: 'AWARD ENTRY' };
-  document.getElementById('result-tag').textContent = tags[stage] || '';
-
-  document.getElementById('upload-zone').classList.remove('hidden');
 }
 
 // ── IMAGES ───────────────────────────────────────────────────────────────────
@@ -675,59 +682,70 @@ function displayResults(text) {
   stopThinking();
   document.getElementById('thinking').classList.add('hidden');
 
-  var score     = extractScore(text);
-  var scoreWrap = document.getElementById('score-wrap');
-  if (score !== null && state.stage !== 'idea') {
-    document.getElementById('score-num').textContent = score;
-    scoreWrap.classList.remove('hidden');
-  } else {
-    scoreWrap.classList.add('hidden');
-  }
-
-  document.getElementById('critique-body').innerHTML = renderCritique(text);
-
-  var results = document.getElementById('results');
-  results.classList.remove('hidden');
-
-  var ctaBtn = document.getElementById('cta-btn');
-  ctaBtn.disabled = false;
-  ctaBtn.textContent = (CTA_LABELS[state.stage] || 'GET THE VERDICT') + ' →';
-  state.loading = false;
-
-  setTimeout(function() {
-    results.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 100);
+  showTitleCard('THE VERDICT.', function() {
+    var score     = extractScore(text);
+    var scoreWrap = document.getElementById('score-wrap');
+    if (score !== null && state.stage !== 'idea') {
+      document.getElementById('score-num').textContent = score;
+      scoreWrap.classList.remove('hidden');
+    } else {
+      scoreWrap.classList.add('hidden');
+    }
+    document.getElementById('critique-body').innerHTML = renderCritique(text);
+    var results = document.getElementById('results');
+    results.classList.remove('hidden');
+    var ctaBtn = document.getElementById('cta-btn');
+    ctaBtn.disabled = false;
+    ctaBtn.textContent = (CTA_LABELS[state.stage] || 'GET THE VERDICT') + ' →';
+    state.loading = false;
+    setTimeout(function() {
+      results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  });
 }
 
 // ── RESET ─────────────────────────────────────────────────────────────────────
 
 function resetAll() {
-  state.images  = [];
-  state.frames  = [];
-  state.stage   = null;
-  state.loading = false;
-
-  renderImages();
-  renderFrames();
-
-  document.getElementById('input-script').value  = '';
-  document.getElementById('input-context').value = '';
-  document.getElementById('input-awards').value  = '';
-  document.getElementById('upload-zone').classList.add('hidden');
-  document.getElementById('results').classList.add('hidden');
-  document.getElementById('thinking').classList.add('hidden');
-  document.getElementById('critique-body').innerHTML = '';
-  document.getElementById('drop-zone').style.display = '';
-
-  ['idea','present','award'].forEach(function(s) {
-    document.getElementById('stage-' + s).classList.remove('active');
+  showTitleCard('THE RECKONING.', function() {
+    state.images  = [];
+    state.frames  = [];
+    state.stage   = null;
+    state.loading = false;
+    renderImages();
+    renderFrames();
+    document.getElementById('input-script').value  = '';
+    document.getElementById('input-context').value = '';
+    document.getElementById('input-awards').value  = '';
+    document.getElementById('upload-zone').classList.add('hidden');
+    document.getElementById('results').classList.add('hidden');
+    document.getElementById('thinking').classList.add('hidden');
+    document.getElementById('critique-body').innerHTML = '';
+    document.getElementById('drop-zone').style.display = '';
+    ['idea','present','award'].forEach(function(s) {
+      document.getElementById('stage-' + s).classList.remove('active');
+    });
+    var ctaBtn = document.getElementById('cta-btn');
+    ctaBtn.disabled = false;
+    ctaBtn.textContent = 'GET THE VERDICT →';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
+}
 
-  var ctaBtn = document.getElementById('cta-btn');
-  ctaBtn.disabled = false;
-  ctaBtn.textContent = 'GET THE VERDICT →';
+// ── TITLE CARD ────────────────────────────────────────────────────────────────
 
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+function showTitleCard(title, fn) {
+  var card = document.getElementById('title-card');
+  var text = document.getElementById('title-card-text');
+  text.textContent    = title;
+  text.style.fontSize = '500px';
+  var tw = text.scrollWidth;
+  if (tw) text.style.fontSize = Math.max(10, Math.floor(((window.innerWidth - 32) / tw) * 500)) + 'px';
+  card.style.display = 'flex';
+  setTimeout(function() {
+    if (fn) fn();
+    card.style.display = 'none';
+  }, 600);
 }
 
 // ── FIT TO WIDTH ──────────────────────────────────────────────────────────────

@@ -9,7 +9,8 @@
     /* ── RESET & TOKENS ── */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; border-radius: 0; }
     :root { --y: #FFFF00; --k: #0a0a0a; --w: #F4F2EA; --b: #222; --r: #ff4d4d; --max: 600px; }
-    html, body { height: 100%; background: var(--k); color: var(--w); font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+    /* Kill Dull platform cursor: crosshair everywhere — no pointer, no default */
+    html, body { height: 100%; background: var(--k); color: var(--w); font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; cursor: crosshair; }
 
     /* ── ANIMATIONS ── */
     @keyframes screenIn   { from { opacity: 0; } to { opacity: 1; } }
@@ -43,9 +44,9 @@
     .eyebrow    { font-family: 'Poppins', sans-serif; font-size: 10px; color: rgba(255,255,255,0.28); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 8px; font-weight: 700; }
 
     /* ── BUTTONS ── */
-    .btn { display: block; width: 100%; padding: 20px 24px; font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(20px, 5vw, 26px); letter-spacing: 3px; text-transform: uppercase; border: none; cursor: pointer; transition: transform 0.1s; -webkit-tap-highlight-color: transparent; }
+    .btn { display: block; width: 100%; padding: 20px 24px; font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(20px, 5vw, 26px); letter-spacing: 3px; text-transform: uppercase; border: none; cursor: crosshair; transition: transform 0.1s; -webkit-tap-highlight-color: transparent; }
     .btn:active { transform: scale(0.97); }
-    .btn:disabled { opacity: 0.35; cursor: default; }
+    .btn:disabled { opacity: 0.35; cursor: crosshair; }
     .btn:disabled:active { transform: none; }
     .btn-yellow         { background: var(--y); color: var(--k); }
     .btn-outline-yellow { background: transparent; color: var(--y); border: 2px solid var(--y); }
@@ -60,7 +61,7 @@
 
     /* ── BACK / ERROR ── */
     .error-msg { font-family: 'Poppins', sans-serif; font-size: 13px; color: var(--r); margin-top: 12px; display: none; }
-    .back-btn  { display: inline-flex; align-items: center; gap: 6px; background: none; border: none; color: rgba(255,255,255,0.3); font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; padding: 20px 0 12px; -webkit-tap-highlight-color: transparent; }
+    .back-btn  { display: inline-flex; align-items: center; gap: 6px; background: none; border: none; color: rgba(255,255,255,0.3); font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 600; cursor: crosshair; padding: 20px 0 12px; -webkit-tap-highlight-color: transparent; }
     .back-btn:active { color: var(--w); }
 
     /* ── CARDS ── */
@@ -114,7 +115,7 @@
     .up-next-hero { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 0; }
     .up-next-title { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(56px, 15vw, 80px); line-height: 0.9; color: var(--y); text-transform: uppercase; margin-bottom: 12px; }
     .vote-grid { display: flex; flex-direction: column; margin: 16px 0; }
-    .vote-card { border: 1px solid var(--b); border-top: none; padding: 16px 20px; cursor: pointer; transition: background 0.1s; -webkit-tap-highlight-color: transparent; user-select: none; }
+    .vote-card { border: 1px solid var(--b); border-top: none; padding: 16px 20px; cursor: crosshair; transition: background 0.1s; -webkit-tap-highlight-color: transparent; user-select: none; }
     .vote-card:first-child { border-top: 1px solid var(--b); }
     .vote-card:active { background: rgba(255,255,255,0.03); }
     .vote-card.selected { border-color: var(--y); background: rgba(255,255,0,0.05); }
@@ -162,7 +163,7 @@
     .r3-idea-card.develop .r3-idea-name { color: var(--y); }
     .r3-idea-meta { font-family: 'Poppins', sans-serif; font-size: 10px; color: rgba(255,255,255,0.25); margin-top: 3px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
     .r3-vote-btns { display: flex; margin-top: 14px; }
-    .r3-vote-btn { flex: 1; padding: 12px 4px; font-family: 'Manrope', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: 1px; text-transform: uppercase; border: 1px solid var(--b); border-right: none; background: transparent; color: rgba(255,255,255,0.28); cursor: pointer; transition: background 0.1s, color 0.1s; -webkit-tap-highlight-color: transparent; }
+    .r3-vote-btn { flex: 1; padding: 12px 4px; font-family: 'Manrope', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: 1px; text-transform: uppercase; border: 1px solid var(--b); border-right: none; background: transparent; color: rgba(255,255,255,0.28); cursor: crosshair; transition: background 0.1s, color 0.1s; -webkit-tap-highlight-color: transparent; }
     .r3-vote-btn:last-child { border-right: 1px solid var(--b); }
     .r3-vote-btn:active { transform: scale(0.97); }
     .r3-vote-btn.kill.active    { background: rgba(255,60,60,0.1);  color: var(--r); border-color: rgba(255,60,60,0.35); }
