@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Kill Dull — The Storm</title>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
   <style>
     /* ── RESET & TOKENS ── */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; border-radius: 0; }
@@ -18,9 +18,9 @@
     @keyframes spin       { to { transform: rotate(360deg); } }
 
     /* ── GLOBAL HEADER ── */
-    #kd-header { background: var(--y); padding: 24px 16px 28px 16px; display: none; }
+    #kd-header { background: var(--y); padding: 18px 16px 22px; overflow: hidden; display: none; }
     #kd-header .inner { }
-    .kd-logo  { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: clamp(26px, 7vw, 36px); line-height: 0.9; color: var(--k); text-transform: uppercase; }
+    .kd-logo  { font-family: 'Poppins', sans-serif; font-weight: 900; line-height: 1.05; display: block; white-space: nowrap; color: var(--k); text-transform: uppercase; }
     .kd-tool  { font-family: 'Poppins', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: rgba(0,0,0,0.45); margin-top: 4px; }
 
     /* ── SCREENS ── */
@@ -32,30 +32,31 @@
     .kill-dull-title { font-family: 'Poppins', sans-serif; font-weight: 900; line-height: 1.1; display: block; width: 100%; padding: 0; color: #000; text-transform: uppercase; }
     .kd-logo-sub { font-family: 'Poppins', sans-serif; font-weight: 600; letter-spacing: 0; color: #000; margin-top: 0; margin-bottom: 4px; padding-left: 0; text-align: left; display: block; width: 100%; line-height: 1.4; }
     .kd-footer { background: #F4F2EA; padding: 24px 16px; margin-top: auto; }
-    .kd-footer-logo { color: #000000; font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 35px; line-height: 1; }
-    .kd-footer-copy { color: #000000; font-family: 'Poppins', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: 1px; margin-top: 10px; }
+    .kd-footer-logo { color: #000; font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 32px; line-height: 1; }
+    .kd-footer-copy { color: #555; font-size: 12px; letter-spacing: 0.05em; margin-top: 6px; }
+  .kd-footer-copy a { color: inherit; text-decoration: none; }
     .kd-footer-stat { color: #000000; font-family: 'Poppins', sans-serif; font-weight: 400; font-size: 12px; font-style: italic; margin-top: 6px; }
-    .storm-sub  { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(32px, 8vw, 52px); color: var(--w); text-transform: uppercase; letter-spacing: 4px; margin-top: 8px; }
-    .tagline    { font-family: 'Poppins', sans-serif; font-size: 15px; color: rgba(255,255,255,0.4); margin-top: 10px; line-height: 1.55; }
-    .heading-xl { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(64px, 16vw, 96px); line-height: 0.9; color: var(--y); text-transform: uppercase; }
-    .heading-lg { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(48px, 12vw, 72px); line-height: 0.95; color: var(--y); text-transform: uppercase; }
-    .heading-md { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(28px, 7vw, 40px); color: var(--w); text-transform: uppercase; }
+    .storm-sub  { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: clamp(32px, 8vw, 52px); color: var(--w); text-transform: uppercase; letter-spacing: 4px; margin-top: 8px; }
+    .tagline    { font-family: 'Poppins', sans-serif; font-size: 18px; color: rgba(255,255,255,0.55); margin-top: 10px; line-height: 1.6; }
+    .heading-xl { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: clamp(64px, 16vw, 96px); line-height: 0.9; color: var(--y); text-transform: uppercase; }
+    .heading-lg { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: clamp(48px, 12vw, 72px); line-height: 0.95; color: var(--y); text-transform: uppercase; }
+    .heading-md { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: clamp(28px, 7vw, 40px); color: var(--w); text-transform: uppercase; }
     .eyebrow    { font-family: 'Poppins', sans-serif; font-size: 10px; color: rgba(255,255,255,0.28); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 8px; font-weight: 700; }
 
     /* ── BUTTONS ── */
-    .btn { display: block; width: 100%; padding: 20px 24px; font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(20px, 5vw, 26px); letter-spacing: 3px; text-transform: uppercase; border: none; transition: transform 0.1s; -webkit-tap-highlight-color: transparent; }
+    .btn { display: block; width: 100%; padding: 20px 24px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: clamp(13px, 3.8vw, 17px); letter-spacing: 0.1em; text-transform: uppercase; border: none; transition: transform 0.1s; -webkit-tap-highlight-color: transparent; }
     .btn:active { transform: scale(0.97); }
     .btn:disabled { opacity: 0.35; }
     .btn:disabled:active { transform: none; }
     .btn-yellow         { background: var(--y); color: var(--k); }
-    .btn-outline-yellow { background: transparent; color: var(--y); border: 2px solid var(--y); }
+    .btn-outline-yellow { background: var(--k); color: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.28); }
 
     /* ── INPUTS ── */
     .field-label { font-family: 'Poppins', sans-serif; font-size: 10px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; font-weight: 700; display: block; }
     .input { display: block; width: 100%; background: var(--k); border: none; border-bottom: 2px solid var(--y); padding: 20px 0; color: var(--w); font-family: 'Poppins', sans-serif; font-size: 20px; font-weight: 600; outline: none; -webkit-appearance: none; }
     .input:focus { border-bottom-color: #F4F2EA; }
     .input::placeholder { color: rgba(255,255,255,0.18); }
-    .input-code { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(40px, 10vw, 56px); text-align: center; letter-spacing: 12px; padding: 16px 0; text-transform: uppercase; }
+    .input-code { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: clamp(40px, 10vw, 56px); text-align: center; letter-spacing: 12px; padding: 16px 0; text-transform: uppercase; }
     .form-group { margin-bottom: 32px; }
 
     /* ── BACK / ERROR ── */
@@ -66,14 +67,14 @@
     /* ── CARDS ── */
     .card        { border: 1px solid var(--b); padding: 18px 20px; margin-bottom: 12px; }
     .card-yellow { border: 1px solid rgba(255,255,0,0.25); background: rgba(255,255,0,0.03); padding: 18px 20px; margin-bottom: 12px; }
-    .card-body   { font-family: 'Poppins', sans-serif; font-size: 15px; color: rgba(255,255,255,0.68); line-height: 1.6; }
+    .card-body   { font-family: 'Poppins', sans-serif; font-size: 18px; color: rgba(255,255,255,0.75); line-height: 1.6; }
 
     /* ── LAYOUT ── */
     .divider { height: 1px; background: var(--b); margin: 24px 0; }
     .flex-1  { flex: 1; }
 
     /* ── ROOM CODE ── */
-    .room-code-big { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(80px, 22vw, 140px); color: var(--y); letter-spacing: 16px; text-align: center; line-height: 1; }
+    .room-code-big { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: clamp(80px, 22vw, 140px); color: var(--y); letter-spacing: 16px; text-align: center; line-height: 1; }
 
     /* ── PLAYERS ── */
     .players-count { font-family: 'Poppins', sans-serif; font-size: 10px; color: rgba(255,255,255,0.28); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 3px; font-weight: 700; }
@@ -88,38 +89,38 @@
 
     /* ── LANDING ── */
     #screen-landing { padding: 0; height: 100vh; min-height: 0; }
-    #screen-landing .hero   { padding: 24px 16px 28px 16px; overflow: hidden; background: #FFFF00; }
+    #screen-landing .hero   { padding: 24px 16px 40px 16px; overflow: hidden; background: #FFFF00; }
     #screen-landing .btn-row { display: flex; flex-direction: column; border-top: 1px solid var(--b); padding-bottom: 2px; }
     #screen-landing .btn-row .btn { border-bottom: 1px solid var(--b); }
-    #screen-landing .btn-row .btn-outline-yellow { border: 2px solid #FFFF00; }
+    #screen-landing .btn-row .btn-outline-yellow { border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid var(--b); }
 
     /* ── ROOM CODE SCREEN ── */
     #screen-room-code .code-area { padding: 40px 0 28px; text-align: center; border-bottom: 1px solid var(--b); margin-bottom: 28px; }
 
     /* ── ROUND 1 ── */
     .words-stack { display: flex; flex-direction: column; margin: 20px 0; }
-    .word-chip { display: block; border: 1px solid rgba(255,255,0,0.3); border-top: none; padding: 18px 20px; font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(28px, 7vw, 40px); color: var(--y); text-transform: uppercase; letter-spacing: 1px; text-align: center; }
+    .word-chip { display: block; border: 1px solid rgba(255,255,0,0.3); border-top: none; padding: 18px 20px; font-family: 'Poppins', sans-serif; font-weight: 900; font-size: clamp(28px, 7vw, 40px); color: var(--y); text-transform: uppercase; letter-spacing: 1px; text-align: center; }
     .word-chip:first-child { border-top: 1px solid rgba(255,255,0,0.3); }
     .pitch-order-list { list-style: none; margin: 16px 0; }
     .pitch-order-list li { display: flex; align-items: center; gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--b); font-family: 'Poppins', sans-serif; font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.85); }
     .pitch-order-list li:last-child { border-bottom: none; }
-    .pitch-num { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: 28px; color: rgba(255,255,255,0.15); width: 28px; text-align: center; flex-shrink: 0; }
-    .countdown-big { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(100px, 30vw, 180px); color: var(--y); text-align: center; line-height: 1; padding-bottom: 40px; }
-    .timer-display { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(64px, 18vw, 100px); color: var(--y); text-align: center; line-height: 1; }
+    .pitch-num { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 28px; color: rgba(255,255,255,0.15); width: 28px; text-align: center; flex-shrink: 0; }
+    .countdown-big { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: clamp(100px, 30vw, 180px); color: var(--y); text-align: center; line-height: 1; padding-bottom: 40px; }
+    .timer-display { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: clamp(64px, 18vw, 100px); color: var(--y); text-align: center; line-height: 1; }
     .timer-display.dimmed { color: rgba(255,255,255,0.12); }
     .timer-display.timer-pulse { animation: timerPulse 0.5s ease-in-out infinite alternate; }
     .timer-bar-track { width: 100%; height: 3px; background: var(--b); overflow: hidden; margin: 16px 0 0; }
     .timer-bar-fill { height: 100%; background: var(--y); transition: width 1s linear; }
     .timer-bar-fill.dimmed { background: #2a2a2a; }
     .up-next-hero { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 0; }
-    .up-next-title { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(56px, 15vw, 80px); line-height: 0.9; color: var(--y); text-transform: uppercase; margin-bottom: 12px; }
+    .up-next-title { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: clamp(56px, 15vw, 80px); line-height: 0.9; color: var(--y); text-transform: uppercase; margin-bottom: 12px; }
     .vote-grid { display: flex; flex-direction: column; margin: 16px 0; }
     .vote-card { border: 1px solid var(--b); border-top: none; padding: 16px 20px; transition: background 0.1s; -webkit-tap-highlight-color: transparent; user-select: none; }
     .vote-card:first-child { border-top: 1px solid var(--b); }
     .vote-card:active { background: rgba(255,255,255,0.03); }
     .vote-card.selected { border-color: var(--y); background: rgba(255,255,0,0.05); }
     .vote-card.self-vote { opacity: 0.22; pointer-events: none; }
-    .vote-card-name { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(22px, 5vw, 28px); color: var(--w); text-transform: uppercase; }
+    .vote-card-name { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: clamp(22px, 5vw, 28px); color: var(--w); text-transform: uppercase; }
     .vote-card.selected .vote-card-name { color: var(--y); }
     .vote-card-idea { font-family: 'Poppins', sans-serif; font-size: 13px; color: rgba(255,255,255,0.38); margin-top: 3px; }
     .result-winner { border: 2px solid var(--y); padding: 28px 20px; text-align: center; background: rgba(255,255,0,0.03); }
@@ -127,18 +128,18 @@
     .result-list li { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--b); font-family: 'Poppins', sans-serif; font-size: 15px; color: rgba(255,255,255,0.6); }
     .result-list li:last-child { border-bottom: none; }
     .result-list li.winner { color: var(--y); }
-    .vote-tally { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: 24px; color: rgba(255,255,255,0.2); flex-shrink: 0; }
+    .vote-tally { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 24px; color: rgba(255,255,255,0.2); flex-shrink: 0; }
     .result-list li.winner .vote-tally { color: var(--y); }
     .host-band { border: 1px solid rgba(255,255,0,0.2); padding: 16px 20px; margin-bottom: 12px; background: rgba(255,255,0,0.02); }
     .host-band-label { font-family: 'Poppins', sans-serif; font-size: 10px; color: rgba(255,255,0,0.38); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 12px; font-weight: 700; }
     .player-word-row { display: flex; align-items: baseline; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--b); font-family: 'Poppins', sans-serif; font-size: 14px; }
     .player-word-row:last-child { border-bottom: none; }
     .player-word-name  { color: rgba(255,255,255,0.45); font-weight: 700; min-width: 90px; }
-    .player-word-chips { color: var(--y); font-family: 'Manrope', sans-serif; font-weight: 900; font-size: 18px; letter-spacing: 1px; }
+    .player-word-chips { color: var(--y); font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 18px; letter-spacing: 1px; }
 
     /* ── ROUND 2 ── */
     .campaign-card      { border: 1px solid var(--b); padding: 20px; margin: 16px 0; }
-    .campaign-card-name { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(24px, 6vw, 32px); color: var(--w); text-transform: uppercase; line-height: 1; margin-bottom: 4px; }
+    .campaign-card-name { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: clamp(24px, 6vw, 32px); color: var(--w); text-transform: uppercase; line-height: 1; margin-bottom: 4px; }
     .campaign-card-meta { font-family: 'Poppins', sans-serif; font-size: 10px; color: rgba(255,255,255,0.28); margin-bottom: 16px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; }
     .campaign-card-field { margin-bottom: 14px; }
     .campaign-card-field:last-child { margin-bottom: 0; }
@@ -146,7 +147,7 @@
     .campaign-card-text  { font-family: 'Poppins', sans-serif; font-size: 15px; color: rgba(255,255,255,0.8); line-height: 1.55; }
     .phase-rule { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--b); }
     .phase-rule:last-child { border-bottom: none; }
-    .phase-rule-num  { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: 28px; color: var(--y); flex-shrink: 0; width: 28px; line-height: 1; }
+    .phase-rule-num  { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 28px; color: var(--y); flex-shrink: 0; width: 28px; line-height: 1; }
     .phase-rule-text { font-family: 'Poppins', sans-serif; font-size: 15px; color: rgba(255,255,255,0.62); line-height: 1.55; padding-top: 4px; }
     .phase-player-row { display: flex; align-items: center; gap: 12px; padding: 20px 0; border-bottom: 1px solid var(--b); }
     .phase-player-row:last-child { border-bottom: none; }
@@ -158,11 +159,11 @@
     .r3-idea-card:first-child { border-top: 1px solid var(--b); }
     .r3-idea-card.develop { border-color: rgba(255,255,0,0.35); background: rgba(255,255,0,0.03); }
     .r3-idea-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
-    .r3-idea-name { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(20px, 5vw, 26px); color: var(--w); text-transform: uppercase; line-height: 1; }
+    .r3-idea-name { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: clamp(20px, 5vw, 26px); color: var(--w); text-transform: uppercase; line-height: 1; }
     .r3-idea-card.develop .r3-idea-name { color: var(--y); }
     .r3-idea-meta { font-family: 'Poppins', sans-serif; font-size: 10px; color: rgba(255,255,255,0.25); margin-top: 3px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
     .r3-vote-btns { display: flex; margin-top: 14px; }
-    .r3-vote-btn { flex: 1; padding: 12px 4px; font-family: 'Manrope', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: 1px; text-transform: uppercase; border: 1px solid var(--b); border-right: none; background: transparent; color: rgba(255,255,255,0.28); transition: background 0.1s, color 0.1s; -webkit-tap-highlight-color: transparent; }
+    .r3-vote-btn { flex: 1; padding: 12px 4px; font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: 1px; text-transform: uppercase; border: 1px solid var(--b); border-right: none; background: transparent; color: rgba(255,255,255,0.28); transition: background 0.1s, color 0.1s; -webkit-tap-highlight-color: transparent; }
     .r3-vote-btn:last-child { border-right: 1px solid var(--b); }
     .r3-vote-btn:active { transform: scale(0.97); }
     .r3-vote-btn.kill.active    { background: rgba(255,60,60,0.1);  color: var(--r); border-color: rgba(255,60,60,0.35); }
@@ -171,13 +172,13 @@
     .r3-tally-row { display: flex; justify-content: space-between; align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--b); font-family: 'Poppins', sans-serif; font-size: 14px; color: rgba(255,255,255,0.55); }
     .r3-tally-row:last-child { border-bottom: none; }
     .r3-tally-chips { display: flex; gap: 16px; }
-    .r3-tally-chip { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: 20px; }
+    .r3-tally-chip { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 20px; }
     .r3-tally-chip.kill    { color: rgba(255,60,60,0.7); }
     .r3-tally-chip.keep    { color: rgba(255,255,255,0.22); }
     .r3-tally-chip.develop { color: var(--y); }
     .survive-card      { border: 1px solid rgba(255,255,0,0.3); border-top: none; padding: 18px 20px; background: rgba(255,255,0,0.03); }
     .survive-card:first-child { border-top: 1px solid rgba(255,255,0,0.3); }
-    .survive-card-name { font-family: 'Manrope', sans-serif; font-weight: 900; font-size: clamp(24px, 6vw, 32px); color: var(--y); text-transform: uppercase; line-height: 1; margin-bottom: 4px; }
+    .survive-card-name { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: clamp(24px, 6vw, 32px); color: var(--y); text-transform: uppercase; line-height: 1; margin-bottom: 4px; }
     .survive-card-meta { font-family: 'Poppins', sans-serif; font-size: 10px; color: rgba(255,255,0,0.4); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; }
     .gameover-prov { font-family: 'Poppins', sans-serif; font-size: 15px; color: rgba(255,255,255,0.58); line-height: 1.75; border-left: 2px solid rgba(255,255,0,0.35); padding-left: 18px; margin: 20px 0; }
     .gameover-coda { font-family: 'Poppins', sans-serif; font-size: 13px; color: rgba(255,255,255,0.28); margin-top: 24px; text-align: center; line-height: 1.8; letter-spacing: 0.5px; }
@@ -191,15 +192,17 @@
 </head>
 <body>
 
+  <!-- TITLE CARD — stage transitions -->
+  <div id="title-card" style="display:none;position:fixed;inset:0;background:#0a0a0a;z-index:9998;align-items:center;justify-content:center;">
+    <div id="title-card-text" style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;white-space:nowrap;line-height:1.05;padding:0 16px;color:#FFFF00;"></div>
+  </div>
+
   <!-- ════════════════════════════════════════
        GLOBAL HEADER (hidden on landing)
   ════════════════════════════════════════ -->
-  <header id="kd-header">
-    <div class="inner">
-      <div class="kd-logo">Kill Dull.</div>
-      <div class="kd-tool" id="kd-header-tool">The Storm</div>
-    </div>
-  </header>
+  <div id="kd-header">
+    <div class="kd-logo">THE STORM.</div>
+  </div>
 
   <!-- SPLASH SCREEN -->
   <div id="screen-splash" style="position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;z-index:9999;">
@@ -225,7 +228,7 @@
     </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -268,7 +271,7 @@
     </div>
   <footer class="kd-footer" style="width:100%; margin:0; padding:24px 16px; box-sizing:border-box;">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -277,17 +280,15 @@
   ════════════════════════════════════════ -->
   <div id="screen-landing" class="screen">
     <div class="hero">
-      <div class="kill-dull-title">PITCH AGAINST DULL.</div>
-      <div class="kd-logo-sub">AI precision. Human intuition. Dead set on the work that works.</div>
+      <div class="kill-dull-title">THE STORM.</div>
     </div>
-    <div style="height: 60px; background: #000;"></div>
     <div class="btn-row">
       <button class="btn btn-yellow" onclick="showScreen('screen-host-code')">Host</button>
       <button class="btn btn-outline-yellow" onclick="showScreen('screen-join')">Join</button>
     </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -310,7 +311,7 @@
     </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -344,7 +345,7 @@
     </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -372,7 +373,7 @@
     </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -400,7 +401,7 @@
     </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -428,7 +429,7 @@
     </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -459,7 +460,7 @@
     </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -492,7 +493,7 @@
     </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -527,7 +528,7 @@
     </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -544,7 +545,7 @@
     <div id="r1-pitchorder-countdown" class="countdown-big">5</div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -597,7 +598,7 @@
     </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -631,7 +632,7 @@
     </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -653,7 +654,7 @@
     <div style="height: 48px;"></div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -683,7 +684,7 @@
     </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -711,7 +712,7 @@
     </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -737,7 +738,7 @@
     <div style="height: 48px;"></div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -770,7 +771,7 @@
     </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -803,7 +804,7 @@
     </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -838,7 +839,7 @@
     </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -881,7 +882,7 @@
     </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -920,7 +921,7 @@
     </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -963,7 +964,7 @@
     </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -1000,7 +1001,7 @@
     </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -1022,7 +1023,7 @@
     <div style="height: 48px;"></div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -1046,7 +1047,7 @@
     </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com</div>
+    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="privacy.html">Privacy</a></div>
       </footer>
   </div>
 
@@ -1265,10 +1266,10 @@
         else showScreen('screen-waiting');
         return;
       }
-      if (status === 'storm-intro') { renderStormIntro(room); showScreen('screen-storm-intro'); return; }
+      if (status === 'storm-intro') { renderStormIntro(room); showTitleCard('THE STORM.', function(){ showScreen('screen-storm-intro'); }); return; }
 
       // ── ROUND 1 ──
-      if (status === 'r1-intro')    { renderR1Intro(room); showScreen('screen-r1-intro'); return; }
+      if (status === 'r1-intro')    { renderR1Intro(room); showTitleCard('ROUND ONE.', function(){ showScreen('screen-r1-intro'); }); return; }
       if (status === 'r1-words')      { renderWordsScreen(room); return; }
       if (status === 'r1-pitchorder') { renderPitchOrderScreen(room, 'Round 1 — Random Words'); showScreen('screen-r1-pitchorder'); startPitchOrderCountdown('r1-nameidea'); return; }
       if (status === 'r1-nameidea')   { renderNameIdeaScreen(room, idx); return; }
@@ -1278,7 +1279,7 @@
       if (status === 'r1-result')     { renderResultScreen(room, 'Round 1'); showScreen('screen-r1-result'); return; }
 
       // ── ROUND 2 ──
-      if (status === 'r2-intro')      { renderR2Intro(); showScreen('screen-r2-intro'); return; }
+      if (status === 'r2-intro')      { renderR2Intro(); showTitleCard('ROUND TWO.', function(){ showScreen('screen-r2-intro'); }); return; }
       if (status === 'r2-phase1')     { renderR2Phase1(room); showScreen('screen-r2-phase1'); return; }
       if (status === 'r2-phase2')     { renderR2Phase2(room); showScreen('screen-r2-phase2'); return; }
       if (status === 'r2-phase3')     { renderR2Phase3(room); showScreen('screen-r2-phase3'); return; }
@@ -1289,7 +1290,7 @@
       if (status === 'r2-result')     { renderResultScreen(room, 'Round 2'); showScreen('screen-r1-result'); return; }
 
       // ── ROUND 3 ──
-      if (status === 'r3-intro')  { renderR3Intro(); showScreen('screen-r3-intro'); return; }
+      if (status === 'r3-intro')  { renderR3Intro(); showTitleCard('THE RECKONING.', function(){ showScreen('screen-r3-intro'); }); return; }
       if (status === 'r3-vote')   { renderR3VoteScreen(room); showScreen('screen-r3-vote'); return; }
       if (status === 'r3-result') { renderR3ResultScreen(room); showScreen('screen-r3-result'); return; }
       if (status === 'gameover')  { renderGameOver(room); showScreen('screen-gameover'); return; }
@@ -1976,7 +1977,7 @@
               <div class="r3-idea-name">${escHtml(idea.ideaName)}</div>
               <div class="r3-idea-meta">${escHtml(idea.playerName)} &middot; ${escHtml(idea.round)}</div>
             </div>
-            ${survived ? `<div style="font-family:'Manrope',sans-serif;font-weight:900;font-size:16px;color:#FFFF00;flex-shrink:0;padding-top:3px;">DEVELOP</div>` : ''}
+            ${survived ? `<div style="font-family:'Poppins',sans-serif;font-weight:900;font-size:16px;color:#FFFF00;flex-shrink:0;padding-top:3px;">DEVELOP</div>` : ''}
           </div>
           <div class="r3-tally-chips" style="margin-top:8px;">
             <span class="r3-tally-chip kill">${t.kill} Kill</span>
@@ -2099,6 +2100,43 @@
         listenToRoom(code);
       } catch (err) { showError('join-error', 'Error joining room: ' + err.message); }
     }
+
+    function showTitleCard(title, cb) {
+      var tc = document.getElementById('title-card');
+      var tt = document.getElementById('title-card-text');
+      if (!tc || !tt) { if (cb) cb(); return; }
+      tt.textContent = title;
+      tt.style.fontSize = '500px';
+      tt.style.whiteSpace = 'nowrap';
+      var tw = tt.scrollWidth;
+      var avail = window.innerWidth - 32;
+      tt.style.fontSize = Math.floor(avail / tw * 500) + 'px';
+      tc.style.display = 'flex';
+      setTimeout(function() {
+        tc.style.display = 'none';
+        if (cb) cb();
+      }, 600);
+    }
+
+    window.addEventListener('keydown', function(e) {
+      if (!e.shiftKey) return;
+      if (e.key === 'D') {
+        state.isHost = true;
+        state.stormCode = 'DEV0';
+        state.provocation = { name: 'DEV PROVOCATION', tagline: 'Dev shortcut active', provocation: 'A test provocation for development.' };
+        state.brand = 'Test Brand';
+        state.brief = 'Test brief for development purposes.';
+        showScreen('screen-storm-intro');
+        document.getElementById('storm-intro-host').style.display = 'flex';
+        document.getElementById('storm-intro-player').style.display = 'none';
+      }
+      if (e.key === 'R') {
+        state.isHost = true;
+        showScreen('screen-r2-intro');
+        renderR2Intro();
+      }
+    });
+
 
   </script>
 <script>
