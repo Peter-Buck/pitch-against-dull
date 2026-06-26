@@ -9,15 +9,13 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 :root { --yellow: #FFFF00; --black: #0a0a0a; --white: #F4F2EA; --border: #222; }
 
-/* Kill Dull platform cursor: inherit everywhere — no pointer, no default */
 body {
   background: var(--black);
   color: var(--white);
   font-family: 'Poppins', -apple-system, sans-serif;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
-  cursor: inherit;
-}
+  }
 
 @keyframes spin    { to { transform: rotate(360deg); } }
 @keyframes fadeUp  { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -59,8 +57,7 @@ body {
   padding: 20px 16px;
   border: none;
   background: #1a1a1a;
-  cursor: inherit;
-  text-align: left;
+    text-align: left;
   width: 100%;
   transition: box-shadow 0.12s;
 }
@@ -78,8 +75,7 @@ body {
 .drop-zone {
   padding: 44px 28px;
   text-align: center;
-  cursor: inherit;
-  background: #111;
+    background: #111;
   transition: outline 0.1s, background 0.1s;
 }
 .drop-zone.drag-over { outline: 2px dashed var(--yellow); background: rgba(255,255,0,0.03); }
@@ -99,14 +95,14 @@ body {
   position: absolute; top: 3px; right: 3px;
   width: 22px; height: 22px;
   background: rgba(0,0,0,0.85); border: 1px solid #444;
-  color: #fff; cursor: inherit; font-size: 13px; line-height: 1;
+  color: #fff; font-size: 13px; line-height: 1;
   display: flex; align-items: center; justify-content: center;
 }
 .add-more {
   aspect-ratio: 4/3;
   border: 1px dashed #2a2a2a;
   display: flex; align-items: center; justify-content: center;
-  cursor: inherit; background: #0d0d0d; color: #555;
+  background: #0d0d0d; color: #555;
   font-size: 11px; flex-direction: column; gap: 4px;
 }
 
@@ -137,9 +133,9 @@ body {
   background: var(--yellow); color: #000; border: none;
   font-family: 'Poppins', sans-serif; font-size: clamp(12px, 3.2vw, 15px);
   font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
-  cursor: inherit; transition: background 0.15s; line-height: 1.2;
+  transition: background 0.15s; line-height: 1.2;
 }
-.cta-btn:disabled { background: #1c1c1c; color: rgba(255,255,255,0.2); cursor: inherit; }
+.cta-btn:disabled { background: #1c1c1c; color: rgba(255,255,255,0.2); }
 
 /* THINKING */
 .thinking { display: flex; align-items: center; gap: 14px; padding: 22px 0; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #888; font-weight: 600; }
@@ -346,8 +342,8 @@ body {
           </div>
 
           <div class="print-hide" style="padding:20px;border-top:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;">
-            <button onclick="window.print()" style="flex:1;padding:16px;background:var(--yellow);border:none;color:#000;font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:inherit;min-width:140px;">↓ Print / Save as PDF</button>
-            <button onclick="resetAll()" style="flex:1;padding:16px;background:transparent;border:2px solid var(--yellow);color:var(--yellow);font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:inherit;min-width:140px;">↑ Start New Critique</button>
+            <button onclick="window.print()" style="flex:1;padding:16px;background:var(--yellow);border:none;color:#000;font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;min-width:140px;">↓ Print / Save as PDF</button>
+            <button onclick="resetAll()" style="flex:1;padding:16px;background:transparent;border:2px solid var(--yellow);color:var(--yellow);font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;min-width:140px;">↑ Start New Critique</button>
           </div>
         </div>
       </div>

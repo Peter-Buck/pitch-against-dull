@@ -19,7 +19,6 @@
     --green: #00ff88;
   }
 
-  /* Kill Dull platform cursor: inherit everywhere — no pointer, no default */
   body {
     background: var(--black);
     color: var(--white);
@@ -27,8 +26,7 @@
     min-height: 100vh;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
-    cursor: inherit;
-  }
+      }
 
 @keyframes screenIn  { from { opacity: 0; } to { opacity: 1; } }
   @keyframes spin      { to { transform: rotate(360deg); } }
@@ -162,8 +160,7 @@
     font-weight: 900;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    cursor: inherit;
-    margin-top: auto;
+        margin-top: auto;
     transition: transform 0.1s;
   }
   .btn-primary:active { transform: scale(0.97); }
@@ -180,8 +177,7 @@
     font-weight: 900;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    cursor: inherit;
-    margin-top: 12px;
+        margin-top: 12px;
     transition: transform 0.1s;
   }
   .btn-secondary:active { transform: scale(0.97); }
@@ -190,8 +186,7 @@
     background: #1c1c1c;
     color: rgba(255,255,255,0.2);
     border: 1px solid #2a2a2a;
-    cursor: inherit;
-  }
+      }
   .btn-primary:disabled:active { transform: none; }
 
   /* INPUTS */
@@ -397,8 +392,7 @@
   .flip-card {
     width: 100%;
     height: 520px;
-    cursor: inherit;
-    perspective: 1000px;
+        perspective: 1000px;
     -webkit-perspective: 1000px;
   }
   .flip-card-inner {
@@ -569,8 +563,7 @@
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
-    cursor: inherit;
-    transition: all 0.2s;
+        transition: all 0.2s;
   }
 
   .role-btn.selected { background: var(--yellow); color: #000; border-color: var(--yellow); }
@@ -667,8 +660,7 @@
     letter-spacing: 3px;
     text-transform: uppercase;
     white-space: nowrap;
-    cursor: inherit;
-    transition: background 0.15s, color 0.15s, transform 0.1s;
+        transition: background 0.15s, color 0.15s, transform 0.1s;
   }
   .auth-tab:active { transform: scale(0.97); }
   .auth-tab + .auth-tab { border-left: 2px solid var(--white); }
@@ -680,10 +672,10 @@
     width: 100%; padding: 16px; background: #ffffff; border: none;
     color: #1a1a1a; font-family: 'Poppins', sans-serif; font-size: 11px;
     font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-    cursor: inherit; transition: opacity 0.2s; margin-bottom: 0;
+    transition: opacity 0.2s; margin-bottom: 0;
   }
   .btn-google:hover { opacity: 0.88; }
-  .btn-google:disabled { opacity: 0.5; cursor: inherit; }
+  .btn-google:disabled { opacity: 0.5; }
 
   .auth-divider {
     display: flex; align-items: center; gap: 14px;
@@ -710,7 +702,7 @@
   .cookie-btn {
     padding: 8px 16px; font-family: 'Poppins', sans-serif; font-size: 9px;
     font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-    cursor: inherit; border: 1px solid; white-space: nowrap;
+    border: 1px solid; white-space: nowrap;
   }
   .cookie-btn-accept { background: var(--yellow); color: var(--black); border-color: var(--yellow); }
   .cookie-btn-decline { background: transparent; color: rgba(255,255,255,0.4); border-color: var(--border); }
@@ -728,8 +720,7 @@
   .kd-select {
     -webkit-appearance: none;
     appearance: none;
-    cursor: inherit;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 16px center;
     padding-right: 40px;
@@ -972,7 +963,7 @@ firebase.initializeApp({
     </div>
     <div style="position:relative;">
       <input class="kd-input" id="auth-password" type="password" placeholder="Minimum 6 characters" maxlength="100" autocomplete="current-password" style="margin-bottom:0;padding-right:48px;">
-      <button type="button" onclick="togglePasswordVisibility()" aria-label="Show/hide password" style="position:absolute;right:0;top:0;bottom:0;width:48px;background:none;border:none;cursor:inherit;color:#888;display:flex;align-items:center;justify-content:center;" id="pw-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+      <button type="button" onclick="togglePasswordVisibility()" aria-label="Show/hide password" style="position:absolute;right:0;top:0;bottom:0;width:48px;background:none;border:none;color:#888;display:flex;align-items:center;justify-content:center;" id="pw-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
     </div>
 
     <div id="auth-error"></div>
@@ -1152,9 +1143,9 @@ firebase.initializeApp({
       <div id="prov-room-code-display" style="font-family:'Poppins',sans-serif;font-weight:900;color:#FFFF00;font-size:80px;line-height:1;letter-spacing:6px;"></div>
     </div>
     <div id="prov-buttons" style="margin-top:48px;display:flex;flex-direction:column;gap:12px;">
-      <button onclick="copyRoomCode(this)" style="width:100%;padding:16px 20px;background:transparent;color:#fff;border:1px solid #fff;font-family:'Manrope',sans-serif;font-size:clamp(14px,3.5vw,18px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;cursor:inherit;">COPY CODE</button>
-      <button onclick="downloadProvocationPDF()" style="width:100%;padding:16px 20px;background:transparent;color:#fff;border:1px solid #fff;outline:none;font-family:'Manrope',sans-serif;font-size:clamp(14px,3.5vw,18px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;cursor:inherit;">DOWNLOAD AS PDF</button>
-      <button onclick="openStorm()" style="width:100%;padding:16px 20px;background:#FFFF00;color:#000;border:none;font-family:'Manrope',sans-serif;font-size:clamp(16px,4vw,20px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;cursor:inherit;">OPEN THE STORM →</button>
+      <button onclick="copyRoomCode(this)" style="width:100%;padding:16px 20px;background:transparent;color:#fff;border:1px solid #fff;font-family:'Manrope',sans-serif;font-size:clamp(14px,3.5vw,18px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;">COPY CODE</button>
+      <button onclick="downloadProvocationPDF()" style="width:100%;padding:16px 20px;background:transparent;color:#fff;border:1px solid #fff;outline:none;font-family:'Manrope',sans-serif;font-size:clamp(14px,3.5vw,18px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;">DOWNLOAD AS PDF</button>
+      <button onclick="openStorm()" style="width:100%;padding:16px 20px;background:#FFFF00;color:#000;border:none;font-family:'Manrope',sans-serif;font-size:clamp(16px,4vw,20px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;">OPEN THE STORM →</button>
     </div>
   </div>
   <footer class="kd-footer">
