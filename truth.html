@@ -236,38 +236,31 @@
   }
   /* ── Inline interrogation fields (brief screen) ─────────────── */
   .inline-field {
-    position: relative; padding: 20px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.12); cursor: text;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
     -webkit-tap-highlight-color: transparent;
   }
   .inline-field.inline-active   { border-bottom-color: var(--yellow); }
-  .inline-field.inline-locked   { border-bottom-color: rgba(255,255,255,0.06); cursor: default; }
-  .inline-field.inline-inactive { cursor: default; }
-  .inline-row { pointer-events: none; line-height: 1.6; }
+  .inline-field.inline-locked   { border-bottom-color: rgba(255,255,255,0.06); }
+  .inline-row { display: flex; flex-wrap: wrap; align-items: baseline; line-height: 1.6; pointer-events: none; }
   .inline-prompt {
-    font-family: 'Poppins', sans-serif; font-size: 14px;
-    font-weight: 600; color: #aaa; vertical-align: baseline;
+    flex: none; font-family: 'Poppins', sans-serif; font-size: 14px;
+    font-weight: 600; color: #aaa;
   }
   .inline-field.inline-active   .inline-prompt { color: #ccc; }
   .inline-field.inline-inactive .inline-prompt { color: #444; }
   .inline-field.inline-locked   .inline-prompt { color: #666; }
-  .inline-answer {
-    font-family: 'Poppins', sans-serif; font-size: 18px;
-    font-weight: 600; color: var(--white);
-    margin-left: 6px; vertical-align: baseline; word-break: break-word;
+  .inline-answer-input {
+    flex: 1; min-width: 60px; margin-left: 6px;
+    background: transparent; border: none; outline: none;
+    color: var(--white); caret-color: var(--yellow);
+    font-family: 'Poppins', sans-serif; font-size: 18px; font-weight: 600;
+    padding: 0; pointer-events: none;
   }
-  .inline-cursor {
-    display: inline; font-family: 'Poppins', sans-serif;
-    font-size: 18px; font-weight: 700; color: var(--yellow);
-    animation: kd-blink 1s step-end infinite;
-    pointer-events: none; user-select: none;
-    margin-left: 1px; vertical-align: baseline;
-  }
-  .inline-input-overlay {
-    position: absolute; inset: 0; width: 100%; height: 100%;
-    opacity: 0; font-size: 16px; cursor: text; z-index: 2;
-    background: transparent; border: none; outline: none; padding: 0;
-  }
+  .inline-field.inline-active .inline-answer-input { pointer-events: auto; }
+  .inline-answer-input[readonly] { caret-color: transparent; }
+  .inline-field.inline-inactive .inline-answer-input { flex: 0; width: 0; min-width: 0; overflow: hidden; }
+  .inline-char-count { font-size: 11px; color: #555; text-align: right; margin-top: 4px; }
 
   .kd-textarea {
     width: 100%;
@@ -1068,16 +1061,14 @@ firebase.initializeApp({
     <div class="kd-title">The brand.<br/><span>The problem.</span></div>
 
     <div class="inline-field inline-active" id="field-brand">
-      <div class="inline-row"><span class="inline-prompt">Name your brand.</span> <span class="inline-answer" id="answer-brand"></span><span class="inline-cursor" id="cursor-brand">|</span></div>
-      <input type="text" id="brand-input" class="inline-input-overlay" maxlength="60" autocomplete="off">
+      <div class="inline-row"><span class="inline-prompt">Name your brand.</span><input type="text" id="brand-input" class="inline-answer-input" maxlength="60" autocomplete="off"></div>
     </div>
     <div class="inline-field inline-inactive" id="field-category">
-      <div class="inline-row"><span class="inline-prompt">Name your category.</span> <span class="inline-answer" id="answer-category"></span><span class="inline-cursor" id="cursor-category" style="display:none;">|</span></div>
-      <input type="text" id="category-input" class="inline-input-overlay" maxlength="60" autocomplete="off" tabindex="-1" style="pointer-events:none;">
+      <div class="inline-row"><span class="inline-prompt">Name your category.</span><input type="text" id="category-input" class="inline-answer-input" maxlength="60" autocomplete="off" readonly tabindex="-1"></div>
     </div>
     <div class="inline-field inline-inactive" id="field-problem">
-      <div class="inline-row"><span class="inline-prompt">You're here because you have a problem. What is it? Keep it short.</span> <span class="inline-answer" id="answer-problem"></span><span class="inline-cursor" id="cursor-problem" style="display:none;">|</span></div>
-      <input type="text" id="problem-input" class="inline-input-overlay" maxlength="280" autocomplete="off" tabindex="-1" style="pointer-events:none;">
+      <div class="inline-row"><span class="inline-prompt">You're here because you have a problem. What is it? Keep it short.</span><input type="text" id="problem-input" class="inline-answer-input" maxlength="280" autocomplete="off" readonly tabindex="-1"></div>
+      <div class="inline-char-count"><span id="problem-count">0</span>/280</div>
     </div>
 
     <button class="btn-primary" id="setup-next-btn" onclick="setupNext()" disabled>NEXT →</button>
@@ -1280,18 +1271,16 @@ function showScreen(id) {
 // ── Inline interrogation field management (brief screen) ─────────────────
 (function() {
   var FIELDS = ['brand', 'category', 'problem'];
-  function inp(n)  { return document.getElementById(n + '-input'); }
-  function disp(n) { return document.getElementById('answer-' + n); }
-  function cur(n)  { return document.getElementById('cursor-' + n); }
-  function fld(n)  { return document.getElementById('field-' + n); }
+  function inp(n) { return document.getElementById(n + '-input'); }
+  function fld(n) { return document.getElementById('field-' + n); }
 
   function setFieldState(name, state) {
-    var f = fld(name), i = inp(name), c = cur(name);
+    var f = fld(name), i = inp(name);
     f.className = 'inline-field inline-' + state;
     if (state === 'active') {
-      i.removeAttribute('tabindex'); i.style.pointerEvents = 'auto'; c.style.display = '';
+      i.removeAttribute('readonly'); i.removeAttribute('tabindex');
     } else {
-      i.setAttribute('tabindex', '-1'); i.style.pointerEvents = 'none'; c.style.display = 'none';
+      i.setAttribute('readonly', ''); i.setAttribute('tabindex', '-1');
     }
   }
 
@@ -1314,7 +1303,10 @@ function showScreen(id) {
 
   FIELDS.forEach(function(name) {
     inp(name).addEventListener('input', function() {
-      disp(name).textContent = this.value;
+      if (name === 'problem') {
+        var pc = document.getElementById('problem-count');
+        if (pc) pc.textContent = this.value.length;
+      }
       checkSetupReady();
     });
     inp(name).addEventListener('keydown', function(e) {
@@ -1330,7 +1322,8 @@ function showScreen(id) {
   });
 
   window.setupFieldInit = function() {
-    FIELDS.forEach(function(n) { disp(n).textContent = inp(n).value; });
+    var pc = document.getElementById('problem-count');
+    if (pc) pc.textContent = inp('problem').value.length;
     var firstEmpty = null;
     for (var i = 0; i < FIELDS.length; i++) {
       if (!inp(FIELDS[i]).value.trim()) { firstEmpty = FIELDS[i]; break; }
