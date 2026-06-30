@@ -918,7 +918,7 @@ firebase.initializeApp({
   </div>
   <div style="padding: 0 16px 48px; flex: 1; display: flex; flex-direction: column;">
     <p style="font-family:'Poppins',sans-serif; font-size:clamp(16px,1.6vw,26px); line-height:1.7; margin-top:32px;"><span style="color:#F4F2EA;">System1 &amp; Effie prove it: dull pays back 40% less. Entertaining work delivers a 21x profit multiplier. That&rsquo;s why we built Pitch Against Dull.</span> <span style="color:#FFFF00;">AI precision. Human intuition. Dead set on the work that works.</span></p>
-    <button class="btn-primary" style="margin-top: 48px;" onclick="showScreen('screen-five-tools')">LET&rsquo;S WORK ON IT. &rarr;</button>
+    <button class="btn-primary" style="margin-top: 48px;" onclick="showScreen('screen-five-tools')">SIT DOWN. →</button>
   </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
@@ -958,7 +958,7 @@ firebase.initializeApp({
       <div style="font-family:'Poppins',sans-serif; font-weight:700; font-size:clamp(14px,1.2vw,18px); color:var(--yellow); text-transform:uppercase; margin-bottom:3px;">PRODUCTION</div>
       <div style="font-family:'Poppins',sans-serif; font-size:clamp(16px,1.4vw,22px); line-height:1.6; color:#aaa;">Coming soon.</div>
     </div>
-    <button class="btn-primary" onclick="showScreen('screen-auth')">I&rsquo;M IN. &rarr;</button>
+    <button class="btn-primary" onclick="showScreen('screen-auth')">WE KNOW WHY YOU'RE HERE. →</button>
   </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
@@ -1049,7 +1049,7 @@ firebase.initializeApp({
     <div class="kd-screen-label">Intro</div>
     <div class="kd-title">Most briefs dance around the truth.<br/><span>This one won't.</span></div>
     <div class="kd-body-text">Most briefs protect the brand. This one interrogates it. Five questions. No safe answers. What comes out is the truth – your brief.</div>
-    <button class="btn-primary" onclick="showScreen('screen-setup')">START →</button>
+    <button class="btn-primary" onclick="showScreen('screen-setup')">YOU'RE IN THE ROOM NOW. →</button>
   </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
@@ -1079,7 +1079,7 @@ firebase.initializeApp({
       <div class="inline-char-count"><span id="problem-count">0</span>/280</div>
     </div>
 
-    <button class="btn-primary" id="setup-next-btn" onclick="setupNext()" disabled>NEXT →</button>
+    <button class="btn-primary" id="setup-next-btn" onclick="setupNext()" disabled>START TALKING. →</button>
     <button class="btn-secondary" onclick="showScreen('screen-intro')">← BACK</button>
   </div>
   <footer class="kd-footer">
@@ -1108,7 +1108,7 @@ firebase.initializeApp({
       <button class="role-btn" onclick="toggleRole(this,'Other')">Other</button>
     </div>
 
-    <button class="btn-primary" id="who-next-btn" onclick="startDetector()" disabled>NEXT →</button>
+    <button class="btn-primary" id="who-next-btn" onclick="startDetector()" disabled>EVERYBODY IN. →</button>
     <button class="btn-secondary" onclick="showScreen('screen-setup')">← BACK</button>
   </div>
   <footer class="kd-footer">
@@ -1148,7 +1148,7 @@ firebase.initializeApp({
     <div id="verdict-area"></div>
 
     <button class="btn-primary" id="submit-answer-btn" onclick="submitAnswer()">SUBMIT ANSWER →</button>
-    <button class="btn-secondary" id="next-question-btn" onclick="nextQuestion()" style="display:none;">KEEP TALKING →</button>
+    <button class="btn-secondary" id="next-question-btn" onclick="nextQuestion()" style="display:none;">KEEP TALKING. →</button>
 
     <div id="summary-panel"></div>
   </div>
@@ -1198,6 +1198,7 @@ firebase.initializeApp({
   <div id="prov-content" style="padding:0 24px 64px;display:flex;flex-direction:column;background:#0a0a0a;flex:1;">
     <div class="prov-label">THE ONE WORD PROVOCATION.</div>
     <div id="provocation-name" style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;color:#FFFF00;line-height:0.9;white-space:nowrap;display:block;"></div>
+    <div id="prov-after-word" style="opacity:0;transition:opacity 0.5s ease;">
     <div id="prov-sentence" style="font-family:'Poppins',sans-serif;font-weight:400;font-size:18px;color:#fff;line-height:1.6;margin-top:24px;"></div>
     <div class="prov-label">WHAT CAME OUT OF THE ROOM.</div>
     <div id="prov-truths"></div>
@@ -1212,11 +1213,17 @@ firebase.initializeApp({
       <button onclick="downloadProvocationPDF()" style="width:100%;padding:16px 20px;background:transparent;color:#fff;border:1px solid #fff;outline:none;font-family:'Manrope',sans-serif;font-size:clamp(14px,3.5vw,18px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;">DOWNLOAD AS PDF</button>
       <button onclick="openStorm()" style="width:100%;padding:16px 20px;background:#FFFF00;color:#000;border:none;font-family:'Manrope',sans-serif;font-size:clamp(16px,4vw,20px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;">OPEN THE STORM →</button>
     </div>
+    </div>
   </div>
   <footer class="kd-footer">
     <div class="kd-footer-logo">KILL DULL.</div>
     <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="/privacy.html" style="color:inherit;text-decoration:none;">Privacy</a></div>
   </footer>
+</div>
+
+<!-- Calm interstitial overlay -->
+<div id="calm-overlay" style="display:none;position:fixed;inset:0;background:#0a0a0a;z-index:9990;align-items:center;justify-content:center;padding:32px;text-align:center;">
+  <p id="calm-text" style="font-family:'Poppins',sans-serif;font-weight:400;font-size:22px;color:#F4F2EA;margin:0;line-height:1.6;"></p>
 </div>
 
 
@@ -1383,7 +1390,9 @@ function startDetector() {
   state.answers = [];
   state.verdicts = [];
   loadQuestion(0);
-  showScreen('screen-question');
+  showCalm('The room is listening.', function() {
+    showScreen('screen-question');
+  });
 }
 
 function loadQuestion(idx) {
@@ -1520,6 +1529,35 @@ const CHALLENGE_LINES = [
   "You're still missing the bullseye."
 ];
 
+const RETRY_CTAS = [
+  "THIS TIME, TRY IT WITH THE TRUTH. →",
+  "AGAIN. AND MEAN IT THIS TIME. →",
+  "WE'VE GOT ALL NIGHT. →",
+  "YOU ALMOST HAD IT. ALMOST. →",
+  "THE TRUTH IS IN THERE. FIND IT. →",
+  "SIT BACK DOWN. →",
+  "NOT EVEN CLOSE. TRY AGAIN. →",
+  "WE KNOW THERE'S MORE. →"
+];
+var _lastRetryCta = -1;
+function pickRetryCta() {
+  var pool = RETRY_CTAS.filter(function(_, i) { return i !== _lastRetryCta; });
+  var chosen = pool[Math.floor(Math.random() * pool.length)];
+  _lastRetryCta = RETRY_CTAS.indexOf(chosen);
+  return chosen;
+}
+
+function showCalm(message, cb) {
+  var o = document.getElementById('calm-overlay');
+  var t = document.getElementById('calm-text');
+  t.textContent = message;
+  o.style.display = 'flex';
+  setTimeout(function() {
+    o.style.display = 'none';
+    if (cb) cb();
+  }, 2000);
+}
+
 function escapeHtml(str) {
   return String(str)
     .replace(/&/g, '&amp;')
@@ -1546,7 +1584,7 @@ function switchTierTab(tab) {
 function buildRejectionCard(verdict, showRetry) {
   var challenge = CHALLENGE_LINES[Math.floor(Math.random() * CHALLENGE_LINES.length)];
   var retryBtn  = showRetry
-    ? '<button class="btn-primary" onclick="retryAnswer()" style="margin-top:24px;">TRY AGAIN ↺</button>'
+    ? '<button class="btn-primary" onclick="retryAnswer()" style="margin-top:24px;">' + pickRetryCta() + '</button>'
     : '';
   return `
     <div style="border:1px solid #FF0000;background:transparent;padding:20px;margin:20px 0;animation:fadeUp 0.4s ease;">
@@ -1653,7 +1691,7 @@ function displayVerdict(verdict) {
 
 function showNextBtn() {
   document.getElementById('next-question-btn').style.display = 'block';
-  document.getElementById('next-question-btn').textContent = state.currentQuestion < 4 ? 'KEEP TALKING →' : 'SEE THE CATEGORY →';
+  document.getElementById('next-question-btn').textContent = state.currentQuestion < 4 ? 'KEEP TALKING. →' : 'SEE THE CATEGORY →';
   renderSummaryPanel('summary-panel');
   syncSession();
   saveSession();
@@ -1793,8 +1831,10 @@ function writeMyOwn() {
 function nextQuestion() {
   state.currentQuestion++;
   if (state.currentQuestion >= 5) {
-    showScreen('screen-category');
     loadCategoryAutopsy();
+    showCalm("That's everything we need.", function() {
+      showScreen('screen-category');
+    });
   } else {
     loadQuestion(state.currentQuestion);
     window.scrollTo(0,0);
@@ -2027,6 +2067,12 @@ function renderProvocation() {
   var codeEl = document.getElementById('prov-room-code-display');
   if (codeEl && codeEl.textContent) {
     codeEl.style.fontSize = '80px';
+  }
+  var afterWord = document.getElementById('prov-after-word');
+  if (afterWord) {
+    afterWord.style.opacity = '0';
+    afterWord.style.transition = 'opacity 0.5s ease';
+    setTimeout(function() { afterWord.style.opacity = '1'; }, 1200);
   }
 }
 
