@@ -225,6 +225,15 @@
     -webkit-appearance: none;
   }
   .kd-input:focus { border-bottom-color: var(--yellow); }
+  /* Override browser autofill white/blue background on inputs and selects */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  select:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #0a0a0a inset !important;
+    -webkit-text-fill-color: #F4F2EA !important;
+    caret-color: #F4F2EA;
+  }
 
   .kd-textarea {
     width: 100%;
