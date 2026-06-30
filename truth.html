@@ -234,6 +234,40 @@
     -webkit-text-fill-color: #F4F2EA !important;
     caret-color: #F4F2EA;
   }
+  /* ── Inline interrogation fields (brief screen) ─────────────── */
+  .inline-field {
+    position: relative; padding: 20px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.12); cursor: text;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .inline-field.inline-active   { border-bottom-color: var(--yellow); }
+  .inline-field.inline-locked   { border-bottom-color: rgba(255,255,255,0.06); cursor: default; }
+  .inline-field.inline-inactive { cursor: default; }
+  .inline-row { pointer-events: none; line-height: 1.6; }
+  .inline-prompt {
+    font-family: 'Poppins', sans-serif; font-size: 14px;
+    font-weight: 600; color: #aaa; vertical-align: baseline;
+  }
+  .inline-field.inline-active   .inline-prompt { color: #ccc; }
+  .inline-field.inline-inactive .inline-prompt { color: #444; }
+  .inline-field.inline-locked   .inline-prompt { color: #666; }
+  .inline-answer {
+    font-family: 'Poppins', sans-serif; font-size: 18px;
+    font-weight: 600; color: var(--white);
+    margin-left: 6px; vertical-align: baseline; word-break: break-word;
+  }
+  .inline-cursor {
+    display: inline; font-family: 'Poppins', sans-serif;
+    font-size: 18px; font-weight: 700; color: var(--yellow);
+    animation: kd-blink 1s step-end infinite;
+    pointer-events: none; user-select: none;
+    margin-left: 1px; vertical-align: baseline;
+  }
+  .inline-input-overlay {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    opacity: 0; font-size: 16px; cursor: text; z-index: 2;
+    background: transparent; border: none; outline: none; padding: 0;
+  }
 
   .kd-textarea {
     width: 100%;
@@ -1033,15 +1067,18 @@ firebase.initializeApp({
     <div class="kd-eyebrow">Step 1 of 2</div>
     <div class="kd-title">The brand.<br/><span>The problem.</span></div>
 
-    <label style="font-size:14px;font-family:'Poppins',sans-serif;font-weight:600;color:#aaa;display:block;margin-bottom:8px;">Name your brand.</label>
-    <input class="kd-input" id="brand-input" type="text" placeholder="Your brand name" maxlength="60">
-
-    <label style="font-size:14px;font-family:'Poppins',sans-serif;font-weight:600;color:#aaa;display:block;margin-bottom:8px;">Name your category.</label>
-    <input class="kd-input" id="category-input" type="text" placeholder="Your category" maxlength="60">
-
-    <label style="font-size:14px;font-family:'Poppins',sans-serif;font-weight:600;color:#aaa;display:block;margin-bottom:8px;">You're here because you have a problem. What is it? Keep it short.</label>
-    <textarea class="kd-textarea" id="problem-input" placeholder="One sentence." maxlength="280" style="min-height:100px;"></textarea>
-    <div class="char-count"><span id="problem-count">0</span>/280</div>
+    <div class="inline-field inline-active" id="field-brand">
+      <div class="inline-row"><span class="inline-prompt">Name your brand.</span> <span class="inline-answer" id="answer-brand"></span><span class="inline-cursor" id="cursor-brand">|</span></div>
+      <input type="text" id="brand-input" class="inline-input-overlay" maxlength="60" autocomplete="off">
+    </div>
+    <div class="inline-field inline-inactive" id="field-category">
+      <div class="inline-row"><span class="inline-prompt">Name your category.</span> <span class="inline-answer" id="answer-category"></span><span class="inline-cursor" id="cursor-category" style="display:none;">|</span></div>
+      <input type="text" id="category-input" class="inline-input-overlay" maxlength="60" autocomplete="off" tabindex="-1" style="pointer-events:none;">
+    </div>
+    <div class="inline-field inline-inactive" id="field-problem">
+      <div class="inline-row"><span class="inline-prompt">You're here because you have a problem. What is it? Keep it short.</span> <span class="inline-answer" id="answer-problem"></span><span class="inline-cursor" id="cursor-problem" style="display:none;">|</span></div>
+      <input type="text" id="problem-input" class="inline-input-overlay" maxlength="280" autocomplete="off" tabindex="-1" style="pointer-events:none;">
+    </div>
 
     <button class="btn-primary" id="setup-next-btn" onclick="setupNext()" disabled>NEXT →</button>
     <button class="btn-secondary" onclick="showScreen('screen-intro')">← BACK</button>
@@ -1240,12 +1277,72 @@ function showScreen(id) {
 }
 
 // SETUP
-document.getElementById('problem-input').addEventListener('input', function() {
-  document.getElementById('problem-count').textContent = this.value.length;
-  checkSetupReady();
-});
-document.getElementById('brand-input').addEventListener('input', checkSetupReady);
-document.getElementById('category-input').addEventListener('input', checkSetupReady);
+// ── Inline interrogation field management (brief screen) ─────────────────
+(function() {
+  var FIELDS = ['brand', 'category', 'problem'];
+  function inp(n)  { return document.getElementById(n + '-input'); }
+  function disp(n) { return document.getElementById('answer-' + n); }
+  function cur(n)  { return document.getElementById('cursor-' + n); }
+  function fld(n)  { return document.getElementById('field-' + n); }
+
+  function setFieldState(name, state) {
+    var f = fld(name), i = inp(name), c = cur(name);
+    f.className = 'inline-field inline-' + state;
+    if (state === 'active') {
+      i.removeAttribute('tabindex'); i.style.pointerEvents = 'auto'; c.style.display = '';
+    } else {
+      i.setAttribute('tabindex', '-1'); i.style.pointerEvents = 'none'; c.style.display = 'none';
+    }
+  }
+
+  function activateField(name) {
+    FIELDS.forEach(function(n) {
+      if (n === name) { setFieldState(n, 'active'); inp(n).focus(); }
+      else            { setFieldState(n, inp(n).value.trim() ? 'locked' : 'inactive'); }
+    });
+  }
+
+  function advanceFrom(name) {
+    var v = inp(name).value.trim();
+    if (!v) return;
+    if (name === 'problem' && v.length <= 10) return;
+    setFieldState(name, 'locked');
+    var idx = FIELDS.indexOf(name);
+    if (idx + 1 < FIELDS.length) { activateField(FIELDS[idx + 1]); }
+    else { checkSetupReady(); }
+  }
+
+  FIELDS.forEach(function(name) {
+    inp(name).addEventListener('input', function() {
+      disp(name).textContent = this.value;
+      checkSetupReady();
+    });
+    inp(name).addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === 'Tab') { e.preventDefault(); advanceFrom(name); }
+    });
+    fld(name).addEventListener('click', function() {
+      var ok = true;
+      for (var i = 0; i < FIELDS.indexOf(name); i++) {
+        if (!inp(FIELDS[i]).value.trim()) { ok = false; break; }
+      }
+      if (ok) activateField(name);
+    });
+  });
+
+  window.setupFieldInit = function() {
+    FIELDS.forEach(function(n) { disp(n).textContent = inp(n).value; });
+    var firstEmpty = null;
+    for (var i = 0; i < FIELDS.length; i++) {
+      if (!inp(FIELDS[i]).value.trim()) { firstEmpty = FIELDS[i]; break; }
+    }
+    if (firstEmpty) {
+      setTimeout(function() { activateField(firstEmpty); }, 30);
+    } else {
+      FIELDS.forEach(function(n) { setFieldState(n, 'locked'); });
+      checkSetupReady();
+    }
+  };
+})();
 
 function checkSetupReady() {
   const b = document.getElementById('brand-input').value.trim();
@@ -1938,6 +2035,7 @@ window.showScreen = function(id) {
   if (id === 'screen-provocation') {
     renderProvocation();
   }
+  if (id === 'screen-setup' && window.setupFieldInit) { window.setupFieldInit(); }
   saveSession();
 };
 
