@@ -261,6 +261,13 @@
   .inline-answer-input[readonly] { caret-color: transparent; }
   .inline-field.inline-inactive .inline-answer-input { flex: 0; width: 0; min-width: 0; overflow: hidden; }
   .inline-char-count { font-size: 11px; color: #555; text-align: right; margin-top: 4px; }
+  .inline-answer-textarea {
+    display: none; width: 100%; margin-left: 0; margin-top: 8px;
+    resize: none; overflow: hidden; min-height: 1.8em; line-height: 1.5;
+    box-sizing: border-box;
+  }
+  .inline-field.inline-active .inline-answer-textarea,
+  .inline-field.inline-locked .inline-answer-textarea { display: block; }
 
   .kd-textarea {
     width: 100%;
@@ -1067,7 +1074,8 @@ firebase.initializeApp({
       <div class="inline-row"><span class="inline-prompt">Name your category.</span><input type="text" id="category-input" class="inline-answer-input" maxlength="60" autocomplete="off" readonly tabindex="-1"></div>
     </div>
     <div class="inline-field inline-inactive" id="field-problem">
-      <div class="inline-row"><span class="inline-prompt">You're here because you have a problem. What is it? Keep it short.</span><input type="text" id="problem-input" class="inline-answer-input" maxlength="280" autocomplete="off" readonly tabindex="-1"></div>
+      <div class="inline-row"><span class="inline-prompt">You're here because you have a problem. What is it? Keep it short.</span></div>
+      <textarea id="problem-input" class="inline-answer-input inline-answer-textarea" maxlength="280" autocomplete="off" readonly tabindex="-1" rows="1"></textarea>
       <div class="inline-char-count"><span id="problem-count">0</span>/280</div>
     </div>
 
@@ -1304,6 +1312,8 @@ function showScreen(id) {
   FIELDS.forEach(function(name) {
     inp(name).addEventListener('input', function() {
       if (name === 'problem') {
+        this.style.height = 'auto';
+        this.style.height = this.scrollHeight + 'px';
         var pc = document.getElementById('problem-count');
         if (pc) pc.textContent = this.value.length;
       }
@@ -1322,8 +1332,11 @@ function showScreen(id) {
   });
 
   window.setupFieldInit = function() {
+    var ta = inp('problem');
     var pc = document.getElementById('problem-count');
-    if (pc) pc.textContent = inp('problem').value.length;
+    if (pc) pc.textContent = ta.value.length;
+    ta.style.height = 'auto';
+    if (ta.value) ta.style.height = ta.scrollHeight + 'px';
     var firstEmpty = null;
     for (var i = 0; i < FIELDS.length; i++) {
       if (!inp(FIELDS[i]).value.trim()) { firstEmpty = FIELDS[i]; break; }
