@@ -1405,6 +1405,8 @@ function loadQuestion(idx) {
   document.getElementById('verdict-area').innerHTML = '';
   document.getElementById('thinking-state').style.display = 'none';
   document.getElementById('submit-answer-btn').style.display = 'block';
+  var submitLabels = ["THAT'S WHAT I KNOW. →","THAT'S ALL I KNOW. →","I'LL STAND BY THAT. →","THAT'S MY ANSWER. →","THAT'S THE TRUTH. →"];
+  document.getElementById('submit-answer-btn').textContent = submitLabels[idx] || 'SUBMIT ANSWER →';
   document.getElementById('next-question-btn').style.display = 'none';
 
   const progress = ((idx + 1) / 5) * 100;
@@ -1550,12 +1552,26 @@ function pickRetryCta() {
 function showCalm(message, cb) {
   var o = document.getElementById('calm-overlay');
   var t = document.getElementById('calm-text');
-  t.textContent = message;
+  t.innerHTML = '';
+  var tn = document.createTextNode('');
+  var cur = document.createElement('span');
+  cur.textContent = '|';
+  cur.style.cssText = 'color:#FFFF00;animation:kd-blink 1s step-end infinite;font-weight:700;margin-left:1px;';
+  t.appendChild(tn);
+  t.appendChild(cur);
   o.style.display = 'flex';
-  setTimeout(function() {
-    o.style.display = 'none';
-    if (cb) cb();
-  }, 2000);
+  var i = 0;
+  (function typeNext() {
+    if (i < message.length) {
+      tn.textContent = message.substring(0, ++i);
+      setTimeout(typeNext, 60);
+    } else {
+      setTimeout(function() {
+        o.style.display = 'none';
+        if (cb) cb();
+      }, 1000);
+    }
+  })();
 }
 
 function escapeHtml(str) {
@@ -1788,9 +1804,9 @@ function displaySharpAnswer() {
       <div class="verdict-text" style="color:var(--white);font-size:14px;line-height:1.7;">${state.sharpenedAnswer}</div>
     </div>
     <div class="sharp-answer-actions">
-      <button class="btn-primary" onclick="useGeneratedAnswer()">USE THIS →</button>
-      <button class="btn-secondary" onclick="refineGeneratedAnswer()">REFINE IT ↺</button>
-      <button class="btn-secondary" onclick="writeMyOwn()">WRITE MY OWN ✎</button>
+      <button class="btn-primary" onclick="useGeneratedAnswer()">THIS IS THE TRUTH. I CONFESS. →</button>
+      <button class="btn-secondary" onclick="refineGeneratedAnswer()">NOT QUITE. I'LL PUSH IT FURTHER. →</button>
+      <button class="btn-secondary" onclick="writeMyOwn()">THE TRUTH IS MINE TO WRITE. →</button>
     </div>
   `;
 }
