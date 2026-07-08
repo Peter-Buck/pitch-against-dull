@@ -75,7 +75,7 @@
     .divider { height: 1px; background: var(--b); margin: 24px 0; }
     .flex-1  { flex: 1; }
 
-    /* ── ROOM CODE ── */
+    /* ── CASE ID ── */
     .room-code-big { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: clamp(80px, 22vw, 140px); color: var(--y); letter-spacing: 16px; text-align: center; line-height: 1; }
 
     /* ── PLAYERS ── */
@@ -96,7 +96,7 @@
     #screen-landing .btn-row .btn { border-bottom: 1px solid var(--b); }
     #screen-landing .btn-row .btn-outline-yellow { border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid var(--b); }
 
-    /* ── ROOM CODE SCREEN ── */
+    /* ── CASE ID SCREEN ── */
     #screen-room-code .code-area { padding: 40px 0 28px; text-align: center; border-bottom: 1px solid var(--b); margin-bottom: 28px; }
 
     /* ── ROUND 1 ── */
@@ -359,11 +359,11 @@
   </div>
 
   <!-- ════════════════════════════════════════
-       SCREEN: ROOM CODE (HOST LOBBY)
+       SCREEN: CASE ID (HOST LOBBY)
   ════════════════════════════════════════ -->
   <div id="screen-room-code" class="screen">
     <div class="code-area">
-      <div class="eyebrow" style="text-align:center;">Storm Room Code</div>
+      <div class="eyebrow" style="text-align:center;">Storm Case ID</div>
       <div id="storm-room-code-display" class="room-code-big"></div>
     </div>
     <div class="card" style="margin-bottom: 16px; text-align: center;">
@@ -392,14 +392,14 @@
   <div id="screen-join" class="screen">
     <button class="back-btn" onclick="showScreen('screen-landing')">&#8592; Back</button>
     <div class="heading-md" style="margin-bottom: 8px;">Join a Storm</div>
-    <p class="tagline" style="margin-top: 0; margin-bottom: 32px;">Enter your name and the room code from your host</p>
+    <p class="tagline" style="margin-top: 0; margin-bottom: 32px;">Enter your name and the case id from your host</p>
     <div class="form-group">
       <div class="field-label">Your Name</div>
       <input id="player-name-input" class="input" type="text" placeholder="e.g. Jamie"
         autocomplete="off" autocorrect="off" spellcheck="false">
     </div>
     <div class="form-group">
-      <div class="field-label">Room Code</div>
+      <div class="field-label">Case ID</div>
       <input id="join-code-input" class="input input-code" type="tel" maxlength="4" placeholder="0000"
         autocomplete="off" spellcheck="false">
     </div>
@@ -1316,7 +1316,7 @@
     async function lookupTruthRoom() {
       hideError('host-code-error');
       const code = document.getElementById('truth-code-input').value.trim().toUpperCase();
-      if (code.length !== 4) { showError('host-code-error', 'Please enter a 4-character room code.'); return; }
+      if (code.length !== 4) { showError('host-code-error', 'Please enter a 4-character case id.'); return; }
       try {
         const snap = await rtdb.ref('sessions').once('value');
         let data = null;
@@ -2093,7 +2093,7 @@
       const name = document.getElementById('player-name-input').value.trim();
       const code = document.getElementById('join-code-input').value.trim();
       if (!name) { showError('join-error', 'Please enter your name.'); return; }
-      if (!/^\d{4}$/.test(code)) { showError('join-error', 'Please enter a 4-digit room code.'); return; }
+      if (!/^\d{4}$/.test(code)) { showError('join-error', 'Please enter a 4-digit case id.'); return; }
       try {
         const snap = await rtdb.ref('stormrooms/' + code).get();
         if (!snap.exists()) { showError('join-error', 'Room not found. Check the code and try again.'); return; }
