@@ -569,7 +569,7 @@
     margin-bottom: 24px;
   }
 
-  /* ROOM CODE */
+  /* CASE ID */
   .room-code-display {
     font-family: 'Manrope', sans-serif;
     font-weight: 900;
@@ -802,7 +802,7 @@
   /* ROOM BADGE — hidden, replaced by inline display on provocation screen */
   #room-badge { display: none; }
 
-  /* PROMINENT ROOM CODE */
+  /* PROMINENT CASE ID */
   .room-code-block {
     display: none;
     text-align: center;
@@ -1192,7 +1192,7 @@ firebase.initializeApp({
 <div id="screen-provocation" class="screen">
   <!-- Yellow header — this screen only -->
   <div id="prov-header" style="background:#FFFF00;padding:24px 24px 28px;">
-    <div id="prov-header-text" style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;color:#000;line-height:0.95;white-space:nowrap;display:block;">YOUR TRUTH AND NOTHING BUT.</div>
+    <div id="prov-header-text" style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;color:#000;line-height:0.95;white-space:nowrap;display:block;">THE VERDICT.</div>
   </div>
   <!-- Content — flat structure so .prov-label margin:48px 0 24px handles all spacing -->
   <div id="prov-content" style="padding:0 24px 64px;display:flex;flex-direction:column;background:#0a0a0a;flex:1;">
@@ -1204,14 +1204,14 @@ firebase.initializeApp({
     <div id="prov-truths"></div>
     <div class="prov-label">FLIP THE SCRIPT.</div>
     <div id="prov-pairs"></div>
-    <div class="prov-label">YOUR ROOM CODE.</div>
+    <div class="prov-label">YOUR CASE ID.</div>
     <div class="room-code-block" id="prov-room-code-block" style="padding:0;text-align:left;">
       <div id="prov-room-code-display" style="font-family:'Poppins',sans-serif;font-weight:900;color:#FFFF00;font-size:80px;line-height:1;letter-spacing:6px;"></div>
     </div>
     <div id="prov-buttons" style="margin-top:48px;display:flex;flex-direction:column;gap:12px;">
       <button onclick="copyRoomCode(this)" style="width:100%;padding:16px 20px;background:transparent;color:#fff;border:1px solid #fff;font-family:'Manrope',sans-serif;font-size:clamp(14px,3.5vw,18px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;">COPY CODE</button>
       <button onclick="downloadProvocationPDF()" style="width:100%;padding:16px 20px;background:transparent;color:#fff;border:1px solid #fff;outline:none;font-family:'Manrope',sans-serif;font-size:clamp(14px,3.5vw,18px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;">DOWNLOAD AS PDF</button>
-      <button onclick="openStorm()" style="width:100%;padding:16px 20px;background:#FFFF00;color:#000;border:none;font-family:'Manrope',sans-serif;font-size:clamp(16px,4vw,20px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;">OPEN THE STORM →</button>
+      <button onclick="enterStorm()" style="width:100%;padding:16px 20px;background:#FFFF00;color:#000;border:none;font-family:'Manrope',sans-serif;font-size:clamp(16px,4vw,20px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;">ENTER THE STORM →</button>
     </div>
     </div>
   </div>
@@ -1263,8 +1263,9 @@ const QUESTIONS = [
     thinking: "Verifying against the competitive landscape..."
   },
   {
-    text: "Why does this matter right now?",
-    sub: "What is happening in the world — culturally, socially, economically — that makes this brand relevant today in a way it wasn't three years ago? If the answer is nothing, the brief needs a different question.",
+    text: "What are people caught between?",
+    sub: "Surface the cultural tension driving the moment.",
+    sub_OLD: "What is happening in the world — culturally, socially, economically — that makes this brand relevant today in a way it wasn't three years ago? If the answer is nothing, the brief needs a different question.",
     thinking: "Cross-referencing with cultural reality..."
   },
   {
@@ -1460,7 +1461,7 @@ async function submitAnswer() {
 
 async function callTruthDetector(answer, questionIdx) {
   const q = QUESTIONS[questionIdx];
-  const systemPrompt = `You are the Kill Dull Truth Detector. Your job is to determine whether an answer about a brand is genuinely true, or whether it is corporate marketing speak.
+  const systemPrompt = `You are the Kill Dull Truth Detector: a Creative Director who has sat through too many briefs and has zero patience for managed truth. Short. Confident. Occasionally brutal. Never over-explain.
 
 The brand: ${state.brand}
 The category: ${state.category}
@@ -1472,7 +1473,7 @@ You must return ONLY a JSON object with this exact structure:
 {
   "verdict": "TRUE" | "ALMOST" | "MARKETING_TRUTH",
   "verdict_headline": "One punchy sentence — the verdict in plain English",
-  "verdict_explanation": "2-3 sentences explaining why this verdict was reached. Be direct. No softening.",
+  "verdict_explanation": "1-2 sentences maximum. Creative Director voice: short, sharp, direct. No bullet points. No softening.",
   "evidence": [
     {
       "quote": "A real-sounding consumer quote or observation that supports or contradicts the answer — written as if from Reddit, a review, or a forum",
@@ -1897,7 +1898,7 @@ Return ONLY a JSON array of exactly 6 objects — no markdown, no backticks, jus
 [
   {
     "they_do": "Max 8 words. What the category always does. Upper case.",
-    "you_do": "Max 8 words. The brutal specific alternative. Upper case."
+    "you_do": "Max 8 words. Short imperative. No prefix. Upper case."
   }
 ]`;
 
@@ -2170,7 +2171,7 @@ async function createSession() {
     createdAt: Date.now(), status: 'active'
   });
   document.getElementById('room-badge-code').textContent = state.roomCode;
-  // persist and display the room code
+  // persist and display the case id
   try { localStorage.setItem('kd_storm_room_code', state.roomCode); } catch(e) {}
   showRoomCode(state.roomCode);
 }
@@ -2464,7 +2465,7 @@ function resumeScreen(screenId) {
   showScreen(screenId);
 }
 
-function openStorm() {
+function enterStorm() {
   clearSavedSession();
   window.location.href = '/storm.html';
 }
