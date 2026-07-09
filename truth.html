@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Kill Dull — Truth Detector</title>
+<title>Kill Dull — The Case</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Poppins:wght@400;600;700;900&display=swap');
 
@@ -799,16 +799,7 @@
     line-height: 1.5;
   }
 
-  /* ROOM BADGE — hidden, replaced by inline display on provocation screen */
-  #room-badge { display: none; }
 
-  /* PROMINENT CASE ID */
-  .room-code-block {
-    display: none;
-    text-align: center;
-    padding: 24px 0 8px;
-  }
-  .room-code-block.visible { display: block; }
   .room-code-eyebrow {
     font-size: 9px;
     letter-spacing: 3px;
@@ -902,69 +893,16 @@ firebase.initializeApp({
   </footer>
 </div>
 
+<!-- TITLE CARD -->
+<div id="title-card" style="display:none;position:fixed;inset:0;background:#0a0a0a;z-index:9998;align-items:center;justify-content:center;">
+  <div id="title-card-text" style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;white-space:nowrap;line-height:1.05;padding:0 16px;color:#FFFF00;"></div>
+</div>
+
 <!-- LOADING OVERLAY -->
 <div id="auth-loading" style="position:fixed;inset:0;background:var(--black);z-index:900;display:flex;align-items:center;justify-content:center;">
   <div class="spinner" style="width:24px;height:24px;border-width:2px;"></div>
 </div>
 
-<!-- ROOM BADGE -->
-<div id="room-badge">ROOM <span id="room-badge-code"></span></div>
-
-<!-- SCREEN KD INTRO -->
-<div id="screen-kd-intro" class="screen">
-  <div style="padding: 48px 16px 20px;">
-    <div class="kd-logo" style="color: var(--white); line-height: 0.95;">DULL IS</div>
-    <div class="kd-logo" style="color: var(--yellow); line-height: 0.95;">EXPENSIVE.</div>
-  </div>
-  <div style="padding: 0 16px 48px; flex: 1; display: flex; flex-direction: column;">
-    <p style="font-family:'Poppins',sans-serif; font-size:clamp(16px,1.6vw,26px); line-height:1.7; margin-top:32px;"><span style="color:#F4F2EA;">System1 &amp; Effie prove it: dull pays back 40% less. Entertaining work delivers a 21x profit multiplier. That&rsquo;s why we built Pitch Against Dull.</span> <span style="color:#FFFF00;">AI precision. Human intuition. Dead set on the work that works.</span></p>
-    <button class="btn-primary" style="margin-top: 48px;" onclick="showScreen('screen-five-tools')">SIT DOWN. →</button>
-  </div>
-  <footer class="kd-footer">
-    <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="/privacy.html" style="color:inherit;text-decoration:none;">Privacy</a></div>
-  </footer>
-</div>
-
-<!-- SCREEN FIVE TOOLS -->
-<div id="screen-five-tools" class="screen">
-  <div style="padding: 48px 32px 0;">
-    <div class="ft-headline" style="font-family:'Poppins',sans-serif; font-weight:900; text-transform:uppercase; display:block; width:100%; line-height:0.95; color:var(--white);">FIVE TOOLS.</div>
-    <div class="ft-headline" style="font-family:'Poppins',sans-serif; font-weight:900; text-transform:uppercase; display:block; width:100%; line-height:0.95; color:var(--yellow);">ONE MISSION.</div>
-  </div>
-  <div style="padding: 24px 16px 48px; flex: 1; display: flex; flex-direction: column;">
-    <div style="padding: 20px 0; border-top: 1px solid #222;">
-      <div style="font-family:'Poppins',sans-serif; font-size:11px; font-weight:700; color:#777; margin-bottom:4px;">01</div>
-      <div style="font-family:'Poppins',sans-serif; font-weight:700; font-size:clamp(14px,1.2vw,18px); color:var(--yellow); text-transform:uppercase; margin-bottom:3px;">TRUTH DETECTOR</div>
-      <div style="font-family:'Poppins',sans-serif; font-size:clamp(16px,1.4vw,22px); line-height:1.6; color:#aaa;">Five questions. No safe answers. AI interrogates your brief, surfaces the uncomfortable truth, and verifies it against real consumer sentiment — INSTINCT tier free, EVIDENCE and VERDICT tiers for teams that want proof.</div>
-    </div>
-    <div style="padding: 20px 0; border-top: 1px solid #222;">
-      <div style="font-family:'Poppins',sans-serif; font-size:11px; font-weight:700; color:#777; margin-bottom:4px;">02</div>
-      <div style="font-family:'Poppins',sans-serif; font-weight:700; font-size:clamp(14px,1.2vw,18px); color:var(--yellow); text-transform:uppercase; margin-bottom:3px;">THE STORM</div>
-      <div style="font-family:'Poppins',sans-serif; font-size:clamp(16px,1.4vw,22px); line-height:1.6; color:#aaa;">Two rounds. One brief. No safety net. The best idea wins.</div>
-    </div>
-    <div style="padding: 20px 0; border-top: 1px solid #222;">
-      <div style="font-family:'Poppins',sans-serif; font-size:11px; font-weight:700; color:#777; margin-bottom:4px;">03</div>
-      <div style="font-family:'Poppins',sans-serif; font-weight:700; font-size:clamp(14px,1.2vw,18px); color:var(--yellow); text-transform:uppercase; margin-bottom:3px;">RECKONING</div>
-      <div style="font-family:'Poppins',sans-serif; font-size:clamp(16px,1.4vw,22px); line-height:1.6; color:#aaa;">Rigorous. Ruthless. Relentless. The process: brutal. The results: sublime.</div>
-    </div>
-    <div style="padding: 20px 0; border-top: 1px solid #222;">
-      <div style="font-family:'Poppins',sans-serif; font-size:11px; font-weight:700; color:#777; margin-bottom:4px;">04</div>
-      <div style="font-family:'Poppins',sans-serif; font-weight:700; font-size:clamp(14px,1.2vw,18px); color:var(--yellow); text-transform:uppercase; margin-bottom:3px;">FEELFORWARD</div>
-      <div style="font-family:'Poppins',sans-serif; font-size:clamp(16px,1.4vw,22px); line-height:1.6; color:#aaa;">The winning idea learns to fly. AI maps the channels. Humans refine the plan.</div>
-    </div>
-    <div style="padding: 20px 0; border-top: 1px solid #222; border-bottom: 1px solid #222;">
-      <div style="font-family:'Poppins',sans-serif; font-size:11px; font-weight:700; color:#777; margin-bottom:4px;">05</div>
-      <div style="font-family:'Poppins',sans-serif; font-weight:700; font-size:clamp(14px,1.2vw,18px); color:var(--yellow); text-transform:uppercase; margin-bottom:3px;">PRODUCTION</div>
-      <div style="font-family:'Poppins',sans-serif; font-size:clamp(16px,1.4vw,22px); line-height:1.6; color:#aaa;">Coming soon.</div>
-    </div>
-    <button class="btn-primary" onclick="showScreen('screen-auth')">WE KNOW WHY YOU'RE HERE. →</button>
-  </div>
-  <footer class="kd-footer">
-    <div class="kd-footer-logo">KILL DULL.</div>
-    <div class="kd-footer-copy">© 2026 Kill Dull. · human@killdull.com · <a href="/privacy.html" style="color:inherit;text-decoration:none;">Privacy</a></div>
-  </footer>
-</div>
 
 <!-- SCREEN AUTH -->
 <div id="screen-auth" class="screen">
@@ -1043,7 +981,7 @@ firebase.initializeApp({
 <!-- SCREEN 0: INTRO -->
 <div id="screen-intro" class="screen">
   <div class="kd-header">
-    <div class="kd-logo">TRUTH DETECTOR.</div>
+    <div class="kd-logo">THE CASE.</div>
   </div>
   <div class="kd-body">
     <div class="kd-screen-label">Intro</div>
@@ -1060,7 +998,7 @@ firebase.initializeApp({
 <!-- SCREEN 1: SETUP -->
 <div id="screen-setup" class="screen">
   <div class="kd-header">
-    <div class="kd-logo">TRUTH DETECTOR.</div>
+    <div class="kd-logo">THE CASE.</div>
   </div>
   <div class="kd-body">
     <div class="kd-screen-label">Brief</div>
@@ -1091,13 +1029,13 @@ firebase.initializeApp({
 <!-- SCREEN 2: WHO IS IN THE ROOM -->
 <div id="screen-who" class="screen">
   <div class="kd-header">
-    <div class="kd-logo">TRUTH DETECTOR.</div>
+    <div class="kd-logo">THE CASE.</div>
   </div>
   <div class="kd-body">
     <div class="kd-screen-label">Room</div>
     <div class="kd-eyebrow">Step 2 of 2</div>
     <div class="kd-title">Who's in<br/><span>the room?</span></div>
-    <div class="kd-body-text" style="margin-bottom:20px;">Select everyone present. Different roles see different things. The Truth Detector will use this to frame its questions.</div>
+    <div class="kd-body-text" style="margin-bottom:20px;">Select everyone present. Different roles see different things. The The Case will use this to frame its questions.</div>
 
     <div class="role-grid">
       <button class="role-btn" onclick="toggleRole(this,'CMO')">CMO</button>
@@ -1120,7 +1058,7 @@ firebase.initializeApp({
 <!-- SCREEN 3: QUESTION -->
 <div id="screen-question" class="screen">
   <div class="kd-header">
-    <div class="kd-logo">TRUTH DETECTOR.</div>
+    <div class="kd-logo">THE CASE.</div>
   </div>
   <div class="question-progress-wrap">
     <div class="question-number" id="q-number">Question 1 of 5</div>
@@ -1135,7 +1073,7 @@ firebase.initializeApp({
     <div class="question-sub" id="q-sub"></div>
 
     <div style="position:relative;">
-      <textarea class="kd-textarea" id="answer-input" placeholder="Answer honestly. The Truth Detector can tell the difference." maxlength="600"></textarea>
+      <textarea class="kd-textarea" id="answer-input" placeholder="Answer honestly. The The Case can tell the difference." maxlength="600"></textarea>
       <span class="answer-cursor-blink" id="answer-cursor">|</span>
     </div>
     <div class="char-count"><span id="answer-count">600</span> remaining</div>
@@ -1161,7 +1099,7 @@ firebase.initializeApp({
 <!-- SCREEN 4: CATEGORY -->
 <div id="screen-category" class="screen">
   <div class="kd-header">
-    <div class="kd-logo">TRUTH DETECTOR.</div>
+    <div class="kd-logo">THE CASE.</div>
   </div>
   <div class="kd-screen-label" style="padding:16px 16px 0;">Category</div>
 
@@ -1192,26 +1130,20 @@ firebase.initializeApp({
 <div id="screen-provocation" class="screen">
   <!-- Yellow header — this screen only -->
   <div id="prov-header" style="background:#FFFF00;padding:24px 24px 28px;">
-    <div id="prov-header-text" style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;color:#000;line-height:0.95;white-space:nowrap;display:block;">THE VERDICT.</div>
+    <div id="prov-header-text" style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;color:#000;line-height:0.95;white-space:nowrap;display:block;">THE CASE FILE.</div>
   </div>
   <!-- Content — flat structure so .prov-label margin:48px 0 24px handles all spacing -->
   <div id="prov-content" style="padding:0 24px 64px;display:flex;flex-direction:column;background:#0a0a0a;flex:1;">
-    <div class="prov-label">THE ONE WORD PROVOCATION.</div>
+    <div class="prov-label">ONE WORD.</div>
     <div id="provocation-name" style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;color:#FFFF00;line-height:0.9;white-space:nowrap;display:block;"></div>
     <div id="prov-after-word" style="opacity:0;transition:opacity 0.5s ease;">
     <div id="prov-sentence" style="font-family:'Poppins',sans-serif;font-weight:400;font-size:18px;color:#fff;line-height:1.6;margin-top:24px;"></div>
-    <div class="prov-label">WHAT CAME OUT OF THE ROOM.</div>
     <div id="prov-truths"></div>
     <div class="prov-label">FLIP THE SCRIPT.</div>
     <div id="prov-pairs"></div>
-    <div class="prov-label">YOUR CASE ID.</div>
-    <div class="room-code-block" id="prov-room-code-block" style="padding:0;text-align:left;">
-      <div id="prov-room-code-display" style="font-family:'Poppins',sans-serif;font-weight:900;color:#FFFF00;font-size:80px;line-height:1;letter-spacing:6px;"></div>
-    </div>
     <div id="prov-buttons" style="margin-top:48px;display:flex;flex-direction:column;gap:12px;">
-      <button onclick="copyRoomCode(this)" style="width:100%;padding:16px 20px;background:transparent;color:#fff;border:1px solid #fff;font-family:'Manrope',sans-serif;font-size:clamp(14px,3.5vw,18px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;">COPY CODE</button>
       <button onclick="downloadProvocationPDF()" style="width:100%;padding:16px 20px;background:transparent;color:#fff;border:1px solid #fff;outline:none;font-family:'Manrope',sans-serif;font-size:clamp(14px,3.5vw,18px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;">DOWNLOAD AS PDF</button>
-      <button onclick="enterStorm()" style="width:100%;padding:16px 20px;background:#FFFF00;color:#000;border:none;font-family:'Manrope',sans-serif;font-size:clamp(16px,4vw,20px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;">ENTER THE STORM →</button>
+      <button onclick="goToBench()" style="width:100%;padding:16px 20px;background:#FFFF00;color:#000;border:none;font-family:'Manrope',sans-serif;font-size:clamp(16px,4vw,20px);font-weight:900;letter-spacing:0.05em;text-transform:uppercase;">YOUR CASE IS COMPLETE. TAKE IT TO THE BENCH. →</button>
     </div>
     </div>
   </div>
@@ -1228,7 +1160,7 @@ firebase.initializeApp({
 
 
 <script>
-// Truth Detector — no Firebase needed, standalone session
+// The Case — no Firebase needed, standalone session
 
 // STATE
 let state = {
@@ -1439,7 +1371,7 @@ document.getElementById('answer-input').addEventListener('input', function() {
 async function submitAnswer() {
   const answer = document.getElementById('answer-input').value.trim();
   if (answer.length < 20) {
-    alert('Give us more than that. The Truth Detector needs something real to work with.');
+    alert('Give us more than that. The The Case needs something real to work with.');
     return;
   }
 
@@ -1455,13 +1387,13 @@ async function submitAnswer() {
   } catch(e) {
     document.getElementById('thinking-state').style.display = 'none';
     document.getElementById('submit-answer-btn').style.display = 'block';
-    document.getElementById('verdict-area').innerHTML = `<div class="verdict-box verdict-almost"><div class="verdict-label">Connection Error</div><div class="verdict-text">Could not reach the Truth Detector. Check your connection and try again.</div></div>`;
+    document.getElementById('verdict-area').innerHTML = `<div class="verdict-box verdict-almost"><div class="verdict-label">Connection Error</div><div class="verdict-text">Could not reach the The Case. Check your connection and try again.</div></div>`;
   }
 }
 
 async function callTruthDetector(answer, questionIdx) {
   const q = QUESTIONS[questionIdx];
-  const systemPrompt = `You are the Kill Dull Truth Detector: a Creative Director who has sat through too many briefs and has zero patience for managed truth. Short. Confident. Occasionally brutal. Never over-explain.
+  const systemPrompt = `You are The Case: a Creative Director who has sat through too many briefs and has zero patience for managed truth. Short. Confident. Occasionally brutal. Never over-explain.
 
 The brand: ${state.brand}
 The category: ${state.category}
@@ -1749,7 +1681,7 @@ async function generateSharpAnswer(originalAnswer, verdict) {
     </div>`;
 
   const q = QUESTIONS[state.currentQuestion];
-  const systemPrompt = `You are the Kill Dull Truth Detector. A brand team has failed to give a true answer after three attempts. Write the TRUE answer for them — the honest, uncomfortable version they keep dancing around.
+  const systemPrompt = `You are The Case. A brand team has failed to give a true answer after three attempts. Write the TRUE answer for them — the honest, uncomfortable version they keep dancing around.
 
 Brand: ${state.brand}
 Category: ${state.category}
@@ -1953,7 +1885,7 @@ async function generateProvocation() {
     }).join('\n\n');
     const categoryText = state.categoryItems.map(c => c && c.they_do ? `THEY DO: ${c.they_do} / YOU DO: ${c.you_do || ''}` : String(c)).join('\n');
 
-    const systemPrompt = `You are the Kill Dull Truth Detector. You have completed the interrogation of a brand. Now you must produce the Kill Dull Provocation — the brief that opens the creative session.
+    const systemPrompt = `You are The Case. You have completed the interrogation of a brand. Now you must produce the Kill Dull Provocation — the brief that opens the creative session.
 
 Brand: ${state.brand}
 Category: ${state.category}
@@ -1965,13 +1897,16 @@ ${answersText}
 The category clichés to eliminate:
 ${categoryText}
 
-Produce the Kill Dull Provocation. Return ONLY a JSON object:
+Produce the Kill Dull Case File. Return ONLY a JSON object:
 {
-  "name": "One word. Maximum two. This is the strategic name of the provocation. It should feel like a mission. Not a tagline. Examples: REBELLION. INVISIBLE. UNDESERVED. PERMISSION. RECKONING.",
-  "tagline": "One sentence. The opportunity. Not what the problem is — what the world looks like if this brand solves it brilliantly.",
-  "provocation": "Three sentences maximum. The dangerously clear truth. Human truth. Brand truth. Cultural tension. All in one provocation that would make a creative lean forward in their chair.",
+  "one_word": "One word. Maximum two. The strategic name of the provocation. A mission, not a tagline. Examples: REBELLION. INVISIBLE. UNDESERVED. PERMISSION. TENSION.",
+  "executive_summary": "One sentence. The sharpest possible case for why this brief matters. Not what the problem is. What becomes possible if the brand acts on this truth.",
+  "human_truth": "One or two sentences. What real people genuinely believe, feel, or do that makes this brand matter.",
+  "market_truth": "One or two sentences. What this brand does that no competitor can honestly claim. Provable. Demonstrable. Not aspirational.",
+  "category_truth": "One or two sentences. What the category keeps repeating on a loop that this brand must stop.",
+  "cultural_tension": "One or two sentences. What people are caught between right now. The unresolved conflict that makes this brand relevant.",
   "nevers": [
-    "One specific thing from the category autopsy stated as a creative prohibition",
+    "One specific creative prohibition from the category autopsy",
     "Second prohibition",
     "Third prohibition",
     "Fourth prohibition",
@@ -1979,7 +1914,7 @@ Produce the Kill Dull Provocation. Return ONLY a JSON object:
   ]
 }
 
-The provocation must be DANGEROUSLY CLEAR. Julian Cole clear. Rob Campbell dangerous. M&C Saatchi brutal. If it could appear in a press release — rewrite it.
+The case file must be DANGEROUSLY CLEAR. Julian Cole clear. Rob Campbell dangerous. M&C Saatchi brutal. If it could appear in a press release, rewrite it.
 Return ONLY the JSON. No preamble. No markdown backticks.`;
 
     const res = await fetch('https://killdull.vercel.app/api/critique', {
@@ -1987,7 +1922,7 @@ Return ONLY the JSON. No preamble. No markdown backticks.`;
       headers: { 'Content-Type': 'application/json', 'x-password': 'killdull2026' },
       body: JSON.stringify({
         system: systemPrompt,
-        messages: [{ role: 'user', content: [{ type: 'text', text: 'Generate the Kill Dull Provocation.' }] }]
+        messages: [{ role: 'user', content: [{ type: 'text', text: 'Generate the Kill Dull Case File.' }] }]
       })
     });
 
@@ -2004,7 +1939,7 @@ Return ONLY the JSON. No preamble. No markdown backticks.`;
     if (!text) throw new Error('Empty response: ' + JSON.stringify(data).slice(0, 100));
     const clean = text.replace(/```json|```/g, '').trim();
     state.provocation = JSON.parse(clean);
-    console.log('Provocation ready:', state.provocation.name);
+    console.log('Case file ready:', state.provocation.one_word || state.provocation.name);
     syncSession();
     saveSession();
 
@@ -2012,9 +1947,12 @@ Return ONLY the JSON. No preamble. No markdown backticks.`;
     console.error('Provocation generation failed:', e.message);
     const nevers = (state.categoryItems || []).map(c => c.you_do || c.they_do || String(c)).filter(Boolean).slice(0, 5);
     state.provocation = {
-      name: state.brand.toUpperCase(),
-      tagline: "The truth about this brand has been found. Now make work worthy of it.",
-      provocation: state.brand + " knows what it has lost. The question is whether it has the courage to name it out loud and build from that truth rather than around it.",
+      one_word: state.brand.split(' ')[0].toUpperCase(),
+      executive_summary: "The truth about this brand has been found. Now make work worthy of it.",
+      human_truth: "The brief has been interrogated. The truth is in the room.",
+      market_truth: "The answers are in. The case has been made.",
+      category_truth: "The autopsy is complete. Stop repeating what the category does.",
+      cultural_tension: "Something is at stake. Build from that.",
       nevers: nevers.length ? nevers : ["Do what everyone else in the category does."]
     };
   }
@@ -2027,44 +1965,56 @@ document.getElementById('screen-provocation') && document.addEventListener('scre
 
 function renderProvocation() {
   if (!state.provocation) return;
-  try {
-    var saved = localStorage.getItem('kd_storm_room_code');
-    if (saved) showRoomCode(saved);
-  } catch(e) {}
   var p = state.provocation;
 
-  // Header — fitted to full width
+  // Header
   var headerEl = document.getElementById('prov-header-text');
   if (headerEl) fitToWidth(headerEl, false, 48);
 
-  // Provocation word — first word only, massive yellow, fitted
+  // One word — first word, massive yellow, fitted
   var nameEl = document.getElementById('provocation-name');
   if (nameEl) {
-    nameEl.textContent = (p.name || '').split(' ')[0].toUpperCase();
+    nameEl.textContent = (p.one_word || p.name || '').split(' ')[0].toUpperCase();
     fitToWidth(nameEl, false, 48);
   }
 
-  // Strategic sentence
+  // Executive summary
   var sentEl = document.getElementById('prov-sentence');
-  if (sentEl) sentEl.textContent = p.tagline || '';
+  if (sentEl) sentEl.textContent = p.executive_summary || p.tagline || '';
 
-  // Five Q&A pairs — question in grey italic above, answer in white below
+  // Case file sections
   var truthsEl = document.getElementById('prov-truths');
   if (truthsEl) {
-    var truthsHTML = '';
-    state.answers.forEach(function(a, i) {
-      if (!a) return;
-      var q = QUESTIONS[i] ? QUESTIONS[i].text : '';
-      var border = i > 0 ? 'border-top:1px solid #333;' : '';
-      truthsHTML += '<div style="' + border + 'padding:16px 0;">' +
-        '<div style="font-family:\'Poppins\',sans-serif;font-size:13px;font-style:italic;color:#888;margin-bottom:8px;">' + q + '</div>' +
-        '<div style="font-family:\'Poppins\',sans-serif;font-weight:400;font-size:18px;color:#fff;line-height:1.6;">' + a + '</div>' +
-        '</div>';
+    var S = 'padding:24px 0;border-top:1px solid #333;';
+    var L = 'font-family:\'Poppins\',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#FFFF00;margin-bottom:12px;';
+    var TX = 'font-family:\'Poppins\',sans-serif;font-weight:400;font-size:18px;color:#fff;line-height:1.6;';
+    var sections = [
+      { label: 'HUMAN TRUTH.', key: 'human_truth' },
+      { label: 'MARKET TRUTH.', key: 'market_truth' },
+      { label: 'CATEGORY TRUTH.', key: 'category_truth' },
+      { label: 'CULTURAL TENSION.', key: 'cultural_tension' }
+    ];
+    var html = '';
+    sections.forEach(function(s) {
+      var val = p[s.key];
+      if (!val) return;
+      html += '<div style="' + S + '"><div style="' + L + '">' + s.label + '</div><div style="' + TX + '">' + val + '</div></div>';
     });
-    truthsEl.innerHTML = truthsHTML;
+    if (!html) {
+      state.answers.forEach(function(a, i) {
+        if (!a) return;
+        var q = QUESTIONS[i] ? QUESTIONS[i].text : '';
+        var border = i > 0 ? 'border-top:1px solid #333;' : '';
+        html += '<div style="' + border + 'padding:16px 0;">' +
+          '<div style="font-family:\'Poppins\',sans-serif;font-size:13px;font-style:italic;color:#888;margin-bottom:8px;">' + q + '</div>' +
+          '<div style="font-family:\'Poppins\',sans-serif;font-weight:400;font-size:18px;color:#fff;line-height:1.6;">' + a + '</div>' +
+          '</div>';
+      });
+    }
+    truthsEl.innerHTML = html;
   }
 
-  // Six THEY DO / YOU DO pairs — grey / white, all caps, Poppins 600
+  // Flip the Script
   var pairsEl = document.getElementById('prov-pairs');
   if (pairsEl) {
     var pairsHTML = '';
@@ -2080,11 +2030,6 @@ function renderProvocation() {
     pairsEl.innerHTML = pairsHTML;
   }
 
-  // Room code — fixed 80px, no fitToWidth
-  var codeEl = document.getElementById('prov-room-code-display');
-  if (codeEl && codeEl.textContent) {
-    codeEl.style.fontSize = '80px';
-  }
   var afterWord = document.getElementById('prov-after-word');
   if (afterWord) {
     afterWord.style.opacity = '0';
@@ -2153,43 +2098,26 @@ function copyProvocation() {
 
 // ── FIREBASE AUTH & SESSION ──────────────────────────────────────────────────
 
-function generateRoomCode() {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
-  return Array.from({length: 4}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+function goToBench() {
+  clearSavedSession();
+  window.location.href = '/reckoning.html';
 }
 
-async function createSession() {
-  state.roomCode = generateRoomCode();
-  const newRef = firebase.database().ref('sessions').push();
-  state.sessionId = newRef.key;
-  await newRef.set({
-    roomCode: state.roomCode,
-    userId: state.userId,
-    userProfile: state.userProfile || {},
-    brand: '', category: '', problem: '',
-    answers: {}, provocation: null,
-    createdAt: Date.now(), status: 'active'
-  });
-  document.getElementById('room-badge-code').textContent = state.roomCode;
-  // persist and display the case id
-  try { localStorage.setItem('kd_storm_room_code', state.roomCode); } catch(e) {}
-  showRoomCode(state.roomCode);
-}
-
-function showRoomCode(code) {
-  const inlineCode  = document.getElementById('prov-room-code-display');
-  const inlineBlock = document.getElementById('prov-room-code-block');
-  if (inlineCode)  inlineCode.textContent = code;
-  if (inlineBlock) inlineBlock.classList.add('visible');
-}
-
-function copyRoomCode(btn) {
-  const code = document.getElementById('prov-room-code-display').textContent;
-  if (!code) return;
-  navigator.clipboard.writeText(code).then(() => {
-    btn.textContent = 'COPIED ✓';
-    setTimeout(() => { btn.textContent = 'COPY CODE'; }, 2000);
-  }).catch(() => {});
+function showTitleCard(title, cb) {
+  var tc = document.getElementById('title-card');
+  var tt = document.getElementById('title-card-text');
+  if (!tc || !tt) { if (cb) cb(); return; }
+  tt.textContent = title;
+  tt.style.fontSize = '500px';
+  tt.style.whiteSpace = 'nowrap';
+  var tw = tt.scrollWidth;
+  var avail = window.innerWidth - 32;
+  if (tw > 0) tt.style.fontSize = Math.floor(avail / tw * 500) + 'px';
+  tc.style.display = 'flex';
+  setTimeout(function() {
+    tc.style.display = 'none';
+    if (cb) cb();
+  }, 1800);
 }
 
 function syncSession() {
@@ -2237,7 +2165,6 @@ async function signInWithGoogle() {
     }
     state.userId = user.uid;
     state.userProfile = profile;
-    try { await createSession(); } catch(e) {}
     showScreen('screen-intro');
   } catch(e) {
     btn.disabled = false;
@@ -2357,7 +2284,6 @@ async function handleAuth() {
   try {
     state.userId = user.uid;
     state.userProfile = profile;
-    await createSession();
     showScreen('screen-intro');
   } catch(e) {
     console.log('Post-auth error code:', e.code);
@@ -2378,7 +2304,7 @@ function saveSession() {
     var active = document.querySelector('.screen.active');
     if (!active) return;
     var id = active.id;
-    if (id === 'screen-auth' || id === 'screen-kd-intro') return;
+    if (id === 'screen-auth') return;
     localStorage.setItem(KD_SESSION_KEY, JSON.stringify({
       screen: id,
       brand: state.brand,
@@ -2465,10 +2391,6 @@ function resumeScreen(screenId) {
   showScreen(screenId);
 }
 
-function enterStorm() {
-  clearSavedSession();
-  window.location.href = '/storm.html';
-}
 // ─────────────────────────────────────────────────────────────────────────────
 
 function initFirebaseAuth() {
@@ -2479,10 +2401,9 @@ function initFirebaseAuth() {
         if (snap.exists()) {
           state.userId = user.uid;
           state.userProfile = snap.val();
-          await createSession();
           document.getElementById('auth-loading').style.display = 'none';
           var saved = loadSavedSession();
-          if (saved && saved !== 'screen-auth' && saved !== 'screen-kd-intro') {
+          if (saved && saved !== 'screen-auth') {
             resumeScreen(saved);
           } else {
             showScreen('screen-intro');
@@ -2494,7 +2415,7 @@ function initFirebaseAuth() {
       }
     }
     document.getElementById('auth-loading').style.display = 'none';
-    showScreen('screen-kd-intro');
+    showTitleCard('THE CASE.', function() { showScreen('screen-auth'); });
   });
 }
 
@@ -2586,8 +2507,10 @@ initFirebaseAuth();
     splash.style.opacity = '0';
     setTimeout(function(){
       splash.style.display = 'none';
-      fitAll();
-      if (typeof window.showCookieBannerIfNeeded === 'function') window.showCookieBannerIfNeeded();
+      showTitleCard('THE CASE.', function() {
+        fitAll();
+        if (typeof window.showCookieBannerIfNeeded === 'function') window.showCookieBannerIfNeeded();
+      });
     }, 600);
   }
   function init(){
@@ -2680,8 +2603,6 @@ document.addEventListener('keydown', function(e) {
         'Never pretend the brief was easy to write'
       ]
     };
-    try { localStorage.setItem('kd_storm_room_code', 'DEVX'); } catch(_) {}
-    showRoomCode('DEVX');
     var screens = document.querySelectorAll('.screen');
     screens.forEach(function(s) { s.classList.remove('active'); });
     document.getElementById('screen-provocation').classList.add('active');

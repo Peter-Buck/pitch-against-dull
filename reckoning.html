@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Kill Dull — The Reckoning</title>
+<title>Kill Dull — The Bench</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -183,7 +183,7 @@ body {
 <!-- SPLASH -->
 <div id="splash" style="position:fixed;inset:0;background:#000;z-index:9999;display:flex;align-items:center;justify-content:center;padding-bottom:100px;">
   <div id="sp-wrap" style="width:100vw;overflow:hidden;padding:0 16px;">
-    <div id="sp-text" style="font-family:'Poppins',sans-serif;font-weight:900;white-space:nowrap;text-transform:uppercase;color:#FFFF00;line-height:1.05;">THE RECKONING.</div>
+    <div id="sp-text" style="font-family:'Poppins',sans-serif;font-weight:900;white-space:nowrap;text-transform:uppercase;color:#FFFF00;line-height:1.05;">THE BENCH.</div>
   </div>
   <footer style="position:absolute;bottom:0;left:0;right:0;background:#F4F2EA;padding:20px 16px;">
     <div style="color:#000;font-weight:900;font-size:30px;line-height:1;">KILL DULL.</div>
@@ -196,7 +196,7 @@ body {
 
   <!-- HEADER -->
   <div style="background:var(--yellow);padding:18px 16px 22px;overflow:hidden;">
-    <div class="kd-logo" id="logo-main">THE RECKONING.</div>
+    <div class="kd-logo" id="logo-main">THE BENCH.</div>
   </div>
 
   <!-- BODY -->
@@ -205,7 +205,7 @@ body {
     <!-- INTRO -->
     <div style="margin-bottom:48px;">
       <div id="tagline" style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;color:#fff;line-height:1;white-space:nowrap;display:block;margin-bottom:28px;">RIGOROUS. RUTHLESS. RELENTLESS.</div>
-      <p style="font-size:18px;line-height:1.7;color:#888;max-width:560px;font-weight:400;">Upload your work — print, digital, storyboard, or video frames. Add your brief. Get a direct critique against all 12 principles. No fluff. No ego protection.</p>
+      <p style="font-size:18px;line-height:1.7;color:#888;max-width:560px;font-weight:400;">Submit your work. The Bench applies all 12 principles. No fluff. No protection.</p>
     </div>
 
     <!-- STAGE SELECTOR -->
@@ -708,7 +708,7 @@ function displayResults(text) {
 // ── RESET ─────────────────────────────────────────────────────────────────────
 
 function resetAll() {
-  showTitleCard('THE RECKONING.', function() {
+  showTitleCard('THE BENCH.', function() {
     state.images  = [];
     state.frames  = [];
     state.stage   = null;
@@ -805,9 +805,8 @@ window.addEventListener('resize', fitAll);
     spText.innerHTML =
       '<span id="r0">T</span><span id="r1">H</span><span id="r2">E</span>' +
       '<span style="display:inline-block;width:0.22em;"></span>' +
-      '<span id="r3">R</span><span id="r4">E</span><span id="r5">C</span>' +
-      '<span id="r6">K</span><span id="r7">O</span><span id="r8">N</span>' +
-      '<span id="r9">I</span><span id="r10">N</span><span id="r11">G</span>' +
+      '<span id="r3">B</span><span id="r4">E</span><span id="r5">N</span>' +
+      '<span id="r6">C</span><span id="r7">H</span>' +
       '<span id="rdot">.</span>';
   }
 
