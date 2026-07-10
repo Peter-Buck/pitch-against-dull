@@ -2,48 +2,69 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Kill Dull</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kill Dull&#x2122; &#x2014; The Dense Idea Company</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ── RESET ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-/* ── CUSTOM PROPERTIES ── */
 :root {
-  --type-display:     clamp(64px, 12vw, 180px);
-  --type-headline-xl: clamp(48px, 8vw, 120px);
-  --type-headline-lg: clamp(32px, 5vw, 72px);
-  --type-headline-md: clamp(24px, 3vw, 48px);
-  --type-label:       11px;
-  --type-body:        20px;
-  --type-body-sm:     16px;
+  --ink:           #0D0D0C;
+  --paper:         #EFEDE4;
+  --yellow:        #FFFF00;
+  --border:        #2a2925;
+  --border-inner:  #1c1b18;
+  --text-secondary:#8a8880;
+  --text-tertiary: #6f6d66;
+  --text-body:     #c9c6bd;
+  --pending:       #4a4844;
 
-  --black:   #0a0a0a;
-  --black-2: #111111;
-  --cream:   #F4F2EA;
-  --yellow:  #FFFF00;
-  --grey:    #888888;
-  --red:     #FF0000;
-  --green:   #00FF41;
+  --type-hero:    clamp(72px, 12vw, 148px);
+  --type-chapter: 72px;
+  --type-product: clamp(48px, 8vw, 72px);
+  --type-entry:   30px;
+  --type-body:    17px;
+  --type-small:   15px;
+  --type-label:   11px;
+  --type-micro:   10px;
 
-  --space-xs:  8px;
-  --space-sm:  16px;
-  --space-md:  24px;
-  --space-lg:  48px;
-  --space-xl:  80px;
-  --space-2xl: 120px;
-  --space-3xl: 160px;
+  --section-pad-v: 100px;
+  --section-pad-h: 120px;
+  --nav-height:    64px;
 }
 
-/* ── BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: auto; }
+
 body {
-  background: var(--black);
-  color: var(--cream);
-  font-family: 'Poppins', -apple-system, sans-serif;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* { border-radius: 0 !important; }
+
+a { color: inherit; text-decoration: none; }
+a:hover { color: var(--yellow); }
+a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ── TERMINAL MARK ── */
+.terminal {
+  display: inline-block;
+  width: 0.72em;
+  height: 0.72em;
+  background: var(--yellow);
+  margin-left: 0.08em;
+  vertical-align: baseline;
+  flex-shrink: 0;
 }
 
 /* ── NAV ── */
@@ -51,167 +72,239 @@ body {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 100;
-  height: 64px;
+  height: var(--nav-height);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 var(--space-xl);
+  padding: 0 var(--section-pad-h);
+  background: transparent;
+  border-bottom: 1px solid var(--border);
 }
+
 .nav-logo {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 900;
-  font-size: 16px;
-  color: var(--cream);
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: -0.01em;
-}
-.nav-links { display: flex; align-items: center; gap: var(--space-lg); }
-.nav-link {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
-  font-size: var(--type-label);
-  color: var(--cream);
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  line-height: 1;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  color: var(--paper);
+  white-space: nowrap;
 }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.nav-link {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 400;
+  font-size: var(--type-label);
+  letter-spacing: 0.12em;
+  color: var(--paper);
+  text-transform: uppercase;
+}
+
 .nav-link:hover { color: var(--yellow); }
 .nav-enter { color: var(--yellow); }
-.nav-enter:hover { color: var(--cream); }
+.nav-enter:hover { color: var(--paper); }
 
 /* ── VIEWPORTS ── */
-.vp {
+.viewport {
   min-height: 100vh;
+  padding: calc(var(--nav-height) + var(--section-pad-v)) var(--section-pad-h) var(--section-pad-v);
   display: flex;
   flex-direction: column;
-  padding: var(--space-xl);
 }
-.vp-1       { padding-top: calc(var(--space-xl) + 64px); }
-.vp-center  { justify-content: center; }
-.bg-black   { background: var(--black); }
-.bg-black-2 { background: var(--black-2); }
 
-/* ── SECTION LABEL ── */
-.lbl {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
+.viewport + .viewport {
+  padding-top: var(--section-pad-v);
+  border-top: 1px solid var(--border);
+}
+
+.viewport--paper {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* ── RUNNING HEAD ── */
+.running-head {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'IBM Plex Mono', monospace;
   font-size: var(--type-label);
-  color: var(--grey);
+  letter-spacing: 0.16em;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+  margin-bottom: 64px;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
-  line-height: 1;
-  margin-bottom: var(--space-sm);
 }
 
-/* ── HEADLINE DISPLAY (fitToWidth) ── */
-.hl-d {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 900;
-  color: var(--cream);
+/* ── HERO HEADLINE ── */
+.hero-headline {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: var(--type-hero);
+  letter-spacing: -0.05em;
+  line-height: 0.88;
   white-space: nowrap;
-  line-height: 0.9;
-  letter-spacing: -0.02em;
-  display: block;
-  margin-bottom: var(--space-lg);
-}
-.hl-d-yellow { color: var(--yellow); }
-
-/* ── HEADLINE XL ── */
-.hl-xl {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 900;
-  font-size: var(--type-headline-xl);
-  color: var(--cream);
-  line-height: 0.9;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-lg);
+  color: var(--paper);
+  margin-bottom: 56px;
 }
 
-/* ── HEADLINE LG ── */
-.hl-lg {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 900;
-  font-size: var(--type-headline-lg);
-  color: var(--cream);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  margin-bottom: var(--space-lg);
-}
+.hero-headline--yellow { color: var(--yellow); }
 
-/* ── BODY ── */
-.bd {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 400;
-  font-size: var(--type-body);
-  color: var(--grey);
-  line-height: 1.8;
+/* ── HERO BODY ── */
+.hero-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   max-width: 560px;
-  margin-bottom: var(--space-xl);
+  font-size: var(--type-body);
+  line-height: 1.7;
+  color: var(--text-body);
 }
 
-/* ── CTA — TEXT ONLY ── */
-.cta {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
-  font-size: var(--type-label);
-  color: var(--cream);
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  display: inline-block;
-  line-height: 1;
-}
-.cta:hover { color: var(--yellow); }
-
-/* ── STANDALONE WORD ── */
-.word {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 900;
-  font-size: 32px;
-  line-height: 1;
-}
-.word-yellow { color: var(--yellow); }
-.word-cream  { color: var(--cream); }
+.hero-body .text-secondary { color: var(--text-secondary); }
 
 /* ── PUSH ── */
 .push { margin-top: auto; }
 
-/* ── FOCUS ── */
-a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
+/* ── STANDALONE WORD ── */
+.standalone-word {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1;
+}
+.standalone-word--yellow { color: var(--yellow); }
+.standalone-word--paper  { color: var(--paper); }
+
+/* ── SECTION INDEX ── */
+.section-index {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: var(--type-label);
+  letter-spacing: 0.14em;
+  color: var(--text-tertiary);
+  margin-bottom: 16px;
+}
+
+/* ── PRODUCT HEADLINE ── */
+.product-headline {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: var(--type-product);
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  color: var(--paper);
+  margin-bottom: 48px;
+}
+
+/* ── PRODUCT BODY ── */
+.product-body {
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: var(--type-small);
+  line-height: 1.7;
+  color: var(--text-body);
+}
+
+/* ── CTA ── */
+.cta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: var(--type-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--paper);
+  display: inline-block;
+}
+.cta:hover { color: var(--yellow); }
+
+/* ── CHAPTER HEADLINE ── */
+.chapter-headline {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(36px, 6vw, 80px);
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  color: var(--paper);
+  margin-bottom: 48px;
+}
+
+/* ── BUREAU BODY ── */
+.bureau-body {
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  font-size: var(--type-small);
+  line-height: 1.9;
+  color: var(--text-body);
+}
 
 /* ── FOOTER ── */
-.footer      { background: var(--cream); padding: var(--space-xl); }
-.footer-logo { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 32px; color: #000; line-height: 1; margin-bottom: var(--space-sm); }
-.footer-nav  { display: flex; flex-wrap: wrap; gap: 4px 20px; margin-bottom: var(--space-sm); }
-.footer-nav a { font-family: 'Poppins', sans-serif; font-weight: 400; font-size: 14px; color: #000; text-decoration: none; }
+.footer {
+  background: var(--paper);
+  color: var(--ink);
+  border-top: 1px solid var(--border);
+}
+
+.footer-inner { padding: var(--section-pad-v) var(--section-pad-h); }
+
+.footer-logo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
+
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 24px;
+  margin-bottom: 24px;
+}
+
+.footer-nav a {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  font-weight: 400;
+}
+
 .footer-nav a:hover { color: #555; }
-.footer-copy { font-family: 'Poppins', sans-serif; font-weight: 400; font-size: 13px; color: var(--grey); }
+
+.footer-copy {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+}
 
 /* ── TABLET ── */
 @media (max-width: 1279px) {
-  .nav    { padding: 0 48px; }
-  .vp     { padding: 48px; }
-  .vp-1   { padding-top: calc(48px + 64px); }
-  .footer { padding: var(--space-xl) 48px; }
-  .bd     { max-width: 440px; }
+  :root {
+    --section-pad-v: 64px;
+    --section-pad-h: 64px;
+  }
+  .nav { padding: 0 64px; }
 }
 
 /* ── MOBILE ── */
 @media (max-width: 767px) {
-  .nav              { height: 56px; padding: 0 24px; }
-  .vp               { padding: 40px 24px; }
-  .vp-1             { padding-top: calc(40px + 56px); }
-  .nav-hide-mobile  { display: none; }
-  .footer           { padding: var(--space-xl) 24px; }
-  .bd               { max-width: 100%; }
-}
-
-/* ── REDUCED MOTION ── */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition: none !important; }
+  :root {
+    --section-pad-v: 48px;
+    --section-pad-h: 24px;
+    --nav-height: 56px;
+  }
+  .nav { padding: 0 24px; }
+  .nav-link:not(.nav-enter) { display: none; }
+  .product-headline { font-size: clamp(40px, 14vw, 72px); }
+  .hero-body, .product-body, .bureau-body { max-width: 100%; }
 }
 </style>
 <style>
@@ -222,12 +315,11 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="nav" aria-label="Main navigation">
-  <a class="nav-logo" href="/">KILL DULL&#x2122;</a>
+  <a class="nav-logo" href="/">KILL DULL<span class="terminal"></span></a>
   <div class="nav-links">
-    <a class="nav-link nav-hide-mobile" href="/truth.html">THE CASE</a>
-    <a class="nav-link nav-hide-mobile" href="/reckoning.html">THE BENCH</a>
+    <a class="nav-link" href="/truth.html">THE CASE</a>
+    <a class="nav-link" href="/reckoning.html">THE BENCH</a>
     <a class="nav-link nav-enter" href="/truth.html">ENTER &#x2192;</a>
   </div>
 </nav>
@@ -235,140 +327,143 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 <main>
 
 <!-- VP1: CONVICTION -->
-<section class="vp vp-1 bg-black" aria-label="Conviction">
-  <h1 class="hl-d" id="hero-hl">DULL IS EXPENSIVE.</h1>
-  <div class="bd">
-    System1 and Effie proved it.<br><br>
-    Entertaining work compounds.<br>
-    Dull work depreciates.<br><br>
-    Before you show it to the world,<br>
-    build your Case.<br>
-    Take it to The Bench.
+<section class="viewport" id="conviction" aria-label="Conviction">
+  <div class="running-head">
+    <span>KD &middot; CASE &middot; CF&#x2014;001</span>
+    <span>CONVICTION</span>
   </div>
-  <div class="word word-yellow push">DUH.</div>
+  <h1 class="hero-headline" id="hero-hl">DULL IS EXPENSIVE.<span class="terminal"></span></h1>
+  <div class="hero-body">
+    <p class="text-secondary">System1 and Effie proved it.</p>
+    <p>Entertaining work compounds.<br>Dull work depreciates.</p>
+    <p>Before you show it to the world,<br>build your Case.<br>Take it to The Bench.</p>
+  </div>
+  <div class="push">
+    <p class="standalone-word standalone-word--yellow">DUH.</p>
+  </div>
 </section>
 
 <!-- VP2: THE CASE -->
-<section class="vp vp-center bg-black-2" aria-label="The Case">
-  <div class="lbl">01</div>
-  <h2 class="hl-xl">THE CASE.</h2>
-  <div class="bd">
-    Build a stronger creative brief.<br><br>
-    Every great idea starts with a stronger case.<br>
-    The Case challenges assumptions, uncovers evidence,<br>
-    and helps define the problem worth solving<br>
-    before creative work begins.<br><br>
-    Leave with a Case File worth defending.
+<section class="viewport" id="curiosity" aria-label="The Case">
+  <div class="running-head">
+    <span>KD &middot; CASE &middot; CF&#x2014;001</span>
+    <span>THE CASE</span>
   </div>
-  <a class="cta" href="/truth.html">START YOUR CASE &#x2192;</a>
+  <div class="section-index">01</div>
+  <h2 class="product-headline">THE CASE.</h2>
+  <div class="product-body">
+    <p>Build a stronger creative brief.</p>
+    <p>Every great idea starts with a stronger case. The Case challenges assumptions, uncovers evidence, and helps define the problem worth solving before creative work begins.</p>
+    <p>Leave with a Case File worth defending.</p>
+  </div>
+  <div class="push">
+    <a class="cta" href="/truth.html">START YOUR CASE &#x2192;</a>
+  </div>
 </section>
 
 <!-- VP3: THE BENCH -->
-<section class="vp vp-center bg-black" aria-label="The Bench">
-  <div class="lbl">02</div>
-  <h2 class="hl-xl">THE BENCH.</h2>
-  <div class="bd">
-    Judge creative work before the world does.<br><br>
-    Every idea deserves a hearing.<br>
-    Not every idea earns approval.<br><br>
-    Upload your work.<br>
-    Present your evidence.<br>
-    Receive a verdict.<br><br>
-    Before your client.<br>
-    Before the world.
+<section class="viewport" id="confidence" aria-label="The Bench">
+  <div class="running-head">
+    <span>KD &middot; BENCH &middot; VD&#x2014;001</span>
+    <span>THE BENCH</span>
   </div>
-  <a class="cta" href="/reckoning.html">GO TO THE BENCH &#x2192;</a>
+  <div class="section-index">02</div>
+  <h2 class="product-headline">THE BENCH.</h2>
+  <div class="product-body">
+    <p>Judge creative work before the world does.</p>
+    <p>Every idea deserves a hearing.<br>Not every idea earns approval.</p>
+    <p>Upload your work.<br>Present your evidence.<br>Receive a verdict.</p>
+    <p>Before your client.<br>Before the world.</p>
+  </div>
+  <div class="push">
+    <a class="cta" href="/reckoning.html">GO TO THE BENCH &#x2192;</a>
+  </div>
 </section>
 
 <!-- VP4: PRIVATE MEANS PRIVATE -->
-<section class="vp vp-center bg-black-2" aria-label="Privacy">
-  <div class="lbl">PRIVACY</div>
-  <h2 class="hl-xl">PRIVATE MEANS PRIVATE.</h2>
-  <div class="bd">
-    No fine print.<br>
-    No surprises.<br>
-    No leaks.<br>
-    No sharing.<br>
-    No public AI training.<br><br>
-    Your briefs stay yours.<br>
-    Your campaigns stay yours.<br>
-    Your ideas stay yours.
+<section class="viewport" id="trust" aria-label="Privacy">
+  <div class="running-head">
+    <span>KD &middot; OFFICE &middot; STD&#x2014;002</span>
+    <span>PRIVACY</span>
   </div>
-  <div class="word word-cream">Period.</div>
+  <h2 class="chapter-headline">PRIVATE MEANS PRIVATE.</h2>
+  <div class="product-body" style="margin-top: 0;">
+    <p>No fine print.<br>No surprises.<br>No leaks.<br>No sharing.<br>No public AI training.</p>
+    <p>Your briefs stay yours.<br>Your campaigns stay yours.<br>Your ideas stay yours.</p>
+  </div>
+  <div class="push">
+    <p class="standalone-word standalone-word--paper">Period.</p>
+  </div>
 </section>
 
 <!-- VP5: FREE -->
-<section class="vp vp-center bg-black" aria-label="Pricing">
-  <div class="lbl">PRICING</div>
-  <h2 class="hl-d hl-d-yellow" id="free-hl">FREE.</h2>
-  <div class="word word-cream" style="margin-bottom:var(--space-lg);">For now.</div>
-  <div class="bd" style="font-size:18px;max-width:440px;margin-bottom:0;">
-    We&#x2019;re building Kill Dull with the people who&#x2019;ll use it.<br>
-    Today, The Case and The Bench are free.<br>
-    Not forever.
+<section class="viewport" id="generosity" aria-label="Pricing">
+  <div class="running-head">
+    <span>KD &middot; OFFICE &middot; MAN&#x2014;001</span>
+    <span>PRICING</span>
+  </div>
+  <h2 class="hero-headline hero-headline--yellow" id="free-hl">FREE.</h2>
+  <p class="standalone-word standalone-word--paper" style="margin-bottom: 32px;">For now.</p>
+  <div class="product-body">
+    <p>We&#x2019;re building Kill Dull with the people who&#x2019;ll use it.<br>Today, The Case and The Bench are free.<br>Not forever.</p>
   </div>
 </section>
 
 <!-- VP6: THE BUREAU -->
-<section class="vp vp-center bg-black-2" aria-label="The Bureau">
-  <div class="lbl">THE BUREAU</div>
-  <h2 class="hl-lg">Department of Hard Evidence.</h2>
-  <div class="bd" style="margin-bottom:var(--space-xl);">
-    The Bureau exists to improve judgment.<br>
-    Every decision compounds.<br>
-    The only question is what.<br><br>
-    Before making an important decision, ask:<br><br>
-    Does this compound?<br>
-    What evidence supports it?<br>
-    What assumptions am I making?<br>
-    What would change my mind?<br>
-    Has this been to The Bench?<br><br>
-    Opinions are welcome.<br>
-    Evidence is preferred.<br>
-    Experience is respected.<br>
-    Ego is expensive.<br><br>
-    Move quickly. Not prematurely.<br>
-    If you&#x2019;re certain, investigate twice.<br>
-    If everyone agrees immediately,<br>
-    someone probably stopped thinking too soon.<br><br>
-    Good judgment is not a talent.<br>
-    It is a practice.
+<section class="viewport" id="belief" aria-label="The Bureau">
+  <div class="running-head">
+    <span>KD &middot; OFFICE &middot; AR&#x2014;2026</span>
+    <span>THE BUREAU</span>
   </div>
-  <div class="word word-yellow">DUH.</div>
+  <div class="section-index">THE BUREAU</div>
+  <h2 class="chapter-headline">Department of Hard Evidence.</h2>
+  <div class="bureau-body">
+    <p>The Bureau exists to improve judgment.<br>Every decision compounds.<br>The only question is what.</p>
+    <p>Before making an important decision, ask:</p>
+    <p>Does this compound?<br>What evidence supports it?<br>What assumptions am I making?<br>What would change my mind?<br>Has this been to The Bench?</p>
+    <p>Opinions are welcome.<br>Evidence is preferred.<br>Experience is respected.<br>Ego is expensive.</p>
+    <p>Move quickly. Not prematurely.<br>If you&#x2019;re certain, investigate twice.<br>If everyone agrees immediately,<br>someone probably stopped thinking too soon.</p>
+    <p>Good judgment is not a talent.<br>It is a practice.</p>
+  </div>
+  <div class="push">
+    <p class="standalone-word standalone-word--yellow">DUH.</p>
+  </div>
 </section>
 
 </main>
 
 <!-- FOOTER -->
 <footer class="footer" role="contentinfo">
-  <div class="footer-logo">KILL DULL.</div>
-  <nav class="footer-nav" aria-label="Footer navigation">
-    <a href="/truth.html">The Case</a>
-    <a href="/reckoning.html">The Bench</a>
-    <a href="#" aria-label="About Kill Dull">About</a>
-    <a href="#" aria-label="Contact Kill Dull">Contact</a>
-    <a href="#" aria-label="Accessibility statement">Accessibility</a>
-    <a href="/privacy.html" aria-label="Privacy policy">Privacy</a>
-    <a href="#" aria-label="Cookie policy">Cookies</a>
-    <a href="#" aria-label="Terms of service">Terms</a>
-  </nav>
-  <div class="footer-copy">&#169; 2026 Kill Dull. All rights reserved.</div>
+  <div class="footer-inner">
+    <div class="footer-logo">KILL DULL.</div>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="/truth.html">The Case</a>
+      <a href="/reckoning.html">The Bench</a>
+      <a href="#" aria-label="About">About</a>
+      <a href="#" aria-label="Contact">Contact</a>
+      <a href="#" aria-label="Accessibility">Accessibility</a>
+      <a href="#" aria-label="Privacy">Privacy</a>
+      <a href="#" aria-label="Cookies">Cookies</a>
+      <a href="#" aria-label="Terms">Terms</a>
+    </nav>
+    <p class="footer-copy">&#169; 2026 Kill Dull. All rights reserved.</p>
+  </div>
 </footer>
 
 <script>
-function fitToWidth(el, pad) {
+function fitToWidth(el, horizontalPad) {
   if (!el) return;
   el.style.whiteSpace = 'nowrap';
   el.style.fontSize = '500px';
-  var tw = el.scrollWidth;
-  if (!tw) return;
-  el.style.fontSize = Math.max(10, Math.floor(((window.innerWidth - pad) / tw) * 500)) + 'px';
+  const ratio = (window.innerWidth - horizontalPad) / el.scrollWidth;
+  el.style.fontSize = Math.max(10, Math.floor(ratio * 500)) + 'px';
 }
 
 function fitAll() {
-  var p = window.innerWidth < 768 ? 48 : window.innerWidth < 1280 ? 96 : 160;
-  fitToWidth(document.getElementById('hero-hl'), p);
-  fitToWidth(document.getElementById('free-hl'), p);
+  const pad = window.innerWidth < 768 ? 48 :
+              window.innerWidth < 1280 ? 240 : 240;
+  fitToWidth(document.getElementById('hero-hl'), pad);
+  fitToWidth(document.getElementById('free-hl'), pad);
 }
 
 document.addEventListener('DOMContentLoaded', fitAll);
