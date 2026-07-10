@@ -56,6 +56,28 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 
+/* ── INSTITUTION IDENTITY ── */
+.institution-identity {
+  margin-bottom: 48px;
+}
+.institution-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  color: var(--paper);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: baseline;
+}
+.institution-descriptor {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
 /* ── TERMINAL MARK ── */
 .terminal {
   display: inline-block;
@@ -214,12 +236,15 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 
 /* ── CTA ── */
 .cta {
+  display: inline-block;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: var(--type-label);
-  letter-spacing: 0.12em;
+  font-size: 13px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--paper);
-  display: inline-block;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  margin-top: 48px;
 }
 .cta:hover { color: var(--yellow); }
 
@@ -245,6 +270,20 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   color: var(--text-body);
 }
 
+/* ── BUREAU QUESTIONS ── */
+.bureau-questions {
+  border-left: 2px solid var(--yellow);
+  padding-left: 24px;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: var(--type-small);
+  color: var(--paper);
+  line-height: 1.7;
+}
+.bureau-questions p { margin: 0; }
+
 /* ── FOOTER ── */
 .footer {
   background: var(--paper);
@@ -260,6 +299,14 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   font-size: 32px;
   letter-spacing: -0.02em;
   margin-bottom: 24px;
+}
+
+.footer-descriptor {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-bottom: 32px;
 }
 
 .footer-nav {
@@ -329,17 +376,19 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 <!-- VP1: CONVICTION -->
 <section class="viewport" id="conviction" aria-label="Conviction">
   <div class="running-head">
-    <span>KD &middot; CASE &middot; CF&#x2014;001</span>
+    <span>KD &middot; OFFICE &middot; MAN&#x2014;001</span>
     <span>CONVICTION</span>
   </div>
-  <h1 class="hero-headline" id="hero-hl">DULL IS EXPENSIVE.<span class="terminal"></span></h1>
+  <div class="institution-identity">
+    <div class="institution-name">KILL DULL<span class="terminal"></span></div>
+    <div class="institution-descriptor">The Dense Idea Company.</div>
+    <div class="institution-descriptor">Here to Compound.</div>
+  </div>
+  <h1 class="hero-headline" id="hero-hl">DULL IS EXPENSIVE.</h1>
   <div class="hero-body">
     <p class="text-secondary">System1 and Effie proved it.</p>
     <p>Entertaining work compounds.<br>Dull work depreciates.</p>
     <p>Before you show it to the world,<br>build your Case.<br>Take it to The Bench.</p>
-  </div>
-  <div class="push">
-    <p class="standalone-word standalone-word--yellow">DUH.</p>
   </div>
 </section>
 
@@ -356,9 +405,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
     <p>Every great idea starts with a stronger case. The Case challenges assumptions, uncovers evidence, and helps define the problem worth solving before creative work begins.</p>
     <p>Leave with a Case File worth defending.</p>
   </div>
-  <div class="push">
-    <a class="cta" href="/truth.html">START YOUR CASE &#x2192;</a>
-  </div>
+  <a class="cta" href="/truth.html">START YOUR CASE &#x2192;</a>
 </section>
 
 <!-- VP3: THE BENCH -->
@@ -375,9 +422,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
     <p>Upload your work.<br>Present your evidence.<br>Receive a verdict.</p>
     <p>Before your client.<br>Before the world.</p>
   </div>
-  <div class="push">
-    <a class="cta" href="/reckoning.html">GO TO THE BENCH &#x2192;</a>
-  </div>
+  <a class="cta" href="/reckoning.html">GO TO THE BENCH &#x2192;</a>
 </section>
 
 <!-- VP4: PRIVATE MEANS PRIVATE -->
@@ -402,7 +447,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
     <span>KD &middot; OFFICE &middot; MAN&#x2014;001</span>
     <span>PRICING</span>
   </div>
-  <h2 class="hero-headline hero-headline--yellow" id="free-hl">FREE.</h2>
+  <h2 class="hero-headline hero-headline--yellow" id="free-hl">FREE</h2>
   <p class="standalone-word standalone-word--paper" style="margin-bottom: 32px;">For now.</p>
   <div class="product-body">
     <p>We&#x2019;re building Kill Dull with the people who&#x2019;ll use it.<br>Today, The Case and The Bench are free.<br>Not forever.</p>
@@ -420,7 +465,13 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   <div class="bureau-body">
     <p>The Bureau exists to improve judgment.<br>Every decision compounds.<br>The only question is what.</p>
     <p>Before making an important decision, ask:</p>
-    <p>Does this compound?<br>What evidence supports it?<br>What assumptions am I making?<br>What would change my mind?<br>Has this been to The Bench?</p>
+    <div class="bureau-questions">
+      <p>Does this compound?</p>
+      <p>What evidence supports it?</p>
+      <p>What assumptions am I making?</p>
+      <p>What would change my mind?</p>
+      <p>Has this been to The Bench?</p>
+    </div>
     <p>Opinions are welcome.<br>Evidence is preferred.<br>Experience is respected.<br>Ego is expensive.</p>
     <p>Move quickly. Not prematurely.<br>If you&#x2019;re certain, investigate twice.<br>If everyone agrees immediately,<br>someone probably stopped thinking too soon.</p>
     <p>Good judgment is not a talent.<br>It is a practice.</p>
@@ -436,9 +487,10 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 <footer class="footer" role="contentinfo">
   <div class="footer-inner">
     <div class="footer-logo">KILL DULL.</div>
+    <p class="footer-descriptor">The Dense Idea Company.</p>
     <nav class="footer-nav" aria-label="Footer navigation">
-      <a href="/truth.html">The Case</a>
-      <a href="/reckoning.html">The Bench</a>
+      <a href="/truth.html" style="font-family:'IBM Plex Mono',monospace; letter-spacing:0.08em;">THE CASE</a>
+      <a href="/reckoning.html" style="font-family:'IBM Plex Mono',monospace; letter-spacing:0.08em;">THE BENCH</a>
       <a href="#" aria-label="About">About</a>
       <a href="#" aria-label="Contact">Contact</a>
       <a href="#" aria-label="Accessibility">Accessibility</a>
