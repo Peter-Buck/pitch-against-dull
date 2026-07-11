@@ -63,6 +63,24 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   flex-shrink: 0;
 }
 
+/* YELLOW SQUARE PULSE */
+@keyframes kd-pulse {
+  0%, 85%, 100% { opacity: 1; }
+  90%  { opacity: 0; }
+  95%  { opacity: 1; }
+}
+.sq {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--yellow);
+  flex-shrink: 0;
+  animation: kd-pulse 4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sq { animation: none; }
+}
+
 /* NAV */
 .nav {
   position: fixed;
@@ -112,12 +130,12 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 /* VIEWPORTS */
 .viewport {
   min-height: 100vh;
-  padding: calc(var(--nav-height) + var(--section-pad-v)) var(--section-pad-h) var(--section-pad-v);
+  padding: calc(var(--nav-height) + 90px) var(--section-pad-h) 90px;
   display: flex;
   flex-direction: column;
 }
 .viewport + .viewport {
-  padding-top: var(--section-pad-v);
+  padding-top: 90px;
   border-top: 1px solid var(--border);
 }
 
@@ -131,7 +149,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   color: var(--text-secondary);
   border-top: 1px solid var(--border);
   padding-top: 18px;
-  margin-bottom: 64px;
+  margin-bottom: 56px;
   text-transform: uppercase;
 }
 
@@ -144,8 +162,21 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   line-height: 0.88;
   white-space: nowrap;
   color: var(--paper);
-  margin-bottom: 56px;
+  margin-bottom: 52px;
 }
+
+/* HERO LINE (two-line fitToWidth, VP1) */
+.hero-line {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 0.88;
+  white-space: nowrap;
+  color: var(--paper);
+  display: block;
+  margin-bottom: 4px;
+}
+#hero-line-2 { margin-bottom: 52px; }
 
 /* HERO BODY */
 .hero-body {
@@ -170,6 +201,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 
 /* PUSH */
 .push { margin-top: auto; }
+.standalone-word.push { margin-top: auto; padding-top: 80px; }
 
 /* STANDALONE WORD */
 .standalone-word {
@@ -196,7 +228,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   grid-template-columns: 1fr 1fr;
   border-left: 1px solid var(--border);
   border-top: 1px solid var(--border);
-  margin-bottom: 64px;
+  margin-bottom: 56px;
 }
 .evidence-col {
   border-right: 1px solid var(--border);
@@ -237,8 +269,18 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   font-size: clamp(28px, 4vw, 48px);
   letter-spacing: -0.03em;
   color: var(--paper);
-  margin-bottom: 32px;
+  margin-bottom: 28px;
   line-height: 1.0;
+}
+.evidence-intro {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(28px, 4vw, 56px);
+  letter-spacing: -0.03em;
+  line-height: 1.0;
+  color: var(--paper);
+  margin-bottom: 56px;
+  max-width: 820px;
 }
 .evidence-body {
   font-family: 'Space Grotesk', sans-serif;
@@ -276,45 +318,58 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   text-transform: uppercase;
 }
 
-/* DISCIPLINE GRID (VP5) */
-.discipline-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  border-left: 1px solid var(--border);
+/* DISCIPLINE LIST (VP5) */
+.discipline-list {
+  margin-top: 64px;
   border-top: 1px solid var(--border);
-  margin-top: 48px;
 }
-.discipline-card {
-  border-right: 1px solid var(--border);
+.discipline-item {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 0;
   border-bottom: 1px solid var(--border);
-  padding: 40px;
+  padding: 48px 0;
+}
+.discipline-meta {
   display: flex;
   flex-direction: column;
+  gap: 8px;
+  padding-right: 40px;
 }
 .discipline-number {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.16em;
   color: var(--text-tertiary);
-  margin-bottom: 24px;
 }
+.discipline-status {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--text-secondary);
+}
+.discipline-status--pending { color: var(--yellow); }
 .discipline-name {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
-  font-size: 22px;
+  font-size: clamp(24px, 3vw, 40px);
   letter-spacing: -0.02em;
   color: var(--paper);
   margin-bottom: 16px;
+  line-height: 1.0;
 }
 .discipline-desc {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--text-body);
-  line-height: 1.6;
-  flex: 1;
+  line-height: 1.7;
+  max-width: 560px;
 }
 .discipline-cta {
-  margin-top: 32px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 28px;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 11px;
   letter-spacing: 0.12em;
@@ -323,28 +378,8 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   text-decoration: none;
   border-top: 1px solid var(--border);
   padding-top: 16px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.discipline-cta::before {
-  content: '';
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  background: var(--yellow);
-  flex-shrink: 0;
 }
 .discipline-cta:hover { color: var(--yellow); }
-.discipline-coming {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  color: var(--text-tertiary);
-  border-top: 1px solid var(--border);
-  padding-top: 16px;
-  margin-top: 32px;
-}
 
 /* EARLY ACCESS (VP6) */
 .access-body {
@@ -448,7 +483,6 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   :root { --section-pad-v: 64px; --section-pad-h: 64px; }
   .nav { padding: 0 64px; height: 80px; }
   .evidence-grid { grid-template-columns: 1fr 1fr; }
-  .discipline-grid { grid-template-columns: 1fr 1fr; }
   .footer-inner { padding: 64px; }
 }
 
@@ -459,14 +493,10 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   .nav-sub { display: none; }
   .nav-link:not(.nav-enter) { display: none; }
   .evidence-grid { grid-template-columns: 1fr; }
-  .discipline-grid { grid-template-columns: 1fr; }
+  .discipline-item { grid-template-columns: 1fr; gap: 16px; }
+  .discipline-meta { flex-direction: row; padding-right: 0; }
   .footer-inner { padding: 48px 24px; }
 }
-</style>
-<style>
-* {
-    cursor: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><rect x='10.5' y='1' width='3' height='8' rx='1.5' fill='%23FF0000'/><rect x='10.5' y='15' width='3' height='8' rx='1.5' fill='%23FF0000'/><rect x='1' y='10.5' width='8' height='3' rx='1.5' fill='%23FF0000'/><rect x='15' y='10.5' width='8' height='3' rx='1.5' fill='%23FF0000'/><circle cx='12' cy='12' r='2' fill='%23ffffff'/></svg>") 12 12, crosshair !important;
-  }
 </style>
 </head>
 <body>
@@ -494,7 +524,8 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
     <span>KD &middot; OFFICE &middot; CASE&#x2014;000</span>
     <span>OBSERVATION</span>
   </div>
-  <h1 class="hero-headline" id="hero-hl">THE DECISION IS BROKEN.</h1>
+  <h1 class="hero-line" id="hero-line-1">DECISION-MAKING</h1>
+  <h1 class="hero-line" id="hero-line-2">IS BROKEN.</h1>
   <div class="hero-body">
     <p>We have ideas.<br>We have opinions.<br>We have evidence.<br>We have experience.<br>We have Big Data.<br>We have Gut Data.</p>
     <p>What we don&#x2019;t have is a better way to decide.</p>
@@ -508,15 +539,16 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
     <span>KD &middot; OFFICE &middot; CASE&#x2014;000</span>
     <span>EVIDENCE</span>
   </div>
+  <p class="evidence-intro">Ideas never had a balance sheet.</p>
   <div class="evidence-grid">
     <div class="evidence-col">
       <div class="evidence-label">BIG DATA</div>
       <hr class="evidence-divider">
       <ul class="evidence-list">
         <li>Market research.</li>
-        <li>Audience data.</li>
-        <li>Performance metrics.</li>
-        <li>Category benchmarks.</li>
+        <li>Audience behaviour.</li>
+        <li>Performance benchmarks.</li>
+        <li>Category data.</li>
         <li>System1 evidence.</li>
         <li>Effie proof.</li>
       </ul>
@@ -530,7 +562,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
         <li>Pattern recognition.</li>
         <li>Cultural reading.</li>
         <li>Human judgment.</li>
-        <li>The room.</li>
+        <li>The room&#x2019;s feeling.</li>
       </ul>
     </div>
   </div>
@@ -577,30 +609,54 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
     <span>KD &middot; OFFICE &middot; CASE&#x2014;000</span>
     <span>DECISION</span>
   </div>
-  <div class="discipline-grid">
-    <div class="discipline-card">
-      <div class="discipline-number">01</div>
-      <div class="discipline-name">The Case</div>
-      <p class="discipline-desc">Build conviction. Interrogate assumptions. Gather evidence. Define the problem worth solving before creative work begins.</p>
-      <a class="discipline-cta" href="/truth.html">START YOUR CASE &#x2192;</a>
+  <div class="discipline-list">
+
+    <div class="discipline-item">
+      <div class="discipline-meta">
+        <span class="discipline-number">01</span>
+        <span class="discipline-status">AVAILABLE</span>
+      </div>
+      <div class="discipline-content">
+        <h3 class="discipline-name">The Case</h3>
+        <p class="discipline-desc">Build conviction. Interrogate assumptions. Gather evidence. Define the problem worth solving before creative work begins. Leave with a Case File worth defending.</p>
+        <a class="discipline-cta" href="/truth.html"><span class="sq"></span>START YOUR CASE &#x2192;</a>
+      </div>
     </div>
-    <div class="discipline-card">
-      <div class="discipline-number">02</div>
-      <div class="discipline-name">The Bench</div>
-      <p class="discipline-desc">Challenge conviction. Judge creative work before the world does. Present your evidence. Receive a verdict.</p>
-      <a class="discipline-cta" href="/reckoning.html">GO TO THE BENCH &#x2192;</a>
+
+    <div class="discipline-item">
+      <div class="discipline-meta">
+        <span class="discipline-number">02</span>
+        <span class="discipline-status">AVAILABLE</span>
+      </div>
+      <div class="discipline-content">
+        <h3 class="discipline-name">The Bench</h3>
+        <p class="discipline-desc">Challenge conviction. Judge creative work before the world does. Present your evidence. Receive a verdict. Before your client. Before the world.</p>
+        <a class="discipline-cta" href="/reckoning.html"><span class="sq"></span>GO TO THE BENCH &#x2192;</a>
+      </div>
     </div>
-    <div class="discipline-card">
-      <div class="discipline-number">03</div>
-      <div class="discipline-name">The Library</div>
-      <p class="discipline-desc">Learn from great decisions. A growing collection of public cases, historical decisions, and original thinking.</p>
-      <div class="discipline-coming">COMING SOON</div>
+
+    <div class="discipline-item">
+      <div class="discipline-meta">
+        <span class="discipline-number">03</span>
+        <span class="discipline-status discipline-status--pending">COMING SOON</span>
+      </div>
+      <div class="discipline-content">
+        <h3 class="discipline-name">The Library</h3>
+        <p class="discipline-desc">Learn from great decisions. A growing collection of public cases, historical decisions, and original thinking on judgment, evidence, and creative courage.</p>
+      </div>
     </div>
-    <div class="discipline-card">
-      <div class="discipline-number">04</div>
-      <div class="discipline-name">Private</div>
-      <p class="discipline-desc">Protect conviction. No fine print. No leaks. No sharing. No public AI training. Your work stays yours.</p>
+
+    <div class="discipline-item" style="border-bottom: none;">
+      <div class="discipline-meta">
+        <span class="discipline-number">04</span>
+        <span class="discipline-status">ALWAYS</span>
+      </div>
+      <div class="discipline-content">
+        <h3 class="discipline-name">Private</h3>
+        <p class="discipline-desc">Protect conviction. No fine print. No leaks. No sharing. No public AI training. Your briefs stay yours. Your campaigns stay yours. Your ideas stay yours.</p>
+      </div>
     </div>
+
   </div>
 </section>
 
@@ -641,9 +697,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
     <p>Move quickly. Not prematurely.<br>If you&#x2019;re certain, investigate twice.<br>If everyone agrees immediately,<br>someone probably stopped thinking too soon.</p>
     <p>Good judgment is not a talent.<br>It is a practice.</p>
   </div>
-  <div class="push">
-    <p class="standalone-word standalone-word--yellow">DUH.</p>
-  </div>
+  <p class="standalone-word standalone-word--yellow push">DUH.</p>
 </section>
 
 </main>
@@ -680,8 +734,9 @@ function fitToWidth(el, horizontalPad) {
 
 function fitAll() {
   var pad = window.innerWidth < 768 ? 48 :
-            window.innerWidth < 1280 ? 240 : 240;
-  fitToWidth(document.getElementById('hero-hl'), pad);
+            window.innerWidth < 1280 ? 128 : 240;
+  fitToWidth(document.getElementById('hero-line-1'), pad);
+  fitToWidth(document.getElementById('hero-line-2'), pad);
   fitToWidth(document.getElementById('conviction-hl'), pad);
   fitToWidth(document.getElementById('access-hl'), pad);
 }
