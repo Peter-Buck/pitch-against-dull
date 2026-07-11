@@ -28,7 +28,6 @@
 
   --section-pad-v: 100px;
   --section-pad-h: 120px;
-  --nav-height:    80px;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -65,9 +64,9 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 
 /* YELLOW SQUARE PULSE */
 @keyframes kd-pulse {
-  0%, 85%, 100% { opacity: 1; }
-  90%  { opacity: 0; }
-  95%  { opacity: 1; }
+  0%, 80%, 100% { opacity: 1; }
+  87% { opacity: 0; }
+  94% { opacity: 1; }
 }
 .sq {
   display: inline-block;
@@ -75,47 +74,55 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   height: 8px;
   background: var(--yellow);
   flex-shrink: 0;
-  animation: kd-pulse 4s ease-in-out infinite;
+  animation: kd-pulse 2s ease-in-out infinite;
 }
 @media (prefers-reduced-motion: reduce) {
   .sq { animation: none; }
 }
 
-/* NAV */
-.nav {
+/* MASTHEAD */
+.masthead {
   position: fixed;
   top: 0; left: 0; right: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 var(--section-pad-h);
-  height: var(--nav-height);
+  z-index: 200;
   background: var(--ink);
   border-bottom: 1px solid var(--border);
 }
-.nav-lockup { display: flex; flex-direction: column; gap: 2px; }
-.nav-logo {
+.masthead-inner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px 120px 18px;
+}
+.masthead-lockup {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.masthead-logo {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
-  font-size: 18px;
+  font-size: 22px;
   letter-spacing: -0.02em;
   color: var(--paper);
   text-decoration: none;
+  line-height: 1;
   white-space: nowrap;
 }
-.nav-sub {
-  display: flex;
-  gap: 16px;
+.masthead-sub {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 400;
   color: var(--text-secondary);
+  line-height: 1.4;
 }
-.nav-sub span::after { content: ' ·'; margin-left: 16px; }
-.nav-sub span:last-child::after { content: ''; }
-.nav-links { display: flex; align-items: center; gap: 40px; }
-.nav-link {
+.masthead-nav {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding-top: 4px;
+}
+.masthead-link {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 11px;
   letter-spacing: 0.12em;
@@ -123,14 +130,91 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   color: var(--paper);
   text-decoration: none;
 }
-.nav-link:hover { color: var(--yellow); }
-.nav-enter { color: var(--yellow); }
-.nav-enter:hover { color: var(--paper); }
+.masthead-link:hover { color: var(--yellow); }
+.masthead-enter { color: var(--yellow); }
+.masthead-enter:hover { color: var(--paper); }
+
+@media (max-width: 767px) {
+  .masthead-inner { padding: 16px 24px; }
+  .masthead-nav { display: none; }
+  .masthead-logo { font-size: 18px; }
+}
+
+/* REGISTRAR */
+.registrar {
+  position: fixed;
+  left: 0; right: 0;
+  z-index: 190;
+  background: var(--ink);
+  border-bottom: 1px solid var(--border);
+}
+.registrar-desktop {
+  display: flex;
+  align-items: stretch;
+  padding: 0 120px;
+}
+.reg-item {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 12px 16px 10px;
+  border-right: 1px solid var(--border);
+  color: var(--text-tertiary);
+  transition: color 0.15s, padding 0.2s;
+  white-space: nowrap;
+}
+.reg-item:first-child { border-left: 1px solid var(--border); }
+.reg-item.is-past {
+  color: var(--text-tertiary);
+  padding-top: 8px;
+  padding-bottom: 8px;
+  opacity: 0.5;
+}
+.reg-item.is-active {
+  color: var(--paper);
+  border-bottom: 2px solid var(--yellow);
+  opacity: 1;
+}
+.registrar-mobile { display: none; }
+
+@media (max-width: 767px) {
+  .registrar-desktop { display: none; }
+  .registrar-mobile { display: block; }
+  .reg-mobile-current {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px 24px;
+    background: transparent;
+    border: none;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--paper);
+    cursor: pointer;
+  }
+  .reg-mobile-arrow { color: var(--yellow); }
+  .reg-mobile-dropdown {
+    background: var(--ink);
+    border-top: 1px solid var(--border);
+  }
+  .reg-mobile-dropdown .reg-item {
+    display: block;
+    padding: 12px 24px;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .reg-mobile-dropdown .reg-item:first-child { border-left: none; }
+}
 
 /* VIEWPORTS */
 .viewport {
   min-height: 100vh;
-  padding: calc(var(--nav-height) + 90px) var(--section-pad-h) 90px;
+  padding: 90px var(--section-pad-h) 90px;
   display: flex;
   flex-direction: column;
 }
@@ -425,19 +509,35 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   color: var(--text-body);
 }
 
-/* BUREAU QUESTIONS */
-.bureau-questions {
+/* BUREAU FRAMEWORK */
+.bureau-framework {
   border-left: 2px solid var(--yellow);
   padding-left: 24px;
-  margin-top: 8px;
+  margin: 40px 0;
+}
+.bureau-framework-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.bureau-framework-intro {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+.bureau-questions {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  font-size: var(--type-small);
+  gap: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 17px;
   color: var(--paper);
-  line-height: 1.7;
+  line-height: 1.5;
 }
-.bureau-questions p { margin: 0; }
 
 /* FOOTER */
 .footer { background: var(--paper); color: var(--ink); border-top: 1px solid var(--border); }
@@ -481,17 +581,15 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 /* TABLET */
 @media (max-width: 1279px) {
   :root { --section-pad-v: 64px; --section-pad-h: 64px; }
-  .nav { padding: 0 64px; height: 80px; }
+  .masthead-inner { padding: 18px 64px 16px; }
+  .registrar-desktop { padding: 0 64px; }
   .evidence-grid { grid-template-columns: 1fr 1fr; }
   .footer-inner { padding: 64px; }
 }
 
 /* MOBILE */
 @media (max-width: 767px) {
-  :root { --section-pad-v: 48px; --section-pad-h: 24px; --nav-height: 56px; }
-  .nav { padding: 0 24px; height: auto; min-height: 56px; padding-top: 12px; padding-bottom: 12px; }
-  .nav-sub { display: none; }
-  .nav-link:not(.nav-enter) { display: none; }
+  :root { --section-pad-v: 48px; --section-pad-h: 24px; }
   .evidence-grid { grid-template-columns: 1fr; }
   .discipline-item { grid-template-columns: 1fr; gap: 16px; }
   .discipline-meta { flex-direction: row; padding-right: 0; }
@@ -501,20 +599,47 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 </head>
 <body>
 
-<nav class="nav" aria-label="Main navigation">
-  <div class="nav-lockup">
-    <a class="nav-logo" href="/">KILL DULL<span class="terminal"></span></a>
-    <div class="nav-sub">
-      <span>The Dense Idea Company.</span>
-      <span>Here to Compound.</span>
+<header class="masthead" id="masthead">
+  <div class="masthead-inner">
+    <div class="masthead-lockup">
+      <a class="masthead-logo" href="/">KILL DULL<span class="terminal"></span></a>
+      <div class="masthead-sub">The Dense Idea Company.</div>
+      <div class="masthead-sub">Here to Compound.</div>
+    </div>
+    <nav class="masthead-nav">
+      <a class="masthead-link" href="/truth.html">THE CASE</a>
+      <a class="masthead-link" href="/reckoning.html">THE BENCH</a>
+      <a class="masthead-link masthead-enter" href="/truth.html">ENTER &#x2192;</a>
+    </nav>
+  </div>
+</header>
+
+<div class="registrar" id="registrar">
+  <div class="registrar-desktop">
+    <a class="reg-item" data-chapter="observation" href="#observation">OBSERVATION</a>
+    <a class="reg-item" data-chapter="evidence" href="#evidence">EVIDENCE</a>
+    <a class="reg-item" data-chapter="conviction" href="#conviction">CONVICTION</a>
+    <a class="reg-item" data-chapter="reading" href="#decision">READING</a>
+    <a class="reg-item" data-chapter="decision" href="#decision-sentinel">DECISION</a>
+    <a class="reg-item" data-chapter="access" href="#access">EARLY ACCESS</a>
+    <a class="reg-item" data-chapter="bureau" href="#bureau">THE BUREAU</a>
+  </div>
+  <div class="registrar-mobile">
+    <button class="reg-mobile-current" id="reg-mobile-btn">
+      <span id="reg-mobile-label">OBSERVATION</span>
+      <span class="reg-mobile-arrow">&#9662;</span>
+    </button>
+    <div class="reg-mobile-dropdown" id="reg-mobile-dropdown" hidden>
+      <a class="reg-item" data-chapter="observation" href="#observation">OBSERVATION</a>
+      <a class="reg-item" data-chapter="evidence" href="#evidence">EVIDENCE</a>
+      <a class="reg-item" data-chapter="conviction" href="#conviction">CONVICTION</a>
+      <a class="reg-item" data-chapter="reading" href="#decision">READING</a>
+      <a class="reg-item" data-chapter="decision" href="#decision-sentinel">DECISION</a>
+      <a class="reg-item" data-chapter="access" href="#access">EARLY ACCESS</a>
+      <a class="reg-item" data-chapter="bureau" href="#bureau">THE BUREAU</a>
     </div>
   </div>
-  <div class="nav-links">
-    <a class="nav-link" href="/truth.html">THE CASE</a>
-    <a class="nav-link" href="/reckoning.html">THE BENCH</a>
-    <a class="nav-link nav-enter" href="/truth.html">ENTER &#x2192;</a>
-  </div>
-</nav>
+</div>
 
 <main>
 
@@ -524,7 +649,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
     <span>KD &middot; OFFICE &middot; CASE&#x2014;000</span>
     <span>OBSERVATION</span>
   </div>
-  <h1 class="hero-line" id="hero-line-1">DECISION-MAKING</h1>
+  <h1 class="hero-line" id="hero-line-1">DECISION-MAKING.</h1>
   <h1 class="hero-line" id="hero-line-2">IS BROKEN.</h1>
   <div class="hero-body">
     <p>We have ideas.<br>We have opinions.<br>We have evidence.<br>We have experience.<br>We have Big Data.<br>We have Gut Data.</p>
@@ -587,28 +712,21 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   </div>
 </section>
 
-<!-- VP4: READING -->
-<section class="viewport" id="reading" aria-label="Reading">
+<!-- VP4+VP5: READING + DECISION (merged) -->
+<section class="viewport" id="decision" aria-label="Reading and Decision">
   <div class="running-head">
     <span>KD &middot; OFFICE &middot; CASE&#x2014;000</span>
     <span>READING</span>
   </div>
-  <h2 class="reading-headline">A new discipline.</h2>
+  <h2 class="reading-headline">A New Discipline.</h2>
   <div class="reading-body">
-    <p>Kill Dull is building a new practice for building better decisions.</p>
+    <p>Kill Dull is building a new practice for better decisions.</p>
     <p>Not a tool. Not a platform. Not an AI assistant.</p>
     <p>A discipline.</p>
     <p>One that brings Big Data and Gut Data together.<br>One that builds conviction before it defends it.<br>One that challenges ideas before the world does.<br>One that compounds over time.</p>
+    <p class="reading-label">THE DENSE IDEA DISCIPLINE</p>
   </div>
-  <p class="reading-label">THE DENSE IDEA DISCIPLINE</p>
-</section>
-
-<!-- VP5: DECISION -->
-<section class="viewport" id="decision" aria-label="Decision">
-  <div class="running-head">
-    <span>KD &middot; OFFICE &middot; CASE&#x2014;000</span>
-    <span>DECISION</span>
-  </div>
+  <div id="decision-sentinel" style="height:1px;"></div>
   <div class="discipline-list">
 
     <div class="discipline-item">
@@ -666,7 +784,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
     <span>KD &middot; OFFICE &middot; MAN&#x2014;001</span>
     <span>EARLY ACCESS</span>
   </div>
-  <h2 class="hero-headline" id="access-hl">EARLY ACCESS</h2>
+  <h2 class="hero-headline" id="access-hl">EARLY ACCESS.</h2>
   <div class="access-body">
     <p class="access-statement">No subscription.</p>
     <p class="access-statement">No catch.</p>
@@ -676,7 +794,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 </section>
 
 <!-- VP7: THE BUREAU -->
-<section class="viewport" id="belief" aria-label="The Bureau" style="padding-bottom: calc(var(--section-pad-v) + 48px);">
+<section class="viewport" id="bureau" aria-label="The Bureau" style="padding-bottom: calc(var(--section-pad-v) + 48px);">
   <div class="running-head">
     <span>KD &middot; OFFICE &middot; AR&#x2014;2026</span>
     <span>THE BUREAU</span>
@@ -685,16 +803,18 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   <h2 class="chapter-headline">Department of Hard Evidence.</h2>
   <div class="bureau-body">
     <p>The Bureau exists to improve judgment.<br>Every decision compounds.<br>The only question is what.</p>
-    <p>Before making an important decision, ask:</p>
-    <div class="bureau-questions">
-      <p>Does this compound?</p>
-      <p>What evidence supports it?</p>
-      <p>What assumptions am I making?</p>
-      <p>What would change my mind?</p>
-      <p>Has this been to The Bench?</p>
+    <div class="bureau-framework">
+      <p class="bureau-framework-label">Questions from the Department of Hard Evidence.</p>
+      <p class="bureau-framework-intro">Before making an important decision, ask:</p>
+      <div class="bureau-questions">
+        <p>Does this compound?</p>
+        <p>What evidence supports it?</p>
+        <p>What assumptions am I making?</p>
+        <p>What would change my mind?</p>
+        <p>Has this been to The Bench?</p>
+      </div>
     </div>
     <p>Opinions are welcome.<br>Evidence is preferred.<br>Experience is respected.<br>Ego is expensive.</p>
-    <p>Move quickly. Not prematurely.<br>If you&#x2019;re certain, investigate twice.<br>If everyone agrees immediately,<br>someone probably stopped thinking too soon.</p>
     <p>Good judgment is not a talent.<br>It is a practice.</p>
   </div>
   <p class="standalone-word standalone-word--yellow push">DUH.</p>
@@ -743,7 +863,101 @@ function fitAll() {
 
 document.addEventListener('DOMContentLoaded', fitAll);
 window.addEventListener('load', fitAll);
-window.addEventListener('resize', fitAll);
+
+(function() {
+  var chapters = ['observation','evidence','conviction','reading','decision','access','bureau'];
+  var elMap = {
+    observation: 'observation',
+    evidence: 'evidence',
+    conviction: 'conviction',
+    reading: 'decision',
+    decision: 'decision-sentinel',
+    access: 'access',
+    bureau: 'bureau'
+  };
+  var scrollMap = {
+    observation: 'observation',
+    evidence: 'evidence',
+    conviction: 'conviction',
+    reading: 'decision',
+    decision: 'decision-sentinel',
+    access: 'access',
+    bureau: 'bureau'
+  };
+  var labels = ['OBSERVATION','EVIDENCE','CONVICTION','READING','DECISION','EARLY ACCESS','THE BUREAU'];
+
+  function getOffset() {
+    var mh = document.getElementById('masthead');
+    var reg = document.getElementById('registrar');
+    return (mh ? mh.offsetHeight : 0) + (reg ? reg.offsetHeight : 0);
+  }
+
+  function positionRegistrar() {
+    var mh = document.getElementById('masthead');
+    var reg = document.getElementById('registrar');
+    if (mh && reg) reg.style.top = mh.offsetHeight + 'px';
+  }
+
+  function setBodyOffset() {
+    var main = document.querySelector('main');
+    if (main) main.style.paddingTop = getOffset() + 'px';
+  }
+
+  function getActive() {
+    var threshold = getOffset() + 20;
+    var active = chapters[0];
+    chapters.forEach(function(ch) {
+      var el = document.getElementById(elMap[ch]);
+      if (el && el.getBoundingClientRect().top <= threshold) active = ch;
+    });
+    return active;
+  }
+
+  function updateRegistrar() {
+    var active = getActive();
+    var activeIdx = chapters.indexOf(active);
+    document.querySelectorAll('.registrar-desktop .reg-item').forEach(function(item, i) {
+      item.classList.remove('is-active', 'is-past');
+      if (i < activeIdx) item.classList.add('is-past');
+      else if (i === activeIdx) item.classList.add('is-active');
+    });
+    var mobileLabel = document.getElementById('reg-mobile-label');
+    if (mobileLabel) mobileLabel.textContent = labels[activeIdx] || labels[0];
+  }
+
+  var mobileBtn = document.getElementById('reg-mobile-btn');
+  var mobileDropdown = document.getElementById('reg-mobile-dropdown');
+  if (mobileBtn && mobileDropdown) {
+    mobileBtn.addEventListener('click', function() {
+      if (mobileDropdown.hasAttribute('hidden')) mobileDropdown.removeAttribute('hidden');
+      else mobileDropdown.setAttribute('hidden', '');
+    });
+    mobileDropdown.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() { mobileDropdown.setAttribute('hidden', ''); });
+    });
+  }
+
+  document.querySelectorAll('.reg-item[data-chapter]').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      var target = document.getElementById(scrollMap[this.getAttribute('data-chapter')]);
+      if (target) window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - getOffset(), behavior: 'smooth' });
+    });
+  });
+
+  positionRegistrar();
+  setBodyOffset();
+  updateRegistrar();
+  fitAll();
+
+  window.addEventListener('scroll', updateRegistrar);
+  window.addEventListener('resize', function() {
+    positionRegistrar();
+    setBodyOffset();
+    updateRegistrar();
+    fitAll();
+  });
+})();
 </script>
 
 </body>
