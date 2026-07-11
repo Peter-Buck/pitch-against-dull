@@ -90,6 +90,15 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   flex-shrink: 0;
 }
 
+/* TRADEMARK MARK */
+.tm {
+  font-size: 0.38em;
+  vertical-align: super;
+  line-height: 0;
+  letter-spacing: 0.02em;
+  margin-left: 0.05em;
+}
+
 /* MASTHEAD */
 .masthead {
   position: fixed;
@@ -102,29 +111,31 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  padding: 24px 120px 22px;
+  padding: 20px 120px 18px;
 }
 .masthead-lockup {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0;
 }
 .masthead-logo {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
-  font-size: 40px;
+  font-size: 22px;
   letter-spacing: -0.02em;
   color: var(--paper);
   text-decoration: none;
   line-height: 1;
   white-space: nowrap;
+  margin-bottom: 6px;
 }
 .masthead-sub {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 400;
   color: var(--text-secondary);
-  line-height: 1.4;
+  line-height: 1.5;
+  letter-spacing: 0;
 }
 .masthead-nav {
   display: flex;
@@ -141,13 +152,27 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   text-decoration: none;
 }
 .masthead-link:hover { color: var(--yellow); }
-.masthead-enter { color: var(--yellow); }
+.masthead-enter {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--yellow);
+}
+.enter-arrow {
+  display: inline-block;
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.enter-text {
+  display: inline-block;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) 0.05s;
+}
+.masthead-enter:hover .enter-arrow { transform: translateX(4px); }
+.masthead-enter:hover .enter-text { transform: translateX(2px); }
 .masthead-enter:hover { color: var(--paper); }
 
 @media (max-width: 767px) {
-  .masthead-inner { padding: 16px 24px; }
+  .masthead-inner { padding: 14px 24px; }
   .masthead-nav { display: none; }
-  .masthead-logo { font-size: 22px; }
 }
 
 /* REGISTRAR */
@@ -165,13 +190,14 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 }
 .reg-item {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.14em;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   text-decoration: none;
-  padding: 12px 16px 10px;
+  padding: 11px 16px 9px;
   border-right: 1px solid var(--border);
-  color: var(--text-tertiary);
+  color: #6f6d66;
   transition: color 0.15s,
               padding-top 0.8s cubic-bezier(0.16, 1, 0.3, 1),
               padding-bottom 0.8s cubic-bezier(0.16, 1, 0.3, 1),
@@ -180,17 +206,15 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 }
 .reg-item:first-child { border-left: 1px solid var(--border); }
 .reg-item.is-past {
-  color: var(--text-tertiary);
+  color: #4a4844;
   padding-top: 6px;
   padding-bottom: 6px;
-  opacity: 0.4;
+  opacity: 0.5;
 }
 .reg-item.is-active {
   color: var(--paper);
   border-bottom: 2px solid var(--yellow);
   opacity: 1;
-  padding-top: 12px;
-  padding-bottom: 10px;
 }
 .registrar-mobile { display: none; }
 
@@ -589,19 +613,20 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 .footer-logo {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
-  font-size: 40px;
-  letter-spacing: -0.03em;
+  font-size: 22px;
+  letter-spacing: -0.02em;
   line-height: 1;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   display: flex;
   align-items: baseline;
 }
 .footer-lockup-sub {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 400;
-  color: var(--text-secondary);
-  line-height: 1.6;
+  color: var(--text-tertiary);
+  line-height: 1.5;
+  letter-spacing: 0;
 }
 .footer-nav {
   display: flex;
@@ -624,7 +649,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 /* TABLET */
 @media (max-width: 1279px) {
   :root { --section-pad-v: 64px; --section-pad-h: 64px; }
-  .masthead-inner { padding: 22px 64px 20px; }
+  .masthead-inner { padding: 18px 64px 16px; }
   .registrar-desktop { padding: 0 64px; }
   .evidence-grid { grid-template-columns: 1fr 1fr; }
   .footer-inner { padding: 64px; }
@@ -645,14 +670,14 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 <header class="masthead" id="masthead">
   <div class="masthead-inner">
     <div class="masthead-lockup">
-      <a class="masthead-logo" href="/">KILL DULL<span class="terminal"></span></a>
-      <div class="masthead-sub">The Dense Idea Company.</div>
+      <a class="masthead-logo" href="/">KILL DULL<span class="tm">&#x2122;</span><span class="terminal"></span></a>
+      <div class="masthead-sub">The Dense Idea Company<span class="tm">&#x2122;</span></div>
       <div class="masthead-sub">Here to Compound.</div>
     </div>
     <nav class="masthead-nav">
       <a class="masthead-link" href="/truth.html">THE CASE</a>
       <a class="masthead-link" href="/reckoning.html">THE BENCH</a>
-      <a class="masthead-link masthead-enter" href="/truth.html">ENTER &#x2192;</a>
+      <a class="masthead-link masthead-enter" href="/truth.html"><span class="enter-text">ENTER</span><span class="enter-arrow">&#x2192;</span></a>
     </nav>
   </div>
 </header>
@@ -870,8 +895,8 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 <footer class="footer" role="contentinfo">
   <div class="footer-inner">
     <div class="footer-lockup">
-      <div class="footer-logo">KILL DULL<span class="terminal"></span></div>
-      <div class="footer-lockup-sub">The Dense Idea Company.</div>
+      <div class="footer-logo">KILL DULL<span class="tm">&#x2122;</span><span class="terminal"></span></div>
+      <div class="footer-lockup-sub">The Dense Idea Company<span class="tm">&#x2122;</span></div>
       <div class="footer-lockup-sub">Here to Compound.</div>
     </div>
     <nav class="footer-nav" aria-label="Footer navigation">
