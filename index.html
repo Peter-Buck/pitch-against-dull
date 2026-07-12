@@ -749,7 +749,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   display: grid;
   grid-template-columns: 200px 1fr;
   gap: 0;
-  padding: 24px 0;
+  padding: 28px 0;
   border-bottom: 1px solid #2a2925;
   align-items: baseline;
 }
@@ -766,8 +766,9 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 
 .footer-section nav {
   display: flex;
-  flex-wrap: wrap;
-  gap: 4px 32px;
+  flex-direction: column;
+  gap: 12px;
+  flex-wrap: nowrap;
 }
 
 .footer-section nav a {
@@ -776,7 +777,8 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   font-weight: 400;
   color: var(--ink);
   text-decoration: none;
-  line-height: 1.6;
+  line-height: 1;
+  display: block;
 }
 
 .footer-section nav a:hover {
@@ -785,7 +787,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 
 .footer-section nav a:focus-visible {
   outline: 2px solid var(--yellow);
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 
 .footer-colophon {
@@ -1125,7 +1127,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 <footer class="footer" role="contentinfo">
   <div class="footer-inner">
 
-    <div class="footer-bureau">THE BUREAU</div>
+    <div class="footer-bureau">THE BUREAU.</div>
 
     <div class="footer-index">
 
@@ -1134,32 +1136,32 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
         <nav aria-label="Publications">
           <a href="/truth.html">The Case</a>
           <a href="/reckoning.html">The Bench</a>
-          <a href="/library.html">The Library</a>
+          <a href="/library.html" aria-label="The Kill Dull Library">The Library</a>
         </nav>
       </div>
 
       <div class="footer-section">
         <div class="footer-section-label">INSTITUTION</div>
         <nav aria-label="Institution">
-          <a href="/accessibility.html">Accessibility</a>
-          <a href="/language.html">Language</a>
-          <a href="/privacy.html">Privacy</a>
-          <a href="/terms.html">Terms</a>
+          <a href="/accessibility.html" aria-label="Accessibility statement">Accessibility</a>
+          <a href="/language.html" aria-label="Language settings">Language</a>
+          <a href="/privacy.html" aria-label="Privacy policy">Privacy</a>
+          <a href="/terms.html" aria-label="Terms of use">Terms</a>
         </nav>
       </div>
 
       <div class="footer-section">
         <div class="footer-section-label">ENGAGE</div>
         <nav aria-label="Engage">
-          <a href="/truth.html">Early Access</a>
-          <a href="/contact.html">Contact</a>
+          <a href="/truth.html" aria-label="Apply for early access">Early Access</a>
+          <a href="/contact.html" aria-label="Contact Kill Dull">Contact</a>
         </nav>
       </div>
 
     </div>
 
     <div class="footer-colophon">
-      <span>&#169; 2026 Kill Dull. All rights reserved.</span>
+      <span>&#169; 2026 Kill Dull<span class="tm">&#x2122;</span></span>
       <span>KD &middot; OFFICE &middot; MAN&#x2014;001</span>
     </div>
 
