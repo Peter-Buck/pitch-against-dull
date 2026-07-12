@@ -92,11 +92,12 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 
 /* TRADEMARK MARK */
 .tm {
-  font-size: 0.38em;
+  font-size: 0.45em;
   vertical-align: super;
   line-height: 0;
   letter-spacing: 0.02em;
   margin-left: 0.05em;
+  color: var(--yellow);
 }
 
 /* MASTHEAD */
@@ -121,7 +122,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 .masthead-logo {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
-  font-size: 22px;
+  font-size: 26px;
   letter-spacing: -0.02em;
   color: var(--paper);
   text-decoration: none;
@@ -340,6 +341,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 .standalone-word.push { margin-top: auto; padding-top: 80px; }
 #conviction .push { margin-top: 80px; }
 #conviction.viewport { min-height: auto; }
+#access.viewport { min-height: auto; padding-bottom: 90px; }
 
 /* STANDALONE WORD */
 .standalone-word {
@@ -758,7 +760,8 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
     <span>KD &middot; OFFICE &middot; CASE&#x2014;000</span>
     <span>EVIDENCE</span>
   </div>
-  <p class="evidence-intro" id="evidence-hl">INTRODUCING THE IDEA BALANCE SHEET.</p>
+  <span class="hero-line-wrap"><p class="hero-line" id="evidence-hl-1">INTRODUCING</p></span>
+  <span class="hero-line-wrap"><p class="hero-line" id="evidence-hl-2">THE IDEA BALANCE SHEET.</p></span>
   <div class="evidence-grid">
     <div class="evidence-col">
       <div class="evidence-concept">Big Data.</div>
@@ -951,7 +954,8 @@ function fitAll() {
               window.innerWidth < 1280 ? 128 : 240;
   fitToWidth(document.getElementById('hero-line-1'), pad);
   fitToWidth(document.getElementById('hero-line-2'), pad);
-  fitToWidth(document.getElementById('evidence-hl'), pad);
+  fitToWidth(document.getElementById('evidence-hl-1'), pad);
+  fitToWidth(document.getElementById('evidence-hl-2'), pad);
   fitToWidth(document.getElementById('conviction-hl'), pad);
   fitToWidth(document.getElementById('discipline-hl'), pad);
   fitToWidth(document.getElementById('bureau-hl'), pad);
