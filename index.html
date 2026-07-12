@@ -715,44 +715,117 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 }
 
 /* FOOTER */
-.footer { background: var(--paper); color: var(--ink); border-top: 1px solid var(--border); }
-.footer-inner { padding: var(--section-pad-v) var(--section-pad-h); }
-.footer-lockup { margin-bottom: 48px; }
-.footer-logo {
+.footer {
+  background: var(--paper);
+  color: var(--ink);
+  border-top: 1px solid #2a2925;
+}
+
+.footer-inner {
+  padding: 80px 120px;
+}
+
+.footer-bureau {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
-  font-size: 30px;
-  letter-spacing: -0.02em;
-  line-height: 1;
-  margin-bottom: 6px;
+  font-size: clamp(40px, 6vw, 80px);
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  color: var(--ink);
+  margin-bottom: 64px;
+  border-top: 2px solid var(--ink);
+  padding-top: 32px;
+}
+
+.footer-index {
   display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid #2a2925;
+  margin-bottom: 80px;
+}
+
+.footer-section {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 0;
+  padding: 24px 0;
+  border-bottom: 1px solid #2a2925;
   align-items: baseline;
 }
-.footer-lockup-sub {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--text-tertiary);
-  line-height: 1.5;
-  letter-spacing: 0;
+
+.footer-section-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: #6f6d66;
+  text-transform: uppercase;
+  padding-right: 40px;
 }
-.footer-nav {
+
+.footer-section nav {
   display: flex;
   flex-wrap: wrap;
   gap: 4px 32px;
-  margin-bottom: 32px;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.10em;
 }
-.footer-nav a { color: var(--ink); text-decoration: none; }
-.footer-nav a:hover { color: var(--yellow); }
-.footer-copy {
+
+.footer-section nav a {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--ink);
+  text-decoration: none;
+  line-height: 1.6;
+}
+
+.footer-section nav a:hover {
+  color: #555;
+}
+
+.footer-section nav a:focus-visible {
+  outline: 2px solid var(--yellow);
+  outline-offset: 2px;
+}
+
+.footer-colophon {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 10px;
   letter-spacing: 0.08em;
-  color: var(--text-secondary);
+  color: #6f6d66;
 }
+
+/* INSTITUTIONAL PAGES */
+.inst-section {
+  padding: 90px 120px 180px;
+  max-width: 1400px;
+}
+
+.inst-headline {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(40px, 6vw, 80px);
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  color: var(--paper);
+  margin-bottom: 48px;
+  margin-top: 24px;
+}
+
+.inst-body {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--text-body);
+  line-height: 1.8;
+  max-width: 640px;
+}
+
+.inst-body p { margin-bottom: 24px; }
+.inst-body p:last-child { margin-bottom: 0; }
 
 /* TABLET */
 @media (max-width: 1279px) {
@@ -763,6 +836,9 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   .masthead-wordmark { font-size: 45px; }
   .unified-nav { padding: 0 64px; }
   .evidence-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 1279px) {
   .footer-inner { padding: 64px; }
 }
 
@@ -784,7 +860,13 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   .evidence-grid { grid-template-columns: 1fr; }
   .discipline-item { grid-template-columns: 1fr; gap: 16px; }
   .discipline-meta { flex-direction: row; padding-right: 0; }
+}
+
+@media (max-width: 767px) {
   .footer-inner { padding: 48px 24px; }
+  .footer-section { grid-template-columns: 1fr; gap: 12px; }
+  .footer-section-label { padding-right: 0; }
+  .footer-colophon { flex-direction: column; gap: 8px; }
 }
 </style>
 </head>
@@ -1042,19 +1124,45 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 <!-- FOOTER -->
 <footer class="footer" role="contentinfo">
   <div class="footer-inner">
-    <div class="footer-lockup">
-      <div class="footer-logo">KILL DULL<span class="tm">&#x2122;</span><span class="terminal"></span></div>
-      <div class="footer-lockup-sub">The Dense Idea Company<span class="tm">&#x2122;</span></div>
-      <div class="footer-lockup-sub">Here to Compound.</div>
+
+    <div class="footer-bureau">THE BUREAU</div>
+
+    <div class="footer-index">
+
+      <div class="footer-section">
+        <div class="footer-section-label">PUBLICATIONS</div>
+        <nav aria-label="Publications">
+          <a href="/truth.html">The Case</a>
+          <a href="/reckoning.html">The Bench</a>
+          <a href="/library.html">The Library</a>
+        </nav>
+      </div>
+
+      <div class="footer-section">
+        <div class="footer-section-label">INSTITUTION</div>
+        <nav aria-label="Institution">
+          <a href="/accessibility.html">Accessibility</a>
+          <a href="/language.html">Language</a>
+          <a href="/privacy.html">Privacy</a>
+          <a href="/terms.html">Terms</a>
+        </nav>
+      </div>
+
+      <div class="footer-section">
+        <div class="footer-section-label">ENGAGE</div>
+        <nav aria-label="Engage">
+          <a href="/truth.html">Early Access</a>
+          <a href="/contact.html">Contact</a>
+        </nav>
+      </div>
+
     </div>
-    <nav class="footer-nav" aria-label="Footer navigation">
-      <a href="#">THE LIBRARY</a>
-      <a href="#">About</a>
-      <a href="#">Contact</a>
-      <a href="#">Privacy</a>
-      <a href="#">Terms</a>
-    </nav>
-    <p class="footer-copy">&#169; 2026 Kill Dull. All rights reserved.</p>
+
+    <div class="footer-colophon">
+      <span>&#169; 2026 Kill Dull. All rights reserved.</span>
+      <span>KD &middot; OFFICE &middot; MAN&#x2014;001</span>
+    </div>
+
   </div>
 </footer>
 
