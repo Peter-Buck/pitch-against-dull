@@ -167,75 +167,57 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   border-top: 1px solid var(--border);
 }
 
-/* PRODUCT NAV */
-.product-nav {
-  position: fixed;
-  left: 0; right: 0;
-  z-index: 190;
-  background: var(--ink);
-  border-bottom: 1px solid var(--border);
-}
-
-.product-nav-inner {
+/* BUREAU BULLETIN */
+.masthead-bulletin {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 48px;
-  padding: 10px 120px;
+  align-items: baseline;
+  gap: 12px;
+  padding: 8px 120px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 
-.product-nav-link {
+.bulletin-label {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--paper);
-  text-decoration: none;
+  color: var(--text-secondary);
+  white-space: nowrap;
 }
-.product-nav-link:hover { color: var(--yellow); }
 
-.product-nav-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+.bulletin-divider {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--yellow);
-  text-decoration: none;
-  margin-left: 0;
-  padding-left: 48px;
-  border-left: 1px solid var(--border);
+  font-size: 10px;
+  color: var(--border);
 }
 
-.product-nav-cta .enter-arrow {
-  display: inline-block;
-  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+.bulletin-text {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-body);
+  letter-spacing: 0;
 }
-.product-nav-cta .enter-text {
-  display: inline-block;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) 0.05s;
-}
-.product-nav-cta:hover .enter-arrow { transform: translateX(4px); }
-.product-nav-cta:hover .enter-text { transform: translateX(2px); }
-.product-nav-cta:hover { color: var(--paper); }
 
-/* REGISTRAR */
-.registrar {
+/* UNIFIED NAV */
+.unified-nav {
   position: fixed;
   left: 0; right: 0;
   z-index: 190;
   background: var(--ink);
   border-bottom: 1px solid var(--border);
-}
-.registrar-desktop {
   display: flex;
   align-items: stretch;
-  padding: 0 120px;
+  justify-content: space-between;
 }
+
+.unified-nav-chapters {
+  display: flex;
+  align-items: stretch;
+}
+
 .reg-item {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 11px;
@@ -245,30 +227,70 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   text-decoration: none;
   padding: 11px 16px 9px;
   border-right: 1px solid var(--border);
-  color: #6f6d66;
+  color: #8a8880;
+  white-space: nowrap;
   transition: color 0.15s,
               padding-top 0.8s cubic-bezier(0.16, 1, 0.3, 1),
               padding-bottom 0.8s cubic-bezier(0.16, 1, 0.3, 1),
               opacity 0.6s ease;
-  white-space: nowrap;
 }
 .reg-item:first-child { border-left: 1px solid var(--border); }
-.reg-item.is-past {
-  color: #4a4844;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  opacity: 0.5;
+.reg-item.is-past { color: #6f6d66; padding-top: 6px; padding-bottom: 6px; opacity: 0.6; }
+.reg-item.is-active { color: var(--paper); border-bottom: 2px solid var(--yellow); opacity: 1; }
+
+.unified-nav-products {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border-left: 1px solid var(--border);
 }
-.reg-item.is-active {
+
+.product-link {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--paper);
-  border-bottom: 2px solid var(--yellow);
-  opacity: 1;
+  text-decoration: none;
+  padding: 11px 20px 9px;
+  border-right: 1px solid var(--border);
+  white-space: nowrap;
 }
+.product-link:hover { color: var(--yellow); }
+
+.product-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  text-decoration: none;
+  padding: 11px 24px 9px;
+  white-space: nowrap;
+}
+.product-cta .enter-arrow {
+  display: inline-block;
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.product-cta .enter-text {
+  display: inline-block;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) 0.05s;
+}
+.product-cta:hover .enter-arrow { transform: translateX(4px); }
+.product-cta:hover .enter-text { transform: translateX(2px); }
+.product-cta:hover { color: var(--paper); }
+
 .registrar-mobile { display: none; }
 
 @media (max-width: 767px) {
-  .registrar-desktop { display: none; }
-  .registrar-mobile { display: block; }
+  .unified-nav-chapters { display: none; }
+  .unified-nav-products { display: none; }
+  .registrar-mobile { display: flex; flex: 1; }
   .reg-mobile-current {
     display: flex;
     align-items: center;
@@ -734,9 +756,8 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   :root { --section-pad-v: 64px; --section-pad-h: 64px; }
   .masthead-top { padding: 16px 64px 0; }
   .masthead-tagline { padding: 6px 64px 14px; }
-  .product-nav-inner { padding: 10px 64px; }
+  .masthead-bulletin { padding: 8px 64px; }
   .masthead-wordmark { font-size: 45px; }
-  .registrar-desktop { padding: 0 64px; }
   .evidence-grid { grid-template-columns: 1fr 1fr; }
   .footer-inner { padding: 64px; }
 }
@@ -754,8 +775,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   .masthead-designation { text-align: center; font-size: 11px; }
   .masthead-wordmark { font-size: 36px; }
   .masthead-tagline { padding: 6px 24px 12px; }
-  .product-nav-inner { padding: 10px 24px; gap: 24px; }
-  .product-nav-cta { display: none; }
+  .masthead-bulletin { padding: 8px 24px; }
   .evidence-grid { grid-template-columns: 1fr; }
   .discipline-item { grid-template-columns: 1fr; gap: 16px; }
   .discipline-meta { flex-direction: row; padding-right: 0; }
@@ -783,24 +803,21 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
     Here to Compound.
   </div>
 
+  <!-- BUREAU BULLETIN -->
+  <div class="masthead-bulletin">
+    <span class="bulletin-label">FROM THE BUREAU</span>
+    <span class="bulletin-divider">&mdash;</span>
+    <span class="bulletin-text">Case 017 released.</span>
+  </div>
+
   <!-- BORDER -->
   <div class="masthead-rule"></div>
 
 </header>
 
-<div class="product-nav" id="product-nav">
-  <div class="product-nav-inner">
-    <a class="product-nav-link" href="/truth.html">THE CASE</a>
-    <a class="product-nav-link" href="/reckoning.html">THE BENCH</a>
-    <a class="product-nav-cta" href="/truth.html">
-      <span class="enter-text">DEMO YOUR CASE</span>
-      <span class="enter-arrow">&#x2192;</span>
-    </a>
-  </div>
-</div>
-
-<div class="registrar" id="registrar">
-  <div class="registrar-desktop">
+<div class="unified-nav" id="registrar">
+  <!-- Chapter navigation — left -->
+  <div class="unified-nav-chapters" id="registrar-desktop">
     <a class="reg-item" data-chapter="observation" href="#observation">OBSERVATION</a>
     <a class="reg-item" data-chapter="evidence" href="#evidence">EVIDENCE</a>
     <a class="reg-item" data-chapter="conviction" href="#conviction">CONVICTION</a>
@@ -808,6 +825,18 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
     <a class="reg-item" data-chapter="access" href="#access">EARLY ACCESS</a>
     <a class="reg-item" data-chapter="bureau" href="#bureau">THE BUREAU</a>
   </div>
+
+  <!-- Product navigation — right -->
+  <div class="unified-nav-products">
+    <a class="product-link" href="/truth.html">THE CASE</a>
+    <a class="product-link" href="/reckoning.html">THE BENCH</a>
+    <a class="product-cta" href="/truth.html">
+      <span class="enter-text">DEMO YOUR CASE</span>
+      <span class="enter-arrow">&#x2192;</span>
+    </a>
+  </div>
+
+  <!-- Mobile: active chapter dropdown (unchanged) -->
   <div class="registrar-mobile">
     <button class="reg-mobile-current" id="reg-mobile-btn">
       <span id="reg-mobile-label">OBSERVATION</span>
@@ -1084,19 +1113,16 @@ window.addEventListener('load', fitAll);
 
   function getOffset() {
     var mh = document.getElementById('masthead');
-    var pn = document.getElementById('product-nav');
     var reg = document.getElementById('registrar');
-    return (mh ? mh.offsetHeight : 0) +
-           (pn ? pn.offsetHeight : 0) +
-           (reg ? reg.offsetHeight : 0);
+    return (mh ? mh.offsetHeight : 0) + (reg ? reg.offsetHeight : 0);
   }
 
   function positionRegistrar() {
     var mh = document.getElementById('masthead');
-    var pn = document.getElementById('product-nav');
+    var bl = document.querySelector('.masthead-bulletin');
     var reg = document.getElementById('registrar');
-    if (mh && pn) pn.style.top = mh.offsetHeight + 'px';
-    if (mh && pn && reg) reg.style.top = (mh.offsetHeight + pn.offsetHeight) + 'px';
+    var mhH = mh ? mh.offsetHeight : 0;
+    if (reg) reg.style.top = mhH + 'px';
   }
 
   function setBodyOffset() {
@@ -1117,7 +1143,7 @@ window.addEventListener('load', fitAll);
   function updateRegistrar() {
     var active = getActive();
     var activeIdx = chapters.indexOf(active);
-    document.querySelectorAll('.registrar-desktop .reg-item').forEach(function(item, i) {
+    document.querySelectorAll('#registrar-desktop .reg-item').forEach(function(item, i) {
       item.classList.remove('is-active', 'is-past');
       if (i < activeIdx) item.classList.add('is-past');
       else if (i === activeIdx) item.classList.add('is-active');
