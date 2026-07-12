@@ -108,73 +108,117 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   background: var(--ink);
   border-bottom: 1px solid var(--border);
 }
-.masthead-inner {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 20px 120px 18px;
+
+/* TOP ROW */
+.masthead-top {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: baseline;
+  padding: 20px 120px 0;
+  gap: 24px;
 }
-.masthead-lockup {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-.masthead-logo {
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 700;
-  font-size: 30px;
-  letter-spacing: -0.02em;
-  color: var(--paper);
-  text-decoration: none;
-  line-height: 1;
-  white-space: nowrap;
-  margin-bottom: 6px;
-}
-.masthead-sub {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--text-tertiary);
-  line-height: 1.5;
-  letter-spacing: 0;
-}
-.masthead-nav {
-  display: flex;
-  align-items: center;
-  gap: 40px;
-  padding-top: 4px;
-}
-.masthead-link {
+
+.masthead-date {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 11px;
-  letter-spacing: 0.12em;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.masthead-wordmark {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 48px;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--paper);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.masthead-designation {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--paper);
+  text-align: right;
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* SECOND ROW */
+.masthead-tagline {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 6px 120px 16px;
+  letter-spacing: 0;
+}
+
+/* BORDER */
+.masthead-rule {
+  border-top: 1px solid var(--border);
+}
+
+/* PRODUCT NAV */
+.product-nav {
+  position: fixed;
+  left: 0; right: 0;
+  z-index: 190;
+  background: var(--ink);
+  border-bottom: 1px solid var(--border);
+}
+
+.product-nav-inner {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  padding: 10px 120px;
+}
+
+.product-nav-link {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--paper);
   text-decoration: none;
 }
-.masthead-link:hover { color: var(--yellow); }
-.masthead-enter {
+.product-nav-link:hover { color: var(--yellow); }
+
+.product-nav-cta {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--yellow);
+  text-decoration: none;
+  margin-left: auto;
 }
-.enter-arrow {
+
+.product-nav-cta .enter-arrow {
   display: inline-block;
   transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.enter-text {
+.product-nav-cta .enter-text {
   display: inline-block;
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) 0.05s;
 }
-.masthead-enter:hover .enter-arrow { transform: translateX(4px); }
-.masthead-enter:hover .enter-text { transform: translateX(2px); }
-.masthead-enter:hover { color: var(--paper); }
-
-@media (max-width: 767px) {
-  .masthead-inner { padding: 16px 24px; }
-  .masthead-nav { display: none; }
-}
+.product-nav-cta:hover .enter-arrow { transform: translateX(4px); }
+.product-nav-cta:hover .enter-text { transform: translateX(2px); }
+.product-nav-cta:hover { color: var(--paper); }
 
 /* REGISTRAR */
 .registrar {
@@ -685,7 +729,10 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 /* TABLET */
 @media (max-width: 1279px) {
   :root { --section-pad-v: 64px; --section-pad-h: 64px; }
-  .masthead-inner { padding: 18px 64px 16px; }
+  .masthead-top { padding: 16px 64px 0; }
+  .masthead-tagline { padding: 6px 64px 14px; }
+  .product-nav-inner { padding: 10px 64px; }
+  .masthead-wordmark { font-size: 40px; }
   .registrar-desktop { padding: 0 64px; }
   .evidence-grid { grid-template-columns: 1fr 1fr; }
   .footer-inner { padding: 64px; }
@@ -694,6 +741,18 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 /* MOBILE */
 @media (max-width: 767px) {
   :root { --section-pad-v: 48px; --section-pad-h: 24px; }
+  .masthead-top {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 16px 24px 0;
+    gap: 8px;
+  }
+  .masthead-date { text-align: center; }
+  .masthead-designation { text-align: center; font-size: 11px; }
+  .masthead-wordmark { font-size: 32px; }
+  .masthead-tagline { padding: 6px 24px 12px; }
+  .product-nav-inner { padding: 10px 24px; gap: 24px; }
+  .product-nav-cta { display: none; }
   .evidence-grid { grid-template-columns: 1fr; }
   .discipline-item { grid-template-columns: 1fr; gap: 16px; }
   .discipline-meta { flex-direction: row; padding-right: 0; }
@@ -704,27 +763,45 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 <body>
 
 <header class="masthead" id="masthead">
-  <div class="masthead-inner">
-    <div class="masthead-lockup">
-      <a class="masthead-logo" href="/">KILL DULL<span class="tm">&#x2122;</span><span class="terminal"></span></a>
-      <div class="masthead-sub">The Dense Idea Company<span class="tm">&#x2122;</span></div>
-      <div class="masthead-sub">Here to Compound.</div>
+
+  <!-- TOP ROW -->
+  <div class="masthead-top">
+    <div class="masthead-date" id="masthead-date"></div>
+    <div class="masthead-wordmark">
+      KILL DULL<span class="tm">&#x2122;</span><span class="terminal"></span>
     </div>
-    <nav class="masthead-nav">
-      <a class="masthead-link" href="/truth.html">THE CASE</a>
-      <a class="masthead-link" href="/reckoning.html">THE BENCH</a>
-      <a class="masthead-link masthead-enter" href="/truth.html"><span class="enter-text">ENTER</span><span class="enter-arrow">&#x2192;</span></a>
-    </nav>
+    <div class="masthead-designation">
+      THE DENSE IDEA COMPANY<span class="tm">&#x2122;</span>
+    </div>
   </div>
+
+  <!-- SECOND ROW -->
+  <div class="masthead-tagline">
+    Here to Compound.
+  </div>
+
+  <!-- BORDER -->
+  <div class="masthead-rule"></div>
+
 </header>
+
+<div class="product-nav" id="product-nav">
+  <div class="product-nav-inner">
+    <a class="product-nav-link" href="/truth.html">THE CASE</a>
+    <a class="product-nav-link" href="/reckoning.html">THE BENCH</a>
+    <a class="product-nav-cta" href="/truth.html">
+      <span class="enter-text">DEMO YOUR CASE</span>
+      <span class="enter-arrow">&#x2192;</span>
+    </a>
+  </div>
+</div>
 
 <div class="registrar" id="registrar">
   <div class="registrar-desktop">
     <a class="reg-item" data-chapter="observation" href="#observation">OBSERVATION</a>
     <a class="reg-item" data-chapter="evidence" href="#evidence">EVIDENCE</a>
     <a class="reg-item" data-chapter="conviction" href="#conviction">CONVICTION</a>
-    <a class="reg-item" data-chapter="reading" href="#decision">READING</a>
-    <a class="reg-item" data-chapter="decision" href="#decision-sentinel">DECISION</a>
+    <a class="reg-item" data-chapter="judgment" href="#judgment">JUDGMENT</a>
     <a class="reg-item" data-chapter="access" href="#access">EARLY ACCESS</a>
     <a class="reg-item" data-chapter="bureau" href="#bureau">THE BUREAU</a>
   </div>
@@ -737,8 +814,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
       <a class="reg-item" data-chapter="observation" href="#observation">OBSERVATION</a>
       <a class="reg-item" data-chapter="evidence" href="#evidence">EVIDENCE</a>
       <a class="reg-item" data-chapter="conviction" href="#conviction">CONVICTION</a>
-      <a class="reg-item" data-chapter="reading" href="#decision">READING</a>
-      <a class="reg-item" data-chapter="decision" href="#decision-sentinel">DECISION</a>
+      <a class="reg-item" data-chapter="judgment" href="#judgment">JUDGMENT</a>
       <a class="reg-item" data-chapter="access" href="#access">EARLY ACCESS</a>
       <a class="reg-item" data-chapter="bureau" href="#bureau">THE BUREAU</a>
     </div>
@@ -818,7 +894,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 </section>
 
 <!-- VP4+VP5: READING + DECISION (merged) -->
-<section class="viewport" id="decision" aria-label="Reading and Decision">
+<section class="viewport" id="judgment" aria-label="Judgment">
   <div class="running-head">
     <span>KD &middot; OFFICE &middot; CASE&#x2014;000</span>
     <span>READING</span>
@@ -830,7 +906,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
     <p>A discipline.</p>
     <p>One that brings Big Data and Gut Data together.<br>One that builds conviction before it defends it.<br>One that challenges ideas before the world does.<br>One that compounds over time.</p>
   </div>
-  <div id="decision-sentinel" style="height:1px;"></div>
+  <div id="judgment-sentinel" style="height:1px;"></div>
   <div class="discipline-list">
 
     <div class="discipline-item">
@@ -936,8 +1012,6 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
       <div class="footer-lockup-sub">Here to Compound.</div>
     </div>
     <nav class="footer-nav" aria-label="Footer navigation">
-      <a href="/truth.html">THE CASE</a>
-      <a href="/reckoning.html">THE BENCH</a>
       <a href="#">THE LIBRARY</a>
       <a href="#">About</a>
       <a href="#">Contact</a>
@@ -957,6 +1031,18 @@ function fitToWidth(el, horizontalPad) {
   el.style.fontSize = Math.max(10, Math.floor(ratio * 500)) + 'px';
 }
 
+// Dynamic masthead date
+(function() {
+  var months = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE',
+                'JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+  var now = new Date();
+  var day = now.getDate();
+  var month = months[now.getMonth()];
+  var year = now.getFullYear();
+  var el = document.getElementById('masthead-date');
+  if (el) el.textContent = day + ' ' + month + ' ' + year;
+})();
+
 function fitAll() {
   const pad = window.innerWidth < 768 ? 48 :
               window.innerWidth < 1280 ? 128 : 240;
@@ -974,13 +1060,12 @@ document.addEventListener('DOMContentLoaded', fitAll);
 window.addEventListener('load', fitAll);
 
 (function() {
-  var chapters = ['observation','evidence','conviction','reading','decision','access','bureau'];
+  var chapters = ['observation','evidence','conviction','judgment','access','bureau'];
   var elMap = {
     observation: 'observation',
     evidence: 'evidence',
     conviction: 'conviction',
-    reading: 'decision',
-    decision: 'decision-sentinel',
+    judgment: 'judgment',
     access: 'access',
     bureau: 'bureau'
   };
@@ -988,23 +1073,27 @@ window.addEventListener('load', fitAll);
     observation: 'observation',
     evidence: 'evidence',
     conviction: 'conviction',
-    reading: 'decision',
-    decision: 'decision-sentinel',
+    judgment: 'judgment-sentinel',
     access: 'access',
     bureau: 'bureau'
   };
-  var labels = ['OBSERVATION','EVIDENCE','CONVICTION','READING','DECISION','EARLY ACCESS','THE BUREAU'];
+  var labels = ['OBSERVATION','EVIDENCE','CONVICTION','JUDGMENT','EARLY ACCESS','THE BUREAU'];
 
   function getOffset() {
     var mh = document.getElementById('masthead');
+    var pn = document.getElementById('product-nav');
     var reg = document.getElementById('registrar');
-    return (mh ? mh.offsetHeight : 0) + (reg ? reg.offsetHeight : 0);
+    return (mh ? mh.offsetHeight : 0) +
+           (pn ? pn.offsetHeight : 0) +
+           (reg ? reg.offsetHeight : 0);
   }
 
   function positionRegistrar() {
     var mh = document.getElementById('masthead');
+    var pn = document.getElementById('product-nav');
     var reg = document.getElementById('registrar');
-    if (mh && reg) reg.style.top = mh.offsetHeight + 'px';
+    if (mh && pn) pn.style.top = mh.offsetHeight + 'px';
+    if (mh && pn && reg) reg.style.top = (mh.offsetHeight + pn.offsetHeight) + 'px';
   }
 
   function setBodyOffset() {
