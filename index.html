@@ -170,9 +170,9 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 /* BUREAU BULLETIN */
 .masthead-bulletin {
   display: flex;
-  align-items: baseline;
-  gap: 12px;
-  padding: 8px 120px;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 120px;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }
@@ -184,13 +184,6 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--text-secondary);
-  white-space: nowrap;
-}
-
-.bulletin-divider {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
-  color: var(--border);
 }
 
 .bulletin-text {
@@ -211,11 +204,13 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   display: flex;
   align-items: stretch;
   justify-content: space-between;
+  padding: 0 120px;
 }
 
 .unified-nav-chapters {
   display: flex;
   align-items: stretch;
+  margin-left: 0;
 }
 
 .reg-item {
@@ -234,7 +229,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
               padding-bottom 0.8s cubic-bezier(0.16, 1, 0.3, 1),
               opacity 0.6s ease;
 }
-.reg-item:first-child { border-left: 1px solid var(--border); }
+.reg-item:first-child { border-left: none; }
 .reg-item.is-past { color: #6f6d66; padding-top: 6px; padding-bottom: 6px; opacity: 0.6; }
 .reg-item.is-active { color: var(--paper); border-bottom: 2px solid var(--yellow); opacity: 1; }
 
@@ -243,6 +238,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   align-items: center;
   gap: 0;
   border-left: 1px solid var(--border);
+  margin-right: 0;
 }
 
 .product-link {
@@ -756,8 +752,9 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   :root { --section-pad-v: 64px; --section-pad-h: 64px; }
   .masthead-top { padding: 16px 64px 0; }
   .masthead-tagline { padding: 6px 64px 14px; }
-  .masthead-bulletin { padding: 8px 64px; }
+  .masthead-bulletin { padding: 10px 64px; }
   .masthead-wordmark { font-size: 45px; }
+  .unified-nav { padding: 0 64px; }
   .evidence-grid { grid-template-columns: 1fr 1fr; }
   .footer-inner { padding: 64px; }
 }
@@ -775,7 +772,8 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   .masthead-designation { text-align: center; font-size: 11px; }
   .masthead-wordmark { font-size: 36px; }
   .masthead-tagline { padding: 6px 24px 12px; }
-  .masthead-bulletin { padding: 8px 24px; }
+  .masthead-bulletin { padding: 10px 24px; }
+  .unified-nav { padding: 0; }
   .evidence-grid { grid-template-columns: 1fr; }
   .discipline-item { grid-template-columns: 1fr; gap: 16px; }
   .discipline-meta { flex-direction: row; padding-right: 0; }
@@ -806,8 +804,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
   <!-- BUREAU BULLETIN -->
   <div class="masthead-bulletin">
     <span class="bulletin-label">FROM THE BUREAU</span>
-    <span class="bulletin-divider">&mdash;</span>
-    <span class="bulletin-text">Case 017 released.</span>
+    <span class="bulletin-text">Case 017 released</span>
   </div>
 
   <!-- BORDER -->
@@ -861,7 +858,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
     <span>KD &middot; OFFICE &middot; CASE&#x2014;000</span>
     <span>OBSERVATION</span>
   </div>
-  <span class="hero-line-wrap"><h1 class="hero-line" id="hero-line-1">DECISION-MAKING.</h1></span>
+  <span class="hero-line-wrap"><h1 class="hero-line" id="hero-line-1">DECISION-MAKING</h1></span>
   <span class="hero-line-wrap" style="margin-bottom: 52px;"><h1 class="hero-line" id="hero-line-2">IS BROKEN.</h1></span>
   <div class="hero-body">
     <p>We have ideas.<br>We have opinions.<br>We have evidence.<br>We have experience.<br>We have Big Data.<br>We have Gut Data.</p>
@@ -929,7 +926,7 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 <section class="viewport" id="judgment" aria-label="Judgment">
   <div class="running-head">
     <span>KD &middot; OFFICE &middot; CASE&#x2014;000</span>
-    <span>READING</span>
+    <span>JUDGMENT</span>
   </div>
   <h2 class="hero-line" id="discipline-hl">THE DENSE IDEA DISCIPLINE.</h2>
   <div class="reading-body">
