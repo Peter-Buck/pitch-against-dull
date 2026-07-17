@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+/* ─── Design tokens ─────────────────────────────────────────────── */
+@theme {
+  /* Colors — from audit getComputedStyle values */
+  --color-cream: #F4F2EA;       /* rgb(244,242,234) — page bg + heading text on dark */
+  --color-ink: #000000;          /* rgb(0,0,0) — body text, nav */
+  --color-yellow: #FFFF00;       /* rgb(255,255,0) — footer bg, AI widget button */
+  --color-muted: #888888;        /* rgb(136,136,136) — values counter labels */
+  --color-rule: #BBBBBB;         /* rgb(187,187,187) — hr separators */
+  --color-value-text: #F0F0F0;   /* rgb(240,240,240) — cycling values ticker text */
+
+  /* Fluid type scale — clamp(min, preferred, max) from audit measurements */
+  /* h2: 47.1px@1440 → ~32px@390  */
+  --text-h2: clamp(2rem, 1.649rem + 1.438vw, 2.944rem);
+  /* h3: 36.7px@1440 → ~24px@390  */
+  --text-h3: clamp(1.5rem, 1.205rem + 1.21vw, 2.294rem);
+  /* h4: 26.4px@1440 → ~16px@390  */
+  --text-h4: clamp(1rem, 0.759rem + 0.990vw, 1.65rem);
+  /* Display: 211.2px@1440 → ~57px@390 (sqsrte-large Poppins paragraphs in hero) */
+  --text-display: clamp(3.5625rem, 14.686vw, 13.2rem);
+
+  /* Cursor blink animation */
+  --animate-blink: blink 1s step-end infinite;
+}
+
+/* Font families — populated at runtime by next/font/google CSS vars */
+@theme inline {
+  --font-heading: var(--font-manrope);
+  --font-body: var(--font-poppins);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ─── Base styles ────────────────────────────────────────────────── */
+body {
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-poppins), Poppins, sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+h2,
+h3,
+h4 {
+  font-family: var(--font-manrope), Manrope, sans-serif;
+  font-weight: 500;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #bbbbbb;
+  margin: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  background: var(--color-yellow);
+  color: var(--color-ink);
+  padding: 0.5rem 1rem;
+  z-index: 200;
+  text-decoration: none;
+}
+.skip-link:focus {
+  left: 0;
+  top: 0;
+}
+
+/* prefers-reduced-motion: skip all scroll-reveal animation immediately */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
