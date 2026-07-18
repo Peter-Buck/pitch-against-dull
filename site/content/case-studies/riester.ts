@@ -21,16 +21,14 @@ const riester: CaseStudy = {
 
   title: "Riester Advertising",
 
-  strategicInsight: `When AI arrived in the industry, most agencies panicked and led with capability. We went the opposite direction. Creativity first. AI as the engine, not the headline. Repositioning Riester under the "Everything Creative" framework wasn't a rebrand, it was a statement of belief. That creativity applied at every step of the process — from planning and consulting to production, amplification, and measurement — is the only true differentiator an agency can own. In a region racing to automate, we made the argument that creativity can't be automated. Then we proved it by winning with it.`,
-
-  theResult: `Graphis Design Award: Platinum for video content. Gold for the entire rebrand. Sharper pitches. Clearer differentiation in a crowded regional market.`,
-
-  theHumanTruth: `Creativity first. AI-powered. An agency repositioned to cut through automation.`,
-
-  clientQuote: {
-    text: "Animation: Peter Sunna",
-    attribution: "",
-  },
+  sections: [
+    {
+      strategicInsight: `When AI arrived in the industry, most agencies panicked and led with capability. We went the opposite direction. Creativity first. AI as the engine, not the headline. Repositioning Riester under the "Everything Creative" framework wasn't a rebrand, it was a statement of belief. That creativity applied at every step of the process — from planning and consulting to production, amplification, and measurement — is the only true differentiator an agency can own. In a region racing to automate, we made the argument that creativity can't be automated. Then we proved it by winning with it.`,
+      theResult: `Graphis Design Award: Platinum for video content. Gold for the entire rebrand. Sharper pitches. Clearer differentiation in a crowded regional market.`,
+      theHumanTruth: `Creativity first. AI-powered. An agency repositioned to cut through automation.`,
+      credits: "Animation: Peter Sunna",
+    },
+  ],
 
   story: [
     {

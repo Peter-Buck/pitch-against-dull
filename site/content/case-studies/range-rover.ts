@@ -24,16 +24,21 @@ const rangeRover: CaseStudy = {
 
   title: "RANGE ROVER EVOQUE",
 
-  strategicInsight: `What does a beautifully designed object actually do to the people around it? Not to the driver. To everyone else. The Power of Distraction was built on a simple sociological truth: genuine beauty interrupts. It stops conversations, turns heads mid-stride, pulls focus from apartment windows and street corners. The Evoque didn't need to claim desirability. It just needed to show what desirability looks like from the outside.`,
-
-  theResult: `A global launch that reframed the category conversation from performance specs to human response.`,
-
-  theHumanTruth: `Beauty interrupts everything. The conversation, the commute, the noise. We can't explain it. We can't help it.`,
-
-  clientQuote: {
-    text: "Director: Joe Connor",
-    attribution: "Production: You Are Here",
-  },
+  sections: [
+    {
+      strategicInsight: `What does a beautifully designed object actually do to the people around it? Not to the driver. To everyone else. The Power of Distraction was built on a simple sociological truth: genuine beauty interrupts. It stops conversations, turns heads mid-stride, pulls focus from apartment windows and street corners. The Evoque didn't need to claim desirability. It just needed to show what desirability looks like from the outside.`,
+      theResult: `A global launch that reframed the category conversation from performance specs to human response.`,
+      theHumanTruth: `Beauty interrupts everything. The conversation, the commute, the noise. We can't explain it. We can't help it.`,
+      credits: "Director: Joe Connor\nProduction: You Are Here",
+    },
+    {
+      label: "RANGE ROVER VELAR",
+      strategicInsight: `Some stand back out of fear. Some stand back out of respect. Others, out of admiration. Introducing the new Range Rover Velar.`,
+      theResult: `…`,
+      theHumanTruth: `Beauty interrupts everything. The conversation, the commute, the noise. We can't explain it. We can't help it.`,
+      credits: "Director: Chris Palmer\nProduction: Gorgeous",
+    },
+  ],
 
   story: [
     { t: "slot", item: vimeo("334673349", "Range Rover Evoque — The Power of Distraction") },
@@ -48,15 +53,8 @@ const rangeRover: CaseStudy = {
       left: img("f9506149-f1fe-4a7c-b9fc-e9f747da37ef", "RRE2.png", { w: 960, h: 540 }),
       right: img("0267f4dc-6751-4319-a166-0d7c2785915c", "RRE3.png", { w: 960, h: 540 }),
     },
+    // Visual separator in the story between Evoque and Velar content
     { t: "h2", text: "RANGE ROVER VELAR" },
-    {
-      t: "body",
-      paras: [
-        "Some stand back out of fear. Some stand back out of respect. Others, out of admiration. Introducing the new Range Rover Velar.",
-        "Director: Chris Palmer",
-        "Production: Gorgeous",
-      ],
-    },
     { t: "slot", item: vimeo("206482221", "Range Rover Velar") },
     { t: "slot", item: vimeo("243398406") },
   ],

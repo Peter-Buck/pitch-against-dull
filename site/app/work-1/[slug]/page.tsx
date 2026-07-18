@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCaseStudy, getAllSlugs } from "@/content/case-studies/index";
-import type { MediaSlot, ImgSlot, StoryRow } from "@/content/case-studies/types";
+import type { MediaSlot, ImgSlot, StoryRow, HeroSection } from "@/content/case-studies/types";
 import Reveal from "@/components/Reveal";
 
 // Static generation — only build slugs we have data for
@@ -192,7 +192,7 @@ export default async function CaseStudyPage({
       {/* ── Hero — cream background ─────────────────────────────────── */}
       <div className="bg-cream">
         <div className="max-w-[1500px] mx-auto px-[4vw] pt-10 pb-16">
-          {/* Title */}
+          {/* Study title */}
           <Reveal variant="scale">
             <h2
               className="text-ink font-heading font-medium leading-[1.14] mb-10"
@@ -202,58 +202,81 @@ export default async function CaseStudyPage({
             </h2>
           </Reveal>
 
-          {/* 3-column text block: Strategic Insight | The Result | The Human Truth */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-x-[5%] gap-y-8">
-            {/* Strategic Insight */}
-            <Reveal variant="fade">
-              <div>
-                <p className="font-body text-ink text-[13px] font-bold uppercase tracking-wider mb-3">
-                  Strategic Insight
-                </p>
-                {study.strategicInsight.split("\n\n").map((para, i) => (
-                  <p key={i} className="font-body text-ink text-[14px] leading-[1.6] mb-3">
-                    {para}
-                  </p>
-                ))}
-              </div>
-            </Reveal>
-
-            {/* The Result */}
-            <Reveal variant="fade" delay={0.08}>
-              <div>
-                <p className="font-body text-ink text-[13px] font-bold uppercase tracking-wider mb-3">
-                  The Result
-                </p>
-                {study.theResult.split("\n\n").map((para, i) => (
-                  <p key={i} className="font-body text-ink text-[14px] leading-[1.6] mb-3">
-                    {para}
-                  </p>
-                ))}
-              </div>
-            </Reveal>
-
-            {/* The Human Truth + client quote */}
-            <Reveal variant="fade" delay={0.16}>
-              <div>
-                <p className="font-body text-ink text-[13px] font-bold uppercase tracking-wider mb-3">
-                  The Human Truth
-                </p>
-                <p className="font-body text-ink text-[14px] leading-[1.6] mb-6">
-                  {study.theHumanTruth}
-                </p>
-                {study.clientQuote && (
+          {/* Hero sections — one panel per campaign/sub-product */}
+          {study.sections.map((section: HeroSection, si: number) => (
+            <div key={si} className={si > 0 ? "mt-14" : ""}>
+              {section.label && (
+                <Reveal variant="scale">
+                  <h3
+                    className="text-ink font-heading font-medium leading-[1.14] mb-8"
+                    style={{ fontSize: "var(--text-h2)" }}
+                  >
+                    {section.label}
+                  </h3>
+                </Reveal>
+              )}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-x-[5%] gap-y-8">
+                {/* Strategic Insight */}
+                <Reveal variant="fade">
                   <div>
-                    <p className="font-body text-ink text-[14px] italic leading-[1.6] mb-1">
-                      {study.clientQuote.text}
+                    <p className="font-body text-ink text-[13px] font-bold uppercase tracking-wider mb-3">
+                      Strategic Insight
                     </p>
-                    <p className="font-body text-ink text-[13px] leading-[1.5]">
-                      {study.clientQuote.attribution}
-                    </p>
+                    {section.strategicInsight.split("\n\n").map((para, i) => (
+                      <p key={i} className="font-body text-ink text-[14px] leading-[1.6] mb-3">
+                        {para}
+                      </p>
+                    ))}
                   </div>
-                )}
+                </Reveal>
+
+                {/* The Result */}
+                <Reveal variant="fade" delay={0.08}>
+                  <div>
+                    <p className="font-body text-ink text-[13px] font-bold uppercase tracking-wider mb-3">
+                      The Result
+                    </p>
+                    {section.theResult.split("\n\n").map((para, i) => (
+                      <p key={i} className="font-body text-ink text-[14px] leading-[1.6] mb-3">
+                        {para}
+                      </p>
+                    ))}
+                  </div>
+                </Reveal>
+
+                {/* The Human Truth + optional credits + optional client quote */}
+                <Reveal variant="fade" delay={0.16}>
+                  <div>
+                    <p className="font-body text-ink text-[13px] font-bold uppercase tracking-wider mb-3">
+                      The Human Truth
+                    </p>
+                    <p className="font-body text-ink text-[14px] leading-[1.6] mb-3">
+                      {section.theHumanTruth}
+                    </p>
+                    {section.credits && (
+                      <div className="mb-3">
+                        {section.credits.split("\n").map((line, i) => (
+                          <p key={i} className="font-body text-ink text-[14px] leading-[1.6]">
+                            {line}
+                          </p>
+                        ))}
+                      </div>
+                    )}
+                    {section.clientQuote && (
+                      <div className="mt-3">
+                        <p className="font-body text-ink text-[14px] italic leading-[1.6] mb-1">
+                          {section.clientQuote.text}
+                        </p>
+                        <p className="font-body text-ink text-[13px] leading-[1.5]">
+                          {section.clientQuote.attribution}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </Reveal>
               </div>
-            </Reveal>
-          </div>
+            </div>
+          ))}
         </div>
       </div>
 

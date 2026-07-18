@@ -4,6 +4,7 @@ import eosFitness from "./eos-fitness";
 import riester from "./riester";
 import rangeRover from "./range-rover";
 import honorHealth from "./honorhealth";
+import cleanElections from "./clean-elections";
 
 const studies: Record<string, CaseStudy> = {
   redbull,
@@ -11,6 +12,7 @@ const studies: Record<string, CaseStudy> = {
   riester,
   "range-rover": rangeRover,
   honorhealth: honorHealth,
+  "clean-elections": cleanElections,
 };
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {

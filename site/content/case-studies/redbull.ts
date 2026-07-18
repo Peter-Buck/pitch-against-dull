@@ -28,16 +28,17 @@ const redbull: CaseStudy = {
 
   title: "Red Bull",
 
-  strategicInsight: `The brief was never "make an ad." It was "make something worth showing up for." Leading Red Bull as agency ECD, I came to understand that the most powerful creative strategy isn't a campaign, it's a worldview.\n\nA brand that gives people a world they want to live in doesn't need to interrupt culture. It becomes culture. We didn't sell the drink. We sold the idea of the drink. And that idea — given wings to people and ideas — turned a beverage into a belief system that became the gold standard in experiential marketing.`,
-
-  theResult: `From challenger brand to category creator. Red Bull became the No.1 energy drink in the US and commands 43% global market share — built almost entirely without conventional advertising. That's a $20 billion brand built on the conviction that people would rather experience something than watch an ad.`,
-
-  theHumanTruth: `Give people a world worth showing up for and they'll bring everyone they know.`,
-
-  clientQuote: {
-    text: `"Peter embodies exactly what Red Bull stands for. His work is bursting with energy, and his mind is constantly brimming with new ideas."`,
-    attribution: `— Stefan Kozak, Former CEO, Red Bull North America`,
-  },
+  sections: [
+    {
+      strategicInsight: `The brief was never "make an ad." It was "make something worth showing up for." Leading Red Bull as agency ECD, I came to understand that the most powerful creative strategy isn't a campaign, it's a worldview.\n\nA brand that gives people a world they want to live in doesn't need to interrupt culture. It becomes culture. We didn't sell the drink. We sold the idea of the drink. And that idea — given wings to people and ideas — turned a beverage into a belief system that became the gold standard in experiential marketing.`,
+      theResult: `From challenger brand to category creator. Red Bull became the No.1 energy drink in the US and commands 43% global market share — built almost entirely without conventional advertising. That's a $20 billion brand built on the conviction that people would rather experience something than watch an ad.`,
+      theHumanTruth: `Give people a world worth showing up for and they'll bring everyone they know.`,
+      clientQuote: {
+        text: `"Peter embodies exactly what Red Bull stands for. His work is bursting with energy, and his mind is constantly brimming with new ideas."`,
+        attribution: `— Stefan Kozak, Former CEO, Red Bull North America`,
+      },
+    },
+  ],
 
   story: [
     // ── Skate ────────────────────────────────────────────────────────────

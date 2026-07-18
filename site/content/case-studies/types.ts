@@ -29,17 +29,24 @@ export type StoryRow =
   // split row: image left 40% + H2 heading right 60% (or reversed)
   | { t: "split-caption"; img: ImgSlot; heading: string; imgLeft: boolean };
 
+// One panel in the hero 3-column grid. Multi-campaign studies have 2+ sections.
+export type HeroSection = {
+  label?: string;                                 // sub-heading above the 3-col grid
+  strategicInsight: string;
+  theResult: string;
+  theHumanTruth: string;
+  credits?: string;                               // plain-text production credit (\n-separated lines)
+  clientQuote?: { text: string; attribution: string }; // italic quote + attribution
+};
+
 export type CaseStudy = {
   slug: string;
   pageTitle: string;
   description: string;
 
   // Hero section (cream background)
-  title: string;                    // large H2
-  strategicInsight: string;
-  theResult: string;
-  theHumanTruth: string;
-  clientQuote?: { text: string; attribution: string };
+  title: string;       // large H2 above all sections
+  sections: HeroSection[];
 
   // Dark-background story
   story: StoryRow[];

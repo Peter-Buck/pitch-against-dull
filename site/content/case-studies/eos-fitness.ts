@@ -24,11 +24,13 @@ const eosFitness: CaseStudy = {
 
   title: "EōS Fitness",
 
-  strategicInsight: `EōS Fitness had been winning on price for years. Then the whole industry caught up. When everyone's cheap, cheap means nothing. The brief was to reposition — but repositioning a gym around quality felt like every other gym. We went deeper. We found willpower. Not as a category claim but as a human truth that EōS owners, staff, and members all shared. Will wasn't a mascot. Will was the argument that EōS stood for something people actually feel at 6am when the alarm goes off and the bed is warm.`,
-
-  theResult: `90% YouTube watch rate. 99% of views from non-subscribers. 70% organic Instagram engagement. 21% lower cost per membership. 50%+ new users on landing page.`,
-
-  theHumanTruth: `When you stop competing on price, you start competing on meaning. And meaning wins every time.`,
+  sections: [
+    {
+      strategicInsight: `EōS Fitness had been winning on price for years. Then the whole industry caught up. When everyone's cheap, cheap means nothing. The brief was to reposition — but repositioning a gym around quality felt like every other gym. We went deeper. We found willpower. Not as a category claim but as a human truth that EōS owners, staff, and members all shared. Will wasn't a mascot. Will was the argument that EōS stood for something people actually feel at 6am when the alarm goes off and the bed is warm.`,
+      theResult: `90% YouTube watch rate. 99% of views from non-subscribers. 70% organic Instagram engagement. 21% lower cost per membership. 50%+ new users on landing page.`,
+      theHumanTruth: `When you stop competing on price, you start competing on meaning. And meaning wins every time.`,
+    },
+  ],
 
   story: [
     { t: "slot", item: vimeo("1025562287") },
