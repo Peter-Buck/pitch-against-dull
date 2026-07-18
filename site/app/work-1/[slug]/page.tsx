@@ -87,17 +87,45 @@ function StoryRowEl({ row }: { row: StoryRow }) {
         </Reveal>
       );
 
-    case "slots2":
+    case "slots2": {
+      const leftIsVimeo = row.left.kind === "vimeo";
+      const rightIsVimeo = row.right.kind === "vimeo";
+
+      // All image cells in slots2 are clipped to 16:9 at lg+ (1024px+) with
+      // object-fit: cover, matching Squarespace FE matched-row-height behaviour.
+      // At md (768px) images render at natural height — preserving the 768px match.
+      // On single-column mobile, always natural h-auto (no sizer rendered).
+      const renderSlot2Cell = (slot: MediaSlot, isVimeo: boolean, delay: number) => {
+        if (isVimeo || slot.kind !== "img") {
+          return (
+            <Reveal variant="scale" delay={delay}>
+              <MediaBlock slot={slot} />
+            </Reveal>
+          );
+        }
+        return (
+          <Reveal variant="scale" delay={delay} className="lg:relative lg:overflow-hidden">
+            {/* Sizer: enforces 16:9 cell height at lg+ to match Squarespace row height */}
+            <div className="hidden lg:block w-full" style={{ paddingBottom: "56.25%" }} />
+            <Image
+              src={slot.src}
+              alt={slot.alt ?? ""}
+              width={slot.w ?? 960}
+              height={slot.h ?? 540}
+              unoptimized={slot.gif}
+              className="w-full h-auto block lg:absolute lg:inset-0 lg:w-full lg:h-full lg:object-cover lg:object-center"
+            />
+          </Reveal>
+        );
+      };
+
       return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-          <Reveal variant="scale">
-            <MediaBlock slot={row.left} className="h-full object-cover" />
-          </Reveal>
-          <Reveal variant="scale" delay={0.1}>
-            <MediaBlock slot={row.right} className="h-full object-cover" />
-          </Reveal>
+          {renderSlot2Cell(row.left, leftIsVimeo, 0)}
+          {renderSlot2Cell(row.right, rightIsVimeo, 0.1)}
         </div>
       );
+    }
 
     case "slots3":
       return (

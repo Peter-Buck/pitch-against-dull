@@ -373,14 +373,50 @@
 
 ---
 
+#### CP3-verify — measured fidelity (post-fix)
+
+**Column width (content inner)**
+
+| Viewport | Live | Rebuilt | Delta |
+|----------|------|---------|-------|
+| 1440px | 1266px | 1325px | +59px (rebuilt wider — Squarespace FE padding vs our 4vw) |
+| 768px | 675px | 707px | +32px |
+
+**Page height (with all reveals triggered)**
+
+| Viewport | Live | Rebuilt | Delta |
+|----------|------|---------|-------|
+| 1440px | 20,238px | 18,776px | −1,462px (−7.2%) |
+| 768px | 15,065px | 15,116px | +51px (essentially identical) |
+
+**Bugs fixed during verify:**
+1. `h-full object-cover` on `slots2` `MediaBlock` was stretching images to match sibling height, causing distorted aspect ratios (snowboarding GIF 640×640 square rendered at 654×1014). Removed.
+2. `slots2` image cells now use a 16:9 sizer + `object-fit: cover` at `lg:` (1024px+), clipping portrait images to row height and matching Squarespace FE matched-row-height behaviour. At `md` (768px) and below, images render at natural `h-auto` height — 768px match preserved.
+
+**Residual fidelity differences:**
+
+| Viewport | Difference | Cause |
+|----------|-----------|-------|
+| 1440px | Page 7.2% shorter than live | Universal 16:9 clipping slightly over-reduces some landscape image+image pairs that the live FE shows at natural heights in narrower non-uniform columns. Acceptable margin — better than the 17% over-height before fixes. |
+| 768px | +51px | Negligible. Natural image heights at 768px (clipping doesn't apply). |
+| All | Vimeo iframes blank | Vimeo domain allowlist blocks localhost. Will resolve on production domain. |
+| 1440 | Yellow Squarespace UI dot in audit | Squarespace built-in UI element (scroll indicator). Not content. Not implementing. |
+
+---
+
+#### CP3-OD-4 — giphy-1.gif full-width vs narrow FE column on live (Needs Owner Decision)
+
+`giphy-1.gif` (Art of Can section) is a `{ t: "slot" }` full-width element in our data model, rendering at 1325×1325px in our implementation. On the live site it is inside a narrow Squarespace FE block (163px wide × 396px tall), displaying at 147×220px with `object-fit: cover`. The FE block is in a multi-column FE row alongside other content not represented in our current content data. The correct `slots2` or `slots3` structure for that FE row is unknown from the audit. **Action required:** owner to provide the correct layout for the Art of Can section's giphy-1.gif row, or accept full-width rendering.
+
+---
+
 #### Fidelity differences vs audit-screens/work-1--redbull/
 
 | Viewport | Difference | Likely cause |
 |----------|-----------|--------------|
-| All | Page slightly shorter than live (~10–20%) | Squarespace Fluid Engine renders images at larger natural sizes; our template uses audited `w`/`h` props but some images default to 960×540 placeholder dimensions. No content is missing. |
-| All | Below-fold story content invisible in full-page screenshot | Expected — IntersectionObserver fires only for elements in initial viewport; scroll-reveal hides off-screen elements at opacity 0. Live behavior identical when scrolling. |
-| 1440 | Small yellow dot mid-right in audit; absent in implementation | Squarespace built-in UI element (likely scroll-to-top or page progress indicator). Not part of content. Not implementing. |
-| All | Vimeo iframes render as blank/error boxes | Vimeo enforces domain allowlist; embeds return 403 on localhost. Will resolve on the production domain. Not a code issue. |
+| All | Below-fold story content invisible in initial full-page screenshot | Expected — IntersectionObserver fires only for elements in initial viewport. Live behaviour identical when scrolling. Post-fix screenshots with reveals forced visible confirm full story fidelity. |
+| 1440 | Small yellow dot mid-right in audit | Squarespace built-in UI element (scroll-to-top indicator). Not content. Not implementing. |
+| All | Vimeo iframes render as blank/error boxes | Vimeo domain allowlist; 403 on localhost. Resolves on production. |
 
 ---
 
