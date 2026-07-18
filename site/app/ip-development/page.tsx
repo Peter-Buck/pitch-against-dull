@@ -7,6 +7,19 @@ export const metadata: Metadata = {
   title: "Peter Buck — CCO | Brand Strategy & Creative Leadership",
   description:
     "Peter Buck has developed original television formats including a Bonneville Speed Record build-and-race show, a greatest albums documentary series with integrated e-commerce, and a stand-up comedy competition format.",
+  alternates: { canonical: "https://www.peter-buck.com/ip-development" },
+  openGraph: {
+    title: "Peter Buck — CCO | Brand Strategy & Creative Leadership",
+    description:
+      "Peter Buck has developed original television formats including a Bonneville Speed Record build-and-race show, a greatest albums documentary series with integrated e-commerce, and a stand-up comedy competition format.",
+    url: "https://www.peter-buck.com/ip-development",
+    type: "website",
+  },
+  twitter: {
+    title: "Peter Buck — CCO | Brand Strategy & Creative Leadership",
+    description:
+      "Peter Buck has developed original television formats including a Bonneville Speed Record build-and-race show, a greatest albums documentary series with integrated e-commerce.",
+  },
 };
 
 const CDN = "https://images.squarespace-cdn.com/content/v1/671fc066e85fae213d2acc8a";

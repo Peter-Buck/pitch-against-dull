@@ -11,6 +11,8 @@ export function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
 }
 
+const BASE = "https://www.peter-buck.com";
+
 export async function generateMetadata({
   params,
 }: {
@@ -19,9 +21,22 @@ export async function generateMetadata({
   const { slug } = await params;
   const study = getCaseStudy(slug);
   if (!study) return {};
+  const title = `${study.pageTitle} — PETER BUCK // CCO`;
+  const url = `${BASE}/work-1/${slug}`;
   return {
-    title: `${study.pageTitle} — PETER BUCK // CCO`,
+    title,
     description: study.description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description: study.description,
+      url,
+      type: "article",
+    },
+    twitter: {
+      title,
+      description: study.description,
+    },
   };
 }
 
@@ -33,7 +48,7 @@ function MediaBlock({ slot, className = "" }: { slot: MediaSlot; className?: str
       <div className={`relative w-full ${className}`} style={{ paddingBottom: "56.25%" }}>
         <iframe
           src={`https://player.vimeo.com/video/${slot.id}`}
-          title={slot.title ?? ""}
+          title={slot.title || "Video"}
           className="absolute inset-0 w-full h-full"
           allow="autoplay; fullscreen; picture-in-picture"
           allowFullScreen
@@ -187,8 +202,25 @@ export default async function CaseStudyPage({
   const study = getCaseStudy(slug);
   if (!study) notFound();
 
+  const creativeWorkSchema = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: study.title,
+    description: study.description,
+    url: `${BASE}/work-1/${slug}`,
+    creator: {
+      "@type": "Person",
+      name: "Peter Buck",
+      url: BASE,
+    },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(creativeWorkSchema) }}
+      />
       {/* ── Hero — cream background ─────────────────────────────────── */}
       <div className="bg-cream">
         <div className="max-w-[1500px] mx-auto px-[4vw] pt-10 pb-16">

@@ -1,7 +1,27 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import ValuesCounter from "@/components/ValuesCounter";
 import FitText from "@/components/FitText";
+
+export const metadata: Metadata = {
+  title: "Peter Buck — CCO | Brand Strategy & Creative Leadership",
+  description:
+    "Peter Buck has spent 20+ years refusing to choose between craft and strategy. A CCO who leads from inside the work — integrating AI as a creative collaborator while keeping human thinking at the center.",
+  alternates: { canonical: "https://www.peter-buck.com" },
+  openGraph: {
+    title: "Peter Buck — CCO | Brand Strategy & Creative Leadership",
+    description:
+      "Peter Buck has spent 20+ years refusing to choose between craft and strategy. A CCO who leads from inside the work.",
+    url: "https://www.peter-buck.com",
+    type: "website",
+  },
+  twitter: {
+    title: "Peter Buck — CCO | Brand Strategy & Creative Leadership",
+    description:
+      "Peter Buck has spent 20+ years refusing to choose between craft and strategy. A CCO who leads from inside the work.",
+  },
+};
 
 /* ── Case study data ─────────────────────────────────────────────── */
 const TRANSFORMATION = [

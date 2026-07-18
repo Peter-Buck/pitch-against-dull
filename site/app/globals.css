@@ -72,6 +72,12 @@ hr {
   top: 0;
 }
 
+/* Focus-visible: use element's own text color so it contrasts against its background */
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
 /* prefers-reduced-motion: skip all scroll-reveal animation immediately */
 @media (prefers-reduced-motion: reduce) {
   [data-reveal] {

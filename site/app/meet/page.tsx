@@ -7,6 +7,19 @@ export const metadata: Metadata = {
   title: "Peter Buck — CCO | Brand Strategy & Creative Leadership",
   description:
     "Peter Buck has spent 20+ years refusing to choose between craft and strategy. A CCO who leads from inside the work — integrating AI as a creative collaborator while keeping human thinking at the center. Read his philosophy.",
+  alternates: { canonical: "https://www.peter-buck.com/meet" },
+  openGraph: {
+    title: "Peter Buck — CCO | Brand Strategy & Creative Leadership",
+    description:
+      "Peter Buck has spent 20+ years refusing to choose between craft and strategy. A CCO who leads from inside the work — integrating AI as a creative collaborator while keeping human thinking at the center. Read his philosophy.",
+    url: "https://www.peter-buck.com/meet",
+    type: "profile",
+  },
+  twitter: {
+    title: "Peter Buck — CCO | Brand Strategy & Creative Leadership",
+    description:
+      "Peter Buck has spent 20+ years refusing to choose between craft and strategy. A CCO who leads from inside the work.",
+  },
 };
 
 const PARAGRAPHS = [

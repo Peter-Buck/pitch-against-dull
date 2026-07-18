@@ -7,6 +7,19 @@ export const metadata: Metadata = {
   title: "Peter Buck — CCO | Brand Strategy & Creative Leadership",
   description:
     "Thinking, writing and tools from Peter Buck — CCO. Humanizing an AI-Driven World, The Deeply Human Property, and more. All free.",
+  alternates: { canonical: "https://www.peter-buck.com/think" },
+  openGraph: {
+    title: "Peter Buck — CCO | Brand Strategy & Creative Leadership",
+    description:
+      "Thinking, writing and tools from Peter Buck — CCO. Humanizing an AI-Driven World, The Deeply Human Property, and more. All free.",
+    url: "https://www.peter-buck.com/think",
+    type: "website",
+  },
+  twitter: {
+    title: "Peter Buck — CCO | Brand Strategy & Creative Leadership",
+    description:
+      "Thinking, writing and tools from Peter Buck — CCO. Humanizing an AI-Driven World, The Deeply Human Property, and more. All free.",
+  },
 };
 
 const RESOURCES = [
