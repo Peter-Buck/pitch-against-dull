@@ -23,9 +23,9 @@
 | 2 | `/work` | 200 | Yes (priority 1.0) | — | **Needs Owner Decision** | Canonical points to `/`; identical content; sitemap priority 1.0 but page is not the canonical |
 | 3 | `/meet` | 200 | Yes | MEET | **Verified** | — |
 | 4 | `/think` | 200 | Yes | THINK | **Verified** | External link to vercel app |
-| 5 | `/therevisions` | 200 | Yes | THE REVISIONS | **Needs Owner Decision** | 22 audio tracks on squarespace CDN; Google Drive dependency; metadata mismatch with /therevisions-1 |
-| 6 | `/therevisions-1` | 200 | Yes | — | **Needs Owner Decision** | Not in nav; shares description with /therevisions; relationship to /therevisions unclear |
-| 7 | `/instrument` | 200 | Yes | — | **Needs Owner Decision** | Empty description; no OG image; not in nav; purpose relative to /therevisions unclear |
+| 5 | `/therevisions` | 200 | Yes | THE REVISIONS | **Deferred — v2** | Out of scope for PB-001 v1. Part of "The Revisions / music section" deferred feature group. All source assets preserved. |
+| 6 | `/therevisions-1` | 200 | Yes | — | **Deferred — v2** | Out of scope for PB-001 v1. Part of "The Revisions / music section" deferred feature group. All source assets preserved. |
+| 7 | `/instrument` | 200 | Yes | — | **Deferred — v2** | Out of scope for PB-001 v1. Part of "The Revisions / music section" deferred feature group. All source assets preserved. |
 | 8 | `/ip-development` | 200 | Yes | — | **Verified** | No OG image; 7 images missing alt |
 | 9 | `/work-1` | 200 | Yes | — | **Needs Owner Decision** | Empty description; no OG image; not in main nav; relationship to `/` unclear |
 | 10 | `/work-1/redbull` | 200 | Yes | — | **Verified** | 80 images all missing alt; 7 Vimeo |
@@ -310,16 +310,87 @@
 
 ## 5. Needs Owner Decision — Full List
 
-| ID | Question | Affects |
-|----|----------|---------|
-| OD-1 | Is the home page (/) the CCO portfolio or Kill Dull Records? The metadata says record label; the content says portfolio. What should the title, description, and OG be? | `/`, `/work` |
-| OD-2 | Should `/work` be redirected to `/` or maintained as a separate URL? | `/work` |
-| OD-3 | What is `/pitch`? Is this page being rebuilt, intentionally removed, or should the homepage link be updated? | `/pitch`, `/` |
-| OD-4 | Are both `/work-1/redbull` and `/work-1/red-bull` intended to exist as separate pages? Should both appear in navigation? | `/work-1/redbull`, `/work-1/red-bull` |
-| OD-5 | Where will the 22 audio MP3 files be hosted after leaving Squarespace? What audio player component replaces the Squarespace audio block? | `/therevisions`, `/therevisions-1`, `/instrument` |
-| OD-6 | Who provides the AI chat widget ("Ask my AI")? What is the provider, API key, and domain configuration? Is it tied to the Squarespace domain? | `/`, footer |
-| OD-7 | Is `/therevisions-1` (CMO Confessions) a sub-section of `/therevisions` or a standalone page? Should it be in the navigation? | `/therevisions-1` |
-| OD-8 | Is `/instrument` intentionally unlisted? Is it a teaser, a draft, or a live page? Should it be discoverable in navigation or linked from `/therevisions`? | `/instrument` |
-| OD-9 | What is the purpose of `/work-1`? Is it intended to replace or supplement the case study list on `/`? | `/work-1`, `/` |
-| OD-10 | Is Squarespace commerce (`/cart`) being used or planned for use? Should it be preserved? | `/cart` |
-| OD-11 | Is the Google Drive album download link on `/therevisions` the intended permanent distribution method, or will audio be self-hosted? | `/therevisions` |
+| ID | Question | Affects | Status |
+|----|----------|---------|--------|
+| OD-1 | Is the home page (/) the CCO portfolio or Kill Dull Records? The metadata says record label; the content says portfolio. What should the title, description, and OG be? | `/`, `/work` | Open |
+| OD-2 | Should `/work` be redirected to `/` or maintained as a separate URL? | `/work` | Open |
+| OD-3 | What is `/pitch`? Is this page being rebuilt, intentionally removed, or should the homepage link be updated? | `/pitch`, `/` | Open |
+| OD-4 | Are both `/work-1/redbull` and `/work-1/red-bull` intended to exist as separate pages? Should both appear in navigation? | `/work-1/redbull`, `/work-1/red-bull` | Open |
+| OD-5 | Where will the 22 audio MP3 files be hosted after leaving Squarespace? What audio player component replaces the Squarespace audio block? | `/therevisions`, `/therevisions-1`, `/instrument` | **Deferred — v2** (see Section 6) |
+| OD-6 | Who provides the AI chat widget ("Ask my AI")? What is the provider, API key, and domain configuration? Is it tied to the Squarespace domain? | `/`, footer | Open |
+| OD-7 | Is `/therevisions-1` (CMO Confessions) a sub-section of `/therevisions` or a standalone page? Should it be in the navigation? | `/therevisions-1` | **Deferred — v2** (see Section 6) |
+| OD-8 | Is `/instrument` intentionally unlisted? Is it a teaser, a draft, or a live page? Should it be discoverable in navigation or linked from `/therevisions`? | `/instrument` | **Deferred — v2** (see Section 6) |
+| OD-9 | What is the purpose of `/work-1`? Is it intended to replace or supplement the case study list on `/`? | `/work-1`, `/` | Open |
+| OD-10 | Is Squarespace commerce (`/cart`) being used or planned for use? Should it be preserved? | `/cart` | Open |
+| OD-11 | Is the Google Drive album download link on `/therevisions` the intended permanent distribution method, or will audio be self-hosted? | `/therevisions` | **Deferred — v2** (see Section 6) |
+
+---
+
+## 6. Deferred Feature Groups
+
+### DFG-1 — The Revisions / music section
+
+**Owner decision recorded:** These pages are out of scope for PB-001 v1 and will not be implemented in the initial migration. No pages, no placeholders, no audio players, no Google Drive download links.
+
+**Deferred pages:**
+- `/therevisions` — main Kill Dull Records / The Revisions page; 13 audio tracks, Squarespace audio block player
+- `/therevisions-1` — CMO Confessions EP; 8 audio tracks, Squarespace audio block player
+- `/instrument` — single track teaser ("The Right Room"); 1 audio track, full lyrics
+
+**What is preserved for future implementation:**
+- All source content (track listings, descriptions, lyrics) is audited and recorded in `docs/rendered-site-inventory.md`
+- All 22 MP3 file URLs on `static1.squarespace.com` are recorded in the site inventory
+- Google Drive album download link URL is recorded in the site inventory
+- Audit screenshots exist in `audit-screens/therevisions/`, `audit-screens/therevisions-1/`, `audit-screens/instrument/`
+
+**What v2 will need to resolve (previously OD-5, OD-7, OD-8, OD-11):**
+- Hosting destination for 22 MP3 files (Squarespace CDN will be inaccessible post-migration)
+- Replacement for the Squarespace proprietary audio block player component
+- Navigation relationship between `/therevisions` and `/therevisions-1`
+- Whether `/instrument` should be discoverable or remain unlisted
+- Whether Google Drive remains the album download mechanism or audio is self-hosted
+
+**v1 nav impact:** THE REVISIONS nav link is present in the live site header. In v1 it will either link to a future URL (deferred) or be omitted from the nav. This is a decision for Checkpoint 3 scoping.
+
+---
+
+## 7. Checkpoint Implementation Log
+
+### Checkpoint 3 — `/work-1/[slug]` case-study template + Red Bull
+
+**Status:** Complete — verified, awaiting owner approval before proceeding to remaining case studies.
+
+**Files changed:**
+- `content/case-studies/types.ts` — CaseStudy, StoryRow union, MediaSlot types
+- `content/case-studies/redbull.ts` — Red Bull content: 40 CDN images, 7 Vimeo IDs, all text, pagination
+- `content/case-studies/index.ts` — registry with `getCaseStudy` / `getAllSlugs`
+- `app/work-1/[slug]/page.tsx` — dynamic App Router template; handles all StoryRow variants; generates static params; server-side metadata
+- `components/Header.tsx` — removed THE REVISIONS nav link (DFG-1 deferred)
+
+**Build status:** typecheck ✓ — lint ✓ — build ✓ (SSG: `/work-1/redbull` prerendered)
+
+**Screenshots:** `implementation-screens/checkpoint-3/redbull-{1440,768,390}.png`
+
+---
+
+#### Fidelity differences vs audit-screens/work-1--redbull/
+
+| Viewport | Difference | Likely cause |
+|----------|-----------|--------------|
+| All | Page slightly shorter than live (~10–20%) | Squarespace Fluid Engine renders images at larger natural sizes; our template uses audited `w`/`h` props but some images default to 960×540 placeholder dimensions. No content is missing. |
+| All | Below-fold story content invisible in full-page screenshot | Expected — IntersectionObserver fires only for elements in initial viewport; scroll-reveal hides off-screen elements at opacity 0. Live behavior identical when scrolling. |
+| 1440 | Small yellow dot mid-right in audit; absent in implementation | Squarespace built-in UI element (likely scroll-to-top or page progress indicator). Not part of content. Not implementing. |
+| All | Vimeo iframes render as blank/error boxes | Vimeo enforces domain allowlist; embeds return 403 on localhost. Will resolve on the production domain. Not a code issue. |
+
+---
+
+#### Anomalies logged — Needs Owner Decision
+
+**CP3-OD-1 — Red Bull pagination: no Previous link (faithful)**
+The live `/work-1/redbull` page shows only "Next → EōS Fitness" with no Previous link. Red Bull is the first entry in the case study series. Faithfully reproduced: `redbull.ts` has no `prev` key. No fix applied.
+
+**CP3-OD-2 — Next link target not yet built**
+`next: { slug: "eos-fitness", label: "EōS Fitness" }` links to `/work-1/eos-fitness`. That route does not exist yet in the migration (only `redbull` has been built). Clicking Next on the Red Bull page currently returns 404. This will resolve automatically when `eos-fitness` is built in a subsequent checkpoint. No action needed unless the owner wants a temporary fallback.
+
+**CP3-OD-3 — Two Red Bull pages (pre-existing anomaly, noted for Checkpoint 3)**
+The live site has both `/work-1/redbull` (built in this checkpoint) and `/work-1/red-bull` (row 11 in page status table, OD-4, still Open). The migration implements `/work-1/redbull` only. `/work-1/red-bull` awaits owner decision.
